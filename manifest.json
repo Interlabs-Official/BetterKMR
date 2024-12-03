@@ -22,9 +22,9 @@
         "js": ["navbar.js", "content.js", "popup.js"]
       }
     ]
-      "action": {
+      "action": [
     "default_popup": "example123.html"
-  },
+      ]
       "web_accessible_resources": [
     {
       "resources": ["example123.html", "icon/icon_transparent_48.png"],
