@@ -10,7 +10,8 @@ This has been built to redo the design of the Kamar portal. Includes custom CSS,
 (5) Open Kamar and enjoy <br>
 
 # Kamar Changes:
-Justified updated to be green <br>
+Better Navbar <br>
+Green colour for Justified status  <br>
 Custom space background and colour scheme <br>
 Custom profile picture (working on it)
 
