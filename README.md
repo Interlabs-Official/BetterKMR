@@ -16,7 +16,6 @@ Custom space background and colour scheme <br>
 Custom profile picture (not finished) <br>
 Hovering over classes gives details (not finished) <br>
 Attendance streaks (not finished) <br>
-Added background
 
 ## Home Page
 ![image](https://github.com/user-attachments/assets/04b1dc85-331e-4edf-8828-0228ea0efe74)
