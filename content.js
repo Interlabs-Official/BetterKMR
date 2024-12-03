@@ -96,8 +96,6 @@ targetFooter.innerHTML = `
 const infoClasses = {
     "SP20": "Spanish (2nd Semester)",
     "FT": "Form Class",
-    "SOC0": "Social Studies (Year 10 Midband)",
-    "SCE02": "Science (Year 10 Extension, 2nd Semester)",
     "MAE0": "Mathematics (Year 10 Extension)",
     "PEH02": "Physical Education & Health (Year 10 Midband, 2nd Semester)",
     "PEH01": "Physical Education & Health (Year 10 Midband, 1st Semester)",
@@ -186,7 +184,26 @@ const infoClasses = {
     "EFS2": "Education for Sustainability (Year 12)",
     "EFS3": "Education For Sustaianbility (Year 13)",
     "TOU2": "Tourism (Year 12)",
-    "TOU3": "Toursim (Year 13)"
+    "TOU3": "Tourism (Year 13)",
+ // Sciences
+    "BIO2": "Biology (Year 12)",
+    "BIO3": "Biology (Year 13)",
+    "CHE2": "Chemistry (Year 12)",
+    "CHE3": "Chemistry (Year 13)",
+    "PHY2": "Physics (Year 12)",
+    "PHY3": "Physics (Year 13)",
+    "SCEE": "Extension Science (Year 9)",
+    "SCEO1": "Extension Science Semester 1 (Year 10)",
+    "SCEO2": "Extension Science Semester 2 (Year 10)",
+    "SCE1": "Extension Science (Year 11)",
+    "SCGE": "Science (Year 9)",
+    "SCGO1": "Science Semester 1 (Year 10)",
+    "SCGO2": "Science Semester 2 (Year 10)",
+    "SCG1": "Science (Year 11)",
+    "SCIE": "Science Introductory (Year 9)",
+    "SCI0": "Science Introductory (Year 10)",
+    "SCI1": "Science Introductory (Year 11)",
+    "SCI2": "Science Introductory (Year 12)"
 }
 
 function addInfoTipToTarget(target, btn) {
