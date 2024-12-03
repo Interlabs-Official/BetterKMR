@@ -1,9 +1,10 @@
 const env_version = "1.0";
-
-document.addEventListener("DOMContentLoaded", function(event){
+console.log("Content JS loaded")
+function initJS() {
     if (window.location.href === "https://whanganuihigh.school.kiwi/example123") {
         window.location.href = chrome.runtime.getURL("settings/index.html");
     }
+    console.log("Step 2")
 if (window.location.href.includes("attendance/week")) {
     const targetElement = document.getElementsByClassName("page-title")[0];
 
@@ -36,14 +37,56 @@ if (window.location.href.includes("attendance/week")) {
         }
     });
 
+    chrome.storage.sync.get(["showBarcodeToggle"]).then((result) => {
+        if (result.showBarcodeToggle == false || result.showBarcodeToggle == null) {
+            const studentBarcode = document.getElementsByClassName("school-card-barcode")[0];
+            studentBarcode.style = `
+            visibility: hidden;
+            height: 0px;
+            overflow: hidden;
+            `
+        }
+    });
+
+    chrome.storage.sync.get(["profilePicUrl"]).then((result) => {
+        if (result.profilePicUrl != null) {
+            const avatarURL = document.getElementsByClassName("avatar")[0];
+            avatarURL.src = result.profilePicUrl;
+            avatarURL.parentNode.style = `
+            height: 32px; width: 32px; margin-right: 15px;
+            `
+            const pb3 = document.getElementsByClassName("pb-3")[0];
+            pb3.src = result.profilePicUrl;
+        }
+    });
+
     const calendarCard = document.getElementsByClassName("card-body")[0];
     calendarCard.innerHTML += `<br><img src="${chrome.runtime.getURL('icon/icon_transparent_48.png')}" width="24px" height="24px"></img>
     <a href="https://support.google.com/calendar/answer/37118" target="_blank">Click here for instructions on importing it into Google Calendar ꜛ</a>`
 }
 
+    //themes
+    var formedURL = `background: url("https://wallpapercave.com/wp/wp2082809.jpg") #1C1C1C top fixed no-repeat`;
+    const skpage = document.getElementsByClassName("sk_page")[0];
+    const skheader = document.getElementsByClassName("sk_header")[0];
+    chrome.storage.sync.get(["theme-editor-back-img-url"]).then((result) => {
+        if (result["theme-editor-back-img-url"] != null) {
+            console.log("Custom background entered");
+            formedURL = `background: url(${result["theme-editor-back-img-url"]})`;
+        }
+    });
+    chrome.storage.sync.get(["theme-editor-additional-css-flags-back-img-url"]).then((result) => {
+        if (result["theme-editor-additional-css-flags-back-img-url"] != null) {
+            console.log("Custom background CSS flags entered");
+            formedURL += ` ${result["theme-editor-additional-css-flags-back-img-url"]}`;
+        }
+    });
+    skpage.style = formedURL += ` !important;`;
+    skheader.style = formedURL += ` !important;`;
+
 //const nav = document.getElementById("navbar");
 //nav.innerHTML = ``
-
+console.log("Step 3")
 const targetFooter = document.getElementById("footer");
 targetFooter.innerHTML = `
     <div class="container">
@@ -87,4 +130,14 @@ for (let i = 0; i < targetPeriods.length; i++) {
     addInfoTipToTarget(targetPeriods.item(i), h100);
 }
     // your code here
-});
+}
+
+if (document.readyState !== 'loading') {
+    console.log('document is already ready, just execute code here');
+    initJS();
+} else {
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('document was not ready, place code here');
+        initJS();
+    });
+}

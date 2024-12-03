@@ -1,34 +1,85 @@
 document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
+    const settings = {
+        "showAttendanceStreak": false,
+        "showBarcodeToggle": false,
+        "profilePicUrl": ""
+    };
 
-    // Load the saved toggle state from storage
-    chrome.storage.sync.get(['showAttendanceStreak'], (result) => {
-        const isEnabled = result.showAttendanceStreak || false; // Default to false if not set
-        const barcodeToggle = document.getElementById('student-barcode-toggle');
-        barcodeToggle.checked = isEnabled;
-        //toggleStudentBarcode(isEnabled);
+    // Automatically activate the "About" tab
+    activateTab('about');
+
+    // Load settings from storage
+    chrome.storage.sync.get(Object.keys(settings), (result) => {
+        Object.keys(settings).forEach((key) => {
+            const value = result[key] !== undefined ? result[key] : settings[key];
+            applySetting(key, value);
+        });
     });
 
+    // Tab switching logic
     tabs.forEach((tab) => {
         tab.addEventListener('click', () => {
             const targetTab = tab.getAttribute('data-tab');
-            tabContents.forEach((content) => {
-                content.style.display = content.id === targetTab ? 'block' : 'none';
-            });
+            activateTab(targetTab);
         });
     });
 
-    const barcodeToggle = document.getElementById('student-barcode-toggle');
-    barcodeToggle.addEventListener('change', (event) => {
-        const isChecked = event.target.checked;
-        toggleStudentBarcode(isChecked);
-        
-        chrome.storage.sync.set({ "showAttendanceStreak": isChecked }, () => {
-        });
+    // Add change listeners for settings
+    document.getElementById('attendance-streak-toggle').addEventListener('change', (e) => {
+        updateSetting('showAttendanceStreak', e.target.checked);
     });
 
-    function toggleStudentBarcode(isEnabled) {
-        //console.log(`showAttendanceStreak is now ${isEnabled ? 'enabled' : 'disabled'}.`);
+    document.getElementById('student-barcode-toggle').addEventListener('change', (e) => {
+        updateSetting('showBarcodeToggle', e.target.checked);
+    });
+
+    document.getElementById('profile-pic-url').addEventListener('input', (e) => {
+        updateSetting('profilePicUrl', e.target.value);
+    });
+
+    // themes
+    document.getElementById('theme-editor-back-img-url').defaultValue = "https://wallpapercave.com/wp/wp2082809.jpg";
+    document.getElementById('theme-editor-back-img-url').addEventListener('input', (e) => {
+        updateSetting('theme-editor-back-img-url', e.target.value);
+    });
+
+    document.getElementById('theme-editor-additional-css-flags-back-img-url').defaultValue = "#1C1C1C top fixed no-repeat";
+    document.getElementById('theme-editor-additional-css-flags-back-img-url').addEventListener('input', (e) => {
+        updateSetting('theme-editor-additional-css-flags-back-img-url', e.target.value);
+    });
+
+    function updateSetting(key, value) {
+        chrome.storage.sync.set({ [key]: value }, () => {
+            console.log(`${key} updated to`, value);
+        });
+    }
+
+    function applySetting(key, value) {
+        if (key === 'showAttendanceStreak') {
+            document.getElementById('attendance-streak-toggle').checked = value;
+        } else if (key === 'showBarcodeToggle') {
+            document.getElementById('student-barcode-toggle').checked = value;
+        } else if (key === 'profilePicUrl') {
+            document.getElementById('profile-pic-url').value = value;
+        // themes
+        } else if (key === 'theme-editor-back-img-url') {
+            document.getElementById('theme-editor-back-img-url').value = value;
+        } else if (key === 'theme-editor-additional-css-flags-back-img-url') {
+            document.getElementById('theme-editor-additional-css-flags-back-img-url').value = value;
+        }
+    }
+
+    function activateTab(tabId) {
+        tabs.forEach(tab => {
+            const isActive = tab.getAttribute('data-tab') === tabId;
+            tab.classList.toggle('active', isActive);
+        });
+
+        tabContents.forEach(content => {
+            const isActive = content.id === tabId;
+            content.classList.toggle('active', isActive);
+        });
     }
 });
