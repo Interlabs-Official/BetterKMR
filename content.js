@@ -151,7 +151,20 @@ const infoClasses = {
     "FDZ0": "Fashion Design (Year 10)",
     "FDZ1": "Fashion Design (Year 11)",
     "FDZ2": "Fashion Design (Year 12)",
-    "FDZ3": "Fashion Design (Year 13)"
+    "FDZ3": "Fashion Design (Year 13)",
+    "FDNE": "Food & Nutrition (Year 9)",
+    "FDN0": "Food & Nutrition (Year 10)",
+    "FDH1": "Hospitality (Year 11)",
+    "FDH2": "Hospitality (Year 12)",
+    "FDH3": "Hospitality (Year 13)",
+    "MMS0": "Making Music (Year 10)",
+    "TCE1": "Technology Engineering (Year 11)",
+    "TCE2": "Technology Engineering (Year 12)",
+    "TECE": "Technology Materials (Year 9)",
+    "TCM0": "Technology Materials (Year 10)",
+    "TEC1": "Technology Materials (Year 11)",
+    "TEC2": "Technology Materials (Year 12)",
+    "TEC3": "Technology Materials (Year 13)"
 }
 
 function addInfoTipToTarget(target, btn) {
