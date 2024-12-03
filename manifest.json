@@ -9,11 +9,26 @@
       "48": "icon48.png",
       "128": "icon128.png"
     },
+      "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://whanganuihigh.school.kiwi/*"
+  ],
     "content_scripts": [
       {
         "matches": ["https://whanganuihigh.school.kiwi/*"],
         "css": ["styles.css", "profile.css"],
-        "js": ["navbar.js"]
+        "js": ["navbar.js", "content.js", "popup.js"]
       }
     ]
+      "action": {
+    "default_popup": "example123.html"
+  },
+      "web_accessible_resources": [
+    {
+      "resources": ["example123.html", "icon/icon_transparent_48.png"],
+      "matches": ["https://whanganuihigh.school.kiwi/*"]
+    }
+  ]
   }
