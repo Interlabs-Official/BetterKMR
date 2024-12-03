@@ -5,80 +5,100 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings</title>
   <style>
-    body {
-        margin: 0;
-        padding: 0;
-        font-family: Arial, sans-serif;
-        background-color: #000;
-        color: #fff;
-        display: flex;
-        height: 100vh;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-    .container {
-        display: flex;
-        width: 100%;
-    }
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: #1e1e2f;
+    color: #fff;
+    display: flex;
+    height: 100vh;
+}
 
-    .sidebar {
-        width: 200px;
-        background: #111;
-        padding: 10px 0;
-        display: flex;
-        flex-direction: column;
-    }
+.container {
+    display: flex;
+    width: 100%;
+}
 
-    .tab {
-        padding: 15px;
-        text-align: center;
-        cursor: pointer;
-        border-bottom: 1px solid #333;
-    }
+.sidebar {
+    width: 250px;
+    background: #2c2c3e;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
 
-    .tab:hover {
-        background: #222;
-    }
+.tab {
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    color: #ccc;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
 
-    .content {
-        flex-grow: 1;
-        padding: 20px;
-    }
+.tab:hover, .tab.active {
+    background: #3b3b50;
+    color: #fff;
+    box-shadow: inset 4px 0 #4caf50;
+}
 
-    .tab-content {
-        display: none;
-    }
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    background: #252534;
+    border-left: 2px solid #3b3b50;
+    overflow-y: auto;
+}
 
-    .tab-content.active {
-        display: block;
-    }
+.tab-content {
+    display: none;
+    animation: fade-in 0.3s ease;
+}
 
-    .setting {
+.tab-content.active {
+    display: block;
+}
+
+.setting {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 10px 0;
-    }
+    margin: 20px 0;
+    padding: 15px;
+    background: #3b3b50;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
 
-    .toggle-switch {
+.setting:hover {
+    transform: scale(1.02);
+}
+
+.toggle-switch {
     display: inline-flex;
     align-items: center;
     cursor: pointer;
-    }
+}
 
-    .toggle-switch input[type="checkbox"] {
+.toggle-switch input[type="checkbox"] {
     display: none;
-    }
+}
 
-    .toggle-switch .slider {
+.toggle-switch .slider {
     width: 50px;
     height: 25px;
     background: #555;
     border-radius: 25px;
     position: relative;
     transition: background 0.3s ease;
-    }
+}
 
-    .toggle-switch .slider:before {
+.toggle-switch .slider:before {
     content: '';
     width: 20px;
     height: 20px;
@@ -89,39 +109,98 @@
     left: 5%;
     transform: translateY(-50%);
     transition: left 0.3s ease;
-    }
+}
 
-    .toggle-switch input[type="checkbox"]:checked + .slider {
+.toggle-switch input[type="checkbox"]:checked + .slider {
     background: #4caf50;
-    }
+}
 
-    .toggle-switch input[type="checkbox"]:checked + .slider:before {
+.toggle-switch input[type="checkbox"]:checked + .slider:before {
     left: 60%;
+}
+
+.text-input {
+    background: #444;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: 60%;
+    transition: border-color 0.3s ease;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #4caf50;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
     }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
   </style>
 </head>
 <body>
     <div class="container">
         <div class="sidebar">
-          <div class="tab" data-tab="about">About</div>
-          <div class="tab" data-tab="general">General</div>
-          <div class="tab" data-tab="misc">Misc</div>
+            <div class="tab" data-tab="about">About</div>
+            <div class="tab" data-tab="general">General</div>
+            <div class="tab" data-tab="themes">Themes</div>
+            <div class="tab" data-tab="misc">Misc</div>
         </div>
         <div class="content">
-          <div id="about" class="tab-content">This is the About section.</div>
-          <div id="general" class="tab-content" style="display: none;">
-            <h2>General Settings</h2>
-            <div class="setting">
-              <label class="toggle-switch">
-                <span>Show Attendance Streak</span>
-                <input type="checkbox" id="student-barcode-toggle">
-                <span class="slider"></span>
-              </label>
+            <div id="about" class="tab-content">
+                <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/160712468/391810722-2e12559e-427d-4a47-b3d0-b854b150e606.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20241203%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20241203T083710Z&X-Amz-Expires=300&X-Amz-Signature=888d21a9f9f16ae0d697ee801c7fa8258bc2093f2a52478384ffcfa1e8eb6f5c&X-Amz-SignedHeaders=host"></img>
             </div>
-          </div>
-          <div id="misc" class="tab-content" style="display: none;">This is the Misc section.</div>
+            <div id="general" class="tab-content">
+                <h2>General Settings</h2>
+                <div>Once changes are made, refresh your KAMAR page(s).</div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Show Attendance Streak</span>
+                        <input type="checkbox" id="attendance-streak-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Show Student Barcode</span>
+                        <input type="checkbox" id="student-barcode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <span class="dltext">Profile Picture URL:</span>
+                        <input type="text" id="profile-pic-url" class="text-input">
+                    </label>
+                </div>
+            </div>
+            <div id="themes" class="tab-content">
+                <h2>Theme Editor (Beta)</h2>
+                <div>Once changes are made, refresh your KAMAR page(s).</div>
+                <div class="setting">
+                    <label>
+                        <span class="dltext">Background Image URL:</span>
+                        <input type="text" id="theme-editor-back-img-url" class="text-input">
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <span class="dltext">Additional CSS Flags (Background Image):</span>
+                        <input type="text" id="theme-editor-additional-css-flags-back-img-url" class="text-input">
+                    </label>
+                </div>
+            </div>
+            <div id="misc" class="tab-content">This is the Misc section.</div>
         </div>
-      </div>
+    </div>
   <script src="script.js"></script>
 </body>
 </html>

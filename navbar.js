@@ -14,9 +14,11 @@ const intHTML = `
             </div>
             <div class="nav-menu sk_nav collapse" id="user-menu" style="">
                 <div class="dropdown-header sk_nav_text">
-                                            <strong class="d-block">Conor Brodie</strong>                    <small class="d-block">brodie.c.23019</small>
+                                            <strong class="d-block">${document.getElementsByClassName("d-block")[0].textContent}</strong>                    <small class="d-block">${document.getElementsByClassName("d-block")[1].textContent}</small>
                     <small class="d-block">Student Account</small>
                 </div>
+                <div class="dropdown-divider"></div>
+                <a href="${chrome.runtime.getURL("settings/index.html")}" target="_blank" class="sk_nav_text nav-link">BetterKMR Settings</a>
                 <div class="dropdown-divider"></div>
                 <a class="sk_nav_text nav-link nav-link-caregiver_details" href="https://whanganuihigh.school.kiwi/caregiver_details">Caregiver Details</a><a class="sk_nav_text nav-link nav-link-emergency_contact_details" href="https://whanganuihigh.school.kiwi/emergency_contact_details">Emergency Contacts</a><a class="sk_nav_text nav-link nav-link-medical_details" href="https://whanganuihigh.school.kiwi/medical_details">Medical Details</a><div class="dropdown-divider"></div><a href="https://whanganuihigh.school.kiwi/details/change_password" class="sk_nav_text nav-link">Change Password</a>
                 <a href="https://whanganuihigh.school.kiwi/details/data_sharing" class="sk_nav_text nav-link">Data Sharing</a>
