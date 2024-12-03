@@ -1,4 +1,4 @@
-const env_version = "1.0";
+const env_version = "1.1";
 console.log("Content JS loaded")
 function initJS() {
     if (window.location.href === "https://whanganuihigh.school.kiwi/example123") {
