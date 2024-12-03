@@ -14,7 +14,7 @@ Better Navbar <br>
 Green colour for Justified status  <br>
 Custom space background and colour scheme <br>
 Custom profile picture (not finished) <br>
-Hovering over classes gives details (not finished) <br>
+Hovering over classes gives details- Teacher+ What the classroom is (e.g maths extension) (not finished) <br>
 Attendance streaks (not finished) <br>
 
 ## Home Page
