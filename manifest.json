@@ -28,7 +28,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["main-box.html", "icon/icon_transparent_48.png"],
+      "resources": ["settings/index.html", "icon/icon_transparent_48.png"],
       "matches": ["https://whanganuihigh.school.kiwi/*"]
     }
   ]
