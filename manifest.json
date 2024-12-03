@@ -12,8 +12,8 @@
   "content_scripts": [
     {
       "matches": ["https://whanganuihigh.school.kiwi/*"],
-      "css": ["styles.css"],
-      "js": ["content.js"]
+      "css": ["styles.css", "profile.css"],
+      "js": ["content.js", "navbar.js", "popup.js"]
     }
   ],
   "action": {
