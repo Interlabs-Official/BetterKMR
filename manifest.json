@@ -17,7 +17,7 @@
     }
   ],
   "action": {
-    "default_popup": "example123.html"
+    "default_popup": "main-box.html"
   },
   "icons": {
     "16": "icon/icon16.png",
@@ -26,7 +26,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["example123.html", "icon/icon_transparent_48.png"],
+      "resources": ["main-box.html", "icon/icon_transparent_48.png"],
       "matches": ["https://whanganuihigh.school.kiwi/*"]
     }
   ]
