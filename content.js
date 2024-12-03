@@ -96,7 +96,6 @@ targetFooter.innerHTML = `
 const infoClasses = {
     "SP20": "Spanish (2nd Semester)",
     "FT": "Form Class",
-    "MUS0": "Music",
     "SOC0": "Social Studies (Year 10 Midband)",
     "SCE02": "Science (Year 10 Extension, 2nd Semester)",
     "MAE0": "Mathematics (Year 10 Extension)",
@@ -105,8 +104,6 @@ const infoClasses = {
     "PEH01": "Physical Education & Health (Year 10 Midband, 1st Semester)",
     "DTG0": "Digital Technologies",
     "SP10": "Spanish (1st Semester)",
-    "DRA0": "Drama",
-    "DVC0": "Design & Visual Communication",
     "ENE01": "English (Year 10 Extension, 1st Semester)",
 //  Arts
     "ARD2": "Art Design (Year 12)",
@@ -140,10 +137,21 @@ const infoClasses = {
     "AUT1": "Automotive (Year 11)",
     "AUT2": "Automotive (Year 12)",
     "AUT3": "Automotive (Year 13)",
-    "BAC1": "Building and Construction (Year 11)",
-    "BAC2": "Building and Construction (Year 12)",
-    "BAC3": "Building and Construction (Year 13)",
-    "DVCE": "Desing And Visual Communication (Year 9)"
+    "BAC1": "Building & Construction (Year 11)",
+    "BAC2": "Building & Construction (Year 12)",
+    "BAC3": "Building & Construction (Year 13)",
+    "DVCE": "Design & Visual Communication (Year 9)",
+    "DVC0": "Design & Visual Communication (Year 10)",
+    "DVC1": "Design & Visual Communication (Year 11)",
+    "DVC2": "Design & Visual Communication (Year 12)",
+    "DVC3": "Design & Visual Communication (Year 13)",
+    "ELE2": "Electronics (Year 12)",
+    "ELE3": "Electronics (Year 13)",
+    "FDZE": "Fashion Design (Year 9)",
+    "FDZ0": "Fashion Design (Year 10)",
+    "FDZ1": "Fashion Design (Year 11)",
+    "FDZ2": "Fashion Design (Year 12)",
+    "FDZ3": "Fashion Design (Year 13)"
 }
 
 function addInfoTipToTarget(target, btn) {
