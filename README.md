@@ -10,3 +10,4 @@ This has been built to redo the design of the Kamar portal. Includes custom CSS,
 
 ## Attendance
 ![image](https://github.com/user-attachments/assets/11e1acb7-7e55-41d7-bb03-60a9c5ad0a31)
+Justified's are now green, like Present.
