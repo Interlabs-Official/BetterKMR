@@ -99,7 +99,6 @@ const infoClasses = {
     "SOC0": "Social Studies (Year 10 Midband)",
     "SCE02": "Science (Year 10 Extension, 2nd Semester)",
     "MAE0": "Mathematics (Year 10 Extension)",
-    "BUS0": "Business Studies (Year 11)",
     "PEH02": "Physical Education & Health (Year 10 Midband, 2nd Semester)",
     "PEH01": "Physical Education & Health (Year 10 Midband, 1st Semester)",
     "DTG0": "Digital Technologies",
@@ -164,7 +163,30 @@ const infoClasses = {
     "TCM0": "Technology Materials (Year 10)",
     "TEC1": "Technology Materials (Year 11)",
     "TEC2": "Technology Materials (Year 12)",
-    "TEC3": "Technology Materials (Year 13)"
+    "TEC3": "Technology Materials (Year 13)",
+ // Social Sciences
+    "BUS1": "Business Studies (Year 11)",
+    "ACC2": "Accounting (Year 12)",
+    "ACC3": "Accounting (Year 13)",
+    "CLS2": "Classical Studies (Year 12)",
+    "CLS3": "Classical Studies (Year 13)",
+    "ECO2": "Economics (Year 12)",
+    "ECO3": "Economics (Year 13)",
+    "GEO1": "Geography (Year 11)",
+    "GEO2": "Geography (Year 12)",
+    "GEO3": "Geography (Year 13)",
+    "HIS1": "History (Year 11)",
+    "HIS2": "History (Year 12)",
+    "HIS3": "History (Year 13)",
+    "PSY2": "Psychology (Year 12)",
+    "PSY3": "Psychology (Year 13)",
+    "SOCE": "Social Studies (Year 9)",
+    "SOCO": "Social Studies (Year 10)",
+    "SOE0": "Extension Social Studies (Year 10)",
+    "EFS2": "Education for Sustainability (Year 12)",
+    "EFS3": "Education For Sustaianbility (Year 13)",
+    "TOU2": "Tourism (Year 12)",
+    "TOU3": "Toursim (Year 13)"
 }
 
 function addInfoTipToTarget(target, btn) {
