@@ -4,7 +4,8 @@
   "version": "1.1",
   "description": "The ultimate revamp of KAMAR for the web",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "host_permissions": [
     "https://whanganuihigh.school.kiwi/*"
@@ -12,12 +13,23 @@
   "content_scripts": [
     {
       "matches": ["https://whanganuihigh.school.kiwi/*"],
+<<<<<<< Updated upstream
       "css": ["styles.css", "profile.css"],
       "js": ["content.js", "navbar.js", "popup.js"]
     }
   ],
   "action": {
     "default_popup": "main-box.html"
+=======
+      "css": ["styles.css", "modify.css"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {},
+  "background": {
+    "service_worker": "service.js"
+>>>>>>> Stashed changes
   },
   "icons": {
     "16": "icon/icon16.png",
@@ -26,7 +38,11 @@
   },
   "web_accessible_resources": [
     {
+<<<<<<< Updated upstream
       "resources": ["main-box.html", "icon/icon_transparent_48.png"],
+=======
+      "resources": ["example123.html", "icon/icon_transparent_48.png", "settings/index.html"],
+>>>>>>> Stashed changes
       "matches": ["https://whanganuihigh.school.kiwi/*"]
     }
   ]

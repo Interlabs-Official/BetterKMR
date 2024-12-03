@@ -1,42 +1,48 @@
 const env_version = "1.0";
 
-if (window.location.href === "https://whanganuihigh.school.kiwi/example123") {
-    window.location.href = chrome.runtime.getURL("example123.html");
-}
-
+document.addEventListener("DOMContentLoaded", function(event){
+    if (window.location.href === "https://whanganuihigh.school.kiwi/example123") {
+        window.location.href = chrome.runtime.getURL("settings/index.html");
+    }
 if (window.location.href.includes("attendance/week")) {
     const targetElement = document.getElementsByClassName("page-title")[0];
 
-    if (!localStorage.getItem('hideAttendancePopup')) {
-        if (targetElement) {
-            const injectedHTML = `
-            <div class="box" style="background-color: #000; padding: 10px; position: relative;">
-                <h4>You're on a</h4>
-                <h1 style>1 / 200</h1>
-                <h4>day attendance streak!</h4>
-                <div class="close-buttons">
-                    <button id="close-popup" class="close-btn">Close</button>
-                    <button id="close-forever-popup" class="close-btn">Close and don't remind again</button>
-                </div>
-            </div><br>`;
-          
-            targetElement.insertAdjacentHTML("afterend", injectedHTML);
-
-            document.getElementById('close-popup').addEventListener('click', () => {
-                document.querySelector('.box').style.display = 'none';
-            });
-
-            document.getElementById('close-forever-popup').addEventListener('click', () => {
-                localStorage.setItem('hideAttendancePopup', true);
-                document.querySelector('.box').style.display = 'none';
-            });
+    chrome.storage.sync.get(["showAttendanceStreak"]).then((result) => {
+        console.log("Value is " + result.showAttendanceStreak);
+        if (result.showAttendanceStreak == true) {
+            if (targetElement) {
+                const injectedHTML = `
+                <div class="box" style="background-color: #000; padding: 10px; position: relative;">
+                    <h4>You're on a</h4>
+                    <h1 style>1 / 200</h1>
+                    <h4>day attendance streak!</h4>
+                    <div class="close-buttons">
+                        <button id="close-popup" class="close-btn">Close</button>
+                        <button id="close-forever-popup" class="close-btn">Close and don't remind again</button>
+                    </div>
+                </div><br>`;
+              
+                targetElement.insertAdjacentHTML("afterend", injectedHTML);
+    
+                document.getElementById('close-popup').addEventListener('click', () => {
+                    document.querySelector('.box').style.display = 'none';
+                });
+    
+                document.getElementById('close-forever-popup').addEventListener('click', () => {
+                    localStorage.setItem('hideAttendancePopup', true);
+                    document.querySelector('.box').style.display = 'none';
+                });
+            }
         }
-    }
+    });
 
     const calendarCard = document.getElementsByClassName("card-body")[0];
     calendarCard.innerHTML += `<br><img src="${chrome.runtime.getURL('icon/icon_transparent_48.png')}" width="24px" height="24px"></img>
     <a href="https://support.google.com/calendar/answer/37118" target="_blank">Click here for instructions on importing it into Google Calendar ꜛ</a>`
 }
+
+//const nav = document.getElementById("navbar");
+//nav.innerHTML = ``
 
 const targetFooter = document.getElementById("footer");
 targetFooter.innerHTML = `
@@ -80,3 +86,5 @@ for (let i = 0; i < targetPeriods.length; i++) {
     const h100 = targetPeriods.item(i).parentNode.getElementsByClassName("h-100")[0].getElementsByClassName("btn-sm")[0];
     addInfoTipToTarget(targetPeriods.item(i), h100);
 }
+    // your code here
+});
