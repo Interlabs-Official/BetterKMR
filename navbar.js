@@ -38,17 +38,17 @@ const intHTML = `
             <a class="sk_nav_text nav-link nav-link-attendance" href="https://whanganuihigh.school.kiwi/attendance">Attendance</a>
         </li>
                             <li class="nav-item dropdown">
-            <a class="sk_nav_text nav-link dropdown-toggle" href="#menu-folder20240123023233" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="menu-folder20240123023233">Results</a>
-            <div class="nav-menu sk_nav collapse show" id="menu-folder20240123023233" style=""><a class="sk_nav_text nav-link nav-link-results_list" href="https://whanganuihigh.school.kiwi/results_list">Current Year</a><a class="sk_nav_text nav-link nav-link-results_all" href="https://whanganuihigh.school.kiwi/results_all">All Results</a><a class="sk_nav_text nav-link nav-link-results_recognitions" href="https://whanganuihigh.school.kiwi/results_recognitions">Recognitions</a><a class="sk_nav_text nav-link nav-link-results_awards" href="https://whanganuihigh.school.kiwi/results_awards">Awards</a>
+            <a class="sk_nav_text nav-link dropdown-toggle collapsed" href="#menu-folder20240123023233" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="menu-folder20240123023233">Results</a>
+            <div class="nav-menu sk_nav collapse" id="menu-folder20240123023233" style=""><a class="sk_nav_text nav-link nav-link-results_list" href="https://whanganuihigh.school.kiwi/results_list">Current Year</a><a class="sk_nav_text nav-link nav-link-results_all" href="https://whanganuihigh.school.kiwi/results_all">All Results</a><a class="sk_nav_text nav-link nav-link-results_recognitions" href="https://whanganuihigh.school.kiwi/results_recognitions">Recognitions</a><a class="sk_nav_text nav-link nav-link-results_awards" href="https://whanganuihigh.school.kiwi/results_awards">Awards</a>
             </div>
         </li>        
             
             
     <li class="nav-item dropdown">
-            <a class="sk_nav_text nav-link dropdown-toggle" href="#menu-folder20240123024154" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="menu-folder20240123024154">NCEA</a>
+            <a class="sk_nav_text nav-link dropdown-toggle collapsed" href="#menu-folder20240123024154" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="menu-folder20240123024154">NCEA</a>
             <div class="nav-menu sk_nav collapse" id="menu-folder20240123024154" style=""><a class="sk_nav_text nav-link nav-link-results_summary" href="https://whanganuihigh.school.kiwi/results_summary">Summary</a>            <a class="sk_nav_text nav-link nav-link-careers_pathways" href="https://whanganuihigh.school.kiwi/careers_pathways">Pathways</a></div>
         </li><li class="nav-item dropdown">
-            <a class="sk_nav_text nav-link dropdown-toggle" href="#menu-folder20240123022746" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="menu-folder20240123022746">Reports</a>
+            <a class="sk_nav_text nav-link dropdown-toggle collapsed" href="#menu-folder20240123022746" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="menu-folder20240123022746">Reports</a>
             <div class="nav-menu sk_nav collapse" id="menu-folder20240123022746" style=""><a class="sk_nav_text nav-link nav-link-reports" href="https://whanganuihigh.school.kiwi/reports">Reports</a><a class="sk_nav_text nav-link nav-link-pastoral" href="https://whanganuihigh.school.kiwi/pastoral">Pastoral</a>            </div>
         </li></ul>					</div>
 `
