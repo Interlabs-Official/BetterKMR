@@ -90,7 +90,7 @@ console.log("Step 3")
 const targetFooter = document.getElementById("footer");
 targetFooter.innerHTML = `
     <div class="container">
-        <p>2024 - Whanganui High School. You're using BetterKMR version v${env_version}.</p>
+        <p>2024 - Whanganui High School. BetterKMR V${env_version}.</p>
     </div>
 `
 const infoClasses = {
