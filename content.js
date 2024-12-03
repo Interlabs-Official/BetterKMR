@@ -108,6 +108,8 @@ const infoClasses = {
     "DRA0": "Drama",
     "DVC0": "Design & Visual Communication",
     "ENE01": "English (Year 10 Extension, 1st Semester)"
+    "SOE0": "Social Studies (Year 10 Extension)"
+    "ENE02": "English (Year 10 Extension, 2nd Semester)"
 }
 
 function addInfoTipToTarget(target, btn) {
