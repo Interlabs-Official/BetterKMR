@@ -37,33 +37,33 @@ if (window.location.href.includes("attendance/week")) {
         }
     });
 
-    chrome.storage.sync.get(["showBarcodeToggle"]).then((result) => {
-        if (result.showBarcodeToggle == false || result.showBarcodeToggle == null) {
-            const studentBarcode = document.getElementsByClassName("school-card-barcode")[0];
-            studentBarcode.style = `
-            visibility: hidden;
-            height: 0px;
-            overflow: hidden;
-            `
-        }
-    });
-
-    chrome.storage.sync.get(["profilePicUrl"]).then((result) => {
-        if (result.profilePicUrl != null) {
-            const avatarURL = document.getElementsByClassName("avatar")[0];
-            avatarURL.src = result.profilePicUrl;
-            avatarURL.parentNode.style = `
-            height: 32px; width: 32px; margin-right: 15px;
-            `
-            const pb3 = document.getElementsByClassName("pb-3")[0];
-            pb3.src = result.profilePicUrl;
-        }
-    });
-
     const calendarCard = document.getElementsByClassName("card-body")[0];
     calendarCard.innerHTML += `<br><img src="${chrome.runtime.getURL('icon/icon_transparent_48.png')}" width="24px" height="24px"></img>
     <a href="https://support.google.com/calendar/answer/37118" target="_blank">Click here for instructions on importing it into Google Calendar ꜛ</a>`
 }
+
+chrome.storage.sync.get(["showBarcodeToggle"]).then((result) => {
+    if (result.showBarcodeToggle == false || result.showBarcodeToggle == null) {
+        const studentBarcode = document.getElementsByClassName("school-card-barcode")[0];
+        studentBarcode.style = `
+        visibility: hidden;
+        height: 0px;
+        overflow: hidden;
+        `
+    }
+});
+
+chrome.storage.sync.get(["profilePicUrl"]).then((result) => {
+    if (result.profilePicUrl != null) {
+        const avatarURL = document.getElementsByClassName("avatar")[0];
+        avatarURL.src = result.profilePicUrl;
+        avatarURL.parentNode.style = `
+        height: 32px; width: 32px; margin-right: 15px;
+        `
+        const pb3 = document.getElementsByClassName("pb-3")[0];
+        pb3.src = result.profilePicUrl;
+    }
+});
 
     //themes
     var formedURL = `background: url("https://wallpapercave.com/wp/wp2082809.jpg") #1C1C1C top fixed no-repeat`;
@@ -107,9 +107,7 @@ const infoClasses = {
     "SP10": "Spanish (1st Semester)",
     "DRA0": "Drama",
     "DVC0": "Design & Visual Communication",
-    "ENE01": "English (Year 10 Extension, 1st Semester)",
-    "SOE0": "Social Studies (Year 10 Extension)",
-    "ENE02": "English (Year 10 Extension, 2nd Semester)"
+    "ENE01": "English (Year 10 Extension, 1st Semester)"
 }
 
 function addInfoTipToTarget(target, btn) {
