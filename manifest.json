@@ -4,7 +4,8 @@
   "version": "1.1",
   "description": "The ultimate revamp of KAMAR for the web",
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "host_permissions": [
     "https://whanganuihigh.school.kiwi/*"
