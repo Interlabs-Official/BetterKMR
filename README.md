@@ -3,14 +3,16 @@
 This has been built to redo the design of the Kamar portal. Includes custom CSS, redesigned navbar, and ability to change profile pictures.
 
 # Installations Instructions:
-(1) Go to Extensions on whatever browser you use
-(2) In the Extensions tab go to Developer mode in the top right and enable it
-(3) Click "Load Unpacked"
-(4) Find your file click on the unzipped file and click "Open"
-(5) Open Kamar and enjoy
+(1) Go to Extensions on whatever browser you use <br>
+(2) In the Extensions tab go to Developer mode in the top right and enable it <br>
+(3) Click "Load Unpacked" <br>
+(4) Select your unzipped folder <br>
+(5) Open Kamar and enjoy <br>
 
 # Kamar Changes:
-Justifieds changed to green
+Justified updated to be green <br>
+Custom space background and colour scheme
+Custom profile picture (working on it)
 
 ## Home Page
 ![image](https://github.com/user-attachments/assets/04b1dc85-331e-4edf-8828-0228ea0efe74)
