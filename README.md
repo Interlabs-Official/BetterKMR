@@ -2,7 +2,7 @@
 
 This has been built to redo the design of the Kamar portal. Includes custom CSS, redesigned navbar, and ability to change profile pictures.
 
-# Installations Instructions are as follows:
+# Installations Instructions:
 (1) Go to Extensions on whatever browser you use
 (2) In the Extensions tab go to Developer mode in the top right and enable it
 (3) Click "Load Unpacked"
