@@ -17,8 +17,9 @@
       "js": ["content.js", "navbar.js", "popup.js"]
     }
   ],
-  "action": {
-    "default_popup": "main-box.html"
+  "action": {},
+  "background": {
+    "service_worker": "service.js"
   },
   "icons": {
     "16": "icon/icon16.png",
