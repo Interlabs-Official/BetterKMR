@@ -11,7 +11,7 @@ This has been built to redo the design of the Kamar portal. Includes custom CSS,
 
 # Kamar Changes:
 Justified updated to be green <br>
-Custom space background and colour scheme
+Custom space background and colour scheme <br>
 Custom profile picture (working on it)
 
 ## Home Page
