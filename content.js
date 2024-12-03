@@ -140,9 +140,9 @@ const infoClasses = {
     "AUT1": "Automotive (Year 11)",
     "AUT2": "Automotive (Year 12)",
     "AUT3": "Automotive (Year 13)",
-    "BAC1": "Building And Construction (Year 11)",
-    "BAC2": "Building And Construction (Year 12)",
-    "BAC3": "Building And Construction (Year 13)",
+    "BAC1": "Building and Construction (Year 11)",
+    "BAC2": "Building and Construction (Year 12)",
+    "BAC3": "Building and Construction (Year 13)",
     "DVCE": "Desing And Visual Communication (Year 9)"
 }
 
