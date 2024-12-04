@@ -224,7 +224,7 @@ const infoClasses = {
     "PED3": "Physical Education (Year 13)",
     "SPX2": "Sport & Exercise (Year 12)",
     "SPX3": "Sport & Exercise (Year 13)",
-    "SPS3": "Sport Smart (Year 13)"
+    "SPS3": "Sport Smart (Year 13)",
  // Mathematics
     "MCA2": "Calculus & Algebra Extension & Cambridge (Year 12)",
     "MCA3": "Calculus & Algebra Extension (Year 13)",
