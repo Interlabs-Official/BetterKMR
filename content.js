@@ -203,7 +203,34 @@ const infoClasses = {
     "SCIE": "Science Introductory (Year 9)",
     "SCI0": "Science Introductory (Year 10)",
     "SCI1": "Science Introductory (Year 11)",
-    "SCI2": "Science Introductory (Year 12)"
+    "SCI2": "Science Introductory (Year 12)",
+ // Progessive (Abes Classes For Next Year)
+    "SL9": "Supported Learning (Year 9)",
+    "SL10": "Supported Learning (Year 10)",
+    "PCL1": "Literacy Progressive Learning (Year 11)",
+    "PCL2": "Literacy Progressive Learning (Year 12)",
+    "PDL1": "Digital Progressive Learning (Year 11)",
+    "PDL2": "Digital Progressive Learning (Year 12)",
+    "PFL1": "Financial Numeracy & Literacy Progressive Learning (Year 11)",
+    "PFL2": "Financial Literacy Progressive Learning (Year 12)",
+ // Physical Education and Health
+    "PEHE": "Physical Education & Health (Year 9)",
+    "PEHO1": "Physical Education & Health Semester 1 (Year 10)",
+    "PEHO2": "Physical Education & Health Semester 2 (Year 10)",
+    "PEXO1": "Extension Physical Education & Health Semester 1 (Year 10)",
+    "PEXO2": "Extension Physical Education & Health Semester 1 (Year 10)",
+    "HTL1": "Health (Year 11)",
+    "HTL2": "Health (Year 12)",
+    "HTL3": "Health (Year 13)",
+    "OAS1": "Outdoor Adventure Skills (Year 11)",
+    "OUT2": "Outdoor Education (Year 12)",
+    "OUT3": "Outdoor Education (Year 13)",
+    "PED1": "Physical Education (Year 11)",
+    "PED2": "Physical Education (Year 12)",
+    "PED3": "Physical Education (Year 13)",
+    "SPX2": "Sport & Exercise (Year 12)",
+    "SPX3": "Sport & Exercise (Year 13)",
+    "SPS3": "Sport Smart (Year 13)"
 }
 
 function addInfoTipToTarget(target, btn) {
