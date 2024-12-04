@@ -50,6 +50,17 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetting('theme-editor-additional-css-flags-back-img-url', e.target.value);
     });
 
+    // Upcoming Public Holiday
+    chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {
+        if (result["upcoming-public-holiday-bar"] == null) {
+            updateSetting('upcoming-public-holiday-bar', true);
+            applySetting('upcoming-public-holiday-bar', true);
+        }
+    });
+    document.getElementById('upcoming-public-holiday-bar').addEventListener('input', (e) => {
+        updateSetting('upcoming-public-holiday-bar', e.target.checked);
+    });
+
     function updateSetting(key, value) {
         chrome.storage.sync.set({ [key]: value }, () => {
             console.log(`${key} updated to`, value);
@@ -68,6 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('theme-editor-back-img-url').value = value;
         } else if (key === 'theme-editor-additional-css-flags-back-img-url') {
             document.getElementById('theme-editor-additional-css-flags-back-img-url').value = value;
+        } else if (key === 'upcoming-public-holiday-bar') {
+            document.getElementById('upcoming-public-holiday-bar').checked = value;
         }
     }
 

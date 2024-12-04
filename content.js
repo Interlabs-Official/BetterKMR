@@ -47,6 +47,59 @@ function handleAttendanceStreak() {
         </a>`;
 }
 
+function handleUpcomingHolidays() {
+    if (!window.location.href.includes("attendance/week")) return;
+    chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {
+        if (result["upcoming-public-holiday-bar"] == "false" || result["upcoming-public-holiday-bar"] == false) {
+            return;
+        }
+    const holidays = [
+        { name: "New Year's Day", date: "2024-01-01" },
+        { name: "Day After New Year's Day", date: "2024-01-02" },
+        { name: "Waitangi Day", date: "2024-02-06" },
+        { name: "Good Friday", date: "2024-03-29" },
+        { name: "Easter Monday", date: "2024-04-01" },
+        { name: "Anzac Day", date: "2024-04-25" },
+        { name: "Queen's Birthday", date: "2024-06-03" },
+        { name: "Matariki", date: "2024-07-19" },
+        { name: "Labour Day", date: "2024-10-28" },
+        { name: "Christmas Day", date: "2024-12-25" },
+        { name: "Boxing Day", date: "2024-12-26" }
+    ];
+
+    const currentDate = new Date();
+    let nextHoliday = null;
+
+    for (const holiday of holidays) {
+        const holidayDate = new Date(holiday.date);
+        if (holidayDate >= currentDate) {
+            nextHoliday = holiday;
+            break;
+        }
+    }
+
+    if (nextHoliday) {
+        const targetElement = document.querySelector(".page-title");
+        if (targetElement) {
+            const injectedHTML = `
+                <div class="box" style="background-color: #004d40; color: white; padding: 10px; position: relative;">
+                    <h4 class="h4-upc-pub-hld-left">Upcoming Public Holiday</h4>
+                    <h1>${nextHoliday.name}</h1>
+                    <h4 class="h4-upc-pub-hld-right">on ${new Date(nextHoliday.date).toLocaleDateString()}</h4>
+                    <div class="close-buttons">
+                        <button id="close-popup" class="close-btn" style="background-color: #ff5722; color: white; border: none; padding: 5px;">Close</button>
+                    </div>
+                </div><br>`;
+            targetElement.insertAdjacentHTML("afterend", injectedHTML);
+
+            document.getElementById("close-popup").addEventListener("click", () => {
+                document.querySelector(".box").style.display = "none";
+            });
+        }
+    }
+});
+}
+
 function handleBarcodeVisibility() {
     chrome.storage.sync.get(["showBarcodeToggle"]).then((result) => {
         if (!result.showBarcodeToggle) {
@@ -133,6 +186,7 @@ function initJS() {
     console.log("Step 2");
     navigateToSettingsIfOnExamplePage();
     handleAttendanceStreak();
+    handleUpcomingHolidays();
     handleBarcodeVisibility();
     updateProfilePicture();
     applyCustomTheme();
