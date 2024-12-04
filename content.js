@@ -97,8 +97,6 @@ const infoClasses = {
     "SP20": "Spanish (2nd Semester)",
     "FT": "Form Class",
     "MAE0": "Mathematics (Year 10 Extension)",
-    "PEH02": "Physical Education & Health (Year 10 Midband, 2nd Semester)",
-    "PEH01": "Physical Education & Health (Year 10 Midband, 1st Semester)",
     "DTG0": "Digital Technologies",
     "SP10": "Spanish (1st Semester)",
     "ENE01": "English (Year 10 Extension, 1st Semester)",
@@ -231,6 +229,27 @@ const infoClasses = {
     "SPX2": "Sport & Exercise (Year 12)",
     "SPX3": "Sport & Exercise (Year 13)",
     "SPS3": "Sport Smart (Year 13)"
+ // Mathematics
+    "MCA2": "Calculus & Algebra Extension & Cambridge (Year 12)",
+    "MCA3": "Calculus & Algebra Extension (Year 13)",
+    "MCA1": "Cambridge Extended Mathematics (Year 11)",
+    "MGC3": "Geometry & Calculus (Year 13)",
+    "MAEE": "Mathematics Extension (Year 9)",
+    "MAE0": "Mathematics Extension (Year 10",
+    "MATE": "Mathematics (Year 9)",
+    "MAT0": "Mathematics (Year 10)",
+    "MAG1": "Mathematics (Year 11)",
+    "MAG2": "Mathematics (Year 12)",
+    "MAG3": "Mathematics (Year 13)",
+    "MAIE": "Mathematics Introductory (Year 9)",
+    "MAI0": "Mathematics Introductory (Year 10)",
+    "MAI1": "Mathematics Introductory (Year 11)",
+    "MPS2": "Probability & Statistics (Year 12)",
+    "MPS3": "Probability & Statistics (Year 13)",
+    "MCS2": "Statistics Extension & Cambridge (Year 12)",
+    "MTA1": "Trigonometry & Algebra (Year 11)",
+    "MTA2": "Trigonometry & Algebra (Year 12)",
+    "MTA3": "Trigonometry & Algebra (Year 13)"
 }
 
 function addInfoTipToTarget(target, btn) {
