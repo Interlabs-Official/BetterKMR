@@ -249,7 +249,33 @@ const infoClasses = {
     "MCS2": "Statistics Extension & Cambridge (Year 12)",
     "MTA1": "Trigonometry & Algebra (Year 11)",
     "MTA2": "Trigonometry & Algebra (Year 12)",
-    "MTA3": "Trigonometry & Algebra (Year 13)"
+    "MTA3": "Trigonometry & Algebra (Year 13)",
+ // Languages
+    "CHNE": "Chinese (Year 9)",
+    "CH10": "Chinese 1 Semester (Year 10)",
+    "CH20": "Chinese 2 Semesters (Year 10)",
+    "CHN1": "Chinese (Year 11)",
+    "CHN2": "Chinese (Year 12)",
+    "CHN3": "Chinese (Year 13)",
+    "FREE": "French (Year 9)", //FREE BIRD YEAH BABY
+    "FR10": "French 1 Semester (Year 10)",
+    "FR20": "French 2 Semesters (Year 10)",
+    "FRE1": "French (Year 11)",
+    "FRE2": "French (Year 12)",
+    "FRE3": "French (Year 13)",
+    "LANE": "Language Tasters (Year 9)",
+    "SPAE": "Spanish (Year 9)",
+    "SP20": "Spanish Full Year (Year 10)",
+    "SP10": "Spanish Half Year (Year 10)",
+    "SPA1": "Spanish (Year 11)",
+    "SPA2": "Spanish (Year 12)",
+    "SPA3": "Spanish (Year 13)",
+    "MAOE": "Maori (Year 9)",
+    "MO20": "Maori Full Year (Year 10)",
+    "MO10": "Maori Half Year (Year 10)",
+    "MAO1": "Maori (Year 11)",
+    "MAO2": "Maori (Year 12)",
+    "MAO3": "Maori (Year 13)"
 }
 
 function addInfoTipToTarget(target, btn) {
