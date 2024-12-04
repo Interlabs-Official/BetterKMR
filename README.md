@@ -21,7 +21,7 @@ Above is the instructions for Chrome. For Firefox, [check the guide out here](ht
 > ✅ Green colour for justified absences<br>
 > ✅ Custom space background and colour scheme<br>
 > ✅ Current day is highlited<br>
-> ❌ Custom profile picture (not finished)<br>
+> ✅ Custom profile picture (not finished)<br>
 > ❌ Attendance streaks (not finished)<br>
 
 If you would like to contribute and/or fix issues, feel free to [create a pull request.](https://github.com/Convy32/kamar-revamped/pulls)
