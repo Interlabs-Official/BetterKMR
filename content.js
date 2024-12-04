@@ -96,8 +96,6 @@ targetFooter.innerHTML = `
 const infoClasses = {
  // Form Class
     "FT": "Form Class",
-    "DTG0": "Digital Technologies",
-    "ENE01": "English (Year 10 Extension, 1st Semester)",
  // Arts
     "ARD2": "Art Design (Year 12)",
     "ARD3": "Art Design (Year 13)",
@@ -281,7 +279,45 @@ const infoClasses = {
     "IEN3": "International English (Year 13)",
     "IEC1": "International English Communication (Year 11)",
     "IEL1": "International English Language (Year 11)",
-    "IEL2": "International English Language (Year 12)"
+    "IEL2": "International English Language (Year 12)",
+ // Digital Technology
+    "DTGE": "Digital Technologies (Year 9)",
+    "DTG0": "Digital Technologies (Year 10)",
+    "DTG1": "Digital Technologies (Year 11)",
+    "DTA2": "Digital Technologies Applied (Year 12)",
+    "DTA3": "Digital Technologies Applied (Year 13)",
+    "DTM2": "Digital Technologies Media (Year 12)",
+    "DTM3": "Digital Technologies Media (Year 13)",
+    "DTS2": "Digital Technologies Science (Year 12)",
+    "DTS3": "Digital Technologies Science (Year 13",
+ // Vocational Studies
+    "VES2": "Vocational Studies Employment Skills (Year 12)",
+    "VES3": "Vocational Studies Employment Skills (Year 13)",
+    "VEN2": "Vocational Studies Communication English (Year 12)",
+    "VEN3": "Vocational Studies Communication English (Year 13)",
+    "VFD2": "Vocational Studies Food Technology (Year 12)",
+    "VFD3": "Vocational Studies Food Technology (Year 13)",
+    "VFL2": "Vocational Studies Financial Literacy (Year 12)",
+    "VFL3": "Vocational Studies Financial Literacy (Year 13)",
+ // English :Vomit:
+    "ENEE": "Extension English (Year 9)",
+    "ENE01": "Extension English Semester 1 (Year 10)",
+    "ENE02": "Extension English Semester 2 (Year 10)",
+    "ENE1": "Extension English (Year 11)",
+    "ENE2": "Extension English (Year 12)",
+    "ENL3": "Extension English Lierature (Year 13)",
+    "ENGE": "English (Year 9)",
+    "ENGO1": "English Semester 1 (Year 10)",
+    "ENGO2": "English Semester 2 (Year 10)",
+    "ENG1": "English (Year 11)",
+    "ENG2": "English (Year 12)",
+    "ENG3": "English (Year 13)",
+    "ENIE": "English Introductory/Internal (Year 9)",
+    "ENI01": "English Introductory/Internal Semester 1 (Year 10)",
+    "ENI02": "English Introductory/Internal Semester 2 (Year 10)",
+    "ENI1": "English Introductory/Internal (Year 11)",
+    "ENI2": "English Introductory/Internal (Year 12)",
+    "ENI3": "English Introductory/Internal (Year 13)"
 }
 
 function addInfoTipToTarget(target, btn) {
