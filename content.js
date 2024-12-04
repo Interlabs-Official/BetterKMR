@@ -173,7 +173,7 @@ const infoClasses = {
     "PSY2": "Psychology (Year 12)",
     "PSY3": "Psychology (Year 13)",
     "SOCE": "Social Studies (Year 9)",
-    "SOCO": "Social Studies (Year 10)",
+    "SOC0": "Social Studies (Year 10)",
     "SOE0": "Extension Social Studies (Year 10)",
     "EFS2": "Education for Sustainability (Year 12)",
     "EFS3": "Education For Sustaianbility (Year 13)",
