@@ -122,7 +122,7 @@ function updateProfilePicture() {
             if (avatar) {
                 avatar.src = result.profilePicUrl;
                 avatar.parentNode.style = `
-                    height: 32px; width: 32px; margin-right: 15px;`;
+                    height: 32px !important; width: 32px !important; margin-right: 15px !important;`;
             }
             if (profileBox) {
                 profileBox.src = result.profilePicUrl;
