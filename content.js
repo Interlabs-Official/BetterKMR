@@ -131,24 +131,24 @@ function updateProfilePicture() {
     });
 }
 
-function applyCustomTheme() {
-    const defaultBackground = `background: url("https://wallpapercave.com/wp/wp2082809.jpg") #1C1C1C top fixed no-repeat !important`;
-    const skPage = document.querySelector(".sk_page");
-    const skHeader = document.querySelector(".sk_header");
-
-    let formedURL = defaultBackground;
-    chrome.storage.sync.get(["theme-editor-back-img-url", "theme-editor-additional-css-flags-back-img-url"]).then((result) => {
-        if (result["theme-editor-back-img-url"]) {
-            formedURL = `background: url(${result["theme-editor-back-img-url"]}) !important`;
-        }
-        if (result["theme-editor-additional-css-flags-back-img-url"]) {
-            formedURL += ` ${result["theme-editor-additional-css-flags-back-img-url"]}`;
-        }
-
-        if (skPage) skPage.style = formedURL;
-        if (skHeader) skHeader.style = formedURL;
-    });
-}
+// function applyCustomTheme() {
+//    const defaultBackground = `background: url("https://wallpapercave.com/wp/wp2082809.jpg") #1C1C1C top fixed no-repeat !important`;
+//  const skPage = document.querySelector(".sk_page");
+//    const skHeader = document.querySelector(".sk_header");
+//
+//    let formedURL = defaultBackground;
+//    chrome.storage.sync.get(["theme-editor-back-img-url", "theme-editor-additional-css-flags-back-img-url"]).then((result) => {
+//        if (result["theme-editor-back-img-url"]) {
+//            formedURL = `background: url(${result["theme-editor-back-img-url"]}) !important`;
+//        }
+//        if (result["theme-editor-additional-css-flags-back-img-url"]) {
+//            formedURL += ` ${result["theme-editor-additional-css-flags-back-img-url"]}`;
+//        }
+//
+//        if (skPage) skPage.style = formedURL;
+//        if (skHeader) skHeader.style = formedURL;
+//    });
+//}
 
 function updateFooter() {
     const footer = document.getElementById("footer");

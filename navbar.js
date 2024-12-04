@@ -30,7 +30,7 @@ const intHTML = `
     </li>
 </ul>
 <ul class="nav main-nav">
-    <li class="nav-item  active">
+    <li class="nav-item">
         <a class="sk_nav_text nav-link" href="/">Home</a>
     </li>
         <li class="nav-item nav-item-notices">
