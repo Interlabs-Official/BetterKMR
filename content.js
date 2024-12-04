@@ -94,13 +94,11 @@ targetFooter.innerHTML = `
     </div>
 `
 const infoClasses = {
-    "SP20": "Spanish (2nd Semester)",
+ // Form Class
     "FT": "Form Class",
-    "MAE0": "Mathematics (Year 10 Extension)",
     "DTG0": "Digital Technologies",
-    "SP10": "Spanish (1st Semester)",
     "ENE01": "English (Year 10 Extension, 1st Semester)",
-//  Arts
+ // Arts
     "ARD2": "Art Design (Year 12)",
     "ARD3": "Art Design (Year 13)",
     "DANE": "Dance (Year 9)",
@@ -275,7 +273,15 @@ const infoClasses = {
     "MO10": "Maori Half Year (Year 10)",
     "MAO1": "Maori (Year 11)",
     "MAO2": "Maori (Year 12)",
-    "MAO3": "Maori (Year 13)"
+    "MAO3": "Maori (Year 13)",
+ // International
+    "CNZ2": "Conservation New Zealand (Year 12)",
+    "IEN1": "International English (Year 11)",
+    "IEN2": "International English (Year 12)",
+    "IEN3": "International English (Year 13)",
+    "IEC1": "International English Communication (Year 11)",
+    "IEL1": "International English Language (Year 11)",
+    "IEL2": "International English Language (Year 12)"
 }
 
 function addInfoTipToTarget(target, btn) {
