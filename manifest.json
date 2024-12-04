@@ -14,7 +14,7 @@
     {
       "matches": ["https://whanganuihigh.school.kiwi/*"],
       "css": ["styles.css", "profile.css", "modify.css"],
-      "js": ["content.js", "navbar.js", "popup.js", "text.js"]
+      "js": ["content.js", "navbar.js", "popup.js"]
     }
   ],
   "action": {},
@@ -28,7 +28,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["settings/index.html", "icon/icon_transparent_48.png"],
+      "resources": ["settings/index.html", "icon/icon_transparent_48.png", "details/classInfo.json"],
       "matches": ["https://whanganuihigh.school.kiwi/*"]
     }
   ]
