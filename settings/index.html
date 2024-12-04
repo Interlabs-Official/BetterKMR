@@ -80,6 +80,7 @@ body {
 }
 
 .toggle-switch {
+    margin-left: 10px;
     display: inline-flex;
     align-items: center;
     cursor: pointer;
@@ -125,7 +126,7 @@ body {
     border: 1px solid #555;
     padding: 8px 12px;
     border-radius: 5px;
-    width: 60%;
+    width: 150%;
     transition: border-color 0.3s ease;
 }
 
@@ -160,7 +161,7 @@ body {
             </div>
             <div id="general" class="tab-content">
                 <h2>General Settings</h2>
-                <div>Once changes are made, refresh your KAMAR page(s).</div>
+                <div>Once changes are made, refresh your KAMAR page(s). Changes are made automatically once interacted.</div>
                 <div class="setting">
                     <label class="toggle-switch">
                         <span class="dltext">Show Attendance Streak</span>
@@ -172,6 +173,13 @@ body {
                     <label class="toggle-switch">
                         <span class="dltext">Show Student Barcode</span>
                         <input type="checkbox" id="student-barcode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Show Upcoming Public Holiday Bar</span>
+                        <input type="checkbox" id="upcoming-public-holiday-bar">
                         <span class="slider"></span>
                     </label>
                 </div>
