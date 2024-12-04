@@ -82,7 +82,7 @@ function handleUpcomingHolidays() {
         const targetElement = document.querySelector(".page-title");
         if (targetElement) {
             const injectedHTML = `
-                <div class="box" style="background-color: #004d40; color: white; padding: 10px; position: relative;">
+                <div class="box-bcd" style="background-color: #004d40; color: white; padding: 10px; position: relative;">
                     <h4 class="h4-upc-pub-hld-left">Upcoming Public Holiday</h4>
                     <h1>${nextHoliday.name}</h1>
                     <h4 class="h4-upc-pub-hld-right">on ${new Date(nextHoliday.date).toLocaleDateString()}</h4>
