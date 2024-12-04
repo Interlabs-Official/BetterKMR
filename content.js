@@ -82,7 +82,7 @@ function handleUpcomingHolidays() {
         const targetElement = document.querySelector(".page-title");
         if (targetElement) {
             const injectedHTML = `
-                <div class="box" style="background-color: #004d40; color: white; padding: 10px; position: relative;">
+                <div class="box-bcd" style="background-color: #004d40; color: white; padding: 10px; position: relative;">
                     <h4 class="h4-upc-pub-hld-left">Upcoming Public Holiday</h4>
                     <h1>${nextHoliday.name}</h1>
                     <h4 class="h4-upc-pub-hld-right">on ${new Date(nextHoliday.date).toLocaleDateString()}</h4>
@@ -122,7 +122,7 @@ function updateProfilePicture() {
             if (avatar) {
                 avatar.src = result.profilePicUrl;
                 avatar.parentNode.style = `
-                    height: 32px; width: 32px; margin-right: 15px;`;
+                    height: 32px !important; width: 32px !important; margin-right: 15px !important;`;
             }
             if (profileBox) {
                 profileBox.src = result.profilePicUrl;

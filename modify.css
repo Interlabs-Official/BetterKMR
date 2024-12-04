@@ -16,7 +16,7 @@ body {
 .is-today {
     background-color: #53535380 !important;
   }
-/*  .box {
+.box {
     display: grid;
     place-content: center;
     text-align: center;
@@ -25,13 +25,13 @@ body {
     --border-angle: 0turn;
     --main-bg: conic-gradient(from var(--border-angle), #213, #112 5%, #112 60%, #213 95%);
     border: solid 5px transparent;
-    border-radius: 2em;
+    border-radius: 5px;
     --gradient-border: conic-gradient(from var(--border-angle), transparent 25%, rgb(255, 115, 0), rgb(255, 51, 0) 99%, transparent);
     background: var(--main-bg) padding-box, var(--gradient-border) border-box, var(--main-bg) border-box;
     background-position: center center;
     animation: bg-spin 3s linear infinite;
-  } */
-.box {
+  }
+.box-bcd {
     display: grid;
     place-content: center;
     text-align: center;
@@ -47,13 +47,13 @@ body {
     background-position: center center;
     animation: bg-spin 3s linear infinite;
 }
-.box .h4-upc-pub-hld-left {
+.box-bcd .h4-upc-pub-hld-left {
   position: absolute;
   left: 38px;
   top: 50%;
   transform: translateY(-50%);
 }
-.box .h4-upc-pub-hld-right {
+.box-bcd .h4-upc-pub-hld-right {
   position: absolute;
   right: 38px;
   top: 50%;
