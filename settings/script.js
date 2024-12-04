@@ -4,11 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const settings = {
         "showAttendanceStreak": false,
         "showBarcodeToggle": false,
-        "profilePicUrl": ""
+        "profilePicUrl": "",
+        "upcoming-public-holiday-bar": true
     };
 
     // Automatically activate the "About" tab
     activateTab('about');
+    document.getElementById("mainlogo").src = chrome.runtime.getURL("icon/btrkmr_transparent_logo.png")
 
     // Load settings from storage
     chrome.storage.sync.get(Object.keys(settings), (result) => {
@@ -51,12 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Upcoming Public Holiday
-    chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {
+    /* chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {
         if (result["upcoming-public-holiday-bar"] == null) {
             updateSetting('upcoming-public-holiday-bar', true);
             applySetting('upcoming-public-holiday-bar', true);
         }
-    });
+    }); */
     document.getElementById('upcoming-public-holiday-bar').addEventListener('input', (e) => {
         updateSetting('upcoming-public-holiday-bar', e.target.checked);
     });
