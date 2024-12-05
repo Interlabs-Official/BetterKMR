@@ -21,7 +21,19 @@ body .sk_nav {
     padding: 1.25rem;
     background: #00000080 !important;
 }
-body .list-group.home-items .custom-tile {
+body .list-group.home-items .custom-tile .list-group-item { 
+    align-items: center;
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: 2px;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    background: #004970 !important;
+    padding: .75em;
+    border: black !important;
+}
+body .sk_card { 
     align-items: center;
     border-radius: 1rem;
     border-style: solid;
