@@ -207,6 +207,11 @@ function updateFooter() {
     }
 }
 
+/* function updateMaoriText() {
+    const infoIcon = document.getElementsByClassName("icon-cell")[0];
+    infoIcon.innerHTML = infoIcon.innerHTML.replace("Te Reo Matatini", "");
+} */
+
 async function addInfoTips() {
     try {
         const jsonUrl = chrome.runtime.getURL('details/classInfo.json');
@@ -262,6 +267,7 @@ function loader() {
           updateProfilePicture();
           updateFooter();
           addInfoTips();
+          updateMaoriText();
           console.log("Step 3");
         }
         const startTime = Date.now();
