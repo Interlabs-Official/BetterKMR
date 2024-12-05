@@ -1,5 +1,5 @@
 ![btrkmr_transparent_logo](https://github.com/user-attachments/assets/2e12559e-427d-4a47-b3d0-b854b150e606)
-<p align="center"><img src="https://img.shields.io/badge/version-v1.1-blue" alt="Version"></img></p>
+<p align="center"><img src="https://img.shields.io/badge/Version-1.0.0-blue" alt="Version"></img></p>
 <p align="center"><b>An awesome overhaul for the Kamar student portal.</b></p>
 
 ## Why use BetterKMR?
