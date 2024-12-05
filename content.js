@@ -1,4 +1,4 @@
-const ENV_VERSION = "1.1";
+const ENV_VERSION = "1.0.0";
 console.log("Content JS loaded");
 
 function navigateToSettingsIfOnExamplePage() {
