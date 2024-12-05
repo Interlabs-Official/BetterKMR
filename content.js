@@ -143,11 +143,36 @@ function updateProfilePicture() {
             const profileBox = document.querySelector(".pb-3");
             if (avatar) {
                 avatar.src = result.profilePicUrl;
-                avatar.parentNode.style = `
-                    height: 32px !important; width: 32px !important; margin-right: 15px !important;`;
+                //avatar.parentNode.style = `
+                    //height: 32px !important; width: 32px !important;`;
             }
             if (profileBox) {
                 profileBox.src = result.profilePicUrl;
+            }
+        }
+    });
+}
+
+function updateProfilePicture() {
+    chrome.storage.sync.get(["privateMode"]).then((result) => {
+        if (result.privateMode) {
+            const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
+            schoolCardDob.style.display = "none";
+            if (window.location.href.includes("medical_details")) {
+                const pageTitle = document.getElementsByClassName("page-title")[0];
+                pageTitle.innerHTML = `<div class="alert alert-warning">You have enabled Private Mode, and this content is not available.</div>`
+                document.getElementsByClassName("sk_table")[0].remove();
+            }
+            if (window.location.href.includes("caregiver_details")) {
+                const pageTitle = document.getElementsByClassName("page-title")[0];
+                pageTitle.innerHTML = `<div class="alert alert-warning">You have enabled Private Mode, and this content is not available.</div>`
+                document.getElementsByClassName("nav-tabs")[0].remove();
+                document.getElementById("caregivers1").remove();
+            }
+            if (window.location.href.includes("emergency_contact_details")) {
+                const pageTitle = document.getElementsByClassName("page-title")[0];
+                pageTitle.innerHTML = `<div class="alert alert-warning">You have enabled Private Mode, and this content is not available.</div>`
+                document.getElementsByClassName("sk_table")[0].remove();
             }
         }
     });

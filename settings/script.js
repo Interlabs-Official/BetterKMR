@@ -5,7 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
         "showAttendanceStreak": false,
         "showBarcodeToggle": false,
         "profilePicUrl": "",
-        "upcoming-public-holiday-bar": true
+        "upcoming-public-holiday-bar": true,
+        "privateMode": false
     };
 
     // Automatically activate the "About" tab
@@ -39,6 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('profile-pic-url').addEventListener('input', (e) => {
         updateSetting('profilePicUrl', e.target.value);
+    });
+    
+    document.getElementById('privateMode').addEventListener('change', (e) => {
+        updateSetting('privateMode', e.target.checked);
     });
 
     // themes
@@ -83,6 +88,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('theme-editor-additional-css-flags-back-img-url').value = value;
         } else if (key === 'upcoming-public-holiday-bar') {
             document.getElementById('upcoming-public-holiday-bar').checked = value;
+        } else if (key === 'privateMode') {
+            document.getElementById('privateMode').checked = value;
         }
     }
 
