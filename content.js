@@ -8,6 +8,81 @@ function navigateToSettingsIfOnExamplePage() {
     }
 }
 
+// thank you stack overflow
+function waitForElm(selector) {
+    return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+            return resolve(document.querySelector(selector));
+        }
+
+        const observer = new MutationObserver(mutations => {
+            if (document.querySelector(selector)) {
+                observer.disconnect();
+                resolve(document.querySelector(selector));
+            }
+        });
+
+        // If you get "parameter 1 is not of type 'Node'" error, see https://stackoverflow.com/a/77855838/492336
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
+    });
+}
+
+function loader() {
+    waitForElm('body').then((elm) => {
+        console.log('Element is ready');
+        console.log("Load Init");
+        // Create loader elements
+        const loaderOverlay = document.createElement('div');
+        loaderOverlay.className = 'loader-overlay';
+        
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+        
+        loaderOverlay.appendChild(loader);
+        
+        // Add loader to the page
+        document.body.appendChild(loaderOverlay);
+        
+        // Hide the content of the page
+        document.body.style.visibility = 'hidden';
+        
+        // Function to remove loader and show content
+        function showContent() {
+          loaderOverlay.classList.add('hidden');
+          document.body.style.visibility = 'visible';
+        }
+        const startTime = Date.now();
+        const minDelay = 2000; // 2 seconds
+        
+        const remainingTime = minDelay - (Date.now() - startTime);
+        
+        if (remainingTime > 0) {
+          setTimeout(showContent, remainingTime);
+        } else {
+          showContent();
+          initJS();
+          chrome.scripting
+            .registerContentScripts([{
+                id: "session-script",
+                js: ["navbar.js"],
+                persistAcrossSessions: false,
+                matches: ["https://whanganuihigh.school.kiwi/*"],
+                runAt: "document_idle",
+            }])
+            .then(() => console.log("registration complete"))=
+            .catch((err) => console.warn("unexpected error", err))
+                    }
+    });
+
+    // Wait for page load and minimum 2 seconds
+    window.addEventListener('load', function() {
+
+    });
+}
+loader();
 function handleAttendanceStreak() {
     if (!window.location.href.includes("attendance/week")) return;
 
@@ -195,7 +270,7 @@ function initJS() {
     console.log("Step 3");
 }
 
-if (document.readyState !== "loading") {
+/* if (document.readyState !== "loading") {
     console.log("Document is already ready, executing code.");
     initJS();
 } else {
@@ -203,4 +278,4 @@ if (document.readyState !== "loading") {
         console.log("Document was not ready, executing on DOMContentLoaded.");
         initJS();
     });
-}
+} */
