@@ -8,11 +8,11 @@
     "storage"
   ],
   "host_permissions": [
-    "https://whanganuihigh.school.kiwi/*"
+    "https://*.school.kiwi/*"
   ],
   "content_scripts": [
     {
-      "matches": ["https://whanganuihigh.school.kiwi/*"],
+      "matches": ["https://*.school.kiwi/*"],
       "css": ["styles.css", "profile.css", "modify.css"],
       "js": ["content.js", "navbar.js", "popup.js"]
     }
