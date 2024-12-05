@@ -117,3 +117,6 @@ body .sk_thead_cell {
 .btn-secondary {
     color: #fff !important;
 }
+.modal-backdrop.show {
+    opacity: 0 !important;
+}
