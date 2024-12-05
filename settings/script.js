@@ -42,15 +42,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // themes
-    document.getElementById('theme-editor-back-img-url').defaultValue = "https://wallpapercave.com/wp/wp2082809.jpg";
-    document.getElementById('theme-editor-back-img-url').addEventListener('input', (e) => {
-        updateSetting('theme-editor-back-img-url', e.target.value);
-    });
+    //document.getElementById('theme-editor-back-img-url').defaultValue = "https://wallpapercave.com/wp/wp2082809.jpg";
+    //document.getElementById('theme-editor-back-img-url').addEventListener('input', (e) => {
+    //    updateSetting('theme-editor-back-img-url', e.target.value);
+    //});
 
-    document.getElementById('theme-editor-additional-css-flags-back-img-url').defaultValue = "#1C1C1C top fixed no-repeat";
-    document.getElementById('theme-editor-additional-css-flags-back-img-url').addEventListener('input', (e) => {
-        updateSetting('theme-editor-additional-css-flags-back-img-url', e.target.value);
-    });
+    //document.getElementById('theme-editor-additional-css-flags-back-img-url').defaultValue = "#1C1C1C top fixed no-repeat";
+    //document.getElementById('theme-editor-additional-css-flags-back-img-url').addEventListener('input', (e) => {
+    //    updateSetting('theme-editor-additional-css-flags-back-img-url', e.target.value);
+    //});
 
     // Upcoming Public Holiday
     /* chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {

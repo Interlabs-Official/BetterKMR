@@ -8,6 +8,28 @@ function navigateToSettingsIfOnExamplePage() {
     }
 }
 
+// thank you stack overflow
+function waitForElm(selector) {
+    return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+            return resolve(document.querySelector(selector));
+        }
+
+        const observer = new MutationObserver(mutations => {
+            if (document.querySelector(selector)) {
+                observer.disconnect();
+                resolve(document.querySelector(selector));
+            }
+        });
+
+        // If you get "parameter 1 is not of type 'Node'" error, see https://stackoverflow.com/a/77855838/492336
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
+    });
+}
+
 function handleAttendanceStreak() {
     if (!window.location.href.includes("attendance/week")) return;
 
@@ -182,20 +204,56 @@ async function addInfoTips() {
     }
 }
 
-function initJS() {
-    console.log("Step 2");
-    navigateToSettingsIfOnExamplePage();
-    handleAttendanceStreak();
-    handleUpcomingHolidays();
-    handleBarcodeVisibility();
-    updateProfilePicture();
-    applyCustomTheme();
-    updateFooter();
-    addInfoTips();
-    console.log("Step 3");
-}
+function loader() {
+    waitForElm('body').then((elm) => {
+        console.log('Element is ready');
+        console.log("Load Init");
+        // Create loader elements
+        //const loaderOverlay = document.createElement('div');
+        //loaderOverlay.className = 'loader-overlay';
+        
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+        
+        //loaderOverlay.appendChild(loader);
+        
+        // Add loader to the page
+        document.body.appendChild(loader);
 
-if (document.readyState !== "loading") {
+        // Hide the content of the page
+        //document.body.style.visibility = 'hidden';
+        
+        loader.style.visibility = "visible";
+        
+        // Function to remove loader and show content
+        function showContent() {
+          loader.classList.add('hidden');
+          document.getElementsByClassName("nav-and-main")[0].style.visibility = 'visible';
+          console.log("Step 2");
+          navigateToSettingsIfOnExamplePage();
+          handleAttendanceStreak();
+          handleUpcomingHolidays();
+          handleBarcodeVisibility();
+          updateProfilePicture();
+          updateFooter();
+          addInfoTips();
+          console.log("Step 3");
+        }
+        const startTime = Date.now();
+        const minDelay = 500; // 2 seconds
+        
+        const remainingTime = minDelay - (Date.now() - startTime);
+        
+        if (remainingTime > 0) {
+          setTimeout(showContent, remainingTime);
+        } else {
+          showContent();
+        }
+    });
+}
+loader();
+
+/* if (document.readyState !== "loading") {
     console.log("Document is already ready, executing code.");
     initJS();
 } else {
@@ -203,4 +261,4 @@ if (document.readyState !== "loading") {
         console.log("Document was not ready, executing on DOMContentLoaded.");
         initJS();
     });
-}
+} */
