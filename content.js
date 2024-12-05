@@ -30,59 +30,6 @@ function waitForElm(selector) {
     });
 }
 
-function loader() {
-    waitForElm('body').then((elm) => {
-        console.log('Element is ready');
-        console.log("Load Init");
-        // Create loader elements
-        const loaderOverlay = document.createElement('div');
-        loaderOverlay.className = 'loader-overlay';
-        
-        const loader = document.createElement('div');
-        loader.className = 'loader';
-        
-        loaderOverlay.appendChild(loader);
-        
-        // Add loader to the page
-        document.body.appendChild(loaderOverlay);
-        
-        // Hide the content of the page
-        document.body.style.visibility = 'hidden';
-        
-        // Function to remove loader and show content
-        function showContent() {
-          loaderOverlay.classList.add('hidden');
-          document.body.style.visibility = 'visible';
-        }
-        const startTime = Date.now();
-        const minDelay = 2000; // 2 seconds
-        
-        const remainingTime = minDelay - (Date.now() - startTime);
-        
-        if (remainingTime > 0) {
-          setTimeout(showContent, remainingTime);
-        } else {
-          showContent();
-          initJS();
-          chrome.scripting
-            .registerContentScripts([{
-                id: "session-script",
-                js: ["navbar.js"],
-                persistAcrossSessions: false,
-                matches: ["https://whanganuihigh.school.kiwi/*"],
-                runAt: "document_idle",
-            }])
-            .then(() => console.log("registration complete"))=
-            .catch((err) => console.warn("unexpected error", err))
-                    }
-    });
-
-    // Wait for page load and minimum 2 seconds
-    window.addEventListener('load', function() {
-
-    });
-}
-loader();
 function handleAttendanceStreak() {
     if (!window.location.href.includes("attendance/week")) return;
 
@@ -257,18 +204,54 @@ async function addInfoTips() {
     }
 }
 
-function initJS() {
-    console.log("Step 2");
-    navigateToSettingsIfOnExamplePage();
-    handleAttendanceStreak();
-    handleUpcomingHolidays();
-    handleBarcodeVisibility();
-    updateProfilePicture();
-    applyCustomTheme();
-    updateFooter();
-    addInfoTips();
-    console.log("Step 3");
+function loader() {
+    waitForElm('body').then((elm) => {
+        console.log('Element is ready');
+        console.log("Load Init");
+        // Create loader elements
+        //const loaderOverlay = document.createElement('div');
+        //loaderOverlay.className = 'loader-overlay';
+        
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+        
+        //loaderOverlay.appendChild(loader);
+        
+        // Add loader to the page
+        document.body.appendChild(loader);
+
+        // Hide the content of the page
+        //document.body.style.visibility = 'hidden';
+        
+        loader.style.visibility = "visible";
+        
+        // Function to remove loader and show content
+        function showContent() {
+          loader.classList.add('hidden');
+          document.getElementsByClassName("nav-and-main")[0].style.visibility = 'visible';
+          console.log("Step 2");
+          navigateToSettingsIfOnExamplePage();
+          handleAttendanceStreak();
+          handleUpcomingHolidays();
+          handleBarcodeVisibility();
+          updateProfilePicture();
+          updateFooter();
+          addInfoTips();
+          console.log("Step 3");
+        }
+        const startTime = Date.now();
+        const minDelay = 500; // 2 seconds
+        
+        const remainingTime = minDelay - (Date.now() - startTime);
+        
+        if (remainingTime > 0) {
+          setTimeout(showContent, remainingTime);
+        } else {
+          showContent();
+        }
+    });
 }
+loader();
 
 /* if (document.readyState !== "loading") {
     console.log("Document is already ready, executing code.");
