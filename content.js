@@ -267,7 +267,6 @@ function loader() {
           updateProfilePicture();
           updateFooter();
           addInfoTips();
-          updateMaoriText();
           console.log("Step 3");
         }
         const startTime = Date.now();
