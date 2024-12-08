@@ -120,3 +120,6 @@ body .sk_thead_cell {
 .modal-backdrop.show {
     opacity: 0 !important;
 }
+.alert-success {
+    display: none !important;
+}
