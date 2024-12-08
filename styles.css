@@ -123,3 +123,19 @@ body .sk_thead_cell {
 .alert-success {
     display: none !important;
 }
+.modal-content {
+    background: #00000000 !important;
+}
+body .modal-header {
+    background: #004970 !important;
+}
+.modal-body {
+    padding: 0 !important;
+    background: #000000cc !important;
+}
+.modal-header button[data-dismiss=modal] {
+    color: white !important;
+}
+.modal-title {
+    margin: auto;
+}

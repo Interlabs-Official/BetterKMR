@@ -14,7 +14,7 @@
     {
       "matches": ["https://*.school.kiwi/*"],
       "css": ["styles.css", "profile.css", "modify.css"],
-      "js": ["frameworks/jquery-3.7.1.min.js", "content.js", "navbar.js", "popup.js"]
+      "js": ["frameworks/jquery-3.7.1.min.js", "content.js", "navbar.js", "popup.js", "logintitle.js"]
     }
   ],
   "action": {},
