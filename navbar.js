@@ -33,7 +33,7 @@ for (let i = 0; i < mainNav.children.length; i++) {
                         <small class="d-block">Student Account</small>
                     </div>
                     <div class="dropdown-divider"></div>
-                    <a href="${chrome.runtime.getURL("settings/index.html")}" target="_blank" class="sk_nav_text nav-link">BetterKMR Settings</a>
+                    <a href="${chrome.runtime.getURL("settings/index.html")}" target="_blank" class="sk_nav_text nav-link">BetterKMR Menu</a>
                     <div class="dropdown-divider"></div>
                     <a class="sk_nav_text nav-link nav-link-caregiver_details" href="/caregiver_details">Caregiver Details</a><a class="sk_nav_text nav-link nav-link-emergency_contact_details" href="/emergency_contact_details">Emergency Contacts</a><a class="sk_nav_text nav-link nav-link-medical_details" href="/medical_details">Medical Details</a><div class="dropdown-divider"></div><a href="/details/change_password" class="sk_nav_text nav-link">Change Password</a>
                     <a href="/details/data_sharing" class="sk_nav_text nav-link">Data Sharing</a>
@@ -67,7 +67,12 @@ for (let i = 0; i < mainNav.children.length; i++) {
             </li><li class="nav-item dropdown">
                 <a class="sk_nav_text nav-link dropdown-toggle collapsed" href="#menu-folder20240123022746" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="menu-folder20240123022746">Reports</a>
                 <div class="nav-menu sk_nav collapse" id="menu-folder20240123022746" style=""><a class="sk_nav_text nav-link nav-link-reports" href="/reports">Reports</a><a class="sk_nav_text nav-link nav-link-pastoral" href="/pastoral">Pastoral</a>            </div>
-            </li></ul>					</div>
+            </li>
+        <li class="nav-item nav-item-contact_us">
+            <a class="sk_nav_text nav-link nav-link-contact_us" href="/contact_us">Contact</a>
+        </li>
+            </ul>					
+            </div>
     `
     navbar.innerHTML = longText;
     var currentItemTrim = null;

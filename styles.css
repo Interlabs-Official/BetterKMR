@@ -139,3 +139,13 @@ body .modal-header {
 .modal-title {
     margin: auto;
 }
+body .nav-menu {
+    background: #000000cc !important;
+}
+.school-card {
+    background: #2c2c2c !important;
+}
+.form-control {
+    background-color: #000000cc !important;
+    border: 1px solid #ffffff;
+}
