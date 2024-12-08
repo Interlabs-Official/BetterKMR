@@ -153,7 +153,7 @@ function updateProfilePicture() {
     });
 }
 
-function updateProfilePicture() {
+function updatePrivateMode() {
     chrome.storage.sync.get(["privateMode"]).then((result) => {
         if (result.privateMode) {
             const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
@@ -265,6 +265,7 @@ function loader() {
           handleUpcomingHolidays();
           handleBarcodeVisibility();
           updateProfilePicture();
+          updatePrivateMode();
           updateFooter();
           addInfoTips();
           console.log("Step 3");
