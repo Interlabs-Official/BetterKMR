@@ -157,7 +157,7 @@ function updatePrivateMode() {
     chrome.storage.sync.get(["privateMode"]).then((result) => {
         if (result.privateMode) {
             const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
-            schoolCardDob.style.display = "none";
+            if (schoolCardDob) { schoolCardDob.style.display = "none"; }
             if (window.location.href.includes("medical_details")) {
                 const pageTitle = document.getElementsByClassName("page-title")[0];
                 pageTitle.innerHTML = `<div class="alert alert-warning">You have enabled Private Mode, and this content is not available.</div>`
@@ -200,10 +200,13 @@ function updatePrivateMode() {
 function updateFooter() {
     const footer = document.getElementById("footer");
     if (footer) {
-        footer.innerHTML = `
+        const schoolName = document.getElementsByClassName("sk_school_name")[0];
+        if (schoolName) {
+            footer.innerHTML = `
             <div class="container">
-                <p>2024 - Whanganui High School. BetterKMR V${ENV_VERSION}</p>
+                <p>2024 - ${schoolName.textContent.trim()}. BetterKMR V${ENV_VERSION}</p>
             </div>`;
+        }
     }
 }
 
