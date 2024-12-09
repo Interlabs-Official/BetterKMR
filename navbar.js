@@ -76,6 +76,13 @@ for (let i = 0; i < mainNav.children.length; i++) {
     `
     navbar.innerHTML = longText;
     var currentItemTrim = null;
+    // contact page
+    if (window.location.href.includes("contact_us")) {
+        const contactBtn = document.getElementsByClassName("nav-item-contact_us")[0];
+        if (contactBtn) {
+            contactBtn.classList.add("active");
+        }
+    }
     if (activeThing) {
         const activeHref = activeThing.querySelector("a").getAttribute("href");
         const newMainNav = navbar.getElementsByClassName("main-nav")[0];
