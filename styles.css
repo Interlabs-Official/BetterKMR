@@ -174,4 +174,7 @@ body .sk_btn svg {
 body .sk_btn:hover {
     color: #ffffff !important;
 }
+body .school-card {
+    color: white !important;
+}
 /* hover wont fix itself. dont blame me ¯\_(ツ)_/¯ */
