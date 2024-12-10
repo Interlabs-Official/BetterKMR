@@ -164,7 +164,7 @@ body .sk_nav_text:hover {
     color: #ecac20 !important;
 }
 .nav-item.active .sk_nav_text, a.sk_nav_text:hover {
-    color:red!important !important;
+    color:red !important;
 }
 body .nav-item.active .sk_nav_text, .sk_nav_text .sk_nav_text:hover {
     color: #ecac20 !important;
