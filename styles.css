@@ -149,3 +149,32 @@ body .nav-menu {
     background-color: #000000cc !important;
     border: 1px solid #ffffff;
 }
+body .sk_table {
+    color: #ffffff !important;
+}
+body .sk_btn, .sk_btn.disabled:hover {
+    color: #ffffff !important;
+}
+/* light mode fixes */
+body .sk_nav_text {
+    color: #ffffff !important;
+}
+body .nav-item.active .sk_nav_text {
+    color: #ecac20 !important;
+}
+a.sk_nav_text.nav-link.nav-link:hover {
+    color: #ecac20 !important;
+}
+body .container {
+    color: white;
+}
+body .sk_btn svg {
+    fill: #ffffff !important; 
+}
+body .sk_btn:hover {
+    color: #ffffff !important;
+}
+body .school-card {
+    color: white !important;
+}
+/* end */
