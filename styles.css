@@ -155,16 +155,21 @@ body .sk_table {
 body .sk_btn, .sk_btn.disabled:hover {
     color: #ffffff !important;
 }
-/* blame this jargon on light mode and chrome. fuck you chrome. */
+/* blame this jargon on light mode and chrome */
 body .sk_nav_text {
     color: #ffffff !important;
 }
+/* stupid hover attempts */
 body .sk_nav_text:hover {
     color: #ecac20 !important;
+}
+.nav-item.active .sk_nav_text, a.sk_nav_text:hover {
+    color:red!important !important;
 }
 body .nav-item.active .sk_nav_text, .sk_nav_text .sk_nav_text:hover {
     color: #ecac20 !important;
 }
+/* ender hover attempts */
 body .container {
     color: white;
 }
