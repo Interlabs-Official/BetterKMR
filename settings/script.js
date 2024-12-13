@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // Automatically activate the "About" tab
-    activateTab('about');
+    activateTab('general');
     document.getElementById("mainlogo").src = chrome.runtime.getURL("icon/btrkmr_transparent_logo.png")
 
     // Load settings from storage
