@@ -100,7 +100,7 @@ body .sk_border {
     background: #00000080 !important;
 }
 body .table th {
-    background-color: #0082c7 !important;
+    background-color: #00000000 !important;
 }
 body .sk_thead_cell {
     background-color: #004970 !important;
@@ -160,10 +160,10 @@ body .sk_nav_text {
     color: #ffffff !important;
 }
 body .nav-item.active .sk_nav_text {
-    color: #ecac20 !important;
+    color: #AE56F5 !important;
 }
 a.sk_nav_text.nav-link.nav-link:hover {
-    color: #ecac20 !important;
+    color: #9757CB !important;
 }
 body .container {
     color: white;
@@ -178,3 +178,12 @@ body .school-card {
     color: white !important;
 }
 /* end */
+th.results-section-level.sk_thead_cell {
+    background-color: rgb(0, 130, 199) !important;
+}
+th.results-section-header.sk_thead_cell {
+    background-color: rgb(0, 130, 199) !important;
+}
+tr.sk_thead {
+    background: #004970;
+}
