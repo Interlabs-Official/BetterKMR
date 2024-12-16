@@ -13,8 +13,8 @@
   "content_scripts": [
     {
       "matches": ["https://*.school.kiwi/*"],
-      "css": ["styles.css", "profile.css", "modify.css"],
-      "js": ["content.js", "popup.js", "logintitle.js"]
+      "css": ["styles.css", "modify.css"],
+      "js": ["content.js", "logintitle.js"]
     }
   ],
   "action": {},
