@@ -1,5 +1,0 @@
-const nceaqualeng1 = document.getElementsByClassName("tooltip html-tooltip tooltip-large fade bs-tooltip-top show")[0];
-const intHTML1 = `
-<div class="tooltip html-tooltip tooltip-large fade bs-tooltip-top show" role="tooltip" id="tooltip368472" style="position: absolute; transform: translate3d(5px, 423px, 0px); top: 0px; left: 0px; will-change: transform;" x-placement="top"><div class="arrow" style="left: 521px;"></div><div class="tooltip-inner"><h5 class="ncea-title">How to achieve NCEA</h5><div class="ncea-content"><div class="ncea-block"><p class="ncea-title">Level One: 80 credits</p><p>60 credits at any Level</p><b>Plus</b><br><small>10 Literacy credits, and 10 Numeracy credits.</small></div><div class="ncea-block"><p class="ncea-title">Level Two: 80 credits</p><p>60 credits at Level 2 or above</p><b>Plus</b><br><small>10 Literacy credits, and 10 Numeracy credits.</small></div><div class="ncea-block"><p class="ncea-title">Level Three: 80 credits</p><p>60 credits at Level 3 or above</p><b>Plus</b><br><small>10 Literacy credits, and 10 Numeracy credits.</small></div></div></div></div>
-`
-nceaqualeng1.innerHTML = intHTML1;
