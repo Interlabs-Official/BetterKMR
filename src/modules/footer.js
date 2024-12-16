@@ -16,18 +16,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* service.js - root directory */
-chrome.action.onClicked.addListener(tab => { 
-    chrome.tabs.create({
-        url: chrome.runtime.getURL("settings/index.html")
-    });
-});
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.injectScript == "navbar.js") {
-        console.log("Service worker received message from sender %s", sender.id, request)
-        console.log("Beginning to inject navbar.js into content page");
-        chrome.tabs.executeScript(sender.tab.id, {file: request.injectScript}, function () {
-          sendResponse({message: "Service worker processed the message"})
-        });
-  }
-})
+/* footer.js - src/modules/footer.js */
+const footer = document.getElementById("footer");
+if (footer) {
+    const schoolName = document.getElementsByClassName("sk_school_name")[0];
+    if (schoolName) {
+        footer.innerHTML = `
+        <div class="container">
+            <p>2024 - ${schoolName.textContent.trim()}. BetterKMR v${chrome.runtime.getManifest().version}</p>
+        </div>`;
+    }
+}

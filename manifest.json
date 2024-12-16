@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BetterKMR",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "The ultimate revamp of KAMAR for the web",
   "permissions": [
     "activeTab",
@@ -14,7 +14,7 @@
     {
       "matches": ["https://*.school.kiwi/*"],
       "css": ["styles.css", "profile.css", "modify.css"],
-      "js": ["frameworks/jquery-3.7.1.min.js", "content.js", "navbar.js", "popup.js", "logintitle.js", "text.js"]
+      "js": ["content.js", "popup.js", "logintitle.js"]
     }
   ],
   "action": {},
@@ -28,8 +28,19 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["settings/index.html", "icon/icon_transparent_48.png", "details/classInfo.json", "icon/btrkmr_transparent_logo.png"],
-      "matches": ["https://whanganuihigh.school.kiwi/*"]
+      "resources": [
+        "settings/index.html",
+        "icon/icon_transparent_48.png",
+        "details/classInfo.json",
+        "icon/btrkmr_transparent_logo.png",
+        "src/modules/navbar.js",
+        "src/modules/attendance-streak.js",
+        "src/modules/upcoming-holiday-bar.js",
+        "src/modules/settings.js",
+        "src/modules/footer.js",
+        "src/modules/info-tips.js"
+      ],
+      "matches": ["https://*.school.kiwi/*"]
     }
   ]
 }

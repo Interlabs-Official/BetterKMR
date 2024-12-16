@@ -1,3 +1,22 @@
+/*
+    BetterKMR for Chrome
+    Copyright (C) 2024 InterLabs
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+/* script.js - settings/script.js */
 document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -46,24 +65,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetting('privateMode', e.target.checked);
     });
 
-    // themes
-    //document.getElementById('theme-editor-back-img-url').defaultValue = "https://wallpapercave.com/wp/wp2082809.jpg";
-    //document.getElementById('theme-editor-back-img-url').addEventListener('input', (e) => {
-    //    updateSetting('theme-editor-back-img-url', e.target.value);
-    //});
-
-    //document.getElementById('theme-editor-additional-css-flags-back-img-url').defaultValue = "#1C1C1C top fixed no-repeat";
-    //document.getElementById('theme-editor-additional-css-flags-back-img-url').addEventListener('input', (e) => {
-    //    updateSetting('theme-editor-additional-css-flags-back-img-url', e.target.value);
-    //});
-
-    // Upcoming Public Holiday
-    /* chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {
-        if (result["upcoming-public-holiday-bar"] == null) {
-            updateSetting('upcoming-public-holiday-bar', true);
-            applySetting('upcoming-public-holiday-bar', true);
-        }
-    }); */
     document.getElementById('upcoming-public-holiday-bar').addEventListener('input', (e) => {
         updateSetting('upcoming-public-holiday-bar', e.target.checked);
     });
