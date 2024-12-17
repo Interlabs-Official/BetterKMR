@@ -17,20 +17,6 @@
 */
 console.log(`%c[BetterKMR 📗] ` + `%cCore components loaded`, 'color: #9CCC65', 'color: #fff');
 
-/*
-   List of scripts, in order, that get asynchronously loaded as modules on KAMAR pages.
-   Note that if an error occurs in a script, it doesn't halt the execution of the next scripts.
-   Don't forget to append your script(s) in "web_accessible_resources" in manifest.json.
-*/
-const scripts = [
-    "src/modules/navbar.js",
-    "src/modules/attendance-streak.js",
-    "src/modules/upcoming-holiday-bar.js",
-    "src/modules/settings.js",
-    "src/modules/footer.js",
-    "src/modules/info-tips.js",
-]
-
 // thank you stack overflow
 function waitForElm(selector) {
     return new Promise(resolve => {
@@ -59,33 +45,54 @@ function loader() {
         loader.className = 'loader';
 
         document.body.appendChild(loader);
-        
+
         loader.style.visibility = "visible";
-        
+
         function showContent() {
-          loader.classList.add('hidden');
-          document.getElementsByClassName("nav-and-main")[0].style.visibility = 'visible';
+            loader.classList.add('hidden');
+            document.getElementsByClassName("nav-and-main")[0].style.visibility = 'visible';
         }
         (async () => {
-            for (let i = 0; i < scripts.length; i++) {
-                console.log(`%c[BetterKMR 📘] ` + `%cLoading dynamic module: ` + scripts[i], 'color: #0091EA', 'color: #fff');
-                try {
-                    const src = chrome.runtime.getURL(scripts[i]);
-                    const contentMain = await import(src);
-                } catch (error) {
-                    console.log(`%c[BetterKMR 📕] ` + `%cFailed loading dynamic module "${scripts[i]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
-                }
-            }            
-          })();
+            try {
+                var url = chrome.runtime.getURL("src/config/scripts.yml")
+
+                fetch(url)
+                    .then(response => {
+                        if (!response.ok) {
+                            console.log(`%c[BetterKMR 📕] ` + `%cCritical failure! Failed to load base framework "frameworks/js-yaml.min.js":\n      ` + `%cBetterKMR base HTTP error! status: ${response.status}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        const yamlToJson = jsyaml.load(data);
+                        (async () => {
+                            for (let i = 0; i < yamlToJson.length; i++) {
+                                console.log(`%c[BetterKMR 📘] ` + `%cLoading dynamic module: ` + yamlToJson[i], 'color: #0091EA', 'color: #fff');
+                                try {
+                                    const src = chrome.runtime.getURL(yamlToJson[i]);
+                                    await import(src);
+                                } catch (error) {
+                                    console.log(`%c[BetterKMR 📕] ` + `%cFailed loading dynamic module "${yamlToJson[i]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                                }
+                            }
+                        })();
+                    })
+                    .catch(error => {
+                        console.log(`%c[BetterKMR 📕] ` + `%cCritical failure! Failed to load base framework "frameworks/js-yaml.min.js":\n      ` + `%cBetterKMR failed to fetch the file: ${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                    });
+            } catch (error) {
+                console.log(`%c[BetterKMR 📕] ` + `%cCritical failure! Failed to load base framework "frameworks/js-yaml.min.js":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+            }
+        })();
         const startTime = Date.now();
         const minDelay = 500;
-        
+
         const remainingTime = minDelay - (Date.now() - startTime);
-        
+
         if (remainingTime > 0) {
-          setTimeout(showContent, remainingTime);
+            setTimeout(showContent, remainingTime);
         } else {
-          showContent();
+            showContent();
         }
     });
 }

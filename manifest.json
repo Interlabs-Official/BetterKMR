@@ -14,7 +14,7 @@
     {
       "matches": ["https://*.school.kiwi/*"],
       "css": ["styles.css", "modify.css"],
-      "js": ["content.js", "logintitle.js"]
+      "js": ["frameworks/js-yaml.min.js", "content.js"]
     }
   ],
   "action": {},
@@ -33,12 +33,17 @@
         "icon/icon_transparent_48.png",
         "details/classInfo.json",
         "icon/btrkmr_transparent_logo.png",
+        "frameworks/js-yaml.min.js",
+        "src/config/scripts.yml",
+        "settings/editor.html",
+        "settings/editor.js",
         "src/modules/navbar.js",
         "src/modules/attendance-streak.js",
         "src/modules/upcoming-holiday-bar.js",
         "src/modules/settings.js",
         "src/modules/footer.js",
-        "src/modules/info-tips.js"
+        "src/modules/info-tips.js",
+        "src/modules/logintitle.js"
       ],
       "matches": ["https://*.school.kiwi/*"]
     }
