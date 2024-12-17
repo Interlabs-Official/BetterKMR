@@ -105,4 +105,12 @@ document.addEventListener('DOMContentLoaded', () => {
             content.classList.toggle('active', isActive);
         });
     }
+
+    /* document.getElementById("space-theme-convy32").addEventListener("click", newEntry);
+
+    function newEntry() {
+        var editor = ace.edit("editor");
+        editor.setTheme("ace/theme/monokai");
+        editor.session.setMode("ace/mode/javascript");
+    } */
 });

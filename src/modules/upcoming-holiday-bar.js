@@ -17,53 +17,107 @@
 */
 
 /* upcoming-holiday-bar.js - src/modules/upcoming-holiday-bar.js */
-if (!window.location.href.includes("attendance/week")) stop;
+if (window.location.href.includes("attendance/week")) {
     chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {
         if (result["upcoming-public-holiday-bar"] == "false" || result["upcoming-public-holiday-bar"] == false) {
             return;
         }
-    const holidays = [
-        { name: "New Year's Day", date: "2024-01-01" },
-        { name: "Day After New Year's Day", date: "2024-01-02" },
-        { name: "Waitangi Day", date: "2024-02-06" },
-        { name: "Good Friday", date: "2024-03-29" },
-        { name: "Easter Monday", date: "2024-04-01" },
-        { name: "Anzac Day", date: "2024-04-25" },
-        { name: "Queen's Birthday", date: "2024-06-03" },
-        { name: "Matariki", date: "2024-07-19" },
-        { name: "Labour Day", date: "2024-10-28" },
-        { name: "Christmas Day", date: "2024-12-25" },
-        { name: "Boxing Day", date: "2024-12-26" }
-    ];
 
-    const currentDate = new Date();
-    let nextHoliday = null;
+        const holidays = [{
+                name: "New Year's Day",
+                date: "2024-01-01",
+                colors: ["#ffffff", "#ff0000"]
+            }, // White and Red
+            {
+                name: "Post-New Year's Day",
+                date: "2024-01-02",
+                colors: ["#ffffff", "#00bcd4"]
+            }, // White and Cyan
+            {
+                name: "Waitangi Day",
+                date: "2024-02-06",
+                colors: ["#000000", "#ffffff"]
+            }, // Black and White
+            {
+                name: "Good Friday",
+                date: "2024-03-29",
+                colors: ["#8b0000", "#000000"]
+            }, // Dark Red and Black
+            {
+                name: "Easter Monday",
+                date: "2024-04-01",
+                colors: ["#ffff00", "#ffa500"]
+            }, // Yellow and Orange
+            {
+                name: "Anzac Day",
+                date: "2024-04-25",
+                colors: ["#ff0000", "#000000"]
+            }, // Red and Black
+            {
+                name: "Queen's Birthday",
+                date: "2024-06-03",
+                colors: ["#ffffff", "#00008b"]
+            }, // White and Dark Blue
+            {
+                name: "Matariki",
+                date: "2024-07-19",
+                colors: ["#2e2e2e", "#1e90ff"]
+            }, // Grey and Light Blue
+            {
+                name: "Labour Day",
+                date: "2024-10-28",
+                colors: ["#ffffff", "#ff4500"]
+            }, // White and Orange-Red
+            {
+                name: "Christmas Day",
+                date: "2024-12-25",
+                colors: ["#ffffff", "#ff0000"]
+            }, // White and Red
+            {
+                name: "Boxing Day",
+                date: "2024-12-26",
+                colors: ["#00ff00", "#ffffff"]
+            } // Green and White
+        ];
 
-    for (const holiday of holidays) {
-        const holidayDate = new Date(holiday.date);
-        if (holidayDate >= currentDate) {
-            nextHoliday = holiday;
-            break;
+        const currentDate = new Date();
+        let nextHoliday = null;
+
+        for (const holiday of holidays) {
+            const holidayDate = new Date(holiday.date);
+            if (holidayDate >= currentDate) {
+                nextHoliday = holiday;
+                break;
+            }
         }
-    }
 
-    if (nextHoliday) {
-        const targetElement = document.querySelector(".page-title");
-        if (targetElement) {
-            const injectedHTML = `
-                <div class="box-bcd" style="background-color: #004d40; color: white; padding: 10px; position: relative;">
-                    <h4 class="h4-upc-pub-hld-left">Upcoming Public Holiday</h4>
+        if (nextHoliday) {
+            const targetElement = document.querySelector(".page-title");
+            if (targetElement) {
+                const [color1, color2] = nextHoliday.colors;
+
+                const injectedHTML = `
+                <div class="box-bcd" style="
+                    --gradient-color1: ${color1};
+                    --gradient-color2: ${color2};
+                    background-color: #004d40; 
+                    color: white; 
+                    padding: 10px; 
+                    position: relative;">
+                    <h4 class="h4-upc-pub-hld-left">Next Public Holiday</h4>
                     <h1>${nextHoliday.name}</h1>
                     <h4 class="h4-upc-pub-hld-right">on ${new Date(nextHoliday.date).toLocaleDateString()}</h4>
                     <div class="close-buttons">
                         <button id="close-popup" class="close-btn" style="background-color: #ff5722; color: white; border: none; padding: 5px;">Close</button>
                     </div>
                 </div><br>`;
-            targetElement.insertAdjacentHTML("afterend", injectedHTML);
 
-            document.getElementById("close-popup").addEventListener("click", () => {
-                document.querySelector(".box").style.display = "none";
-            });
+                targetElement.insertAdjacentHTML("afterend", injectedHTML);
+
+                document.getElementById("close-popup").addEventListener("click", () => {
+                    document.querySelector(".box-bcd").style.display = "none";
+                });
+            }
         }
-    }
-});
+    });
+}

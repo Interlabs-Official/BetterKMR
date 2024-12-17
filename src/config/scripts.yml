@@ -1,0 +1,32 @@
+###########
+
+#   BetterKMR for Chrome
+#   Copyright (C) 2024 InterLabs
+
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
+
+#   You should have received a copy of the GNU Affero General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+###########
+# scripts.yml - src/config/scripts.yml #
+
+#  List of scripts, in order, that get asynchronously loaded as modules on KAMAR pages.
+#  Note that if an error occurs in a script, it doesn't halt the execution of the next scripts.
+#  Don't forget to append your script(s) in "web_accessible_resources" in manifest.json.
+
+- src/modules/navbar.js
+- src/modules/attendance-streak.js
+- src/modules/upcoming-holiday-bar.js
+- src/modules/settings.js
+- src/modules/footer.js
+- src/modules/info-tips.js
+- src/modules/logintitle.js
