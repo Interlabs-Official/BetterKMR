@@ -17,6 +17,17 @@
 */
 
 /* service.js - root directory */
+// Function to inject the CSS into a specific tab
+
+// Listen for tab updates (navigation, reload, etc.)
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === "complete" && tab.url) {
+      chrome.scripting.insertCSS({
+        target: { tabId: tab.id },
+        files: ["src/themes/space.css"]
+    });
+    }
+});
 chrome.action.onClicked.addListener(tab => { 
     chrome.tabs.create({
         url: chrome.runtime.getURL("settings/index.html")

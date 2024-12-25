@@ -4,6 +4,7 @@
   "version": "0.2.0",
   "description": "The ultimate revamp of KAMAR for the web",
   "permissions": [
+    "tabs",
     "activeTab",
     "storage"
   ],
@@ -13,7 +14,7 @@
   "content_scripts": [
     {
       "matches": ["https://*.school.kiwi/*"],
-      "css": ["styles.css", "modify.css"],
+      "css": ["modify.css"],
       "js": ["frameworks/js-yaml.min.js", "content.js"]
     }
   ],
@@ -36,6 +37,9 @@
         "frameworks/js-yaml.min.js",
         "src/config/scripts.yml",
         "settings/editor.html",
+        "src/config/themes.yml",
+        "src/themes/space.css",
+        "src/themes/vivid.css",
         "settings/editor.js",
         "src/modules/navbar.js",
         "src/modules/attendance-streak.js",
@@ -43,7 +47,8 @@
         "src/modules/settings.js",
         "src/modules/footer.js",
         "src/modules/info-tips.js",
-        "src/modules/logintitle.js"
+        "src/modules/logintitle.js",
+        "src/modules/themes.js"
       ],
       "matches": ["https://*.school.kiwi/*"]
     }

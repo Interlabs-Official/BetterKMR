@@ -69,7 +69,7 @@ function loader() {
                             for (let i = 0; i < yamlToJson.length; i++) {
                                 console.log(`%c[BetterKMR 📘] ` + `%cLoading dynamic module: ` + yamlToJson[i], 'color: #0091EA', 'color: #fff');
                                 try {
-                                    const src = chrome.runtime.getURL(yamlToJson[i]);
+                                    var src = chrome.runtime.getURL(yamlToJson[i]);
                                     await import(src);
                                 } catch (error) {
                                     console.log(`%c[BetterKMR 📕] ` + `%cFailed loading dynamic module "${yamlToJson[i]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');

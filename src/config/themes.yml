@@ -17,17 +17,11 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ###########
-# scripts.yml - src/config/scripts.yml #
+# themes.yml - src/config/themes.yml #
 
-#  List of scripts, in order, that get asynchronously loaded as modules on KAMAR pages.
-#  Note that if an error occurs in a script, it doesn't halt the execution of the next scripts.
-#  Don't forget to append your script(s) in "web_accessible_resources" in manifest.json.
+#  List of themes, in order, that get asynchronously loaded as CSS themes on KAMAR pages.
+#  Note that if an error occurs in a theme, it doesn't halt the execution of the next themes.
+#  Don't forget to append your theme(s) in "web_accessible_resources" in manifest.json.
 
-- src/modules/navbar.js
-- src/modules/attendance-streak.js
-- src/modules/upcoming-holiday-bar.js
-- src/modules/settings.js
-- src/modules/footer.js
-- src/modules/info-tips.js
-- src/modules/logintitle.js
-- src/modules/themes.js
+- "src/themes/space.css"
+- "src/themes/vivid.css"
