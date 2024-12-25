@@ -25,10 +25,10 @@ document.addEventListener('DOMContentLoaded', () => {
         "showBarcodeToggle": false,
         "profilePicUrl": "",
         "upcoming-public-holiday-bar": true,
-        "privateMode": false
+        "privateMode": false,
+        "theme-id-text": 0,
     };
 
-    // Automatically activate the "About" tab
     activateTab('general');
     document.getElementById("mainlogo").src = chrome.runtime.getURL("icon/btrkmr_transparent_logo.png")
 
@@ -69,6 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetting('upcoming-public-holiday-bar', e.target.checked);
     });
 
+    document.getElementById('theme-id-text').addEventListener('input', (e) => {
+        updateSetting('theme-id-text', e.target.value);
+    });
+
     function updateSetting(key, value) {
         chrome.storage.sync.set({ [key]: value }, () => {
             console.log(`${key} updated to`, value);
@@ -82,6 +86,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('student-barcode-toggle').checked = value;
         } else if (key === 'profilePicUrl') {
             document.getElementById('profile-pic-url').value = value;
+        } else if (key === 'theme-id-text') {
+            document.getElementById('theme-id-text').value = value;
         // themes
         } else if (key === 'theme-editor-back-img-url') {
             document.getElementById('theme-editor-back-img-url').value = value;

@@ -14,8 +14,8 @@ body {
     overflow: visible !important;
 }
 .is-today {
-    background-color: #53535380 !important;
-  }
+    background-color: #53535380;
+}
 .box {
     display: grid;
     place-content: center;
