@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BetterKMR",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "The ultimate revamp of KAMAR for the web",
   "permissions": [
     "tabs",
