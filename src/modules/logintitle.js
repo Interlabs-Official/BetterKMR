@@ -20,7 +20,7 @@
 const logintitle = document.getElementsByClassName("modal-title")[0];
 if (logintitle) {
     const intHTML2 = `
-        <img src="https://photos.fife.usercontent.google.com/pw/AP1GczNe5bF2vaOrQLA6wj08tK-J77BSAsAFopeAu4-JZ_z9KFLborpgOQE=w1500-h332-s-no-gm" alt="BetterKMR" class="loglogo" style="
+        <img src="https://lh3.googleusercontent.com/pw/AP1GczMGE23AMf3mA5H_5-ghng6aZxfSblviCzCDnFlXvXUnWXf5IbRX3uoQT3foz6hnqN8a_C5evRr0GhN66DdNNBA46U1BrhDvKKWQx5mas6W-77OjlBHsO3mPUaLlwpjX3TLgDJWg0c1RcDCU4C32u4E=w1500-h332-s-no-gm" alt="BetterKMR" class="loglogo" style="
             height: 60px;
         ">
     `
