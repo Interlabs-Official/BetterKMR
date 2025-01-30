@@ -14,21 +14,21 @@
     background-position: center center !important;              /* optional, center the image */
     background-attachment: fixed !important;
 }
-body .sk-main-content {
+/* body .sk-main-content {
     background: rgba(0, 0, 0, 0.48) !important;
-    /* border-radius: 16px !important; */
+    /* border-radius: 16px !important; */ /*
     border-bottom-left-radius: 16px !important;
     border-bottom-right-radius: 16px !important;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
     backdrop-filter: blur(5px) !important;
     -webkit-backdrop-filter: blur(5px) !important;
     border: 1px solid rgba(0, 0, 0, 0.3) !important;
-}
+} */
 body .sk_school_name {
-    display: none;
+   /* display: none; */
     background: -webkit-linear-gradient(#549ea8, #346369);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: ##003a91;
 }
 body .sk_thead th {
     background-color: #409dc2 !important;
@@ -37,10 +37,10 @@ body .sk_thead th {
     background-color: #409dc257 !important;
 }
 body .sk_school_subheading {
-    display: none;
+ /*   display: none; */
     background: -webkit-linear-gradient(#0097a1, #003e68);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-text-fill-color: ##003a91;
 }
 body .sk_nav {
     background: rgba(0, 0, 0, 0.67) !important;
