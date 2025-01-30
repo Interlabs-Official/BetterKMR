@@ -34,6 +34,7 @@
 });
 
 function injectTheme(yamlToJson) {
+    console.log(yamlToJson)
     chrome.storage.sync.get(["theme-id-text"]).then((result) => {
         const url = result["theme-id-text"] || "0";
         const themePath = yamlToJson[url];
