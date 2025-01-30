@@ -23,5 +23,6 @@
 #  Note that if an error occurs in a theme, it doesn't halt the execution of the next themes.
 #  Don't forget to append your theme(s) in "web_accessible_resources" in manifest.json.
 
+- ""
 - "src/themes/space.css"
 - "src/themes/vivid.css"
