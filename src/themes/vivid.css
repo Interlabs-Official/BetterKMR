@@ -65,7 +65,7 @@ body .card-body, .table td, tr {
     color: #fff !important;
 }
 .btn-danger {
-    background: -webkit-linear-gradient(#49cea2, #00849b);
+    background: -webkit-linear-gradient(#d80000, #640000);
     color: #fff !important;
 }
 .btn-secondary {
@@ -73,7 +73,7 @@ body .card-body, .table td, tr {
     color: #fff !important;
 }
 .btn-warning {
-    background: -webkit-linear-gradient(#d8ca00, #645a00);
+    background: -webkit-linear-gradient(#49cea2, #00849b);
     color: #fff !important;
 }
 body .sk_thead_cell {
