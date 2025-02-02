@@ -1,7 +1,7 @@
 ###########
 
 #   BetterKMR for Chrome
-#   Copyright (C) 2024 InterLabs
+#   Copyright (C) 2025 InterLabs
 
 #   This program is free software: you can redistribute it and/or modify
 #   it under the terms of the GNU Affero General Public License as published by
@@ -23,6 +23,6 @@
 #  Note that if an error occurs in a theme, it doesn't halt the execution of the next themes.
 #  Don't forget to append your theme(s) in "web_accessible_resources" in manifest.json.
 
-- "src/themes/space.css"
-- "src/themes/blank.css"
-- "src/themes/vivid.css"
+0: "src/themes/space.css"
+1: "src/themes/blank.css"
+2: "src/themes/vivid.css"

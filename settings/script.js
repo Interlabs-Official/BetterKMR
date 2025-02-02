@@ -1,6 +1,6 @@
 /*
     BetterKMR for Chrome
-    Copyright (C) 2024 InterLabs
+    Copyright (C) 2025 InterLabs
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "upcoming-public-holiday-bar": true,
         "privateMode": false,
         "theme-id-text": 0,
+        "show-attendance-info-class-name-tips": true,
     };
 
     activateTab('general');
@@ -73,6 +74,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetting('theme-id-text', e.target.value);
     });
 
+    document.getElementById('show-attendance-info-class-name-tips').addEventListener('change', (e) => {
+        updateSetting('showAttendanceInfoClassNameTips', e.target.checked);
+    });
+
     function updateSetting(key, value) {
         chrome.storage.sync.set({ [key]: value }, () => {
             console.log(`${key} updated to`, value);
@@ -88,15 +93,12 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('profile-pic-url').value = value;
         } else if (key === 'theme-id-text') {
             document.getElementById('theme-id-text').value = value;
-        // themes
-        } else if (key === 'theme-editor-back-img-url') {
-            document.getElementById('theme-editor-back-img-url').value = value;
-        } else if (key === 'theme-editor-additional-css-flags-back-img-url') {
-            document.getElementById('theme-editor-additional-css-flags-back-img-url').value = value;
         } else if (key === 'upcoming-public-holiday-bar') {
             document.getElementById('upcoming-public-holiday-bar').checked = value;
         } else if (key === 'privateMode') {
             document.getElementById('privateMode').checked = value;
+        } else if (key === 'show-attendance-info-class-name-tips') {
+            document.getElementById('show-attendance-info-class-name-tips').checked = value;
         }
     }
 
@@ -111,12 +113,4 @@ document.addEventListener('DOMContentLoaded', () => {
             content.classList.toggle('active', isActive);
         });
     }
-
-    /* document.getElementById("space-theme-convy32").addEventListener("click", newEntry);
-
-    function newEntry() {
-        var editor = ace.edit("editor");
-        editor.setTheme("ace/theme/monokai");
-        editor.session.setMode("ace/mode/javascript");
-    } */
 });

@@ -1,6 +1,6 @@
 /*
     BetterKMR for Chrome
-    Copyright (C) 2024 InterLabs
+    Copyright (C) 2025 InterLabs
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -38,8 +38,6 @@ function updateProfilePicture() {
             const profileBox = document.querySelector(".pb-3");
             if (avatar) {
                 avatar.src = result.profilePicUrl;
-                //avatar.parentNode.style = `
-                    //height: 32px !important; width: 32px !important;`;
             }
             if (profileBox) {
                 profileBox.src = result.profilePicUrl;

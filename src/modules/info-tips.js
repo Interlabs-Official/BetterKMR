@@ -1,6 +1,6 @@
 /*
     BetterKMR for Chrome
-    Copyright (C) 2024 InterLabs
+    Copyright (C) 2025 InterLabs
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -17,22 +17,32 @@
 */
 
 /* info-tips.js - src/modules/info-tips.js */
-try {
-    const jsonUrl = chrome.runtime.getURL('details/classInfo.json');
-    const response = await fetch(jsonUrl);
-    const infoClasses = await response.json();
-    const targets = document.querySelectorAll(".b-block");
-    targets.forEach((target) => {
-        const key = target.textContent.trim();
-        if (infoClasses[key]) {
-            const tooltipHTML = `
-                <div class="tooltip" style="">🛈
-                    <span class="tooltiptext" data-tooltip="${infoClasses[key]}">${infoClasses[key]}</span>
-                </div>
-                `;
-            target.innerHTML += tooltipHTML;
-        }
-    });
-} catch (error) {
-    console.error('Error loading or parsing details/classInfo.json:', error);
-}
+chrome.storage.sync.get(["showAttendanceInfoClassNameTips"]).then((result) => {
+    if (result["showAttendanceInfoClassNameTips"] == "false" || result["showAttendanceInfoClassNameTips"] == false) {
+        return;
+    }
+
+    try {
+        const jsonUrl = chrome.runtime.getURL('');
+        fetch(chrome.runtime.getURL("details/classLists/school01.yml"))
+        .then(response => response.text())
+        .then(data => {
+            const infoClasses = jsyaml.load(data);
+            const targets = document.querySelectorAll(".b-block");
+            targets.forEach((target) => {
+                const key = target.textContent.trim();
+                if (infoClasses[key]) {
+                    const tooltipHTML = `
+                        <div class="tooltip" style="">🛈
+                            <span class="tooltiptext" data-tooltip="${infoClasses[key]}">${infoClasses[key]}</span>
+                        </div>
+                        `;
+                    target.innerHTML += tooltipHTML;
+                }
+            });
+        })
+        .catch(error => console.error("Failed to load school list:", error));
+    } catch (error) {
+        console.error('Error loading or parsing details/classLists/school01.yml:', error);
+    }
+});

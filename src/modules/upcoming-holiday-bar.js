@@ -1,6 +1,6 @@
 /*
     BetterKMR for Chrome
-    Copyright (C) 2024 InterLabs
+    Copyright (C) 2025 InterLabs
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -23,62 +23,63 @@ if (window.location.href.includes("attendance/week")) {
             return;
         }
 
-        const holidays = [{
+        const holidays = [
+            {
                 name: "New Year's Day",
-                date: "2024-01-01",
+                date: "2025-01-01",
                 colors: ["#ffffff", "#ff0000"]
             }, // White and Red
             {
-                name: "Post-New Year's Day",
-                date: "2024-01-02",
+                name: "Day after New Year's Day",
+                date: "2025-01-02",
                 colors: ["#ffffff", "#00bcd4"]
             }, // White and Cyan
             {
                 name: "Waitangi Day",
-                date: "2024-02-06",
+                date: "2025-02-06",
                 colors: ["#000000", "#ffffff"]
             }, // Black and White
             {
                 name: "Good Friday",
-                date: "2024-03-29",
+                date: "2025-04-18",
                 colors: ["#8b0000", "#000000"]
             }, // Dark Red and Black
             {
                 name: "Easter Monday",
-                date: "2024-04-01",
+                date: "2025-04-21",
                 colors: ["#ffff00", "#ffa500"]
             }, // Yellow and Orange
             {
                 name: "Anzac Day",
-                date: "2024-04-25",
+                date: "2025-04-25",
                 colors: ["#ff0000", "#000000"]
             }, // Red and Black
             {
-                name: "Queen's Birthday",
-                date: "2024-06-03",
+                name: "King's Birthday",
+                date: "2025-06-02",
                 colors: ["#ffffff", "#00008b"]
             }, // White and Dark Blue
             {
                 name: "Matariki",
-                date: "2024-07-19",
+                date: "2025-06-20",
                 colors: ["#2e2e2e", "#1e90ff"]
             }, // Grey and Light Blue
             {
                 name: "Labour Day",
-                date: "2024-10-28",
+                date: "2025-10-27",
                 colors: ["#ffffff", "#ff4500"]
             }, // White and Orange-Red
             {
                 name: "Christmas Day",
-                date: "2024-12-25",
+                date: "2025-12-25",
                 colors: ["#ffffff", "#ff0000"]
             }, // White and Red
             {
                 name: "Boxing Day",
-                date: "2024-12-26",
+                date: "2025-12-26",
                 colors: ["#00ff00", "#ffffff"]
             } // Green and White
-        ];
+        ];        
 
         const currentDate = new Date();
         let nextHoliday = null;

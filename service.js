@@ -1,6 +1,6 @@
 /*
     BetterKMR for Chrome
-    Copyright (C) 2024 InterLabs
+    Copyright (C) 2025 InterLabs
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -20,14 +20,6 @@
 // Function to inject the CSS into a specific tab
 
 // Listen for tab updates (navigation, reload, etc.)
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    if (changeInfo.status === "complete" && tab.url) {
-      chrome.scripting.insertCSS({
-        target: { tabId: tab.id },
-        files: ["src/themes/space.css"]
-    });
-    }
-});
 chrome.action.onClicked.addListener(tab => { 
     chrome.tabs.create({
         url: chrome.runtime.getURL("settings/index.html")

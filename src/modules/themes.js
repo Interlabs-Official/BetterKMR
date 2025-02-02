@@ -1,6 +1,6 @@
 /*
     BetterKMR for Chrome
-    Copyright (C) 2024 InterLabs
+    Copyright (C) 2025 InterLabs
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as published by
@@ -17,24 +17,15 @@
 */
 
 /* themes.js - src/modules/themes.js */
-// One annoying thing is that it takes a second for the theme to load. Makes the page look weird.
- chrome.storage.local.get("cachedThemes").then((cache) => {
-    if (cache.cachedThemes) {
-        injectTheme(cache.cachedThemes);
-    } else {
-        fetch(chrome.runtime.getURL("src/config/themes.yml"))
-            .then(response => response.text())
-            .then(data => {
-                const yamlToJson = jsyaml.load(data);
-                chrome.storage.local.set({ "cachedThemes": yamlToJson });
-                injectTheme(yamlToJson);
-            })
-            .catch(error => console.error("Failed to load themes:", error));
-    }
-});
+fetch(chrome.runtime.getURL("src/config/themes.yml"))
+    .then(response => response.text())
+    .then(data => {
+        const yamlToJson = jsyaml.load(data);
+        injectTheme(yamlToJson);
+    })
+    .catch(error => console.error("Failed to load themes:", error));
 
 function injectTheme(yamlToJson) {
-    console.log(yamlToJson)
     chrome.storage.sync.get(["theme-id-text"]).then((result) => {
         const url = result["theme-id-text"] || "0";
         const themePath = yamlToJson[url];
