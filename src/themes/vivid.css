@@ -29,6 +29,7 @@ body .sk_school_name {
     background: -webkit-linear-gradient(#549ea8, #346369);
     -webkit-background-clip: text;
     -webkit-text-fill-color: #003a91;
+    text-shadow: 2px 2px #003c8b;
 }
 body .sk_thead th {
     background-color: #409dc2 !important;
