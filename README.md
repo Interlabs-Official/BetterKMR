@@ -1,29 +1,34 @@
 ![btrkmr_transparent_logo](https://github.com/user-attachments/assets/2e12559e-427d-4a47-b3d0-b854b150e606)
 <p align="center"><img src="https://img.shields.io/badge/Version-1.0.0-blue" alt="Version"></img></p>
-<p align="center"><b>An awesome overhaul for the Kamar student portal.</b></p>
+<p align="center"><b>An awesome overhaul for the school.kiwi student portal, formerly known as KAMAR.</b></p>
 
 ## Why use BetterKMR?
-> BetterKMR is an overhaul of the new school.kiwi/Kamar student portal. It's designed to fix and modify some of the changes that the new portal made, as well as extra missing features from the old Kamar portal. ***If you want customisation, BetterKMR is for you!***
+BetterKMR is an overhaul of the new school.kiwi student portal. It's designed to fix and modify some of the changes that the new portal made, as well as extra missing features from the old Kamar portal. ***If you want customisation, BetterKMR is for you!***
 
 # Installation
-Before installing, download the latest release archive from the [releases page](https://github.com/Convy32/kamar-revamped/releases).<br>
-> • Open the extensions page on your browser<br>
-> • Enable Developer Mode <br>
-> • Click "Load unpacked" <br>
-> • Select your unzipped folder <br>
-> • Open Kamar and enjoy! <br>
+Before installing, download the latest release archive from the [releases page](https://github.com/Interlabs-Official/BetterKMR/releases).<br>
+• Open the extensions page on your browser<br>
+• Enable developer mode <br>
+• Click "Load unpacked" <br>
+• Select your unzipped BetterKMR instance <br>
+• Open Kamar and enjoy! <br>
 
-Above is the instructions for Chrome. For Firefox, [check the guide out here](https://extensionworkshop.com/documentation/develop/temporary-installation-in-firefox/).
+Above is the instructions for Chrome. Firefox is currently not available with our existing framework, but support may be added later.
 
-![changes3_btrkmr](https://github.com/user-attachments/assets/9e13bd84-750a-4e37-9919-1d9db17ebfaa)
-> ✅ Cleaner navbar<br>
-> ✅ Class info details<br>
-> ✅ Green colour for justified absences<br>
-> ✅ Custom space background and colour scheme<br>
-> ✅ Current day is highlited<br>
-> ✅ Custom profile picture<br>
+## Changes
+✅ Cleaner navbar<br>
+✅ Sleek, user friendly settings panel<br>
+✅ Lots of brilliant themes to choose from<br>
+✅ Class info details<br>
+✅ Holiday reminders<br>
+✅ Custom profile picture<br>
+Including tons of other features we know you'll enjoy!
 
-If you would like to contribute and/or fix issues, feel free to [create a pull request.](https://github.com/Convy32/kamar-revamped/pulls)
+If you would like to contribute and/or fix issues, feel free to [create a pull request.](https://github.com/Interlabs-Official/BetterKMR/pulls)
+
+![image](https://github.com/user-attachments/assets/447d4f30-9ede-41f2-9bb2-816efcf34ade)
+
+# Old Images
 
 ## Home Page
 ![image](https://github.com/user-attachments/assets/04b1dc85-331e-4edf-8828-0228ea0efe74)
