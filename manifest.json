@@ -41,6 +41,7 @@
         "src/themes/space.css",
         "src/themes/vivid.css",
         "src/themes/blank.css",
+        "src/themes/starwarsempire.css",
         "settings/editor.js",
         "src/modules/navbar.js",
         "src/modules/attendance-streak.js",
