@@ -1,0 +1,189 @@
+.sk_page {
+    background-color: #19372e!important;
+    background: url("https://wallpapercave.com/wp/wp2082809.jpg") #1C1C1C top fixed no-repeat !important;
+}
+.sk_header {
+    background-color: #b9913c!important;
+    background: url("https://wallpapercave.com/wp/wp2082809.jpg") #1C1C1C top fixed no-repeat !important;
+}
+body .sk_school_name {
+    color: #ffffff !important;
+}
+body .sk_school_subheading {
+    color: #cccccc !important;
+}
+body .sk_nav {
+    background-color: #00000080 !important;
+}
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1.25rem;
+    background: #00000080 !important;
+}
+body .list-group.home-items .custom-tile .list-group-item { 
+    align-items: center;
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: 2px;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    background: #004970 !important;
+    padding: .75em;
+    border: black !important;
+}
+body .sk_card { 
+    align-items: center;
+    border-radius: 1rem;
+    border-style: solid;
+    border-width: 2px;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    background: #004970 !important;
+    padding: .75em;
+    border: black !important;
+}
+body .sk_btn.active, .sk_btn:active, .sk_btn:hover {
+    background-color: #0082c7 !important;
+    border-color: black !important;
+    color: white !important;
+}
+body .sk_btn, .sk_btn.disabled:hover {
+    background-color: #004970 !important;
+    border-color: black !important;
+}
+body .sk_btn:hover { 
+    background-color: #00a6ff !important;
+    border-color: black !important;
+}
+body .sk_table {
+    background-color: #00000080 !important;
+}
+body .page-attendance .calendar-day.sk_border {
+    border-bottom-width: 0;
+    border-color: #ffffff60 !important;
+}
+.btn-warning {
+    color: #fff !important;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+}
+.calendar-day.non-period {
+    opacity: 1 !important;
+}
+body .sk_thead th, .sk_thead_cell {
+    background-color: #004970 !important;
+}
+body svg text {
+    fill: #000000 !important;
+}
+body .sk_border, .table th, .table td, .card {
+    border-color: #ffffff60 !important;
+}
+body .table-striped tbody {
+    background-color: #00000080 !important;
+}
+body .table thead th {
+    border-bottom-width: 1px;
+    vertical-align: middle;
+    background-color: #004970 !important;
+}
+body .table td {
+    border-color: #ffffff60 !important;
+}
+body .table th {
+    border-color: #ffffff60 !important;
+}
+body .sk_border {
+    background: #00000080 !important;
+}
+body .table th {
+    background-color: #00000000 !important;
+}
+body .sk_thead_cell {
+    background-color: #004970 !important;
+}
+.btn-success {
+    color: #fff !important;
+}
+.btn-info {
+    color: #fff !important;
+}
+.btn-danger {
+    color: #fff !important;
+}
+.btn-secondary {
+    color: #fff !important;
+}
+.modal-backdrop.show {
+    opacity: 0 !important;
+}
+.alert-success {
+    display: none !important;
+}
+.modal-content {
+    background: #00000000 !important;
+}
+body .modal-header {
+    background: #004970 !important;
+}
+.modal-body {
+    padding: 0 !important;
+    background: #000000cc !important;
+}
+.modal-header button[data-dismiss=modal] {
+    color: white !important;
+}
+.modal-title {
+    margin: auto;
+}
+body .nav-menu {
+    background: #000000cc !important;
+}
+.school-card {
+    background: #2c2c2c !important;
+}
+.form-control {
+    background-color: #000000cc !important;
+    border: 1px solid #ffffff;
+}
+body .sk_table {
+    color: #ffffff !important;
+}
+body .sk_btn, .sk_btn.disabled:hover {
+    color: #ffffff !important;
+}
+/* light mode fixes */
+body .sk_nav_text {
+    color: #ffffff !important;
+}
+body .nav-item.active .sk_nav_text {
+    color: #AE56F5 !important;
+}
+a.sk_nav_text.nav-link.nav-link:hover {
+    color: #9757CB !important;
+}
+body .container {
+    color: white;
+}
+body .sk_btn svg {
+    fill: #ffffff !important; 
+}
+body .sk_btn:hover {
+    color: #ffffff !important;
+}
+body .school-card {
+    color: white !important;
+}
+/* end */
+th.results-section-level.sk_thead_cell {
+    background-color: rgb(0, 130, 199) !important;
+}
+th.results-section-header.sk_thead_cell {
+    background-color: rgb(0, 130, 199) !important;
+}
+tr.sk_thead {
+    background: #004970;
+}
