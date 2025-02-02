@@ -32,6 +32,7 @@
       "resources": [
         "settings/index.html",
         "icon/icon_transparent_48.png",
+        "icon/Star-Wars-Space-Background-HD.png",
         "details/classLists/school01.yml",
         "icon/btrkmr_transparent_logo.png",
         "frameworks/js-yaml.min.js",
