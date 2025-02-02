@@ -299,6 +299,101 @@
     visibility: visible;
     opacity: 1;
 }
+
+/* theme selector */
+    /* Container for the entire grid */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto; /* Center the grid horizontally */
+    }
+
+    /* Each card container */
+    .theme-card {
+      background-color: #2a2a3b;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Thumbnail image */
+    .theme-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    /* Card content area */
+    .theme-content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0.5rem;
+    }
+
+    /* Title row: space between title and download button */
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Title styling */
+    .theme-title {
+      font-size: 1.2rem;
+      margin: 0;
+      flex: 1;
+    }
+
+    /* Download button styling */
+    .download-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .download-button:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    /* Author styling */
+    .theme-author {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #bbb;
+      margin: 0;
+    }
+
+    /* Description styling */
+    .theme-description {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Optional: small top heading */
+    .page-heading {
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    #greyed-out-applied {
+        background-color: #555 !important;
+        color: #fff !important;
+    }
+
+    #greyed-out-applied:disabled {
+        cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -394,22 +489,10 @@
                 </div>
             </div> 
             <div id="themes" class="tab-content">
-                <h2>Theme Selector (WIP)</h2>
+                <h2>Theme Browser</h2>
                 <div>Once changes are made, refresh your KAMAR page(s).</div>
-                <div class="grid-container">
-                    <!-- Example Item -->
-                    <div class="grid-item" id="space-theme-convy32">
-                      <img src="https://wallpapercave.com/wp/wp2082809.jpg" alt="Cover" class="cover-image">
-                      <div class="grid-content">
-                        <h2 class="title">Space Theme</h2>
-                        <p class="author">by Convy32</p>
-                        <p class="description">The default Space theme, bundled with BetterKMR by default</p>
-                        <!-- <button class="install-button">Installed</button> -->
-                      </div>
-                    </div>
-                </div>
-                <div class="grid-textbox-container">
-                    <div id="editor"></div>
+                <div class="theme-grid" id="theme-grid">
+
                 </div>
             </div>
             <div id="misc" class="tab-content">This is the Misc section.</div>

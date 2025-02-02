@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('profile-pic-url').addEventListener('input', (e) => {
         updateSetting('profilePicUrl', e.target.value);
     });
-    
+
     document.getElementById('privateMode').addEventListener('change', (e) => {
         updateSetting('privateMode', e.target.checked);
     });
@@ -79,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function updateSetting(key, value) {
-        chrome.storage.sync.set({ [key]: value }, () => {
+        chrome.storage.sync.set({
+            [key]: value
+        }, () => {
             console.log(`${key} updated to`, value);
         });
     }
@@ -103,6 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function activateTab(tabId) {
+        // on (*every*) tab activation, check to see which theme is active and update buttons accordingly
+        if (tabId == "themes") {
+            chrome.storage.sync.get(["theme-id-text"]).then((result) => {
+                const id = result["theme-id-text"] || "0";
+                const buttonById = getThemeCardButtonById(id);
+                if (buttonById) {
+                    // it's fine to call null here on the name, we don't need it for this situation
+                    onApply(null, id, buttonById, false);
+                }
+            });
+        }
         tabs.forEach(tab => {
             const isActive = tab.getAttribute('data-tab') === tabId;
             tab.classList.toggle('active', isActive);
@@ -113,4 +126,107 @@ document.addEventListener('DOMContentLoaded', () => {
             content.classList.toggle('active', isActive);
         });
     }
+
+    /**
+     * Creates a theme card and appends it to the container with id "theme-grid".
+     *
+     * @param {string} customID - The custom ID you assign to the card.
+     * @param {string} title - The theme title.
+     * @param {string} thumbnailURL - The URL for the thumbnail image.
+     * @param {string} author - The author name, e.g. Convy32.
+     * @param {string} description - The theme description.
+     * @param {function} applyCallback - A callback function to run when the "Apply" button is clicked, which is the function onApply. I love callback functions. They're awesome.
+     * 
+     */
+    function createThemeCard(customID, title, thumbnailURL, author, description, applyCallback) {
+        const themeGrid = document.getElementById('theme-grid');
+
+        const card = document.createElement('div');
+        card.className = 'theme-card';
+        card.id = customID;
+
+        const img = document.createElement('img');
+        img.src = thumbnailURL;
+        img.alt = title + ' Thumbnail';
+        card.appendChild(img);
+
+        const content = document.createElement('div');
+        content.className = 'theme-content';
+
+        const titleRow = document.createElement('div');
+        titleRow.className = 'title-row';
+
+        const h2 = document.createElement('h2');
+        h2.className = 'theme-title';
+        h2.textContent = title;
+        titleRow.appendChild(h2);
+
+        const button = document.createElement('button');
+        button.className = 'download-button';
+        button.textContent = 'Apply';
+        button.addEventListener('click', function() {
+            applyCallback(title, customID, button, true);
+        });
+        titleRow.appendChild(button);
+
+        content.appendChild(titleRow);
+
+        const pAuthor = document.createElement('p');
+        pAuthor.className = 'theme-author';
+        pAuthor.textContent = 'by ' + author;
+        content.appendChild(pAuthor);
+
+        const pDesc = document.createElement('p');
+        pDesc.className = 'theme-description';
+        pDesc.textContent = description;
+        content.appendChild(pDesc);
+
+        card.appendChild(content);
+        themeGrid.appendChild(card);
+    }
+
+    function onApply(themeName, customID, button, shouldApply) {
+        if (document.getElementById("greyed-out-applied")) {
+            document.getElementById("greyed-out-applied").textContent = "Apply"
+            document.getElementById("greyed-out-applied").disabled = false;
+            document.getElementById("greyed-out-applied").removeAttribute("id");
+        }
+        button.setAttribute("id", "greyed-out-applied")
+        button.disabled = true;
+        button.textContent = "In Use"
+
+        if (shouldApply) {
+            updateSetting('theme-id-text', customID);
+            console.log('Theme applied:', themeName, 'with ID:', customID);
+        }
+    }
+
+    function getThemeCardById(id) {
+        return document.getElementById(id);
+    }
+
+    function getThemeCardButtonById(id) {
+        const card = getThemeCardById(id);
+        if (card) {
+            return card.querySelector('.download-button');
+        }
+        return null;
+    }
+
+    createThemeCard(
+        '0', // custom ID for this card
+        'Space Theme', // title
+        'https://wallpapercave.com/wp/wp2082809.jpg', // thumbnail
+        'Convy32', // author
+        "The default Space theme, bundled with BetterKMR by default.",
+        onApply // callback function (i love these)
+    );
+    createThemeCard(
+        '2',
+        'Vivid Winter',
+        'https://images7.alphacoders.com/134/1349488.jpeg',
+        'Solar',
+        "A chill winter theme with a background so great it can't be artificial intelligence.",
+        onApply
+    );
 });
