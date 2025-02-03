@@ -242,8 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
         '3',
         'Star Wars Empire',
         '../assets/images/backgrounds/starwarsempire.png',
-        'Axolotl',
-        "May the Force be with you.",
+        'Samuel H',
+        "Rule through the fear of force rather than force itself. -Wilhuff Tarkin",
         onApply
     );
 
