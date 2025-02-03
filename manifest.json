@@ -43,15 +43,8 @@
         "src/themes/vivid.css",
         "src/themes/blank.css",
         "src/themes/starwarsempire.css",
+        "src/modules/*",
         "settings/editor.js",
-        "src/modules/navbar.js",
-        "src/modules/attendance-streak.js",
-        "src/modules/upcoming-holiday-bar.js",
-        "src/modules/settings.js",
-        "src/modules/footer.js",
-        "src/modules/info-tips.js",
-        "src/modules/logintitle.js",
-        "src/modules/themes.js"
       ],
       "matches": ["https://*.school.kiwi/*"]
     }
