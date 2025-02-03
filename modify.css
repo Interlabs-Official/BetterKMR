@@ -182,3 +182,30 @@ body {
       opacity: 1;
   }
 }
+/*
+   Login box to all themes - addresses https://github.com/Interlabs-Official/BetterKMR/issues/44
+   Includes code from Convy32's Space Theme
+*/
+body .modal-header {
+  background: #004970 !important;
+}
+.modal-header button[data-dismiss=modal] {
+  color: white !important;
+}
+.modal-title {
+  margin: auto;
+}
+.modal-body {
+  padding: 0 !important;
+  background: #000000cc !important;
+}
+.modal-backdrop.show {
+  opacity: 0 !important;
+}
+.form-control {
+  background-color: #000000cc !important;
+  border: 1px solid #ffffff;
+}
+.modal-content {
+  background: #00000000 !important;
+}
