@@ -15,10 +15,18 @@
     background-attachment: fixed !important;
 }
 body .sk_school_name {
-    color: #ffffff !important;
+   /* display: none; */
+    background: -webkit-linear-gradient(#549ea8, #346369);
+    -webkit-background-clip: text;
+    text-shadow: 2px 2px #003f87;
+    color: #f7f7f7 !important;
 }
 body .sk_school_subheading {
-    color: #cccccc !important;
+ /*   display: none; */
+    background: -webkit-linear-gradient(#0097a1, #003e68);
+    -webkit-background-clip: text;
+    text-shadow: 2px 2px #003f87;
+    color: #f7f7f7 !important;
 }
 body .sk_nav {
     background-color: #00000080 !important;
@@ -168,10 +176,10 @@ body .sk_nav_text {
     color: #ffffff !important;
 }
 body .nav-item.active .sk_nav_text {
-    color: #AE56F5 !important;
+    color: #1519c9 !important;
 }
 a.sk_nav_text.nav-link.nav-link:hover {
-    color: #9757CB !important;
+    color: #1519c9 !important;
 }
 body .container {
     color: white;
