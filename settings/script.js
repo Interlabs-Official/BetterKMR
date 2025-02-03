@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     createThemeCard(
         '0', // custom ID for this card
         'Space Theme', // title
-        'https://wallpapercave.com/wp/wp2082809.jpg', // thumbnail
+        '../assets/images/backgrounds/space.jpg', // thumbnail
         'Convy32', // author
         "The default Space theme, bundled with BetterKMR by default.",
         onApply // callback function (i love these)
@@ -224,9 +224,17 @@ document.addEventListener('DOMContentLoaded', () => {
     createThemeCard(
         '2',
         'Vivid Winter',
-        'https://images7.alphacoders.com/134/1349488.jpeg',
+        '../assets/images/backgrounds/vivid.jpeg',
         'Solar',
         "A chill winter theme with a background so great it can't be artificial intelligence.",
+        onApply
+    );
+    createThemeCard(
+        '3',
+        'Star Wars Empire',
+        '../assets/images/backgrounds/starwarsempire.png',
+        'Axolotl',
+        "May the Force be with you.",
         onApply
     );
 });
