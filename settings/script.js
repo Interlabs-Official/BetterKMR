@@ -240,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     createThemeCard(
         '3',
-        'Star Wars Empire',
+        'Star Destroyers',
         '../assets/images/backgrounds/starwarsempire.png',
         'Samuel H',
         "Rule through the fear of force rather than force itself. -Wilhuff Tarkin",
