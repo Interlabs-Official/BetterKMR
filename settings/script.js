@@ -246,6 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
         "Rule through the fear of force rather than force itself. -Wilhuff Tarkin",
         onApply
     );
+    createThemeCard(
+        '4',
+        'Pure Dark Theme',
+        '',
+        'Solar',
+        "When you just need that peace and quiet.",
+        onApply
+    );
 
     function createNotification(message, color, frontcol) {
         const notificationContainer = document.getElementById('notification-container');
