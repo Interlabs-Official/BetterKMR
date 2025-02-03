@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Wizard</title>
+    <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', sans-serif;
+          margin: 0;
+          padding: 0;
+          background-color: #252534;
+          color: #ffffff;
+          display: flex;
+          height: 100vh;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background: #2c2c3e;
+  padding: 15px 0;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.tab {
+  padding: 15px 20px;
+  text-align: left;
+  cursor: pointer;
+  color: #ccc;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.tab:hover, .tab.active {
+  background: #3b3b50;
+  color: #fff;
+  box-shadow: inset 4px 0 #2979ff;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 30px;
+  background: #252534;
+  border-left: 2px solid #3b3b50;
+  overflow-y: auto;
+}
+
+.tab-content {
+  display: none;
+  animation: fade-in 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 20px 0;
+  padding: 15px;
+  background: #2b2b3a;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.setting:hover {
+  transform: scale(1.02);
+}
+
+.toggle-switch {
+  margin-left: 10px;
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.toggle-switch input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-switch .slider {
+  width: 50px;
+  height: 25px;
+  background: #555;
+  border-radius: 25px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.toggle-switch .slider:before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  transition: left 0.3s ease;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .slider {
+  background: #2979FF;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .slider:before {
+  left: 60%;
+}
+
+.text-input {
+  background: #444;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 8px 12px;
+  border-radius: 5px;
+  width: 150%;
+  transition: border-color 0.3s ease;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #2979FF;
+}
+
+@keyframes fade-in {
+  from {
+      opacity: 0;
+      transform: translateY(10px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.huge-01 {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.huge-01_5 {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+
+.huge-02 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.huge-03 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.huge-03_italic {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #7e7e7e;
+    font-style: italic;
+}
+
+        .wizard-container {
+            width: 80%;
+            margin: 100px auto;
+            text-align: center;
+        }
+
+        .wizard-step {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .wizard-step.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .button { /* thank you w3schools */
+            font-family: 'Inter', sans-serif;
+            background-color: #008CBA;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+
+        /* file upload */
+        .container {
+            text-align: center;
+        }
+
+        .file-label {
+            font-size: 27px;
+            width: 650px;
+            height: 35px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .preview-container {
+            margin-top: 20px;
+        }
+
+        .image-preview {
+            width: 512px;
+            height: 512px; 
+            object-fit: cover;
+            border: 2px solid #008CBA;
+            border-radius: 5px;
+        }
+
+        .next-button {
+            font-family: 'Inter', sans-serif;
+            background-color: #00bbb2;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+        .next-button[disabled] {
+        background-color: #ccc; /* Disabled state color */
+        cursor: not-allowed; 
+        }
+
+        .image-preview[src=""] {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="wizard-container">
+        <div id="welcome" class="wizard-step active">
+            <img src="../assets/images/wizard/acc_preview.png" style="margin-bottom: 15px;"></img>
+            <div class="huge-01">Welcome to the Profile Picture Wizard!</div>
+            <div class="huge-02">Let's help you get a custom profile picture onto school.kiwi.</div>
+            <div class="huge-03">Click "Next" to proceed.</div>
+            <br>
+            <div class="huge-03_italic">A couple of notes here:</div>
+            <div class="huge-03_italic">* Only PNG and JPG/JPEG images are supported. For GIFs and other file types, use Profile Image URL instead.</div>
+            <div class="huge-03_italic">* Profile pictures made here won't use the Chrome sync feature (storage limits). Use Profile Image URL instead.</div>
+            <button id="nextButton" class="button">Next</button>
+        </div>
+
+        <div id="upload" class="wizard-step">
+            <div class="huge-01_5">Upload a File</div>
+            <div class="file-upload-container">
+                <label for="fileUpload" class="file-label">Choose an image (PNG, JPG, JPEG)</label>
+                <input type="file" id="fileUpload" accept=".png, .jpg, .jpeg" class="file-input" />
+                <div class="huge-02" style="margin-top: 20px;">Note: This is only for preview purposes only, resolution will be set at the next stage.</div>
+                <div class="huge-03">This is why the content below may seem blurry.</div>
+                <div class="preview-container" id="previewContainer">
+                    <img id="imagePreview" src="" alt="Image Preview" class="image-preview" />
+                </div>
+            </div>
+            <button id="backButton" class="button">Back</button>
+            <button id="nextButton" class="next-button" class="button">Next</button>
+        </div>
+    </div>
+
+    <script src="wizard.js"></script>
+</body>
+</html>

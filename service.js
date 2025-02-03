@@ -34,3 +34,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         });
   }
 })
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.action === "checkPinned") {
+      chrome.action.getUserSettings().then((settings) => {
+          sendResponse({ isPinned: settings.isOnToolbar });
+      });
+      return true;
+  }
+});

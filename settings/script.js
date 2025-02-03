@@ -18,6 +18,7 @@
 
 /* script.js - settings/script.js */
 document.addEventListener('DOMContentLoaded', () => {
+    console.log(`%c[BetterKMR 📘] ` + `%cWelcome to the BetterKMR extension settings. Please do not paste/enter commands in this console unless you know what you're doing.`, 'color: #0091EA', 'color: #fff');
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
     const settings = {
@@ -28,6 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         "privateMode": false,
         "theme-id-text": 0,
         "show-attendance-info-class-name-tips": true,
+        "superPrivateMode": false,
     };
 
     activateTab('general');
@@ -78,6 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSetting('showAttendanceInfoClassNameTips', e.target.checked);
     });
 
+    // advanced
+    document.getElementById('superPrivateMode').addEventListener('change', (e) => {
+        updateSetting('superPrivateMode', e.target.checked);
+    });
+
     function updateSetting(key, value) {
         chrome.storage.sync.set({
             [key]: value
@@ -101,6 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('privateMode').checked = value;
         } else if (key === 'show-attendance-info-class-name-tips') {
             document.getElementById('show-attendance-info-class-name-tips').checked = value;
+        } else if (key === 'superPrivateMode') {
+            document.getElementById('superPrivateMode').checked = value;
         }
     }
 
@@ -237,4 +246,48 @@ document.addEventListener('DOMContentLoaded', () => {
         "May the Force be with you.",
         onApply
     );
+
+    function createNotification(message, color, frontcol) {
+        const notificationContainer = document.getElementById('notification-container');
+        
+        // Create a new notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.style.backgroundColor = color;
+        notification.style.color = frontcol;
+        notification.innerText = message;
+    
+        // Add click event to remove the notification
+        notification.addEventListener('click', () => {
+            notification.classList.add('hidden');
+            setTimeout(() => notification.remove(), 500);
+        });
+    
+        // Append the notification to the container
+        notificationContainer.appendChild(notification);
+    
+        // Automatically remove the notification after 5 seconds
+        setTimeout(() => {
+            if (notification) {
+                notification.classList.add('hidden');
+                setTimeout(() => notification.remove(), 500);
+            }
+        }, 5000);
+    }    
+
+    chrome.runtime.sendMessage({ action: "checkPinned" }, (response) => {
+        if (response.isPinned) {
+            console.log("Thank you for pinning the BetterKMR extension!");
+        } else {
+            const randomInt = Math.floor(Math.random() * (100 - 1 + 1) + 1);
+            if (randomInt > 50) {
+                createNotification("You should totally pin BetterKMR for easy access!", "#0073de", "#ffffff");
+            }
+            console.log("Rolled a(n) " + randomInt + ". Values over 50 show the BetterKMR pin notification.");
+        }
+    });
+
+    document.getElementById("goToWizard").addEventListener('click', (event) => {
+        window.location.href = chrome.runtime.getURL("settings/pfp_wizard.html");
+    })
 });

@@ -1,5 +1,5 @@
 .sk_page {
-    background-color: #19372e!important;
+    background-color: #000000!important;
     background: url("../../assets/images/backgrounds/vivid.jpeg") #1C1C1C !important;
     background-size:     cover !important;                      /* <------ */
     background-repeat:   no-repeat !important;
@@ -7,7 +7,7 @@
     background-attachment: fixed !important;
 }
 .sk_header {
-    background-color: #b9913c!important;
+    background-color: #000000!important;
     background: url("../../assets/images/backgrounds/vivid.jpeg") #1C1C1C !important;
     background-size:     cover !important;                      /* <------ */
     background-repeat:   no-repeat !important;

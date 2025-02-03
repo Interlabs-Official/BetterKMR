@@ -32,16 +32,45 @@ function handleBarcodeVisibility() {
 }
 
 function updateProfilePicture() {
+    const avatar = document.querySelector(".avatar");
+    const profileBox = document.querySelector(".pb-3");
+    chrome.storage.local.get('profilePicImageDataURL', function(result) {
+        if (result['profilePicImageDataURL']) {
+            if (avatar) { avatar.src = result['profilePicImageDataURL']; }
+            if (profileBox) { profileBox.src = result['profilePicImageDataURL']; }
+        } else {
+            // resort to old method
+            chrome.storage.sync.get(["profilePicUrl"]).then((result) => {
+                if (result.profilePicUrl) {
+                    if (avatar) {
+                        avatar.src = result.profilePicUrl;
+                    }
+                    if (profileBox) {
+                        profileBox.src = result.profilePicUrl;
+                    }
+                }
+            });
+        }
+    });
+}
+
+function updateProfilePictureByURL() {
+    const avatar = document.querySelector(".avatar");
+    const profileBox = document.querySelector(".pb-3");
     chrome.storage.sync.get(["profilePicUrl"]).then((result) => {
         if (result.profilePicUrl) {
-            const avatar = document.querySelector(".avatar");
-            const profileBox = document.querySelector(".pb-3");
-            if (avatar) {
-                avatar.src = result.profilePicUrl;
+            if (!result.profilePicUrl == "" || !result.profilePicUrl == null) {
+                if (avatar) {
+                    avatar.src = result.profilePicUrl;
+                }
+                if (profileBox) {
+                    profileBox.src = result.profilePicUrl;
+                }
+            } else {
+                updateProfilePicture();
             }
-            if (profileBox) {
-                profileBox.src = result.profilePicUrl;
-            }
+        } else {
+            updateProfilePicture();
         }
     });
 }
@@ -70,6 +99,39 @@ function updatePrivateMode() {
         }
     });
 }
+
+function updateSuperPrivateMode() {
+    chrome.storage.sync.get(["superPrivateMode"]).then((result) => {
+        if (result.superPrivateMode) {
+            console.log("super private mode")
+            const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
+            if (schoolCardDob) { schoolCardDob.style.display = "none"; }
+            const schoolName = document.getElementsByClassName("sk_school_name")[0];
+            schoolName.textContent = "High School";
+            const schoolMotto = document.getElementsByClassName("sk_school_subheading")[0];
+            schoolMotto.textContent = "";
+            const schoolLogo = document.getElementsByClassName("sk_logo");
+            for (let element of schoolLogo) {
+                element.innerHTML = `
+                <img src="https://images.vexels.com/media/users/3/224234/isolated/preview/ff7c525c1c3e1bef640644542001e1fd-online-school-logo.png" alt="High School">
+                `
+            }
+            // school card
+            const schoolLogo2 = document.getElementsByClassName("school-card-crest")[0];
+            schoolLogo2.innerHTML = `
+            <img class="d-block m-auto" src="https://images.vexels.com/media/users/3/224234/isolated/preview/ff7c525c1c3e1bef640644542001e1fd-online-school-logo.png" alt="High School">
+            `
+            const schoolCardTitle = document.getElementsByClassName("school-card-title")[0];
+            schoolCardTitle.textContent = "High School";
+            const schoolCardId = document.getElementsByClassName("school-card-row")[0];
+            schoolCardId.innerHTML = `
+            <span class="school-card-label">School ID:</span>
+            <span>N/A</span>
+            `
+        }
+    });
+}
 handleBarcodeVisibility();
-updateProfilePicture();
+updateProfilePictureByURL();
 updatePrivateMode();
+updateSuperPrivateMode();

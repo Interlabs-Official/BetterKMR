@@ -394,23 +394,46 @@
     #greyed-out-applied:disabled {
         cursor: not-allowed;
     }
+
+    #notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .notification {
+        background-color: #f9c2c2; /* Default color */
+        color: #333;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: opacity 0.5s ease;
+        cursor: pointer;
+    }
+
+    .notification.hidden {
+        opacity: 0;
+    }
   </style>
 </head>
 <body>
+    <div id="notification-container"></div>
     <div class="container">
         <div class="sidebar">
             <div class="tab" data-tab="general">General</div>
             <div class="tab" data-tab="themes">Themes</div>
-            <div class="tab" data-tab="misc">Misc</div>
+            <div class="tab" data-tab="advanced">Advanced</div>
         </div>
         <div class="content">
             <div id="about" class="tab-content">
                 <p><img id="mainlogo" alt="btrkmr_transparent_logo"></p>
-<h1 align="center"><b>An awesome overhaul for the Kamar student portal.</b></h1>
+<h1 align="center"><b>An awesome overhaul for the school.kiwi student portal, formerly known as KAMAR.</b></h1>
             </div>
             <div id="general" class="tab-content">
                 <h2>General Settings</h2>
-                <div>Once changes are made, refresh your KAMAR page(s). Changes are made automatically once interacted.</div>
+                <div>Once changes are made, refresh your school.kiwi page(s). Changes are made automatically once interacted.</div>
                 <div class="setting">
                     <label class="toggle-switch">
                         <span class="dltext">Show Attendance Streak</span>
@@ -457,7 +480,7 @@
                 </div>
                 <div class="setting">
                     <label>
-                        <span class="dltext">Profile Picture URL:</span>
+                        <span class="dltext">Profile Picture URL (almost every image type):</span>
                         <div class="tooltip-container">
                             <span class="tooltip-trigger">ⓘ</span>
                             <span class="tooltip-text">Adds a custom profile picture to remove your school photo.</span>
@@ -467,10 +490,20 @@
                 </div>
                 <div class="setting">
                     <label>
+                        <span class="dltext">Choose Profile Picture (PNG, JPG/JPEG):</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Lets you upload a profile picture. PNG and JPG/JPEG file types supported.<br><br>NOTE: Does not sync with Chrome.</span>
+                        </div>
+                        <button id="goToWizard">Go to Wizard</button>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
                         <span class="dltext">Theme ID:</span>
                         <div class="tooltip-container">
                             <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">The ID of the theme you want to use for KAMAR. Default = 0.</span>
+                            <span class="tooltip-text">The ID of the theme you want to use for KAMAR. Default = 0, No Theme = 1.<br><br>Note that setting a value here is not recommended - please use the Theme Browser.</span>
                         </div>
                         <input style="margin-top: 10px;" type="text" id="theme-id-text" class="text-input">
                     </label>
@@ -490,15 +523,27 @@
             </div> 
             <div id="themes" class="tab-content">
                 <h2>Theme Browser</h2>
-                <div>Once changes are made, refresh your KAMAR page(s).</div>
-                <div class="theme-grid" id="theme-grid">
-
+                <div>Once changes are made, refresh your school.kiwi page(s).</div>
+                <div class="theme-grid" id="theme-grid"></div>
+            </div>
+            <div id="advanced" class="tab-content">
+                <h2>Advanced</h2>
+                <div>This is the Advanced section.</div>
+                <div>Some parts of this section are only available when built directly from the GitHub repo.</div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Super Private Mode</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Hides your profile card info and school name/motto/logo. Stacks with Private Mode.</span>
+                        </div>
+                        <input type="checkbox" id="superPrivateMode">
+                        <span class="slider"></span>
+                    </label>
                 </div>
             </div>
-            <div id="misc" class="tab-content">This is the Misc section.</div>
         </div>
     </div>
-  <script src="ace.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
