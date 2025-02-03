@@ -246,6 +246,14 @@ document.addEventListener('DOMContentLoaded', () => {
         "Rule through the fear of force rather than force itself. -Wilhuff Tarkin",
         onApply
     );
+    createThemeCard(
+        '1',
+        'School Colours',
+        'https://d2u4q3iydaupsp.cloudfront.net/mxjsOual3T9C1mT4ePOyv1UA6gtl92DwxDQCFAOu26eGW9zuVcsbtKBo8aFN1oqkqVpz0h8AXsQFzSQMpiT1sWkQtyd0XCYP4ZpHTRE5A0dA3hRj9YCFBghv0Z3kKOwD',
+        'N/A',
+        "Use your school's default colours",
+        onApply
+    );
 
     function createNotification(message, color, frontcol) {
         const notificationContainer = document.getElementById('notification-container');
