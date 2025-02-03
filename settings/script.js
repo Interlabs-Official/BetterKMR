@@ -247,13 +247,21 @@ document.addEventListener('DOMContentLoaded', () => {
         onApply
     );
     createThemeCard(
+        '1',
+        'School Colours',
+        'https://d2u4q3iydaupsp.cloudfront.net/mxjsOual3T9C1mT4ePOyv1UA6gtl92DwxDQCFAOu26eGW9zuVcsbtKBo8aFN1oqkqVpz0h8AXsQFzSQMpiT1sWkQtyd0XCYP4ZpHTRE5A0dA3hRj9YCFBghv0Z3kKOwD',
+        'N/A',
+        "Use your school's default colours",
+        onApply
+    );
+    createThemeCard(
         '4',
         'Pure Dark Theme',
         '',
         'Solar',
         "When you just need that peace and quiet.",
         onApply
-    );
+    )
 
     function createNotification(message, color, frontcol) {
         const notificationContainer = document.getElementById('notification-container');
