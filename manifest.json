@@ -15,7 +15,12 @@
     {
       "matches": ["https://*.school.kiwi/*"],
       "css": ["modify.css"],
-      "js": ["frameworks/js-yaml.min.js", "content.js"]
+      "js": ["content.js"]
+    },
+    {
+      "matches": ["https://*.school.kiwi/*"],
+      "js": ["frameworks/js-yaml.min.js", "frameworks/holdfunc.js", "src/modules/themes.js"],
+      "run_at": "document_start"
     }
   ],
   "action": {},

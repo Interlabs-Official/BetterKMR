@@ -17,6 +17,39 @@
 */
 
 /* themes.js - src/modules/themes.js */
+
+// thank you stack overflow - copied from content.js
+function waitForElm(selector) {
+    return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+            return resolve(document.querySelector(selector));
+        }
+
+        const observer = new MutationObserver(mutations => {
+            if (document.querySelector(selector)) {
+                observer.disconnect();
+                resolve(document.querySelector(selector));
+            }
+        });
+
+        // If you get "parameter 1 is not of type 'Node'" error, see https://stackoverflow.com/a/77855838/492336
+        observer.observe(document.documentElement, {
+            childList: true,
+            subtree: true
+        });
+    });
+}
+
+// code to hide the school logo until all has loaded. works really well on pure dark theme.
+(async () => {
+    let curInterval = setInterval(function() {
+        if (document.getElementsByClassName("sk_header_content")[0]) {
+            document.getElementsByClassName("sk_header_content")[0].style.visibility = "hidden";
+            clearInterval(curInterval);
+        }
+    }, 40);
+})();
+
 fetch(chrome.runtime.getURL("src/config/themes.yml"))
     .then(response => response.text())
     .then(data => {
@@ -29,9 +62,10 @@ function injectTheme(yamlToJson) {
     chrome.storage.sync.get(["theme-id-text"]).then((result) => {
         const url = result["theme-id-text"] || "0";
         const themePath = yamlToJson[url];
+        holdfunc.notify("The theme you have chosen \"" + themePath["css"] + "\" will begin loading shortly.");
         if (themePath) {
             const link = document.createElement("link");
-            link.href = chrome.runtime.getURL(themePath);
+            link.href = chrome.runtime.getURL("src/themes/" + themePath["css"]);
             link.type = "text/css";
             link.rel = "stylesheet";
             document.head.appendChild(link);

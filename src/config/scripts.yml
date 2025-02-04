@@ -23,11 +23,12 @@
 #  Note that if an error occurs in a script, it doesn't halt the execution of the next scripts.
 #  Don't forget to append your script(s) in "web_accessible_resources" in manifest.json.
 
+#  Note from Solar: It is crucial that the first 3 (themes, navbar, settings) are in the correct order otherwise things may not load as intended.
+- src/modules/themes.js
 - src/modules/navbar.js
+- src/modules/settings.js
 - src/modules/attendance-streak.js
 - src/modules/upcoming-holiday-bar.js
-- src/modules/settings.js
 - src/modules/footer.js
 - src/modules/info-tips.js
 - src/modules/logintitle.js
-- src/modules/themes.js

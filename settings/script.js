@@ -226,38 +226,37 @@ document.addEventListener('DOMContentLoaded', () => {
         onApply("School Colours", 1, document.getElementById("school-default-theme"), true);
     });
 
-    createThemeCard(
-        '0', // custom ID for this card
-        'Space Theme', // title
-        '../assets/images/backgrounds/space.jpg', // thumbnail
-        'Convy32', // author
-        "The default Space theme, bundled with BetterKMR by default.",
-        onApply // callback function (i love these)
-    );
-    createThemeCard(
-        '2',
-        'Vivid Winter',
-        '../assets/images/backgrounds/vivid.jpeg',
-        'Solar',
-        "A chill winter theme with a background so great it can't be artificial intelligence.",
-        onApply
-    );
-    createThemeCard(
-        '3',
-        'Star Destroyers',
-        '../assets/images/backgrounds/starwarsempire.png',
-        'Samuel H',
-        "Rule through the fear of force rather than force itself. -Wilhuff Tarkin",
-        onApply
-    );
-    createThemeCard(
-        '4',
-        'Pure Dark Theme',
-        '../assets/images/thumbnails/pure-dark.png',
-        'Solar',
-        "When you just need that peace and quiet. It's silence for your screen.",
-        onApply
-    )
+    function doYAMLThemes() {
+        fetch(chrome.runtime.getURL("src/config/themes.yml"))
+            .then(response => response.text())
+            .then(data => {
+                const yamlToJson = jsyaml.load(data);
+                console.log(yamlToJson);
+    
+                Object.entries(yamlToJson).forEach(([key, theme]) => {
+                    if (key == null || key == "") { assert("A specific theme does not have a key."); return; } // this shouldn't be possible but we'll make sure anyway
+                    if (key != "1") { // if not the school colours theme
+                        if (theme.css == null || theme.css == "") { assert("Theme with key \"" + key + "\" does not have a CSS stylesheet attached!"); return; }
+                        if (theme.author == null || theme.author == "") { assert("Theme with key \"" + key + "\" does not have an author!"); return; }
+
+                        createThemeCard(
+                            key,
+                            theme.name,
+                            "../assets/" + theme.thumbnail,
+                            theme.author,
+                            theme.highlight,
+                            onApply
+                        )
+                    }
+                });
+            })
+            .catch(error => console.error("Failed to load themes:", error));
+    }
+    doYAMLThemes();
+
+    function assert(error) {
+        console.log(`%c[BetterKMR 📕] ` + `%cAn error occurred while attempting to load a theme preview:\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+    }
 
     function createNotification(message, color, frontcol) {
         const notificationContainer = document.getElementById('notification-container');

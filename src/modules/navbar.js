@@ -30,7 +30,33 @@ for (let i = 0; i < mainNav.children.length; i++) {
         break;
     }
 }
-    const longText = `
+
+let isPrivateMode = false;
+let ds_1 = "";
+let ds_2 = "";
+let ds_3 = "";
+let dv_1 = "";
+let dh_1 = "";
+chrome.storage.sync.get(["superPrivateMode"]).then((result) => {
+    if (result.superPrivateMode) {
+        isPrivateMode = true;
+    } else {
+        ds_1 = document.getElementsByClassName("d-block")[0].textContent
+        ds_2 = document.getElementsByClassName("d-block")[1].textContent
+        ds_3 = "BetterKMR Account"
+        dv_1 = `<div class="dropdown-divider"></div>`;
+        dh_1 = `
+            <div class="dropdown-header sk_nav_text"><strong class="d-block">${ds_1}</strong><small class="d-block">${ds_2}</small>
+                <small class="d-block">${ds_3}</small>
+            </div>
+        `
+    }
+});
+//if (!isPrivateMode) {ds_1 = document.getElementsByClassName("d-block")[0].textContent}
+//if (!isPrivateMode) {ds_2 = document.getElementsByClassName("d-block")[1].textContent}
+//if (!isPrivateMode) {ds_3 = "BetterKMR Account"}
+
+    let longText = `
     <div class="nav-main collapse navbar-collapse" id="navigation">
                             <ul class="nav user-nav">
         <li class="nav-item nav-item--account dropdown">
@@ -44,11 +70,8 @@ for (let i = 0; i < mainNav.children.length; i++) {
                     </a>
                 </div>
                 <div class="nav-menu sk_nav collapse" id="user-menu" style="">
-                    <div class="dropdown-header sk_nav_text">
-                                                <strong class="d-block">${document.getElementsByClassName("d-block")[0].textContent}</strong>                    <small class="d-block">${document.getElementsByClassName("d-block")[1].textContent}</small>
-                        <small class="d-block">Student Account</small>
-                    </div>
-                    <div class="dropdown-divider"></div>
+                    ${dh_1}
+                    ${dv_1}
                     <a href="${chrome.runtime.getURL("settings/index.html")}" target="_blank" class="sk_nav_text nav-link">BetterKMR Menu</a>
                     <div class="dropdown-divider"></div>
                     <a class="sk_nav_text nav-link nav-link-caregiver_details" href="/caregiver_details">Caregiver Details</a><a class="sk_nav_text nav-link nav-link-emergency_contact_details" href="/emergency_contact_details">Emergency Contacts</a><a class="sk_nav_text nav-link nav-link-medical_details" href="/medical_details">Medical Details</a><div class="dropdown-divider"></div><a href="/details/change_password" class="sk_nav_text nav-link">Change Password</a>

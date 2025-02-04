@@ -19,12 +19,39 @@
 ###########
 # themes.yml - src/config/themes.yml #
 
-#  List of themes, in order, that get asynchronously loaded as CSS themes on KAMAR pages.
+#  List of themes, in order, that get asynchronously loaded as CSS themes on school.kiwi pages.
 #  Note that if an error occurs in a theme, it doesn't halt the execution of the next themes.
 #  Don't forget to append your theme(s) in "web_accessible_resources" in manifest.json.
 
-0: "src/themes/space.css"
-1: "src/themes/blank.css"
-2: "src/themes/vivid.css"
-3: "src/themes/starwarsempire.css"
-4: "src/themes/puredark.css"
+0:
+    name: "Space Theme"
+    css: "space.css"
+    thumbnail: "images/backgrounds/space.jpg"
+    author: "Convy32"
+    highlight: "The default Space theme, bundled with BetterKMR by default."
+    description: "The default Space theme, bundled with BetterKMR by default. Extra content here."
+1:
+    name: "School Colours"
+    css: "blank.css"
+    highlight: "Use your school's default colours"
+2:
+    name: "Vivid Winter"
+    css: "vivid.css"
+    thumbnail: "images/backgrounds/vivid.jpeg"
+    author: "Solar"
+    highlight: "A chill winter theme with a background so great it can't be artificial intelligence."
+    description: "It actually can't be artificial intelligence! Wait, I'm second guessing... maybe it might."
+3:
+    name: "Star Destroyers"
+    css: "starwarsempire.css"
+    thumbnail: "images/backgrounds/starwarsempire_downscaled.jpg"
+    author: "Samuel H"
+    highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin"
+    description: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin **Thank you for using this theme!**"
+4:
+    name: "Pure Dark Theme"
+    css: "puredark.css"
+    thumbnail: "images/thumbnails/pure-dark.png"
+    author: "Solar"
+    highlight: "When you just need that peace and quiet. It's silence for your screen."
+    description: "When you just need that peace and quiet. It's silence for your screen. This theme is Vivid base but reskinned."

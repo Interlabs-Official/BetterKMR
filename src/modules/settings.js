@@ -100,10 +100,14 @@ function updatePrivateMode() {
     });
 }
 
+function hasNumber(myString) {
+    return /\d/.test(myString);
+}
+
 function updateSuperPrivateMode() {
     chrome.storage.sync.get(["superPrivateMode"]).then((result) => {
         if (result.superPrivateMode) {
-            console.log("super private mode")
+            holdfunc.notify("Super Private Mode is enabled! You can toggle this in Settings.");
             const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
             if (schoolCardDob) { schoolCardDob.style.display = "none"; }
             const schoolName = document.getElementsByClassName("sk_school_name")[0];
@@ -128,6 +132,25 @@ function updateSuperPrivateMode() {
             <span class="school-card-label">School ID:</span>
             <span>N/A</span>
             `
+            /* Name and ID methods have moved to navbar.js as it was conflicting
+               Below is the old broken code for archival reasons */
+            
+            //const dropHeader = document.getElementsByClassName("dropdown-header")[0].innerHTML = "";
+            //for (let element of dropHeader.getElementsByTagName("*")) {
+            //    element.innerHTML = ""; // me realising we don't need these fancy detection methods
+
+                /* if (hasNumber(element.textContent)) { // likely to be school ID
+                    element.remove(); //element.textContent = "N/A"
+                //} else if (element.textContent.includes("Student") || element.textContent.includes("Caregiver") || element.textContent.includes("Account")) {
+                //    element.textContent = "Account"
+                } else if (!hasNumber(element.textContent)) { // not likely to be school ID, probably name
+                    element.remove(); //element.textContent = "John Doe"
+                } */
+            //}
+            //const dropdownDivider = document.getElementsByClassName("dropdown-divider")[0].innerHTML = ""; // remove the first dropdown divider
+            for (let element of document.getElementsByClassName("school-card-info")) {
+                element.remove();
+            }
         }
     });
 }

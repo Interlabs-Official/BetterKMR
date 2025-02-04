@@ -15,7 +15,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-console.log(`%c[BetterKMR 📗] ` + `%cCore components loaded`, 'color: #9CCC65', 'color: #fff');
+console.log(`%c[BetterKMR 📗] ` + `%cCore components loaded. Dynamic modules will now begin loading.`, 'color: #9CCC65', 'color: #fff');
 
 // thank you stack overflow
 function waitForElm(selector) {
@@ -39,6 +39,10 @@ function waitForElm(selector) {
     });
 }
 
+const ignoreList = [
+    "src/modules/themes.js"
+]
+
 function loader() {
     waitForElm('body').then((elm) => {
         const loader = document.createElement('div');
@@ -51,6 +55,9 @@ function loader() {
         function showContent() {
             loader.classList.add('hidden');
             document.getElementsByClassName("nav-and-main")[0].style.visibility = 'visible';
+            if (document.getElementsByClassName("sk_header_content")[0]) {
+                document.getElementsByClassName("sk_header_content")[0].style.visibility = "visible";
+            }
         }
         (async () => {
             try {
@@ -67,12 +74,19 @@ function loader() {
                         const yamlToJson = jsyaml.load(data);
                         (async () => {
                             for (let i = 0; i < yamlToJson.length; i++) {
+                                if (yamlToJson[i] == "src/modules/themes.js") {
+                                    console.log(`%c[BetterKMR 📔] ` + `%cSkipped loading dynamic module because it is in the ignore list: ` + yamlToJson[i], 'color:rgb(105, 58, 138)', 'color: #fff');
+                                    continue;
+                                }
                                 console.log(`%c[BetterKMR 📘] ` + `%cLoading dynamic module: ` + yamlToJson[i], 'color: #0091EA', 'color: #fff');
                                 try {
-                                    var src = chrome.runtime.getURL(yamlToJson[i]);
+                                    let src = chrome.runtime.getURL(yamlToJson[i]);
                                     await import(src);
                                 } catch (error) {
                                     console.log(`%c[BetterKMR 📕] ` + `%cFailed loading dynamic module "${yamlToJson[i]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                                }
+                                if (yamlToJson.length - 1 === i) { // determine if loop has finished, while still being inside the loop
+                                    holdfunc.notify("Finished loading all dynamic modules.");
                                 }
                             }
                         })();
