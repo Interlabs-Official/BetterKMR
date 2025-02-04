@@ -23,8 +23,23 @@ function notify(message) {
     console.log(`%c[BetterKMR ⚡] ` + `%c` + message, 'color:rgb(214, 211, 0)', 'color: #fff');
 }
 
+function isLoggedIn() {
+    if (!hasClass(document.body, "auth-public")) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+// thank you stack overflow
+function hasClass(element, className) {
+    return (' ' + element.className + ' ').indexOf(' ' + className+ ' ') > -1;
+}
+
 window.holdfunc = {
-    notify: notify
+    notify: notify,
+    isLoggedIn: isLoggedIn,
+    hasClass: hasClass
 };
 
 notify("All console logs displayed here will be shown in English.");

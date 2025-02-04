@@ -113,27 +113,29 @@ chrome.storage.sync.get(["superPrivateMode"]).then((result) => {
             </ul>					
             </div>
     `
-    navbar.innerHTML = longText;
-    var currentItemTrim = null;
-    // Contact page addition
-    if (window.location.href.includes("contact_us")) {
-        const contactBtn = document.getElementsByClassName("nav-item-contact_us")[0];
-        if (contactBtn) {
-            contactBtn.classList.add("active");
+    if (holdfunc.isLoggedIn()) {
+        navbar.innerHTML = longText;
+        var currentItemTrim = null;
+        // Contact page addition
+        if (window.location.href.includes("contact_us")) {
+            const contactBtn = document.getElementsByClassName("nav-item-contact_us")[0];
+            if (contactBtn) {
+                contactBtn.classList.add("active");
+            }
         }
-    }
-    if (activeThing) {
-        const activeHref = activeThing.querySelector("a").getAttribute("href");
-        const newMainNav = navbar.getElementsByClassName("main-nav")[0];
-        
-        for (let i = 0; i < newMainNav.children.length; i++) {
-            const navItem = newMainNav.children[i];
-            const link = navItem.querySelector("a");
-            currentItemTrim = navItem.textContent.trim()
-            if (beforeItemTrim && currentItemTrim) {
-                if (beforeItemTrim === currentItemTrim) {
-                    navItem.classList.add("active");
-                    break;
+        if (activeThing) {
+            const activeHref = activeThing.querySelector("a").getAttribute("href");
+            const newMainNav = navbar.getElementsByClassName("main-nav")[0];
+            
+            for (let i = 0; i < newMainNav.children.length; i++) {
+                const navItem = newMainNav.children[i];
+                const link = navItem.querySelector("a");
+                currentItemTrim = navItem.textContent.trim()
+                if (beforeItemTrim && currentItemTrim) {
+                    if (beforeItemTrim === currentItemTrim) {
+                        navItem.classList.add("active");
+                        break;
+                    }
                 }
             }
         }
