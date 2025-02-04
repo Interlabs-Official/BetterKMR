@@ -83,7 +83,7 @@
 }
 
 .setting {
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: space-between;
     margin: 20px 0;
@@ -101,6 +101,7 @@
 .toggle-switch {
     margin-left: 10px;
     display: inline-flex;
+    /* display: inline-flex; */
     align-items: center;
     cursor: pointer;
 }
@@ -145,7 +146,7 @@
     border: 1px solid #555;
     padding: 8px 12px;
     border-radius: 5px;
-    width: 150%;
+    width: 700px;
     transition: border-color 0.3s ease;
 }
 
@@ -416,6 +417,10 @@
     .notification.hidden {
         opacity: 0;
     }
+
+    .hascontain-label {
+        display: initial; /* change */
+    }
   </style>
 </head>
 <body>
@@ -485,7 +490,7 @@
                             <span class="tooltip-trigger">ⓘ</span>
                             <span class="tooltip-text">Adds a custom profile picture to remove your school photo.</span>
                         </div>
-                        <input style="margin-top: 10px;" type="text" id="profile-pic-url" class="text-input">
+                        <br><input style="margin-top: 10px;" type="text" id="profile-pic-url" class="text-input">
                     </label>
                 </div>
                 <div class="setting">
@@ -505,11 +510,11 @@
                             <span class="tooltip-trigger">ⓘ</span>
                             <span class="tooltip-text">The ID of the theme you want to use for KAMAR. Default = 0, No Theme = 1.<br><br>Note that setting a value here is not recommended - please use the Theme Browser.</span>
                         </div>
-                        <input style="margin-top: 10px;" type="text" id="theme-id-text" class="text-input">
+                        <br><input style="margin-top: 10px; width: 150px !important;" type="number" id="theme-id-text" class="text-input" min="0" max="100">
                     </label>
                 </div>
                 <div class="setting">
-                    <label class="toggle-switch" style="margin-bottom: 22px;">
+                    <label class="toggle-switch">
                         <span class="dltext">Show Info Tips (Attendance Page)</span>
                         <div class="tooltip-container">
                             <span class="tooltip-trigger">ⓘ</span>
@@ -517,13 +522,15 @@
                         </div>
                         <input type="checkbox" id="show-attendance-info-class-name-tips">
                         <span class="slider"></span>
-                        <span style="position: fixed; margin-top: 50px; color: grey;">ⓘ <i>This is currently only available to a select number of schools.</i></span>
-                    </label>
+                    </label>&nbsp;&nbsp; <!-- I gave up in the end, I missed Maths and some of Digital because of this stupid align thing -->
+                    <p class="hascontain-label" style="color: grey;">ⓘ <i>This is currently only available to a select number of schools.</i></p>
+                    <!-- For now, it's just positioned next to it. Can be changed later -->
                 </div>
             </div> 
             <div id="themes" class="tab-content">
                 <h2>Theme Browser</h2>
-                <div>Once changes are made, refresh your school.kiwi page(s).</div>
+                <div>Once changes are made, refresh your school.kiwi page(s).</div><br>
+                <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
                 <div class="theme-grid" id="theme-grid"></div>
             </div>
             <div id="advanced" class="tab-content">

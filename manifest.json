@@ -38,7 +38,8 @@
         "src/themes/*",
         "src/modules/*",
         "assets/images/backgrounds/*",
-        "assets/images/wizard/*"
+        "assets/images/wizard/*",
+        "assets/images/thumbnails/*"
       ],
       "matches": ["https://*.school.kiwi/*"]
     }

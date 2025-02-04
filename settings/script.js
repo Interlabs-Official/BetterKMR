@@ -222,6 +222,10 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
+    document.getElementById("school-default-theme").addEventListener('click', function() {
+        onApply("School Colours", 1, document.getElementById("school-default-theme"), true);
+    });
+
     createThemeCard(
         '0', // custom ID for this card
         'Space Theme', // title
@@ -247,19 +251,11 @@ document.addEventListener('DOMContentLoaded', () => {
         onApply
     );
     createThemeCard(
-        '1',
-        'School Colours',
-        'https://d2u4q3iydaupsp.cloudfront.net/mxjsOual3T9C1mT4ePOyv1UA6gtl92DwxDQCFAOu26eGW9zuVcsbtKBo8aFN1oqkqVpz0h8AXsQFzSQMpiT1sWkQtyd0XCYP4ZpHTRE5A0dA3hRj9YCFBghv0Z3kKOwD',
-        'N/A',
-        "Use your school's default colours",
-        onApply
-    );
-    createThemeCard(
         '4',
         'Pure Dark Theme',
-        '',
+        '../assets/images/thumbnails/pure-dark.png',
         'Solar',
-        "When you just need that peace and quiet.",
+        "When you just need that peace and quiet. It's silence for your screen.",
         onApply
     )
 
