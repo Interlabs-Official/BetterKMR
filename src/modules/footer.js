@@ -23,7 +23,7 @@ if (footer) {
     if (schoolName) {
         footer.innerHTML = `
         <div class="container">
-            <p>2024 - ${schoolName.textContent.trim()}. BetterKMR v${chrome.runtime.getManifest().version}</p>
+            <p>${new Date().getFullYear()} - ${schoolName.textContent.trim()}. BetterKMR v${chrome.runtime.getManifest().version}</p>
         </div>`;
     }
 }
