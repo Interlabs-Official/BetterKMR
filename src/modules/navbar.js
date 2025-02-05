@@ -32,30 +32,34 @@ for (let i = 0; i < mainNav.children.length; i++) {
 }
 
 let isPrivateMode = false;
-let ds_1 = "";
-let ds_2 = "";
-let ds_3 = "";
-let dv_1 = "";
-let dh_1 = "";
-chrome.storage.sync.get(["superPrivateMode"]).then((result) => {
-    if (result.superPrivateMode) {
-        isPrivateMode = true;
-    } else {
-        ds_1 = document.getElementsByClassName("d-block")[0].textContent
-        ds_2 = document.getElementsByClassName("d-block")[1].textContent
-        ds_3 = "BetterKMR Account"
-        dv_1 = `<div class="dropdown-divider"></div>`;
-        dh_1 = `
-            <div class="dropdown-header sk_nav_text"><strong class="d-block">${ds_1}</strong><small class="d-block">${ds_2}</small>
-                <small class="d-block">${ds_3}</small>
-            </div>
-        `
+var ds_1 = document.getElementsByClassName("d-block")[0].textContent;
+var ds_2 = document.getElementsByClassName("d-block")[1].textContent;
+var ds_3 = "BetterKMR Account";
+var dv_1 = `<div class="dropdown-divider"></div>`;
+var dh_1 = `
+    <div class="dropdown-header sk_nav_text"><strong class="d-block">${ds_1}</strong><small class="d-block">${ds_2}</small>
+        <small class="d-block">${ds_3}</small>
+    </div>
+    `;
+
+chrome.storage.sync.get(["superPrivateMode"], (result) => {
+    console.log(result.superPrivateMode);
+    if (result.superPrivateMode === true) {
+        dh_1 = "";
+        dv_1 = "";
+
+        updateUI(dh_1, dv_1, true);
     }
 });
-//if (!isPrivateMode) {ds_1 = document.getElementsByClassName("d-block")[0].textContent}
-//if (!isPrivateMode) {ds_2 = document.getElementsByClassName("d-block")[1].textContent}
-//if (!isPrivateMode) {ds_3 = "BetterKMR Account"}
 
+let hasUsedPrivate = false;
+function updateUI(header, divider, isUsingSuperPrivateMode) {
+    if (hasUsedPrivate) {return;}
+    if (isUsingSuperPrivateMode) {
+        hasUsedPrivate = true;
+    }
+    console.log("Header:", header);
+    console.log("Divider:", divider);
     let longText = `
     <div class="nav-main collapse navbar-collapse" id="navigation">
                             <ul class="nav user-nav">
@@ -140,3 +144,5 @@ chrome.storage.sync.get(["superPrivateMode"]).then((result) => {
             }
         }
     }
+}
+updateUI(dh_1, dv_1, false);
