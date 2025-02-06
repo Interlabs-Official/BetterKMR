@@ -15,7 +15,7 @@
     {
       "matches": ["https://*.school.kiwi/*"],
       "css": ["modify.css"],
-      "js": ["content.js"]
+      "js": ["content.js", "frameworks/marked.min.js"]
     },
     {
       "matches": ["https://*.school.kiwi/*"],
@@ -41,6 +41,7 @@
         "frameworks/*",
         "src/config/*",
         "src/themes/*",
+        "src/themes/js/*",
         "src/modules/*",
         "assets/images/backgrounds/*",
         "assets/images/wizard/*",

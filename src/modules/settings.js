@@ -121,10 +121,14 @@ function updateSuperPrivateMode() {
                 `
             }
             // school card
-            const schoolLogo2 = document.getElementsByClassName("school-card-crest")[0];
-            schoolLogo2.innerHTML = `
-            <img class="d-block m-auto" src="https://images.vexels.com/media/users/3/224234/isolated/preview/ff7c525c1c3e1bef640644542001e1fd-online-school-logo.png" alt="High School">
-            `
+            try {
+                const schoolLogo2 = document.getElementsByClassName("school-card-crest")[0];
+                schoolLogo2.innerHTML = `
+                <img class="d-block m-auto" src="https://images.vexels.com/media/users/3/224234/isolated/preview/ff7c525c1c3e1bef640644542001e1fd-online-school-logo.png" alt="High School">
+                `
+            } catch {
+                holdfunc.notify("School card crest instance failed - this is to be expected");
+            }
             const schoolCardTitle = document.getElementsByClassName("school-card-title")[0];
             schoolCardTitle.textContent = "High School";
             const schoolCardId = document.getElementsByClassName("school-card-row")[0];

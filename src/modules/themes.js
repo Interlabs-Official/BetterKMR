@@ -69,6 +69,17 @@ function injectTheme(yamlToJson) {
             link.type = "text/css";
             link.rel = "stylesheet";
             document.head.appendChild(link);
+            if (themePath["js"] != null) {
+                (async () => {
+                    console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for theme: ` + themePath["name"], 'color: #0091EA', 'color: #fff');
+                    try {
+                        let src = chrome.runtime.getURL("src/themes/js/" + themePath["js"]);
+                        await import(src);
+                    } catch (error) {
+                        console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${themePath["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                    }
+                })();
+            }
         }
     });
 }

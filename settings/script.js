@@ -144,20 +144,34 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {string} thumbnailURL - The URL for the thumbnail image.
      * @param {string} author - The author name, e.g. Convy32.
      * @param {string} description - The theme description.
+     * @param {string} externalJS - The theme's external JS, if applicable.
      * @param {function} applyCallback - A callback function to run when the "Apply" button is clicked, which is the function onApply. I love callback functions. They're awesome.
      * 
      */
-    function createThemeCard(customID, title, thumbnailURL, author, description, applyCallback) {
+    function createThemeCard(customID, title, thumbnailURL, author, description, externalJS, applyCallback) {
         const themeGrid = document.getElementById('theme-grid');
 
         const card = document.createElement('div');
         card.className = 'theme-card';
         card.id = customID;
 
+        const imgWrapper = document.createElement('div');
+        imgWrapper.className = 'theme-image-wrapper';
+        
         const img = document.createElement('img');
         img.src = thumbnailURL;
         img.alt = title + ' Thumbnail';
-        card.appendChild(img);
+        
+        imgWrapper.appendChild(img);
+
+        if (externalJS != null) {
+            const badge = document.createElement('div');
+            badge.className = 'external-js-badge';
+            badge.textContent = 'External JS';
+            imgWrapper.appendChild(badge);
+        }
+        
+        card.appendChild(imgWrapper);
 
         const content = document.createElement('div');
         content.className = 'theme-content';
@@ -174,7 +188,18 @@ document.addEventListener('DOMContentLoaded', () => {
         button.className = 'download-button';
         button.textContent = 'Apply';
         button.addEventListener('click', function() {
-            applyCallback(title, customID, button, true);
+            if (externalJS != null) {
+                createDialog({
+                    title: 'Installing \'' + title + '\'',
+                    content: 'This theme contains external JavaScript.<br>Themes with external JavaScript aren\'t sandboxed.<br><br>Things to be careful of:<br>- Themes with external JS can contain malicious code<br>- Using a theme with external JS gives the author complete power<br><br>Are you sure you want to use this theme?',
+                    buttons: [
+                        { text: 'Cancel', callback: () => console.log('Cancelled'), classname: "dialog-button-not" },
+                        { text: 'OK', callback: () => applyCallback(title, customID, button, true) }
+                    ]
+                });   
+            } else {
+                applyCallback(title, customID, button, true);
+            }
         });
         titleRow.appendChild(button);
 
@@ -207,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (shouldApply) {
             updateSetting('theme-id-text', customID);
             console.log('Theme applied:', themeName, 'with ID:', customID);
+            createNotification(`Theme "${themeName}" has been successfully applied.`, "#3c8443", "#ffffff");
         }
     }
 
@@ -245,6 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             "../assets/" + theme.thumbnail,
                             theme.author,
                             theme.highlight,
+                            theme.js,
                             onApply
                         )
                     }
@@ -261,23 +288,19 @@ document.addEventListener('DOMContentLoaded', () => {
     function createNotification(message, color, frontcol) {
         const notificationContainer = document.getElementById('notification-container');
         
-        // Create a new notification element
         const notification = document.createElement('div');
         notification.className = 'notification';
         notification.style.backgroundColor = color;
         notification.style.color = frontcol;
         notification.innerText = message;
     
-        // Add click event to remove the notification
         notification.addEventListener('click', () => {
             notification.classList.add('hidden');
             setTimeout(() => notification.remove(), 500);
         });
     
-        // Append the notification to the container
         notificationContainer.appendChild(notification);
     
-        // Automatically remove the notification after 5 seconds
         setTimeout(() => {
             if (notification) {
                 notification.classList.add('hidden');
@@ -285,6 +308,45 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 5000);
     }    
+
+    function createDialog({ title, content, buttons = [] }) {
+        const overlay = document.createElement('div');
+        overlay.className = 'dialog-overlay';
+        
+        const dialog = document.createElement('div');
+        dialog.className = 'dialog-box';
+        
+        const titleElement = document.createElement('h2');
+        titleElement.className = 'dialog-title';
+        titleElement.textContent = title;
+        dialog.appendChild(titleElement);
+        
+        const contentElement = document.createElement('p');
+        contentElement.className = 'dialog-content';
+        contentElement.innerHTML = content;
+        dialog.appendChild(contentElement);
+        
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'dialog-buttons';
+        
+        buttons.forEach(({ text, callback, classname }) => {
+            const button = document.createElement('button');
+            button.className = 'dialog-button';
+            if (classname) {
+                button.className = classname;
+            }
+            button.textContent = text;
+            button.onclick = () => {
+                if (callback) callback();
+                document.body.removeChild(overlay);
+            };
+            buttonContainer.appendChild(button);
+        });
+        
+        dialog.appendChild(buttonContainer);
+        overlay.appendChild(dialog);
+        document.body.appendChild(overlay);
+    }
 
     chrome.runtime.sendMessage({ action: "checkPinned" }, (response) => {
         if (response.isPinned) {

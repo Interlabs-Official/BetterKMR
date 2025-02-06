@@ -23,27 +23,40 @@ const mainNav = navbar.getElementsByClassName("main-nav")[0];
 let activeThing = null;
 var beforeItemTrim = null;
 
-for (let i = 0; i < mainNav.children.length; i++) {
-    if (mainNav.children[i].classList.contains("active")) {
-        activeThing = mainNav.children[i];
-        beforeItemTrim = activeThing.textContent.trim();
-        break;
+try {
+    for (let i = 0; i < mainNav.children.length; i++) {
+        if (mainNav.children[i].classList.contains("active")) {
+            activeThing = mainNav.children[i];
+            beforeItemTrim = activeThing.textContent.trim();
+            break;
+        }
     }
+} catch {
+    holdfunc.notify("Attempt to modify main navigation failed. It's possible the user isn't logged in.");
 }
 
+
 let isPrivateMode = false;
-var ds_1 = document.getElementsByClassName("d-block")[0].textContent;
-var ds_2 = document.getElementsByClassName("d-block")[1].textContent;
-var ds_3 = "BetterKMR Account";
-var dv_1 = `<div class="dropdown-divider"></div>`;
-var dh_1 = `
-    <div class="dropdown-header sk_nav_text"><strong class="d-block">${ds_1}</strong><small class="d-block">${ds_2}</small>
-        <small class="d-block">${ds_3}</small>
-    </div>
-    `;
+var ds_1 = "";
+var ds_2 = "";
+var ds_3 = "";
+var dv_1 = "";
+var dh_1 = "";
+try {
+    ds_1 = document.getElementsByClassName("d-block")[0].textContent;
+    ds_2 = document.getElementsByClassName("d-block")[1].textContent;
+    ds_3 = "BetterKMR Account";
+    dv_1 = `<div class="dropdown-divider"></div>`;
+    dh_1 = `
+        <div class="dropdown-header sk_nav_text"><strong class="d-block">${ds_1}</strong><small class="d-block">${ds_2}</small>
+            <small class="d-block">${ds_3}</small>
+        </div>
+        `;
+} catch {
+    holdfunc.notify("Attempt to modify navbar failed. The user may not be logged in.");
+}
 
 chrome.storage.sync.get(["superPrivateMode"], (result) => {
-    console.log(result.superPrivateMode);
     if (result.superPrivateMode === true) {
         dh_1 = "";
         dv_1 = "";
@@ -58,8 +71,6 @@ function updateUI(header, divider, isUsingSuperPrivateMode) {
     if (isUsingSuperPrivateMode) {
         hasUsedPrivate = true;
     }
-    console.log("Header:", header);
-    console.log("Divider:", divider);
     let longText = `
     <div class="nav-main collapse navbar-collapse" id="navigation">
                             <ul class="nav user-nav">
