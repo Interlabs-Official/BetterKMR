@@ -17,7 +17,7 @@
 */
 
 /* upcoming-holiday-bar.js - src/modules/upcoming-holiday-bar.js */
-if (window.location.href.includes("attendance/week")) {
+if (window.location.href.includes("attendance/week") || window.location.href.includes("calendar")) {
     chrome.storage.sync.get(["upcoming-public-holiday-bar"]).then((result) => {
         if (result["upcoming-public-holiday-bar"] == "false" || result["upcoming-public-holiday-bar"] == false) {
             return;
