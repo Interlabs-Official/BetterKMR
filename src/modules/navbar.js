@@ -108,6 +108,9 @@ function updateUI(header, divider, isUsingSuperPrivateMode) {
                 <li class="nav-item nav-item-attendance">
                 <a class="sk_nav_text nav-link nav-link-attendance" href="/attendance">Attendance</a>
             </li>
+                <li class="nav-item nav-item-calendar">
+                <a class="sk_nav_text nav-link nav-link-attendance" href="/calendar">Calendar</a>
+            </li>
                                 <li class="nav-item dropdown">
                 <a class="sk_nav_text nav-link dropdown-toggle collapsed" href="#menu-folder20240123023233" role="button" data-toggle="collapse" aria-expanded="false" aria-controls="menu-folder20240123023233">Results</a>
                 <div class="nav-menu sk_nav collapse" id="menu-folder20240123023233" style=""><a class="sk_nav_text nav-link nav-link-results_list" href="/results_list">Current Year</a><a class="sk_nav_text nav-link nav-link-results_all" href="/results_all">All Results</a><a class="sk_nav_text nav-link nav-link-results_recognitions" href="/results_recognitions">Recognitions</a><a class="sk_nav_text nav-link nav-link-results_awards" href="/results_awards">Awards</a>
