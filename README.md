@@ -16,7 +16,7 @@ Before installing, download the latest release archive from the [releases page](
 Above is the instructions for Chrome. Firefox is currently not available with our existing framework, but support may be added later.
 
 ## Why not Firefox?
-BetterKMR collides with a bunch of unsupported functions for Firefox. You can check them out [here](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities) if you wish.
+BetterKMR collides with a bunch of unsupported functions for Firefox. You can check them out [here](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Chrome_incompatibilities) if you wish. It's also not worth it to publish a Firefox version - many school laptops use ChromeOS.
 
 ## Changes
 ✅ Cleaner navbar<br>
