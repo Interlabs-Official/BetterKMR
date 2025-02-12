@@ -44,6 +44,7 @@
         "src/themes/js/*",
         "src/modules/*",
         "assets/images/backgrounds/*",
+        "assets/images/backgrounds/slideshow/*",
         "assets/images/wizard/*",
         "assets/images/thumbnails/*"
       ],

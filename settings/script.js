@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tabs = document.querySelectorAll('.tab');
     const tabContents = document.querySelectorAll('.tab-content');
     const settings = {
-        "showAttendanceStreak": false,
         "showBarcodeToggle": false,
         "profilePicUrl": "",
         "upcoming-public-holiday-bar": true,
@@ -52,10 +51,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Add change listeners for settings
-    document.getElementById('attendance-streak-toggle').addEventListener('change', (e) => {
-        updateSetting('showAttendanceStreak', e.target.checked);
-    });
-
     document.getElementById('student-barcode-toggle').addEventListener('change', (e) => {
         updateSetting('showBarcodeToggle', e.target.checked);
     });
@@ -94,9 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function applySetting(key, value) {
-        if (key === 'showAttendanceStreak') {
-            document.getElementById('attendance-streak-toggle').checked = value;
-        } else if (key === 'showBarcodeToggle') {
+        if (key === 'showBarcodeToggle') {
             document.getElementById('student-barcode-toggle').checked = value;
         } else if (key === 'profilePicUrl') {
             document.getElementById('profile-pic-url').value = value;

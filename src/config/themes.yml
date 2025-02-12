@@ -28,7 +28,6 @@
     thumbnail: "images/backgrounds/space.jpg"
     author: "Convy32"
     highlight: "The default Space theme, bundled with BetterKMR by default."
-    description: "The default Space theme, bundled with BetterKMR by default. Extra content here."
 1:
     name: "School Colours"
     css: "blank.css"
@@ -39,18 +38,22 @@
     thumbnail: "images/backgrounds/vivid.jpeg"
     author: "Solar"
     highlight: "A chill winter theme with a background so great it can't be artificial intelligence."
-    description: "It actually can't be artificial intelligence! Wait, I'm second guessing... maybe it might."
 3:
     name: "Star Destroyers"
     css: "starwarsempire.css"
     thumbnail: "images/backgrounds/starwarsempire_downscaled.jpg"
     author: "Samuel H"
     highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin"
-    description: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin **Thank you for using this theme!**"
 4:
     name: "Pure Dark Theme"
     css: "puredark.css"
     thumbnail: "images/thumbnails/pure-dark.png"
     author: "Solar"
     highlight: "When you just need that peace and quiet. It's silence for your screen."
-    description: "When you just need that peace and quiet. It's silence for your screen. This theme is Vivid base but reskinned."
+5:
+    name: "Mountain Slideshow"
+    css: "slideshow.css"
+    js: "slideshow.js"
+    thumbnail: "images/thumbnails/mountain-slideshow.jpg"
+    author: "Solar"
+    highlight: "External JavaScript theme example, with configurable settings. Photos from Unsplash."

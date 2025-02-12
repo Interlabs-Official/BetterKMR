@@ -28,7 +28,6 @@
 - src/modules/navbar.js
 - src/modules/settings.js
 - src/modules/custom-page.js
-- src/modules/attendance-streak.js
 - src/modules/upcoming-holiday-bar.js
 - src/modules/footer.js
 - src/modules/info-tips.js

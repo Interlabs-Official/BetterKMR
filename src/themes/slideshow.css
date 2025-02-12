@@ -1,0 +1,14 @@
+.sk_page {
+    transition: background 1s ease-in-out;
+    background-size:     cover !important;                      /* <------ */
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;              /* optional, center the image */
+    background-attachment: fixed !important;
+}
+.sk_header {
+    transition: background 1s ease-in-out;
+    background-size:     cover !important;                      /* <------ */
+    background-repeat:   no-repeat !important;
+    background-position: center center !important;              /* optional, center the image */
+    background-attachment: fixed !important;
+}
