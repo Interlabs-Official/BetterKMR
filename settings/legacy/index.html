@@ -1,0 +1,644 @@
+<!--
+    BetterKMR for Chrome
+    Copyright (C) 2025 InterLabs
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<!-- index.html - settings/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  body {
+    font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background: #2c2c3e;
+    padding: 15px 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.tab {
+    padding: 15px 20px;
+    text-align: left;
+    cursor: pointer;
+    color: #ccc;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.tab:hover, .tab.active {
+    background: #3b3b50;
+    color: #fff;
+    box-shadow: inset 4px 0 #2979ff;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    background: #252534;
+    border-left: 2px solid #3b3b50;
+    overflow-y: auto;
+}
+
+.tab-content {
+    display: none;
+    animation: fade-in 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.setting {
+    /* display: flex; */
+    align-items: center;
+    justify-content: space-between;
+    margin: 20px 0;
+    padding: 15px;
+    background: #2b2b3a;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.setting:hover {
+    transform: scale(1.02);
+}
+
+.toggle-switch {
+    margin-left: 10px;
+    display: inline-flex;
+    /* display: inline-flex; */
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle-switch input[type="checkbox"] {
+    display: none;
+}
+
+.toggle-switch .slider {
+    width: 50px;
+    height: 25px;
+    background: #555;
+    border-radius: 25px;
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.toggle-switch .slider:before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+    transition: left 0.3s ease;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .slider {
+    background: #2979FF;
+}
+
+.toggle-switch input[type="checkbox"]:checked + .slider:before {
+    left: 60%;
+}
+
+.text-input {
+    background: #444;
+    color: #fff;
+    border: 1px solid #555;
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: 700px;
+    transition: border-color 0.3s ease;
+}
+
+.text-input:focus {
+    outline: none;
+    border-color: #2979FF;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* grid */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.grid-item {
+    background: #2c2c3e;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 400px;
+    height: 300px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grid-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cover-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.grid-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.title {
+    font-size: 2em;
+    font-weight: 700;
+    color: #def0ff;
+    margin: 0;
+}
+
+.author {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #00ccff;
+    margin: 0;
+}
+
+.description {
+    font-size: 1.5em;
+    color: #f0f0f0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.install-button {
+    background: #0a81ff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-weight: bold;
+    font-size: 2em;
+    height: 50px;
+    text-align: center;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.3s ease;
+    position: fixed;
+    bottom: 80px;
+    right: 18px;
+}
+
+.install-button:hover {
+    background: #0056b3;
+}
+
+.dltext {
+    margin-right: 8px;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-trigger {
+    color: #ccc;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-right: 8px;
+    font-size: 16px;
+    text-decoration: none;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    width: 200px;
+    background-color: #3b3b50;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 0.9em;
+}
+
+.tooltip-text::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #3b3b50 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* theme selector */
+    /* Container for the entire grid */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+      max-width: 1200px;
+      margin: 0 auto; /* Center the grid horizontally */
+    }
+
+    /* Each card container */
+    .theme-card {
+      background-color: #2a2a3b;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Thumbnail image */
+    .theme-card img {
+      position: relative;
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    /* Card content area */
+    .theme-content {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 0.5rem;
+    }
+
+    /* Title row: space between title and download button */
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Title styling */
+    .theme-title {
+      font-size: 1.2rem;
+      margin: 0;
+      flex: 1;
+    }
+
+    /* Download button styling */
+    .download-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .download-button:hover {
+      background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    /* Author styling */
+    .theme-author {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #bbb;
+      margin: 0;
+    }
+
+    /* Description styling */
+    .theme-description {
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Optional: small top heading */
+    .page-heading {
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    #greyed-out-applied {
+        background-color: #555 !important;
+        color: #fff !important;
+    }
+
+    #greyed-out-applied:disabled {
+        cursor: not-allowed;
+    }
+
+    #notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .notification {
+        background-color: #f9c2c2; /* Default color */
+        color: #333;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: opacity 0.5s ease;
+        cursor: pointer;
+    }
+
+    .notification.hidden {
+        opacity: 0;
+    }
+
+    .hascontain-label {
+        display: initial; /* change */
+    }
+
+    .theme-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .theme-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .external-js-badge {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: rgba(255, 0, 0, 0.8);
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 3px 6px;
+        border-radius: 4px;
+        pointer-events: none;
+    }
+
+    .dialog-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .dialog-box {
+        background: #252534;
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        padding: 20px;
+        border-radius: 8px;
+        min-width: 300px;
+        text-align: center;
+    }
+
+    .dialog-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .dialog-content {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .dialog-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .dialog-button {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+
+    .dialog-button:hover {
+        background-color: #0056b3;
+    }
+
+    .dialog-button-not {
+        background-color: #6b6b6b3d;
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+
+    .dialog-button-not:hover {
+        background-color: #4242423a;
+    }
+  </style>
+</head>
+<body>
+    <div id="notification-container"></div>
+    <div class="container">
+        <div class="sidebar">
+            <div class="tab" data-tab="general">General</div>
+            <div class="tab" data-tab="themes">Themes</div>
+            <div class="tab" data-tab="advanced">Advanced</div>
+        </div>
+        <div class="content">
+            <div id="about" class="tab-content">
+                <p><img id="mainlogo" alt="btrkmr_transparent_logo"></p>
+<h1 align="center"><b>An awesome overhaul for the school.kiwi student portal, formerly known as KAMAR.</b></h1>
+            </div>
+            <div id="general" class="tab-content">
+                <h2>General Settings</h2>
+                <div>Once changes are made, refresh your school.kiwi page(s). Changes are made automatically once interacted.</div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Show Student Barcode</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Shows your student barcode, disabled by default.</span>
+                        </div>
+                        <input type="checkbox" id="student-barcode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Show Upcoming Public Holiday Bar</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Shows a bar containing the closest upcoming public holiday.</span>
+                        </div>
+                        <input type="checkbox" id="upcoming-public-holiday-bar">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Private Mode</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Hides your DOB and removes your Caregiver, Emergency, and Medical Details/Contacts elements from view.</span>
+                        </div>
+                        <input type="checkbox" id="privateMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <span class="dltext">Choose Profile Picture (PNG, JPG/JPEG):</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Lets you upload a profile picture. PNG and JPG/JPEG file types supported.<br><br>NOTE: Does not sync with Chrome.</span>
+                        </div>
+                        <button id="goToWizard">Go to Wizard</button>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <span class="dltext">Profile Picture URL (other image types):</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Adds a custom profile picture to remove your school photo.</span>
+                        </div>
+                        <br><input style="margin-top: 10px;" type="text" id="profile-pic-url" class="text-input">
+                    </label>
+                </div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Show Info Tips (Attendance Page)</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Shows the full name of classes you have on your attendance page.</span>
+                        </div>
+                        <input type="checkbox" id="show-attendance-info-class-name-tips">
+                        <span class="slider"></span>
+                    </label>&nbsp;&nbsp; <!-- I gave up in the end, I missed Maths and some of Digital because of this stupid align thing -->
+                    <p class="hascontain-label" style="color: grey;">ⓘ <i>This is currently only available to a select number of schools.</i></p>
+                    <!-- For now, it's just positioned next to it. Can be changed later -->
+                </div>
+            </div> 
+            <div id="themes" class="tab-content">
+                <h2>Theme Browser</h2>
+                <div>Once changes are made, refresh your school.kiwi page(s).</div><br>
+                <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+                <div class="theme-grid" id="theme-grid"></div>
+            </div>
+            <div id="advanced" class="tab-content">
+                <h2>Advanced</h2>
+                <div>This is the Advanced section.</div>
+                <div>Some parts of this section are only available when built directly from the GitHub repo.</div>
+                <div class="setting">
+                    <label class="toggle-switch">
+                        <span class="dltext">Super Private Mode</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">Hides your profile card info and school name/motto/logo. Stacks with Private Mode.</span>
+                        </div>
+                        <input type="checkbox" id="superPrivateMode">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting">
+                    <label>
+                        <span class="dltext">Theme ID:</span>
+                        <div class="tooltip-container">
+                            <span class="tooltip-trigger">ⓘ</span>
+                            <span class="tooltip-text">The ID of the theme you want to use for KAMAR. Default = 0, No Theme = 1.<br><br>Note that setting a value here is not recommended - please use the Theme Browser.</span>
+                        </div>
+                        <br><input style="margin-top: 10px; width: 150px !important;" type="number" id="theme-id-text" class="text-input" min="0" max="100">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+  <script src="../../frameworks/js-yaml.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

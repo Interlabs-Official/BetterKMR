@@ -271,7 +271,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("finalImage").src = dataURL;
       
         // Update the Data URL text box
-        chrome.storage.local.set({ 'profilePicImageDataURL': dataURL })
+        chrome.storage.local.set({ 'choose_profile_picture': dataURL })
         //document.getElementById("dataUrlText").value = dataURL;
       }
     

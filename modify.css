@@ -212,3 +212,19 @@ body .modal-header {
   background-color: #000000cc !important;
   border: 1px solid #ffffff;
 }
+/* used specifically for upcoming holiday bar box */
+.fadeInUp {
+	animation: fadeInUp 1s ease backwards;
+}
+
+@keyframes fadeInUp {
+	0% {
+		transform: translate(0px, 100px);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translate(0px, 0);
+		opacity: 1;
+	}
+}
