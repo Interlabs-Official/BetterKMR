@@ -135,27 +135,20 @@
         });
 
         // --- Advanced Tab: An example text setting ---
+        Promise.all([
+          loadSettingPromise("theme-id-text"),
+        ]).then(([value]) => {
         settingsPage.addSetting('advanced', {
-          name: 'advanced_option',
-          label: 'Advanced Option',
-          tooltip: 'An advanced configuration option.',
+          name: 'theme-id-text',
+          label: 'Theme ID',
+          tooltip: 'The ID of the theme you want to use for KAMAR. Default = 0, No Theme = 1. Note that setting a value here is not recommended - please use the Theme Browser.',
           type: 'text',
-          default: 'default',
-          callback: (val) => { console.log('Advanced Option changed:', val); }
+          default: value || '0',
+          callback: (val) => { saveSetting("theme-id-text", val); }
         });
+      });
   
-        // Nested Tab "Theming" content: a dropdown for color theme
-        settingsPage.addNestedSetting('ui_behaviour', {
-           name: 'color_theme',
-           label: 'Color Theme',
-           tooltip: 'Select your preferred color theme.',
-           type: 'dropdown',
-           options: ['Blue', 'Red', 'Green'],
-           default: 'Blue',
-           callback: (val) => { console.log('Color theme changed:', val); }
-        });
-  
-        // Nested Tab "UI Behaviour": a dropdown for animation speed
+        /* Nested Tab "UI Behaviour": a dropdown for animation speed
         settingsPage.addNestedSetting('ui_behaviour', {
            name: 'animation_speed',
            label: 'Animation Speed',
@@ -164,17 +157,7 @@
            options: ['Slow', 'Medium', 'Fast'],
            default: 'Medium',
            callback: (val) => { console.log('Animation speed changed:', val); }
-        });
-  
-        // Nested Tab "Example": a button setting
-        settingsPage.addNestedSetting('example', {
-           name: 'example_action',
-           label: 'Perform Example Action',
-           tooltip: 'Click to perform an example action.',
-           type: 'button',
-           default: null,
-           callback: (e) => { console.log('Example action performed'); }
-        });
+        }); */
 
         /* Theme Switching */
                 /**

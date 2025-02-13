@@ -96,3 +96,26 @@ body .nav-item.active .sk_nav_text {
 a.sk_nav_text.nav-link.nav-link:hover {
     color: #63c9ff !important;
 }
+/* light mode fixes */
+body .sk_nav_text {
+    color: #ffffff !important;
+}
+body .container {
+    color: white;
+}
+body .sk_btn svg {
+    fill: #ffffff !important; 
+}
+body .sk_btn:hover {
+    color: #ffffff !important;
+}
+body .school-card {
+    color: white !important;
+}
+/* end */
+body .sk_table {
+    color: #ffffff !important;
+}
+body .sk_btn, .sk_btn.disabled:hover {
+    color: #ffffff !important;
+}
