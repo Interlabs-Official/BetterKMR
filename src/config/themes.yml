@@ -38,6 +38,7 @@
     thumbnail: "images/backgrounds/vivid.jpeg"
     author: "Solar"
     highlight: "A chill winter theme with a background so great it can't be artificial intelligence."
+    description: "vivid.md"
 3:
     name: "Star Destroyers"
     css: "starwarsempire.css"
@@ -56,4 +57,4 @@
     js: "slideshow.js"
     thumbnail: "images/thumbnails/mountain-slideshow.jpg"
     author: "Solar"
-    highlight: "External JavaScript theme example, with configurable settings. Photos from Unsplash."
+    highlight: "External JavaScript theme example, with six mountain images. Photos from Unsplash."

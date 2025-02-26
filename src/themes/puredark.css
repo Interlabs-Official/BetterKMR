@@ -117,3 +117,22 @@ body .sk_table {
 body .sk_btn, .sk_btn.disabled:hover {
     color: #ffffff !important;
 }
+/* border override & light mode patches, calendar etc */
+body .calendar-day.sk_border {
+    border-color: #63c8ff93 !important;
+}
+body .sk_border, .table th {
+    border-color: #63c8ff93 !important;
+}
+body .sk_heading {
+    color: #fff !important;
+}
+.page-title h1 {
+    color: #fff !important;
+  }
+body .card-body, .table td, tr {
+    border-color: #fff !important;
+}
+.other-month .calendar-day {
+    color: #fff !important;
+}

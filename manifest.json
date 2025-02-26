@@ -46,7 +46,8 @@
         "assets/images/backgrounds/*",
         "assets/images/backgrounds/slideshow/*",
         "assets/images/wizard/*",
-        "assets/images/thumbnails/*"
+        "assets/images/thumbnails/*",
+        "settings/*"
       ],
       "matches": ["https://*.school.kiwi/*"]
     }

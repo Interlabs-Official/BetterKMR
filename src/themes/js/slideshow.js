@@ -1,6 +1,6 @@
 var i = 0;
 var images = [];
-var slideTime = 10000; // 3 seconds
+var slideTime = 10000;
 
 images[0] = chrome.runtime.getURL('assets/images/backgrounds/slideshow/photo-1464822759023-fed622ff2c3b.jpg');
 images[1] = chrome.runtime.getURL('assets/images/backgrounds/slideshow/photo-1454496522488-7a8e488e8606.jpg');
@@ -10,7 +10,6 @@ images[4] = chrome.runtime.getURL('assets/images/backgrounds/slideshow/photo-148
 images[5] = chrome.runtime.getURL('assets/images/backgrounds/slideshow/photo-1455156218388-5e61b526818b.jpg');
 
 function changePicture() {
-    console.log("Changing picture");
     document.querySelector('.sk_page').style.backgroundImage = "url(" + images[i] + ")";
     document.querySelector('.sk_header').style.backgroundImage = "url(" + images[i] + ")";
 
@@ -19,6 +18,15 @@ function changePicture() {
     } else {
         i = 0;
     }
+    chrome.storage.local.set({"extjs-slideshow-curinc": i});
     setTimeout(changePicture, slideTime);
 }
+chrome.storage.local.get("extjs-slideshow-curinc", function(item) {
+    if (item["extjs-slideshow-curinc"]) {
+        i = item["extjs-slideshow-curinc"] - 1;
+    } else {
+        i = 0;
+    }
+});
+
 window.onload = changePicture;

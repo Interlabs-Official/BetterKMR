@@ -1,6 +1,7 @@
        /**********************************************************************
        * Initialization & Example Usage
        **********************************************************************/
+       console.log(`%c[BetterKMR 📘] ` + `%cWelcome to the BetterKMR extension settings. Please do not paste/enter commands in this console unless you know what you're doing.`, 'color: #0091EA', 'color: #fff');
        function formatCurrentDate() {
         const date = new Date();
         const day = date.getDate();
@@ -172,7 +173,7 @@
          * @param {function} applyCallback - A callback function to run when the "Apply" button is clicked, which is the function onApply. I love callback functions. They're awesome.
          * 
          */
-        function createThemeCard(customID, title, thumbnailURL, author, description, externalJS, applyCallback) {
+        function createThemeCard(customID, title, thumbnailURL, author, description, fullDescription, externalJS, applyCallback) {
           const themeGrid = document.getElementById('theme-grid');
 
           const card = document.createElement('div');
@@ -181,10 +182,19 @@
 
           const imgWrapper = document.createElement('div');
           imgWrapper.className = 'theme-image-wrapper';
-          
+
           const img = document.createElement('img');
           img.src = thumbnailURL;
           img.alt = title + ' Thumbnail';
+          imgWrapper.appendChild(img);
+
+          /* imgWrapper.addEventListener('click', function() {
+            if (typeof fullDescription == 'undefined' || fullDescription == null) {
+              openDetailedThemeView(customID, title, thumbnailURL, author, description);
+            } else {
+              openDetailedThemeView(customID, title, thumbnailURL, author, fullDescription);
+            }
+          }); */
           
           imgWrapper.appendChild(img);
 
@@ -207,6 +217,10 @@
           h2.className = 'theme-title';
           h2.textContent = title;
           titleRow.appendChild(h2);
+
+          img.addEventListener('click', () => {
+            window.location.href = chrome.runtime.getURL('settings/theme_detail.html?themeID=' + customID);
+          });
 
           const button = document.createElement('button');
           button.className = 'download-button';
@@ -294,6 +308,7 @@
                               "../../assets/" + theme.thumbnail,
                               theme.author,
                               theme.highlight,
+                              theme.description || null,
                               theme.js,
                               onApply
                           )
@@ -393,6 +408,17 @@
             tabContents.forEach(tc => tc.classList.remove('active'));
             const tabId = tab.getAttribute('data-tab');
             document.getElementById('tab-' + tabId).classList.add('active');
+            // on (*every*) tab activation, check to see which theme is active and update buttons accordingly
+            if (tabId == "themes") {
+              chrome.storage.sync.get(["theme-id-text"]).then((result) => {
+                  const id = result["theme-id-text"] || "0";
+                  const buttonById = getThemeCardButtonById(id);
+                  if (buttonById) {
+                      // it's fine to call null here on the name, we don't need it for this situation
+                      onApply(null, id, buttonById, false);
+                  }
+              });
+          }
           });
         });
   

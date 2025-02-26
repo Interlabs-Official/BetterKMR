@@ -182,7 +182,6 @@ function doEnabledPages() {
                         document.getElementById("close-popup").addEventListener("click", () => {
                             document.querySelector(".box-bcd").style.display = "none";
                         });
-                        console.log("done");
                     }
                 });
             }
