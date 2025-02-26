@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetterKMR Settings</title>
+  <!-- Import the Inter font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap">
+  <style>
+    /* Base reset & font */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; color: #ccc; }
+    
+    /* Container & Layout */
+    .settings-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background-color: #111111; border-right: 1px solid #444;}
+    .sidebar ul { list-style: none; padding: 0; }
+    .tab-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
+    .tab-item.active {
+        box-shadow: inset 4px 0 #2979ff;
+        color: #fff;
+    }
+    .tab-item:hover:not(.active) {
+        box-shadow: inset 4px 0 #2978ff7e;
+    }
+    .tab-item:hover {
+        background: #1b1b1ba9;
+    }
+    .content { flex: 1; padding: 20px; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    
+    /* Settings items */
+    .setting-item { border-bottom: 1px solid #444; padding: 10px 0; }
+    .setting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .setting-label { font-size: 20px; }
+    
+    /* Info tooltip */
+    .info-icon {
+      margin-left: 8px;
+      cursor: help;
+      position: relative;
+      display: inline-block;
+    }
+    .info-icon:hover .tooltip { visibility: visible; opacity: 1; }
+    .tooltip {
+        visibility: hidden;
+    width: 200px;
+    background-color: #252525;
+    color: #fff;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 0.9em;
+    }
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+    
+    /* Control elements */
+    .control { margin-left: auto; }
+    
+    /* Toggle Switch */
+    .toggle-switch { position: relative; width: 50px; height: 24px; }
+    .toggle-switch input { display: none; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    .toggle-switch input:checked + .slider { background-color: #3498db; }
+    .toggle-switch input:checked + .slider:before { transform: translateX(26px); }
+    
+    /* Dropdown & Text Box */
+    .dropdown, .text-box {
+      padding: 5px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    
+    /* Button */
+    .blue-button {
+      background-color: #3498db;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    /* Child Settings (collapsible) */
+    .child-settings {
+      margin-left: 20px;
+      border-left: 2px solid #3498db;
+      padding-left: 10px;
+      display: none;
+    }
+    .expand-arrow { font-size: 16px; margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <div class="settings-container">
+    <!-- Sidebar with tabs -->
+    <aside class="sidebar">
+      <ul id="tab-list">
+        <li data-tab="general" class="tab-item active">General</li>
+        <li data-tab="privacy" class="tab-item">Privacy</li>
+        <li data-tab="advanced" class="tab-item">Developer Settings</li>
+      </ul>
+    </aside>
+    
+    <!-- Main content area -->
+    <main class="content">
+      <div id="tab-general" class="tab-content active">
+        <h1>General Settings</h1>
+        <h3>Once changes are made, refresh your school.kiwi page(s). Changes are made automatically once interacted.</h3><br>
+      </div>
+      <div id="tab-privacy" class="tab-content"></div>
+      <div id="tab-advanced" class="tab-content"></div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

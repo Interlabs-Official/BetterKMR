@@ -1,161 +1,36 @@
-<!--
-    BetterKMR for Chrome
-    Copyright (C) 2025 InterLabs
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
--->
-
-<!-- index.html - settings/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Settings</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BetterKMR Settings</title>
+  <!-- Import the Inter font -->
   <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    /* Base reset & font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; color: #ccc; font-weight: 400; }
+    
+    /* Container & Layout */
+    .settings-container { display: flex; min-height: 100vh; }
+    .sidebar { width: 250px; background-color: #111111; border-right: 1px solid #444;}
+    .sidebar ul { list-style: none; padding: 0; }
+    .tab-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
+    .tab-item.active {
+        box-shadow: inset 4px 0 #2979ff;
+        color: #fff;
+    }
+    .tab-item:hover:not(.active) {
+        box-shadow: inset 4px 0 #2978ff7e;
+    }
+    .tab-item:hover {
+        background: #1b1b1ba9;
+    }
+    .content { flex: 1; padding: 20px; }
+    .tab-content { display: none; animation: fade-in 0.3s ease; }
+    .tab-content.active { display: block; }
 
-  body {
-    font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: #ffffff;
-            display: flex;
-            height: 100vh;
-}
-
-.container {
-    display: flex;
-    width: 100%;
-}
-
-.sidebar {
-    width: 250px;
-    background: #2c2c3e;
-    padding: 15px 0;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-}
-
-.tab {
-    padding: 15px 20px;
-    text-align: left;
-    cursor: pointer;
-    color: #ccc;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
-
-.tab:hover, .tab.active {
-    background: #3b3b50;
-    color: #fff;
-    box-shadow: inset 4px 0 #2979ff;
-}
-
-.content {
-    flex-grow: 1;
-    padding: 30px;
-    background: #252534;
-    border-left: 2px solid #3b3b50;
-    overflow-y: auto;
-}
-
-.tab-content {
-    display: none;
-    animation: fade-in 0.3s ease;
-}
-
-.tab-content.active {
-    display: block;
-}
-
-.setting {
-    /* display: flex; */
-    align-items: center;
-    justify-content: space-between;
-    margin: 20px 0;
-    padding: 15px;
-    background: #2b2b3a;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-}
-
-.setting:hover {
-    transform: scale(1.02);
-}
-
-.toggle-switch {
-    margin-left: 10px;
-    display: inline-flex;
-    /* display: inline-flex; */
-    align-items: center;
-    cursor: pointer;
-}
-
-.toggle-switch input[type="checkbox"] {
-    display: none;
-}
-
-.toggle-switch .slider {
-    width: 50px;
-    height: 25px;
-    background: #555;
-    border-radius: 25px;
-    position: relative;
-    transition: background 0.3s ease;
-}
-
-.toggle-switch .slider:before {
-    content: '';
-    width: 20px;
-    height: 20px;
-    background: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translateY(-50%);
-    transition: left 0.3s ease;
-}
-
-.toggle-switch input[type="checkbox"]:checked + .slider {
-    background: #2979FF;
-}
-
-.toggle-switch input[type="checkbox"]:checked + .slider:before {
-    left: 60%;
-}
-
-.text-input {
-    background: #444;
-    color: #fff;
-    border: 1px solid #555;
-    padding: 8px 12px;
-    border-radius: 5px;
-    width: 700px;
-    transition: border-color 0.3s ease;
-}
-
-.text-input:focus {
-    outline: none;
-    border-color: #2979FF;
-}
-
-@keyframes fade-in {
+    @keyframes fade-in {
     from {
         opacity: 0;
         transform: translateY(10px);
@@ -166,110 +41,56 @@
     }
 }
 
-/* grid */
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
+    /* Nested Tabs (for sub-tab controls inside a tab) */
+    .nested-tabs { margin-top: 20px; }
+    .nested-tab-list {
+      list-style: none;
+      display: flex;
+      border-bottom: 1px solid #444;
+      margin-bottom: 10px;
+      padding-left: 0;
+    }
+    .nested-tab-item {
+      font-size: 20px;
+      padding: 10px 15px;
+      cursor: pointer;
+      color: #ccc;
+      border: 1px solid transparent;
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      margin-right: 5px;
+    }
+    .nested-tab-item.active {
+      /* background-color: #3498db; */
+      box-shadow: inset 0 -4px 2px -2px #2978ff7e;
+      color: #fff;
+      /* border-color: #3498db; */
+    }
+    .nested-tab-content { display: none; }
+    .nested-tab-content.active { display: block; }
 
-.grid-item {
-    background: #2c2c3e;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 400px;
-    height: 300px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.grid-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.cover-image {
-    width: 100%;
-    height: 150px;
-    object-fit: cover;
-}
-
-.grid-content {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.title {
-    font-size: 2em;
-    font-weight: 700;
-    color: #def0ff;
-    margin: 0;
-}
-
-.author {
-    font-size: 1.5em;
-    font-weight: 600;
-    color: #00ccff;
-    margin: 0;
-}
-
-.description {
-    font-size: 1.5em;
-    color: #f0f0f0;
-    margin: 0;
-    flex-grow: 1;
-}
-
-.install-button {
-    background: #0a81ff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-weight: bold;
-    font-size: 2em;
-    height: 50px;
-    text-align: center;
-    cursor: pointer;
-    align-self: flex-start;
-    transition: background-color 0.3s ease;
-    position: fixed;
-    bottom: 80px;
-    right: 18px;
-}
-
-.install-button:hover {
-    background: #0056b3;
-}
-
-.dltext {
-    margin-right: 8px;
-}
-
-.tooltip-container {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip-trigger {
-    color: #ccc;
-    text-decoration: underline;
-    cursor: pointer;
-    margin-right: 8px;
-    font-size: 16px;
-    text-decoration: none;
-}
-
-.tooltip-text {
-    visibility: hidden;
+   /* Settings items */
+    .setting-item { border-bottom: 1px solid #444; padding: 10px 0; }
+    .setting-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .setting-label { font-size: 20px; font-weight: 300; }
+    
+    /* Info tooltip */
+    .info-icon {
+      margin-left: 8px;
+      cursor: help;
+      position: relative;
+      display: inline-block;
+    }
+    .info-icon:hover .tooltip { visibility: visible; opacity: 1; }
+    .tooltip {
+        visibility: hidden;
     width: 200px;
-    background-color: #3b3b50;
+    background-color: #252525;
     color: #fff;
     text-align: center;
     border-radius: 8px;
@@ -283,25 +104,81 @@
     transition: opacity 0.3s, visibility 0.3s;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     font-size: 0.9em;
-}
+    }
+    .tooltip::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -5px;
+      border-width: 5px;
+      border-style: solid;
+      border-color: #555 transparent transparent transparent;
+    }
+    
+    /* Control elements */
+    .control { margin-left: auto; }
+    
+    /* Toggle Switch */
+    .toggle-switch { position: relative; width: 50px; height: 24px; }
+    .toggle-switch input { display: none; }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    .toggle-switch input:checked + .slider { background-color: #3498db; }
+    .toggle-switch input:checked + .slider:before { transform: translateX(26px); }
+    
+    /* Dropdown & Text Box */
+    .dropdown, .text-box {
+      padding: 5px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+    }
+    
+    /* Button */
+    .blue-button {
+      background-color: #3498db;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    /* Child Settings (collapsible) */
+    .child-settings {
+      margin-top: 10px;
+      margin-left: 20px;
+      border-left: 2px solid #3498db;
+      padding-left: 10px;
+      display: none;
+    }
+    .expand-arrow { font-size: 16px; margin-left: 10px; }
 
-.tooltip-text::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #3b3b50 transparent transparent transparent;
-}
+    .betterkmr-logo {
+        background-image: url('../assets/images/logo.png');
+        background-repeat: no-repeat;
+    }
 
-.tooltip-container:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* theme selector */
+    /* theme selector */
     /* Container for the entire grid */
     .theme-grid {
       display: grid;
@@ -314,7 +191,7 @@
 
     /* Each card container */
     .theme-card {
-      background-color: #2a2a3b;
+      background-color: #1b1b1b;
       border-radius: 8px;
       overflow: hidden;
       display: flex;
@@ -329,6 +206,7 @@
       width: 100%;
       height: 150px;
       object-fit: cover;
+      /*cursor: pointer; uncomment later */
     }
 
     /* Card content area */
@@ -382,12 +260,30 @@
       margin: 0;
     }
 
-    /* Optional: small top heading */
-    .page-heading {
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 1.5rem;
-      font-weight: bold;
+    .theme-image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
+
+    .theme-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .external-js-badge {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        background-color: rgba(255, 0, 0, 0.8);
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 3px 6px;
+        border-radius: 4px;
+        pointer-events: none;
     }
 
     #greyed-out-applied {
@@ -421,36 +317,6 @@
         opacity: 0;
     }
 
-    .hascontain-label {
-        display: initial; /* change */
-    }
-
-    .theme-image-wrapper {
-        position: relative;
-        width: 100%;
-        height: 150px;
-        overflow: hidden;
-    }
-
-    .theme-image-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .external-js-badge {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        background-color: rgba(255, 0, 0, 0.8);
-        color: white;
-        font-size: 14px;
-        font-weight: bold;
-        padding: 3px 6px;
-        border-radius: 4px;
-        pointer-events: none;
-    }
-
     .dialog-overlay {
         position: fixed;
         top: 0;
@@ -465,7 +331,7 @@
     }
 
     .dialog-box {
-        background: #252534;
+        background: #1d1d1d;
         color: #fff;
         font-family: 'Inter', sans-serif;
         padding: 20px;
@@ -522,123 +388,56 @@
   </style>
 </head>
 <body>
-    <div id="notification-container"></div>
-    <div class="container">
-        <div class="sidebar">
-            <div class="tab" data-tab="general">General</div>
-            <div class="tab" data-tab="themes">Themes</div>
-            <div class="tab" data-tab="advanced">Advanced</div>
+  <div id="notification-container"></div>
+  <div class="settings-container">
+    <!-- Sidebar with tabs -->
+    <aside class="sidebar">
+      <ul id="tab-list">
+        <li data-tab="general" class="tab-item active">General</li>
+        <li data-tab="themes" class="tab-item">Themes</li>
+        <li data-tab="privacy" class="tab-item">Privacy</li>
+        <li data-tab="advanced" class="tab-item">Developer Settings</li>
+      </ul>
+    </aside>
+    
+    <!-- Main content area -->
+    <main class="content">
+      <div id="tab-general" class="tab-content active">
+        <h1>General Settings</h1>
+        <h3 style="font-weight: 300;">Once changes are made, refresh your school.kiwi page(s). Changes are made automatically once interacted.</h3>
+        <!-- Nested Tab Header -->
+        <div class="nested-tabs">
+          <ul class="nested-tab-list">
+            <li data-nested-tab="general" class="nested-tab-item active">General</li>
+            <li data-nested-tab="profile" class="nested-tab-item">Profile</li>
+            <li data-nested-tab="danger" class="nested-tab-item">Danger Zone</li>
+          </ul>
+          <!-- Nested Tab Contents -->
+          <div id="nested-tab-general" class="nested-tab-content active"></div>
+          <div id="nested-tab-profile" class="nested-tab-content"></div>
+          <div id="nested-tab-danger" class="nested-tab-content"></div>
         </div>
-        <div class="content">
-            <div id="about" class="tab-content">
-                <p><img id="mainlogo" alt="btrkmr_transparent_logo"></p>
-<h1 align="center"><b>An awesome overhaul for the school.kiwi student portal, formerly known as KAMAR.</b></h1>
-            </div>
-            <div id="general" class="tab-content">
-                <h2>General Settings</h2>
-                <div>Once changes are made, refresh your school.kiwi page(s). Changes are made automatically once interacted.</div>
-                <div class="setting">
-                    <label class="toggle-switch">
-                        <span class="dltext">Show Student Barcode</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">Shows your student barcode, disabled by default.</span>
-                        </div>
-                        <input type="checkbox" id="student-barcode-toggle">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting">
-                    <label class="toggle-switch">
-                        <span class="dltext">Show Upcoming Public Holiday Bar</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">Shows a bar containing the closest upcoming public holiday.</span>
-                        </div>
-                        <input type="checkbox" id="upcoming-public-holiday-bar">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting">
-                    <label class="toggle-switch">
-                        <span class="dltext">Private Mode</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">Hides your DOB and removes your Caregiver, Emergency, and Medical Details/Contacts elements from view.</span>
-                        </div>
-                        <input type="checkbox" id="privateMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting">
-                    <label>
-                        <span class="dltext">Choose Profile Picture (PNG, JPG/JPEG):</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">Lets you upload a profile picture. PNG and JPG/JPEG file types supported.<br><br>NOTE: Does not sync with Chrome.</span>
-                        </div>
-                        <button id="goToWizard">Go to Wizard</button>
-                    </label>
-                </div>
-                <div class="setting">
-                    <label>
-                        <span class="dltext">Profile Picture URL (other image types):</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">Adds a custom profile picture to remove your school photo.</span>
-                        </div>
-                        <br><input style="margin-top: 10px;" type="text" id="profile-pic-url" class="text-input">
-                    </label>
-                </div>
-                <div class="setting">
-                    <label class="toggle-switch">
-                        <span class="dltext">Show Info Tips (Attendance Page)</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">Shows the full name of classes you have on your attendance page.</span>
-                        </div>
-                        <input type="checkbox" id="show-attendance-info-class-name-tips">
-                        <span class="slider"></span>
-                    </label>&nbsp;&nbsp; <!-- I gave up in the end, I missed Maths and some of Digital because of this stupid align thing -->
-                    <p class="hascontain-label" style="color: grey;">ⓘ <i>This is currently only available to a select number of schools.</i></p>
-                    <!-- For now, it's just positioned next to it. Can be changed later -->
-                </div>
-            </div> 
-            <div id="themes" class="tab-content">
-                <h2>Theme Browser</h2>
-                <div>Once changes are made, refresh your school.kiwi page(s).</div><br>
-                <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
-                <div class="theme-grid" id="theme-grid"></div>
-            </div>
-            <div id="advanced" class="tab-content">
-                <h2>Advanced</h2>
-                <div>This is the Advanced section.</div>
-                <div>Some parts of this section are only available when built directly from the GitHub repo.</div>
-                <div class="setting">
-                    <label class="toggle-switch">
-                        <span class="dltext">Super Private Mode</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">Hides your profile card info and school name/motto/logo. Stacks with Private Mode.</span>
-                        </div>
-                        <input type="checkbox" id="superPrivateMode">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <div class="setting">
-                    <label>
-                        <span class="dltext">Theme ID:</span>
-                        <div class="tooltip-container">
-                            <span class="tooltip-trigger">ⓘ</span>
-                            <span class="tooltip-text">The ID of the theme you want to use for KAMAR. Default = 0, No Theme = 1.<br><br>Note that setting a value here is not recommended - please use the Theme Browser.</span>
-                        </div>
-                        <br><input style="margin-top: 10px; width: 150px !important;" type="number" id="theme-id-text" class="text-input" min="0" max="100">
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
+      </div>
+      <!-- Privacy and Advanced Tabs (their content areas) -->
+      <div id="tab-themes" class="tab-content">
+        <h1>Theme Browser</h1>
+        <h3 style="font-weight: 300;">Once changes are made, refresh your school.kiwi page(s).</h3><br>
+        <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+        <div class="theme-grid" id="theme-grid"></div>
+      </div>
+     <div id="tab-privacy" class="tab-content">
+        <h1>BetterKMR Privacy</h1>
+        <h3 style="font-weight: 300;">There is nothing to see here at the moment - BetterKMR does not collect any telemetry!</h3>
+     </div>
+      <div id="tab-advanced" class="tab-content">
+        <h1>Advanced / Developer Settings</h1>
+        <h3 style="font-weight: 300;">This is the Advanced section.</h3>
+        <h3 style="font-weight: 300;">Some parts of this section are only available when built directly from the GitHub repo.</h3>
+      </div>
+    </main>
+  </div>
   <script src="../frameworks/js-yaml.min.js"></script>
+  <script src="lib.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

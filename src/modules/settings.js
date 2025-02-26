@@ -18,8 +18,10 @@
 
 /* settings.js - src/modules/settings.js */
 function handleBarcodeVisibility() {
-    chrome.storage.sync.get(["showBarcodeToggle"]).then((result) => {
-        if (!result.showBarcodeToggle) {
+    chrome.storage.sync.get(["show_student_barcode"]).then((result) => {
+        if (!result.show_student_barcode) { // this is what you should always do when you validate a setting value.
+                                            // the value can be either false, null, or true.
+                                            // null indicates it hasn't been set before in settings, false and true mean they have.
             const studentBarcode = document.querySelector(".school-card-barcode");
             if (studentBarcode) {
                 studentBarcode.style = `
@@ -34,10 +36,10 @@ function handleBarcodeVisibility() {
 function updateProfilePicture() {
     const avatar = document.querySelector(".avatar");
     const profileBox = document.querySelector(".pb-3");
-    chrome.storage.local.get('profilePicImageDataURL', function(result) {
-        if (result['profilePicImageDataURL']) {
-            if (avatar) { avatar.src = result['profilePicImageDataURL']; }
-            if (profileBox) { profileBox.src = result['profilePicImageDataURL']; }
+    chrome.storage.local.get('choose_profile_picture', function(result) {
+        if (result['choose_profile_picture']) {
+            if (avatar) { avatar.src = result['choose_profile_picture']; }
+            if (profileBox) { profileBox.src = result['choose_profile_picture']; }
         } else {
             // resort to old method
             chrome.storage.sync.get(["profilePicUrl"]).then((result) => {
@@ -57,14 +59,14 @@ function updateProfilePicture() {
 function updateProfilePictureByURL() {
     const avatar = document.querySelector(".avatar");
     const profileBox = document.querySelector(".pb-3");
-    chrome.storage.sync.get(["profilePicUrl"]).then((result) => {
-        if (result.profilePicUrl) {
-            if (!result.profilePicUrl == "" || !result.profilePicUrl == null) {
+    chrome.storage.sync.get(["profile_picture_url"]).then((result) => {
+        if (result.profile_picture_url) {
+            if (!result.profile_picture_url == "" || !result.profile_picture_url == null) {
                 if (avatar) {
-                    avatar.src = result.profilePicUrl;
+                    avatar.src = result.profile_picture_url;
                 }
                 if (profileBox) {
-                    profileBox.src = result.profilePicUrl;
+                    profileBox.src = result.profile_picture_url;
                 }
             } else {
                 updateProfilePicture();
@@ -105,8 +107,8 @@ function hasNumber(myString) {
 }
 
 function updateSuperPrivateMode() {
-    chrome.storage.sync.get(["superPrivateMode"]).then((result) => {
-        if (result.superPrivateMode) {
+    chrome.storage.sync.get(["super_private_mode"]).then((result) => {
+        if (result.super_private_mode) {
             holdfunc.notify("Super Private Mode is enabled! You can toggle this in Settings.");
             const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
             if (schoolCardDob) { schoolCardDob.style.display = "none"; }
@@ -126,9 +128,6 @@ function updateSuperPrivateMode() {
                 schoolLogo2.innerHTML = `
                 <img class="d-block m-auto" src="https://images.vexels.com/media/users/3/224234/isolated/preview/ff7c525c1c3e1bef640644542001e1fd-online-school-logo.png" alt="High School">
                 `
-            } catch {
-                holdfunc.notify("School card crest instance failed - this is to be expected");
-            }
             const schoolCardTitle = document.getElementsByClassName("school-card-title")[0];
             schoolCardTitle.textContent = "High School";
             const schoolCardId = document.getElementsByClassName("school-card-row")[0];
@@ -136,6 +135,9 @@ function updateSuperPrivateMode() {
             <span class="school-card-label">School ID:</span>
             <span>N/A</span>
             `
+            } catch {
+                holdfunc.notify("School card crest instance failed - this is to be expected. Is it possible that you're signed out?");
+            }
             /* Name and ID methods have moved to navbar.js as it was conflicting
                Below is the old broken code for archival reasons */
             
