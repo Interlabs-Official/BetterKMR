@@ -58,3 +58,9 @@
     thumbnail: "images/thumbnails/mountain-slideshow.jpg"
     author: "Solar"
     highlight: "External JavaScript theme example, with six mountain images. Photos from Unsplash."
+6:
+    name: "Pure Light Theme"
+    css: "purelight.css"
+    thumbnail: "images/thumbnails/pure-light.png"
+    author: "Solar"
+    highlight: "Not the best theme if you want to keep your eyes safe."
