@@ -148,6 +148,22 @@
           callback: (val) => { saveSetting("theme-id-text", val); }
         });
       });
+
+        /* Hide External JS Warning */
+        Promise.all([
+          loadSettingPromise("hide_external_js_warning"),
+        ]).then(([value]) => {
+          settingsPage.addSetting('advanced', {
+            name: 'hide_external_js_warning',
+            label: 'Hide External JS Warning',
+            tooltip: 'Hides the dialog warning when you apply a theme with external JavaScript.',
+            type: 'toggle',
+            default: value ?? false,
+            callback: (val) => { 
+              saveSetting("hide_external_js_warning", val); 
+            }
+          });
+        });
   
         /* Nested Tab "UI Behaviour": a dropdown for animation speed
         settingsPage.addNestedSetting('ui_behaviour', {
@@ -226,18 +242,37 @@
           button.className = 'download-button';
           button.textContent = 'Apply';
           button.addEventListener('click', function() {
-              if (externalJS != null) {
-                  createDialog({
-                      title: 'Installing \'' + title + '\'',
-                      content: 'This theme contains external JavaScript.<br>Themes with external JavaScript aren\'t sandboxed.<br><br>Things to be careful of:<br>- Themes with external JS can contain malicious code<br>- Using a theme with external JS gives the author complete power<br><br>Are you sure you want to use this theme?',
-                      buttons: [
-                          { text: 'Cancel', callback: () => console.log('Cancelled'), classname: "dialog-button-not" },
-                          { text: 'OK', callback: () => applyCallback(title, customID, button, true) }
-                      ]
-                  });   
+            Promise.all([
+              loadSettingPromise("hide_external_js_warning"),
+            ]).then(([value]) => {
+              if (externalJS != null && value == false || value == null) {
+                  fetch(chrome.runtime.getURL("src/config/general.yml"))
+                  .then(response => response.text())
+                  .then(data => {
+                      const yamlToJson = jsyaml.load(data);
+                      console.log(yamlToJson);
+                      for (const i in yamlToJson["trusted-authors"]) {
+                        console.log(yamlToJson["trusted-authors"][i]);
+                        if (!yamlToJson["trusted-authors"][i] == author) {
+                          createDialog({
+                            title: 'Installing \'' + title + '\'',
+                            content: 'This theme contains external JavaScript.<br>Themes with external JavaScript aren\'t sandboxed.<br><br>Things to be careful of:<br>- Themes with external JS can contain malicious code<br>- Using a theme with external JS gives the author complete power<br><br>Are you sure you want to use this theme?',
+                            buttons: [
+                                { text: 'Cancel', callback: () => console.log('Cancelled'), classname: "dialog-button-not" },
+                                { text: 'OK', callback: () => applyCallback(title, customID, button, true) }
+                            ]
+                        });   
+                        } else {
+                          /* don't have time but this needs fixing so it doesn't occur 3 times, same as above */
+                          applyCallback(title, customID, button, true)
+                        }
+                      }
+                  })
+                  .catch(error => console.error("Failed to load themes:", error));
               } else {
                   applyCallback(title, customID, button, true);
               }
+            });
           });
           titleRow.appendChild(button);
 
