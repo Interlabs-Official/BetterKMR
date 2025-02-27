@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Theme</title>
+  <style>
+    header {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+    #back-button {
+      background: transparent;
+      border: none;
+      color: #ccc;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    main {
+      padding: 60px 20px 20px 20px;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    #editor {
+      height: 500px;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+  </style>
+  <link rel="stylesheet" href="../frameworks/codemirror/codemirror.min.css"></link>
+  <link rel="stylesheet" href="../frameworks/codemirror/ayu-dark.css"></link>
+</head>
+<body>
+  <header>
+    <button id="back-button">&#8592; Back</button>
+  </header>
+
+  <main>
+    <h1>Theme Name</h1>
+    
+    <textarea id="editor">
+        your code here...
+      </textarea>
+  </main>
+
+  <script src="../frameworks/codemirror/codemirror.min.js"></script>
+  <script src="../frameworks/codemirror/javascript.min.js"></script>
+  <script src="theme_edit.js"></script>
+</body>
+</html>

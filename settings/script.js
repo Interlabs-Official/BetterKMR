@@ -470,7 +470,94 @@
           });
         });
   
-        // Expose the settingsPage instance and API globally:
         window.settingsPage = settingsPage;
         window.isItemToggled = settingsPage.isItemToggled.bind(settingsPage);
       });
+
+      function createCustomThemeItem(themeName) {
+        const li = document.createElement("li");
+        li.classList.add("custom-theme-item");
+        li.style.display = "flex";
+        li.style.justifyContent = "space-between";
+        li.style.alignItems = "center";
+        li.style.padding = "10px";
+        li.style.borderBottom = "1px solid #444";
+      
+        const span = document.createElement("span");
+        span.classList.add("theme-name");
+        span.style.fontSize = "18px";
+        span.textContent = themeName;
+      
+        const actionsDiv = document.createElement("div");
+        actionsDiv.classList.add("theme-actions");
+      
+        function createButton(className, backgroundColor, text) {
+          const button = document.createElement("button");
+          button.classList.add(className);
+          button.style.backgroundColor = backgroundColor;
+          button.style.color = "white";
+          button.style.border = "none";
+          button.style.padding = "5px 10px";
+          button.style.borderRadius = "4px";
+          button.style.cursor = "pointer";
+          button.style.marginLeft = "5px";
+          button.textContent = text;
+          return button;
+        }
+      
+        const editButton = createButton("edit-theme", "#3498db", "Edit");
+        const deleteButton = createButton("delete-theme", "#e74c3c", "Delete");
+      
+        editButton.addEventListener('click', () => {
+          window.location.href = chrome.runtime.getURL('settings/theme_edit.html?themeID=' + customID);
+        });
+
+        actionsDiv.appendChild(editButton);
+        actionsDiv.appendChild(addJSButton);
+        actionsDiv.appendChild(deleteButton);
+      
+        li.appendChild(span);
+        li.appendChild(actionsDiv);
+      
+        return li;
+      }
+
+      const CUSTOM_THEMES_KEY = 'customThemes';
+
+      function addToList(theme) {
+        chrome.storage.sync.get({ [CUSTOM_THEMES_KEY]: [] }, function(result) {
+          const themes = result[CUSTOM_THEMES_KEY];
+          createCustomThemeItem(theme);
+          chrome.storage.sync.set({ [CUSTOM_THEMES_KEY]: themes });
+        });
+      }
+      
+      function removeFromList(themeName) {
+        chrome.storage.sync.get({ [CUSTOM_THEMES_KEY]: [] }, function(result) {
+          let themes = result[CUSTOM_THEMES_KEY];
+          themes = themes.filter(theme => theme.name !== themeName);
+          chrome.storage.sync.set({ [CUSTOM_THEMES_KEY]: themes });
+        });
+      }
+      
+      function getListItems(callback) {
+        chrome.storage.sync.get({ [CUSTOM_THEMES_KEY]: [] }, function(result) {
+          callback(result[CUSTOM_THEMES_KEY]);
+        });
+      }
+      
+      function checkIfListItemExists(themeName, callback) {
+        getListItems(function(themes) {
+          const exists = themes.some(theme => theme.name === themeName);
+          callback(exists);
+        });
+      }
+      
+      function getSingleListItem(themeName, callback) {
+        getListItems(function(themes) {
+          const theme = themes.find(theme => theme.name === themeName);
+          callback(theme);
+        });
+      }
+      const customThemesList = document.getElementById("custom-themes-list");
+      customThemesList.appendChild(createCustomThemeItem("First Theme"));

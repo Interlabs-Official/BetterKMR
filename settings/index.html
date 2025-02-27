@@ -422,8 +422,34 @@
       <div id="tab-themes" class="tab-content">
         <h1>Theme Browser</h1>
         <h3 style="font-weight: 300;">Once changes are made, refresh your school.kiwi page(s).</h3><br>
-        <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
-        <div class="theme-grid" id="theme-grid"></div>
+        <div class="nested-tabs">
+          <ul class="nested-tab-list">
+            <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
+            <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
+            <li data-nested-tab="custom-themes" class="nested-tab-item">Custom</li>
+          </ul>
+          <!-- Nested Tab Contents -->
+          <div id="nested-tab-default-themes" class="nested-tab-content active">
+            <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+            <div class="theme-grid" id="theme-grid"></div>
+          </div>
+          <div id="nested-tab-market-themes" class="nested-tab-content"></div>
+          <div id="nested-tab-custom-themes" class="nested-tab-content">
+            <br><h1>Your Themes</h1>
+            <!-- Custom Themes List -->
+            <ul id="custom-themes-list" style="list-style: none; padding: 0; margin-top: 20px;">
+              <!-- Example Theme Item -->
+              <li class="custom-theme-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
+                <span class="theme-name" style="font-size: 18px;">Example Theme</span>
+                <div class="theme-actions">
+                  <button class="edit-theme" style="background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Edit</button>
+                  <button class="add-js-theme" style="background: #f39c12; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Add JS</button>
+                  <button class="delete-theme" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
      <div id="tab-privacy" class="tab-content">
         <h1>BetterKMR Privacy</h1>
