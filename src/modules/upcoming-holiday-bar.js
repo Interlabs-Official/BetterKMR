@@ -158,7 +158,7 @@ function doEnabledPages() {
                   ]).then(([showActualDate, showWhenNear]) => {
                     if (targetElement) {
                         if (showActualDate == false || showActualDate == null) currentSelected = dayDifference;
-                        if (showWhenNear == true && difference_in_days > 7) return;
+                        if (showWhenNear == true || showWhenNear == null && difference_in_days > 7) return;
                         const [color1, color2] = nextHoliday.colors;
         
                         injectedHTML = `
