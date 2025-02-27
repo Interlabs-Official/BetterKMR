@@ -249,23 +249,28 @@
                   fetch(chrome.runtime.getURL("src/config/general.yml"))
                   .then(response => response.text())
                   .then(data => {
+                    var canUpdate = false;
+                    var applyCallbackOnce = false;
                       const yamlToJson = jsyaml.load(data);
-                      console.log(yamlToJson);
                       for (const i in yamlToJson["trusted-authors"]) {
-                        console.log(yamlToJson["trusted-authors"][i]);
                         if (!yamlToJson["trusted-authors"][i] == author) {
-                          createDialog({
-                            title: 'Installing \'' + title + '\'',
-                            content: 'This theme contains external JavaScript.<br>Themes with external JavaScript aren\'t sandboxed.<br><br>Things to be careful of:<br>- Themes with external JS can contain malicious code<br>- Using a theme with external JS gives the author complete power<br><br>Are you sure you want to use this theme?',
-                            buttons: [
-                                { text: 'Cancel', callback: () => console.log('Cancelled'), classname: "dialog-button-not" },
-                                { text: 'OK', callback: () => applyCallback(title, customID, button, true) }
-                            ]
-                        });   
+                          canUpdate = true;
                         } else {
-                          /* don't have time but this needs fixing so it doesn't occur 3 times, same as above */
-                          applyCallback(title, customID, button, true)
+                          applyCallbackOnce = true;
                         }
+                      }
+                      if (canUpdate) {
+                        createDialog({
+                          title: 'Installing \'' + title + '\'',
+                          content: 'This theme contains external JavaScript.<br>Themes with external JavaScript aren\'t sandboxed.<br><br>Things to be careful of:<br>- Themes with external JS can contain malicious code<br>- Using a theme with external JS gives the author complete power<br><br>Are you sure you want to use this theme?',
+                          buttons: [
+                              { text: 'Cancel', callback: () => console.log('Cancelled'), classname: "dialog-button-not" },
+                              { text: 'OK', callback: () => applyCallback(title, customID, button, true) }
+                          ]
+                      });
+                      }
+                      if (applyCallbackOnce) {
+                        applyCallback(title, customID, button, true);
                       }
                   })
                   .catch(error => console.error("Failed to load themes:", error));
@@ -513,7 +518,6 @@
         });
 
         actionsDiv.appendChild(editButton);
-        actionsDiv.appendChild(addJSButton);
         actionsDiv.appendChild(deleteButton);
       
         li.appendChild(span);
