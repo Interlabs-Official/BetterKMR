@@ -1,3 +1,8 @@
+const urlParams = new URLSearchParams(window.location.search);
+const themeID = urlParams.get('themeID');
+
+if (!themeID) { window.location.href = chrome.runtime.getURL("settings/index.html");}
+
 let editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     mode: "css",
     lineNumbers: true,
@@ -33,6 +38,14 @@ editor.getWrapperElement().addEventListener("wheel", function(e) {
     let codeElement = editor.getWrapperElement().querySelector(".CodeMirror-code");
     if (codeElement) {
       codeElement.style.fontSize = currentFontSize + "px";
+      editor.refresh();
     }
   }
 });
+
+editor.refresh();
+
+document.getElementById('back-button').addEventListener('click', () => {
+  window.history.back();
+});
+console.log(editor.getValue());

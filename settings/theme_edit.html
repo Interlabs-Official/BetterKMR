@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Edit Theme</title>
   <style>
-    body {
-      background-color: #0f0f0f;
-    }
+    /* Base reset & font */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; color: #ccc; font-weight: 400; }
     header {
       position: absolute;
       top: 10px;
@@ -35,9 +36,42 @@
       border-radius: 4px;
     }
 
+    .CodeMirror {
+      height: 80% !important;
+    }
+
     .CodeMirror-code {
       font-size: 40px;
     }
+
+    .CodeMirror-gutter-wrapper {
+      padding-right: 50px;
+    }
+
+    #save-button {
+    position: absolute;
+    top: 20px;
+    right: 50px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #save-button:hover {
+    background-color: #45a049;
+  }
+
+  header {
+    position: relative;
+    width: 99%;
+  }
   </style>
   <link rel="stylesheet" href="../frameworks/codemirror/codemirror.min.css"></link>
   <link rel="stylesheet" href="../frameworks/codemirror/ayu-dark.css"></link>
@@ -47,17 +81,18 @@
 <body>
   <header>
     <button id="back-button">&#8592; Back</button>
+    <button id="save-button">Save</button>
   </header>
 
   <main>
-    <h1>Theme Name</h1>
-    
+    <h1>Code Editor</h1>
+    <h3 style="font-weight: 300;">Once you make changes, press Save. Only ASCII-compatible characters are supported.</h3>
+    <br>
     <textarea id="editor">
 /* Example, sets the colour for today on the attendance page */
 .is-today {
   background-color: #409dc257 !important;
-}
-    </textarea>
+}</textarea>
   </main>
 
   <script src="../frameworks/codemirror/codemirror.min.js"></script>

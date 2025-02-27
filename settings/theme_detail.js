@@ -1,4 +1,3 @@
-    // Retrieve themeID from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const themeID = urlParams.get('themeID');
     console.log(themeID);
