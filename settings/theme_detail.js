@@ -1,14 +1,11 @@
     const urlParams = new URLSearchParams(window.location.search);
     const themeID = urlParams.get('themeID');
-    console.log(themeID);
 
     fetch(chrome.runtime.getURL("src/config/themes.yml"))
     .then(response => response.text())
     .then(data => {
         const yamlToJson = jsyaml.load(data);
-        console.log(yamlToJson);
         const theme = yamlToJson[themeID];
-        console.log(theme);
         document.getElementById('theme-image').src = "../assets/" + theme.thumbnail;
         document.getElementById('theme-title').textContent = theme.name;
         document.getElementById('theme-author').textContent = 'by ' + theme.author;

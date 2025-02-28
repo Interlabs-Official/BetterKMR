@@ -6,7 +6,8 @@
   "permissions": [
     "tabs",
     "activeTab",
-    "storage"
+    "storage",
+    "unlimitedStorage"
   ],
   "host_permissions": [
     "https://*.school.kiwi/*"

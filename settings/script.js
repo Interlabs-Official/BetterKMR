@@ -479,7 +479,7 @@
         window.isItemToggled = settingsPage.isItemToggled.bind(settingsPage);
       });
 
-      function createCustomThemeItem(themeName) {
+      function createCustomThemeItem(themeName, customID) {
         const li = document.createElement("li");
         li.classList.add("custom-theme-item");
         li.style.display = "flex";
@@ -510,6 +510,7 @@
           return button;
         }
       
+        const applyButton = createButton("apply-custom-theme", "#3498db", "Apply");
         const editButton = createButton("edit-theme", "#3498db", "Edit");
         const deleteButton = createButton("delete-theme", "#e74c3c", "Delete");
       
@@ -517,6 +518,47 @@
           window.location.href = chrome.runtime.getURL('settings/theme_edit.html?themeID=' + customID);
         });
 
+        deleteButton.addEventListener('click', () => {
+          deleteTheme(customID)
+        });
+
+        applyButton.addEventListener('click', () => {
+          // on apply function here because for some odd reason it wouldn't be found
+          if (document.getElementById("greyed-out-applied")) {
+              document.getElementById("greyed-out-applied").textContent = "Apply"
+              document.getElementById("greyed-out-applied").disabled = false;
+              document.getElementById("greyed-out-applied").removeAttribute("id");
+          }
+          applyButton.setAttribute("id", "greyed-out-applied")
+          applyButton.disabled = true;
+          applyButton.textContent = "In Use"
+
+          saveSetting('theme-id-text', customID);
+          console.log('Custom theme applied:', themeName, 'with ID:', customID);
+          const notificationContainer = document.getElementById('notification-container');
+        
+          const notification = document.createElement('div');
+          notification.className = 'notification';
+          notification.style.backgroundColor = "#3c8443";
+          notification.style.color = "#ffffff";
+          notification.innerText = `Custom theme "${themeName}" has been successfully applied.`;
+      
+          notification.addEventListener('click', () => {
+              notification.classList.add('hidden');
+              setTimeout(() => notification.remove(), 500);
+          });
+      
+          notificationContainer.appendChild(notification);
+      
+          setTimeout(() => {
+              if (notification) {
+                  notification.classList.add('hidden');
+                  setTimeout(() => notification.remove(), 500);
+              }
+          }, 5000);
+        });
+
+        actionsDiv.appendChild(applyButton);
         actionsDiv.appendChild(editButton);
         actionsDiv.appendChild(deleteButton);
       
@@ -526,42 +568,48 @@
         return li;
       }
 
-      const CUSTOM_THEMES_KEY = 'customThemes';
+      function getAllCustomThemes(callback) {
+        chrome.storage.sync.get('themes', function(data) {
+          const themes = data.themes || {};
+          callback(themes);
+        });
+      }
 
-      function addToList(theme) {
-        chrome.storage.sync.get({ [CUSTOM_THEMES_KEY]: [] }, function(result) {
-          const themes = result[CUSTOM_THEMES_KEY];
-          createCustomThemeItem(theme);
-          chrome.storage.sync.set({ [CUSTOM_THEMES_KEY]: themes });
+      function setUpCustomThemesList() {
+        const customThemesList = document.getElementById("custom-themes-list");
+        customThemesList.innerHTML = ''; //clears existing items before rewriting list
+        getAllCustomThemes(function(themes) {
+          for (x in themes) { // add in use logic here
+            customThemesList.appendChild(createCustomThemeItem(themes[x].name, x));
+          }
         });
       }
-      
-      function removeFromList(themeName) {
-        chrome.storage.sync.get({ [CUSTOM_THEMES_KEY]: [] }, function(result) {
-          let themes = result[CUSTOM_THEMES_KEY];
-          themes = themes.filter(theme => theme.name !== themeName);
-          chrome.storage.sync.set({ [CUSTOM_THEMES_KEY]: themes });
+      setUpCustomThemesList();
+
+      document.getElementById("new-custom-theme-button").addEventListener('click', function() {
+        window.location.href = chrome.runtime.getURL("settings/theme_edit.html?themeID=new_theme")
+    });
+
+      function deleteTheme(themeId) {
+        chrome.storage.sync.get('themes', function(data) {
+          let themes = data.themes || {};
+          
+          if (themes[themeId]) {
+            delete themes[themeId];
+            
+            chrome.storage.sync.set({ themes: themes }, function() {
+              if (chrome.runtime.lastError) {
+                console.error("Error deleting theme:", chrome.runtime.lastError);
+                alert("Error deleting theme. Please try again.");
+              } else {
+                console.log("Theme deleted successfully!");
+                alert("Theme deleted successfully!");
+                setUpCustomThemesList();
+              }
+            });
+          } else {
+            console.log("Theme not found.");
+            alert("Theme not found.");
+          }
         });
       }
-      
-      function getListItems(callback) {
-        chrome.storage.sync.get({ [CUSTOM_THEMES_KEY]: [] }, function(result) {
-          callback(result[CUSTOM_THEMES_KEY]);
-        });
-      }
-      
-      function checkIfListItemExists(themeName, callback) {
-        getListItems(function(themes) {
-          const exists = themes.some(theme => theme.name === themeName);
-          callback(exists);
-        });
-      }
-      
-      function getSingleListItem(themeName, callback) {
-        getListItems(function(themes) {
-          const theme = themes.find(theme => theme.name === themeName);
-          callback(theme);
-        });
-      }
-      const customThemesList = document.getElementById("custom-themes-list");
-      customThemesList.appendChild(createCustomThemeItem("First Theme"));

@@ -22,7 +22,6 @@ if (window.location.pathname == "/example-page") {
     const sk_main = document.getElementsByClassName("sk-main")[0];
     sk_text.remove();
 
-    console.log(sk_main);
     /* sk_main.innerHTML = marked.parse(`
     <div class="sk_text sk_page sk-main-content">
         <br>
@@ -34,5 +33,4 @@ if (window.location.pathname == "/example-page") {
     `) */
     sk_main.innerHTML = marked.parse("# Welcome to your custom BetterKMR page! \nHere, you can define your own HTML as well as extra JavaScript and CSS.\n\nIf a page defined already exists, BetterKMR will automatically override it.\n\nCustom HTML pages also support standard markdown, too!")
     sk_main.style.color = "#ffffff"
-    console.log(sk_main.innerHTML);
 }

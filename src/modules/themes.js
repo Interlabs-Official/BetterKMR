@@ -40,6 +40,17 @@ function waitForElm(selector) {
     });
 }
 
+function isCustomUUID(id) {
+    let regex = /^[a-z,0-9,-]{36,36}$/;
+    return regex.test(id);
+}
+
+    function addStyle(styleString) {
+        const style = document.createElement('style');
+        style.textContent = styleString;
+        document.head.append(style);
+      }
+
 // code to hide the school logo until all has loaded. works really well on pure dark theme.
 (async () => {
     let curInterval = setInterval(function() {
@@ -62,24 +73,35 @@ function injectTheme(yamlToJson) {
     chrome.storage.sync.get(["theme-id-text"]).then((result) => {
         const url = result["theme-id-text"] || "0";
         const themePath = yamlToJson[url];
-        holdfunc.notify("The theme you have chosen \"" + themePath["css"] + "\" will begin loading shortly.");
         if (themePath) {
-            const link = document.createElement("link");
-            link.href = chrome.runtime.getURL("src/themes/" + themePath["css"]);
-            link.type = "text/css";
-            link.rel = "stylesheet";
-            document.head.appendChild(link);
-            if (themePath["js"] != null) {
-                (async () => {
-                    console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for theme: ` + themePath["name"], 'color: #0091EA', 'color: #fff');
-                    try {
-                        let src = chrome.runtime.getURL("src/themes/js/" + themePath["js"]);
-                        await import(src);
-                    } catch (error) {
-                        console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${themePath["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
-                    }
-                })();
+                holdfunc.notify("The theme you have chosen \"" + themePath["css"] + "\" will begin loading shortly.");
+                const link = document.createElement("link");
+                link.href = chrome.runtime.getURL("src/themes/" + themePath["css"]);
+                link.type = "text/css";
+                link.rel = "stylesheet";
+                document.head.appendChild(link);
+                if (themePath["js"] != null) {
+                    (async () => {
+                        console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for theme: ` + themePath["name"], 'color: #0091EA', 'color: #fff');
+                        try {
+                            let src = chrome.runtime.getURL("src/themes/js/" + themePath["js"]);
+                            await import(src);
+                        } catch (error) {
+                            console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${themePath["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                        }
+                    })();
+                }
+            } else {
+                if (isCustomUUID(url)) { // is custom theme
+                    chrome.storage.sync.get('themes', function(data) {
+                        let themes = data.themes || {};
+                        let theme = themes[url];
+                        if (theme) {
+                            holdfunc.notify("The custom theme you have chosen \"" + theme.name + "\" will load now.");
+                            addStyle(theme.code);
+                        }
+                    });
+                }
             }
-        }
     });
 }

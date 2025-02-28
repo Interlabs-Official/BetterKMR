@@ -385,6 +385,26 @@
     .dialog-button-not:hover {
         background-color: #4242423a;
     }
+
+    #new-custom-theme-button {
+    position: absolute;
+    top: 170px;
+    right: 50px;
+    background-color: #4c91af;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #new-custom-theme-button:hover {
+    background-color: #1a7da7;
+  }
   </style>
 </head>
 <body>
@@ -433,20 +453,25 @@
             <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
             <div class="theme-grid" id="theme-grid"></div>
           </div>
-          <div id="nested-tab-market-themes" class="nested-tab-content"></div>
+          <div id="nested-tab-market-themes" class="nested-tab-content">
+            <br><h1 style="text-align: center; font-weight: 300; font-size: 60px;">Marketplace</h1>
+            <h2 style="text-align: center;">Coming soon! This will (maybe) soon be a place where you can distribute your custom themes.</h2>
+            <h3 style="text-align: center;">Keep watching this extension for future updates!</h3>
+          </div>
           <div id="nested-tab-custom-themes" class="nested-tab-content">
+            <button id="new-custom-theme-button">New</button>
             <br><h1>Your Themes</h1>
             <!-- Custom Themes List -->
             <ul id="custom-themes-list" style="list-style: none; padding: 0; margin-top: 20px;">
               <!-- Example Theme Item -->
-              <li class="custom-theme-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
+              <!-- <li class="custom-theme-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
                 <span class="theme-name" style="font-size: 18px;">Example Theme</span>
                 <div class="theme-actions">
                   <button class="edit-theme" style="background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Edit</button>
                   <button class="add-js-theme" style="background: #f39c12; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Add JS</button>
                   <button class="delete-theme" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
                 </div>
-              </li>
+              </li> -->
             </ul>
           </div>
         </div>
