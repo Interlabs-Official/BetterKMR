@@ -18,7 +18,7 @@ let editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     }
   });
 
-  let currentFontSize = 40; // starting font size
+  let currentFontSize = 16; // starting font size
 
 editor.getWrapperElement().addEventListener("wheel", function(e) {
   if (e.ctrlKey) {
@@ -53,7 +53,7 @@ function uuidv4() {
 // Add this function to load the theme when the page loads
 function loadTheme() {
   if (themeID) {
-    chrome.storage.sync.get('themes', function(data) {
+    chrome.storage.local.get('themes', function(data) {
       let themes = data.themes || {};
       let theme = themes[themeID];
       if (theme) {
@@ -89,7 +89,7 @@ function createNotification(message, color, frontcol) {
 }
 
 function getAllCustomThemes(callback) {
-  chrome.storage.sync.get('themes', function(data) {
+  chrome.storage.local.get('themes', function(data) {
     const themes = data.themes || {};
     callback(themes);
   });
@@ -98,20 +98,20 @@ function getAllCustomThemes(callback) {
 function saveCode() {
   var ascii = /^[ -~\t\n\r]+$/;
 
-  if (!ascii.test(editor.getValue())) {
-    console.log("Contains non-ASCII characters. Will not save.");
-    createNotification("Failed saving code, please remove any ASCII characters.", "#FF0000", "#ffffff");
-    return;
-  }
-
   const code = editor.getValue();
   const themeName = document.getElementById('theme-name-text').value;
-  
-  if (!themeName) {
-    alert("Please enter a theme name before saving.");
+
+  if (themeName.length === 0) {
+    createNotification("Please enter a theme name before continuing.", "#961a1a", "#ffffff");
     return;
   }
 
+  if (!ascii.test(editor.getValue())) {
+    console.log("Contains non-ASCII characters. Will not save.");
+    createNotification("Failed saving code: contains characters that aren't ASCII.", "#961a1a", "#ffffff");
+    return;
+  }
+  
   getAllCustomThemes(function(themes) {
     let actualThemeID = uuidv4();
     for (let x in themes) {
@@ -140,10 +140,10 @@ function saveCode() {
 
     themes[actualThemeID] = themeData;
 
-    chrome.storage.sync.set({ themes: themes }, function() {
+    chrome.storage.local.set({ themes: themes }, function() {
       if (chrome.runtime.lastError) {
         console.error("Error saving theme:", chrome.runtime.lastError);
-        createNotification("Failed saving code, check console for details.", "#FF0000", "#ffffff");
+        createNotification("Failed saving code, check console for details.", "#961a1a", "#ffffff");
       } else {
         console.log("Theme saved successfully!");
         createNotification(`Code saved.`, "#3c8443", "#ffffff");

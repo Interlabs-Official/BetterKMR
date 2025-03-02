@@ -1,366 +1,361 @@
-    /**********************************************************************
+/**********************************************************************
      * Storage Helpers
      **********************************************************************/
-    // Save a setting using chrome.storage.sync (with fallback to localStorage)
-    function saveSetting(key, value) {
-        if (window.chrome && chrome.storage && chrome.storage.sync) {
-          let data = {};
-          data[key] = value;
-          chrome.storage.sync.set(data, function() {
-            console.log('Saved ' + key + ': ' + value);
-          });
-        } else {
-          localStorage.setItem(key, JSON.stringify(value));
+
+function saveSetting(key, value) {
+  if (window.chrome && chrome.storage && chrome.storage.sync) {
+    let data = {};
+    data[key] = value;
+    chrome.storage.sync.set(data, function() {
+      console.log('Saved ' + key + ': ' + value);
+    });
+  } else {
+    localStorage.setItem(key, JSON.stringify(value));
+  }
+}
+
+function loadSetting(key, callback) {
+  if (window.chrome && chrome.storage && chrome.storage.sync) {
+    chrome.storage.sync.get(key, function(result) {
+      if (callback) { callback(result[key]); }
+      return result[key];
+    });
+  } else {
+    if (callback) { callback(JSON.parse(localStorage.getItem(key))); }
+    return JSON.parse(localStorage.getItem(key));
+  }
+  return null; 
+}
+
+function loadSettingPromise(key) {
+  return new Promise((resolve, reject) => {
+    if (window.chrome && chrome.storage && chrome.storage.sync) {
+      chrome.storage.sync.get(key, function(result) {
+        resolve(result[key]);
+      });
+    } else {
+      resolve(JSON.parse(localStorage.getItem(key)));
+    }
+  });
+}
+
+/**********************************************************************
+ * SettingsPage Class
+ **********************************************************************/
+class SettingsPage {
+  constructor() {
+
+    this.settingsRegistry = {};
+  }
+
+  /**
+   * Adds a new setting item to a given main tab.
+   * @param {string} tabId - The ID suffix of the tab (e.g., "general")
+   * @param {object} setting - The setting definition object.
+   */
+  addSetting(tabId, setting) {
+    const tabContent = document.getElementById('tab-' + tabId);
+    if (!tabContent) {
+      console.error('Tab not found: ' + tabId);
+      return;
+    }
+    const settingDiv = document.createElement('div');
+    settingDiv.className = 'setting-item';
+
+    const header = document.createElement('div');
+    header.className = 'setting-header';
+
+    const label = document.createElement('span');
+    label.className = 'setting-label';
+    label.textContent = setting.label;
+    header.appendChild(label);
+
+    if (setting.tooltip) {
+      const infoIcon = document.createElement('span');
+      infoIcon.className = 'info-icon';
+      infoIcon.textContent = 'ⓘ';
+      const tooltipSpan = document.createElement('span');
+      tooltipSpan.className = 'tooltip';
+      tooltipSpan.textContent = setting.tooltip;
+      infoIcon.appendChild(tooltipSpan);
+      header.appendChild(infoIcon);
+    }
+
+    let control;
+    switch (setting.type) {
+      case 'toggle':
+        control = this.createToggle(setting);
+        break;
+      case 'dropdown':
+        control = this.createDropdown(setting);
+        break;
+      case 'text':
+        control = this.createTextBox(setting);
+        break;
+      case 'button':
+        control = this.createButton(setting);
+        break;
+      default:
+        control = document.createElement('span');
+        control.textContent = 'Unsupported control';
+    }
+    control.classList.add('control');
+    header.appendChild(control);
+    settingDiv.appendChild(header);
+
+    if (setting.children && Array.isArray(setting.children) && setting.children.length > 0) {
+      const expandArrow = document.createElement('span');
+      expandArrow.className = 'expand-arrow';
+      expandArrow.textContent = '▼';
+      header.appendChild(expandArrow);
+
+      const childContainer = document.createElement('div');
+      childContainer.className = 'child-settings';
+      setting.children.forEach(childSetting => {
+        const childSettingElement = this.createChildSetting(childSetting);
+        childContainer.appendChild(childSettingElement);
+      });
+      settingDiv.appendChild(childContainer);
+
+      header.addEventListener('click', (e) => {
+        if (['input','select','button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
+          childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
         }
+      });
+    }
+
+    this.settingsRegistry[setting.name] = {
+      element: control,
+      type: setting.type,
+      value: setting.default,
+      callback: setting.callback || function(val) {},
+    };
+
+    tabContent.appendChild(settingDiv);
+  }
+
+        /**
+ * Adds a new setting item into a nested tab container.
+ */
+addNestedSetting(nestedTabId, setting) {
+  const nestedTabContent = document.getElementById('nested-tab-' + nestedTabId);
+  if (!nestedTabContent) {
+    console.error('Nested tab not found: ' + nestedTabId);
+    return;
+  }
+  const settingDiv = document.createElement('div');
+  settingDiv.className = 'setting-item';
+
+  const header = document.createElement('div');
+  header.className = 'setting-header';
+
+  const label = document.createElement('span');
+  label.className = 'setting-label';
+  label.textContent = setting.label;
+  header.appendChild(label);
+
+  if (setting.tooltip) {
+    const infoIcon = document.createElement('span');
+    infoIcon.className = 'info-icon';
+    infoIcon.textContent = 'ⓘ';
+    const tooltipSpan = document.createElement('span');
+    tooltipSpan.className = 'tooltip';
+    tooltipSpan.textContent = setting.tooltip;
+    infoIcon.appendChild(tooltipSpan);
+    header.appendChild(infoIcon);
+  }
+
+  let control;
+  switch (setting.type) {
+    case 'toggle': control = this.createToggle(setting); break;
+    case 'dropdown': control = this.createDropdown(setting); break;
+    case 'text': control = this.createTextBox(setting); break;
+    case 'button': control = this.createButton(setting); break;
+    default:
+      control = document.createElement('span');
+      control.textContent = 'Unsupported control';
+  }
+  control.classList.add('control');
+  header.appendChild(control);
+  settingDiv.appendChild(header);
+
+  if (setting.children && Array.isArray(setting.children) && setting.children.length > 0) {
+    const expandArrow = document.createElement('span');
+    expandArrow.className = 'expand-arrow';
+    expandArrow.textContent = '▼';
+    header.appendChild(expandArrow);
+
+    const childContainer = document.createElement('div');
+    childContainer.className = 'child-settings';
+    setting.children.forEach(childSetting => {
+      const childSettingElement = this.createChildSetting(childSetting);
+      childContainer.appendChild(childSettingElement);
+    });
+    settingDiv.appendChild(childContainer);
+
+    header.addEventListener('click', (e) => {
+      if (['input', 'select', 'button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
+        childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
       }
-      // Load a setting value.
-      function loadSetting(key, callback) {
-        if (window.chrome && chrome.storage && chrome.storage.sync) {
-          chrome.storage.sync.get(key, function(result) {
-            if (callback) { callback(result[key]); }
-            return result[key];
-          });
-        } else {
-          if (callback) { callback(JSON.parse(localStorage.getItem(key))); }
-          return JSON.parse(localStorage.getItem(key));
-        }
-        return null; // cannot retrieve
-      }
-      // Refactored loadSetting that returns a Promise.
-      function loadSettingPromise(key) {
-        return new Promise((resolve, reject) => {
-          if (window.chrome && chrome.storage && chrome.storage.sync) {
-            chrome.storage.sync.get(key, function(result) {
-              resolve(result[key]);
-            });
-          } else {
-            resolve(JSON.parse(localStorage.getItem(key)));
-          }
-        });
-      }
-  
-      /**********************************************************************
-       * SettingsPage Class
-       **********************************************************************/
-      class SettingsPage {
-        constructor() {
-          // Registry to store the current state of each setting
-          this.settingsRegistry = {};
-        }
-  
-        /**
-         * Adds a new setting item to a given main tab.
-         * @param {string} tabId - The ID suffix of the tab (e.g., "general")
-         * @param {object} setting - The setting definition object.
-         */
-        addSetting(tabId, setting) {
-          const tabContent = document.getElementById('tab-' + tabId);
-          if (!tabContent) {
-            console.error('Tab not found: ' + tabId);
-            return;
-          }
-          const settingDiv = document.createElement('div');
-          settingDiv.className = 'setting-item';
-  
-          // Create header row: label, tooltip, control, and (if needed) dropdown arrow
-          const header = document.createElement('div');
-          header.className = 'setting-header';
-  
-          const label = document.createElement('span');
-          label.className = 'setting-label';
-          label.textContent = setting.label;
-          header.appendChild(label);
-  
-          if (setting.tooltip) {
-            const infoIcon = document.createElement('span');
-            infoIcon.className = 'info-icon';
-            infoIcon.textContent = 'ⓘ';
-            const tooltipSpan = document.createElement('span');
-            tooltipSpan.className = 'tooltip';
-            tooltipSpan.textContent = setting.tooltip;
-            infoIcon.appendChild(tooltipSpan);
-            header.appendChild(infoIcon);
-          }
-  
-          let control;
-          switch (setting.type) {
-            case 'toggle':
-              control = this.createToggle(setting);
-              break;
-            case 'dropdown':
-              control = this.createDropdown(setting);
-              break;
-            case 'text':
-              control = this.createTextBox(setting);
-              break;
-            case 'button':
-              control = this.createButton(setting);
-              break;
-            default:
-              control = document.createElement('span');
-              control.textContent = 'Unsupported control';
-          }
-          control.classList.add('control');
-          header.appendChild(control);
-          settingDiv.appendChild(header);
-  
-          // If this setting has child settings, add an expand arrow and child container.
-          if (setting.children && Array.isArray(setting.children) && setting.children.length > 0) {
-            const expandArrow = document.createElement('span');
-            expandArrow.className = 'expand-arrow';
-            expandArrow.textContent = '▼';
-            header.appendChild(expandArrow);
-  
-            const childContainer = document.createElement('div');
-            childContainer.className = 'child-settings';
-            setting.children.forEach(childSetting => {
-              const childSettingElement = this.createChildSetting(childSetting);
-              childContainer.appendChild(childSettingElement);
-            });
-            settingDiv.appendChild(childContainer);
-  
-            // Toggle child container on header click (ignoring control clicks)
-            header.addEventListener('click', (e) => {
-              if (['input','select','button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
-                childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
-              }
-            });
-          }
-  
-          // Save initial state in the registry.
-          this.settingsRegistry[setting.name] = {
-            element: control,
-            type: setting.type,
-            value: setting.default,
-            callback: setting.callback || function(val) {},
-          };
-  
-          tabContent.appendChild(settingDiv);
-        }
-  
-              /**
-       * Adds a new setting item into a nested tab container.
-       */
-      addNestedSetting(nestedTabId, setting) {
-        const nestedTabContent = document.getElementById('nested-tab-' + nestedTabId);
-        if (!nestedTabContent) {
-          console.error('Nested tab not found: ' + nestedTabId);
-          return;
-        }
-        const settingDiv = document.createElement('div');
-        settingDiv.className = 'setting-item';
+    });
+  }
 
-        const header = document.createElement('div');
-        header.className = 'setting-header';
+  this.settingsRegistry[setting.name] = {
+    element: control,
+    type: setting.type,
+    value: setting.default,
+    callback: setting.callback || function(val) {}
+  };
 
-        const label = document.createElement('span');
-        label.className = 'setting-label';
-        label.textContent = setting.label;
-        header.appendChild(label);
+  nestedTabContent.appendChild(settingDiv);
+}
 
-        if (setting.tooltip) {
-          const infoIcon = document.createElement('span');
-          infoIcon.className = 'info-icon';
-          infoIcon.textContent = 'ⓘ';
-          const tooltipSpan = document.createElement('span');
-          tooltipSpan.className = 'tooltip';
-          tooltipSpan.textContent = setting.tooltip;
-          infoIcon.appendChild(tooltipSpan);
-          header.appendChild(infoIcon);
-        }
+  /**
+   * Creates a child setting element (for collapsible child settings).
+   */
+  createChildSetting(setting) {
+    const settingDiv = document.createElement('div');
+    settingDiv.className = 'setting-item';
 
-        let control;
-        switch (setting.type) {
-          case 'toggle': control = this.createToggle(setting); break;
-          case 'dropdown': control = this.createDropdown(setting); break;
-          case 'text': control = this.createTextBox(setting); break;
-          case 'button': control = this.createButton(setting); break;
-          default:
-            control = document.createElement('span');
-            control.textContent = 'Unsupported control';
-        }
-        control.classList.add('control');
-        header.appendChild(control);
-        settingDiv.appendChild(header);
+    const header = document.createElement('div');
+    header.className = 'setting-header';
 
-        // Process child settings if any
-        if (setting.children && Array.isArray(setting.children) && setting.children.length > 0) {
-          const expandArrow = document.createElement('span');
-          expandArrow.className = 'expand-arrow';
-          expandArrow.textContent = '▼';
-          header.appendChild(expandArrow);
+    const label = document.createElement('span');
+    label.className = 'setting-label';
+    label.textContent = setting.label;
+    header.appendChild(label);
 
-          const childContainer = document.createElement('div');
-          childContainer.className = 'child-settings';
-          setting.children.forEach(childSetting => {
-            const childSettingElement = this.createChildSetting(childSetting);
-            childContainer.appendChild(childSettingElement);
-          });
-          settingDiv.appendChild(childContainer);
+    if (setting.tooltip) {
+      const infoIcon = document.createElement('span');
+      infoIcon.className = 'info-icon';
+      infoIcon.textContent = 'ⓘ';
+      const tooltipSpan = document.createElement('span');
+      tooltipSpan.className = 'tooltip';
+      tooltipSpan.textContent = setting.tooltip;
+      infoIcon.appendChild(tooltipSpan);
+      header.appendChild(infoIcon);
+    }
 
-          header.addEventListener('click', (e) => {
-            if (['input', 'select', 'button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
-              childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
-            }
-          });
-        }
+    let control;
+    switch (setting.type) {
+      case 'toggle':
+        control = this.createToggle(setting);
+        break;
+      case 'dropdown':
+        control = this.createDropdown(setting);
+        break;
+      case 'text':
+        control = this.createTextBox(setting);
+        break;
+      case 'button':
+        control = this.createButton(setting);
+        break;
+      default:
+        control = document.createElement('span');
+        control.textContent = 'Unsupported control';
+    }
+    control.classList.add('control');
+    header.appendChild(control);
+    settingDiv.appendChild(header);
 
-        this.settingsRegistry[setting.name] = {
-          element: control,
-          type: setting.type,
-          value: setting.default,
-          callback: setting.callback || function(val) {}
-        };
+    this.settingsRegistry[setting.name] = {
+      element: control,
+      type: setting.type,
+      value: setting.default,
+      callback: setting.callback || function(val) {},
+    };
 
-        nestedTabContent.appendChild(settingDiv);
-      }
-  
-        /**
-         * Creates a child setting element (for collapsible child settings).
-         */
-        createChildSetting(setting) {
-          const settingDiv = document.createElement('div');
-          settingDiv.className = 'setting-item';
-  
-          const header = document.createElement('div');
-          header.className = 'setting-header';
-  
-          const label = document.createElement('span');
-          label.className = 'setting-label';
-          label.textContent = setting.label;
-          header.appendChild(label);
-  
-          if (setting.tooltip) {
-            const infoIcon = document.createElement('span');
-            infoIcon.className = 'info-icon';
-            infoIcon.textContent = 'ⓘ';
-            const tooltipSpan = document.createElement('span');
-            tooltipSpan.className = 'tooltip';
-            tooltipSpan.textContent = setting.tooltip;
-            infoIcon.appendChild(tooltipSpan);
-            header.appendChild(infoIcon);
-          }
-  
-          let control;
-          switch (setting.type) {
-            case 'toggle':
-              control = this.createToggle(setting);
-              break;
-            case 'dropdown':
-              control = this.createDropdown(setting);
-              break;
-            case 'text':
-              control = this.createTextBox(setting);
-              break;
-            case 'button':
-              control = this.createButton(setting);
-              break;
-            default:
-              control = document.createElement('span');
-              control.textContent = 'Unsupported control';
-          }
-          control.classList.add('control');
-          header.appendChild(control);
-          settingDiv.appendChild(header);
-  
-          this.settingsRegistry[setting.name] = {
-            element: control,
-            type: setting.type,
-            value: setting.default,
-            callback: setting.callback || function(val) {},
-          };
-  
-          return settingDiv;
-        }
-  
-        /**
-         * Creates a toggle switch control.
-         */
-        createToggle(setting) {
-          const container = document.createElement('label');
-          container.className = 'toggle-switch';
-          const input = document.createElement('input');
-          input.type = 'checkbox';
-          input.checked = setting.default;
-          const slider = document.createElement('span');
-          slider.className = 'slider';
-          container.appendChild(input);
-          container.appendChild(slider);
-  
-          input.addEventListener('change', () => {
-            const value = input.checked;
-            this.settingsRegistry[setting.name].value = value;
-            saveSetting(setting.name, value);
-            if (setting.callback) { setting.callback(value); }
-          });
-          return container;
-        }
-  
-        /**
-         * Creates a dropdown control.
-         */
-        createDropdown(setting) {
-          const select = document.createElement('select');
-          select.className = 'dropdown';
-          if (setting.options && Array.isArray(setting.options)) {
-            setting.options.forEach(opt => {
-              const option = document.createElement('option');
-              option.value = opt.toLowerCase();
-              option.textContent = opt;
-              select.appendChild(option);
-            });
-            select.value = setting.default.toLowerCase();
-          }
-          select.addEventListener('change', () => {
-            const value = select.value;
-            this.settingsRegistry[setting.name].value = value;
-            saveSetting(setting.name, value);
-            if (setting.callback) { setting.callback(value); }
-          });
-          return select;
-        }
-  
-        /**
-         * Creates a text input control.
-         */
-        createTextBox(setting) {
-          const input = document.createElement('input');
-          input.type = 'text';
-          input.className = 'text-box';
-          input.value = setting.default;
-          input.addEventListener('input', () => {
-            const value = input.value;
-            this.settingsRegistry[setting.name].value = value;
-            saveSetting(setting.name, value);
-            if (setting.callback) { setting.callback(value); }
-          });
-          return input;
-        }
-  
-        /**
-         * Creates a blue button control.
-         */
-        createButton(setting) {
-          const button = document.createElement('button');
-          button.className = 'blue-button';
-          button.textContent = setting.label;
-          button.addEventListener('click', (e) => {
-            if (setting.callback) { setting.callback(e); }
-          });
-          return button;
-        }
-  
-        /**
-         * API method: returns the current toggled value (boolean)
-         * for a given setting item (only valid for toggles).
-         * @param {string} settingName
-         * @returns {boolean}
-         */
-        isItemToggled(settingName) {
-          if (this.settingsRegistry[settingName] &&
-              this.settingsRegistry[settingName].type === 'toggle') {
-            return this.settingsRegistry[settingName].value;
-          }
-          return false;
-        }
-      }
+    return settingDiv;
+  }
+
+  /**
+   * Creates a toggle switch control.
+   */
+  createToggle(setting) {
+    const container = document.createElement('label');
+    container.className = 'toggle-switch';
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.checked = setting.default;
+    const slider = document.createElement('span');
+    slider.className = 'slider';
+    container.appendChild(input);
+    container.appendChild(slider);
+
+    input.addEventListener('change', () => {
+      const value = input.checked;
+      this.settingsRegistry[setting.name].value = value;
+      saveSetting(setting.name, value);
+      if (setting.callback) { setting.callback(value); }
+    });
+    return container;
+  }
+
+  /**
+   * Creates a dropdown control.
+   */
+  createDropdown(setting) {
+    const select = document.createElement('select');
+    select.className = 'dropdown';
+    if (setting.options && Array.isArray(setting.options)) {
+      setting.options.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.toLowerCase();
+        option.textContent = opt;
+        select.appendChild(option);
+      });
+      select.value = setting.default.toLowerCase();
+    }
+    select.addEventListener('change', () => {
+      const value = select.value;
+      this.settingsRegistry[setting.name].value = value;
+      saveSetting(setting.name, value);
+      if (setting.callback) { setting.callback(value); }
+    });
+    return select;
+  }
+
+  /**
+   * Creates a text input control.
+   */
+  createTextBox(setting) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'text-box';
+    input.value = setting.default;
+    input.addEventListener('input', () => {
+      const value = input.value;
+      this.settingsRegistry[setting.name].value = value;
+      saveSetting(setting.name, value);
+      if (setting.callback) { setting.callback(value); }
+    });
+    return input;
+  }
+
+  /**
+   * Creates a blue button control.
+   */
+  createButton(setting) {
+    const button = document.createElement('button');
+    button.className = 'blue-button';
+    button.textContent = setting.label;
+    button.addEventListener('click', (e) => {
+      if (setting.callback) { setting.callback(e); }
+    });
+    return button;
+  }
+
+  /**
+   * API method: returns the current toggled value (boolean)
+   * for a given setting item (only valid for toggles).
+   * @param {string} settingName
+   * @returns {boolean}
+   */
+  isItemToggled(settingName) {
+    if (this.settingsRegistry[settingName] &&
+        this.settingsRegistry[settingName].type === 'toggle') {
+      return this.settingsRegistry[settingName].value;
+    }
+    return false;
+  }
+}

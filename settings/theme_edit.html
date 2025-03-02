@@ -41,7 +41,7 @@
     }
 
     .CodeMirror-code {
-      font-size: 40px;
+      font-size: 16px;
     }
 
     .CodeMirror-gutter-wrapper {
@@ -106,12 +106,14 @@
     <button id="back-button">&#8592; Back</button>
     <button id="save-button">Save</button>
   </header><br>
+  <h1 style="margin-left: 15px;">Theme Properties</h1>
   <label for="theme-name-text" style="margin-left: 15px; margin-right: 15px; font-size: 15px;">Theme Name</label>
   <input type="text" id="theme-name-text" name="theme-name-text" style="background-color: #0f0f0f; color: #ccc; font-size: 15px;"></input>
   <main>
-    <h1>Code Editor</h1>
+    <h1>Code Editor: CSS</h1>
     <h3 style="font-weight: 300;">Once you make changes, press Save. Only ASCII-compatible characters are supported.</h3>
     <h3 style="font-weight: 200;">For CSS, there is a max limit of 15,000 characters. JavaScript has a 20,000 character limit.</h3>
+    <h3 style="font-weight: 200;">Press Ctrl+S/Cmd+S to Save. Ctrl+Scroll on the Code Editor to zoom in/out.</h3>
     <br>
     <textarea id="editor">
 /* Example, sets the colour for today on the attendance page */

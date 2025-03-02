@@ -405,6 +405,22 @@
   #new-custom-theme-button:hover {
     background-color: #1a7da7;
   }
+
+  #gameCanvas {
+      background-color: #000;
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #333;
+    }
+    #controls {
+      margin: 10px;
+    }
+    #snakePlayBtn, #snakePauseBtn, #snakeRestartBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 5px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -417,6 +433,7 @@
         <li data-tab="themes" class="tab-item">Themes</li>
         <li data-tab="privacy" class="tab-item">Privacy</li>
         <li data-tab="advanced" class="tab-item">Developer Settings</li>
+        <li data-tab="super-secret" class="tab-item" id="super-secret-tab-header" style="visibility: hidden;">Super Secret Settings</li>
       </ul>
     </aside>
     
@@ -460,8 +477,7 @@
           </div>
           <div id="nested-tab-custom-themes" class="nested-tab-content">
             <button id="new-custom-theme-button">New</button>
-            <br><h1>Your Themes</h1>
-            <!-- Custom Themes List -->
+            <br><h1>Your Themes</h1><h3 style="font-weight: 300;">NOTE: Due to quota issues, custom themes are stored locally instead of synced. Support may change in the future.</h3>
             <ul id="custom-themes-list" style="list-style: none; padding: 0; margin-top: 20px;">
               <!-- Example Theme Item -->
               <!-- <li class="custom-theme-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
@@ -485,10 +501,17 @@
         <h3 style="font-weight: 300;">This is the Advanced section.</h3>
         <h3 style="font-weight: 300;">Some parts of this section are only available when built directly from the GitHub repo.</h3>
       </div>
+      <div id="tab-super-secret" class="tab-content">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="controls">
+          <button id="snakePlayBtn">Play</button>
+        </div>
+      </div>
     </main>
   </div>
   <script src="../frameworks/js-yaml.min.js"></script>
   <script src="lib.js"></script>
   <script src="script.js"></script>
+  <script src="snake.js"></script>
 </body>
 </html>

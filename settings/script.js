@@ -245,6 +245,7 @@
             Promise.all([
               loadSettingPromise("hide_external_js_warning"),
             ]).then(([value]) => {
+              console.log("Load setting: " + value);
               if (externalJS != null && value == false || value == null) {
                   fetch(chrome.runtime.getURL("src/config/general.yml"))
                   .then(response => response.text())
@@ -363,7 +364,7 @@
         console.log(`%c[BetterKMR 📕] ` + `%cAn error occurred while attempting to load a theme preview:\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
     }
 
-    function createNotification(message, color, frontcol) {
+    window.createNotification = function(message, color, frontcol) {
         const notificationContainer = document.getElementById('notification-container');
         
         const notification = document.createElement('div');
@@ -387,7 +388,7 @@
         }, 5000);
     }    
 
-    function createDialog({ title, content, buttons = [] }) {
+    window.createDialog = function({ title, content, buttons = [] }) {
         const overlay = document.createElement('div');
         overlay.className = 'dialog-overlay';
         
@@ -569,7 +570,7 @@
       }
 
       function getAllCustomThemes(callback) {
-        chrome.storage.sync.get('themes', function(data) {
+        chrome.storage.local.get('themes', function(data) {
           const themes = data.themes || {};
           callback(themes);
         });
@@ -591,19 +592,18 @@
     });
 
       function deleteTheme(themeId) {
-        chrome.storage.sync.get('themes', function(data) {
+        chrome.storage.local.get('themes', function(data) {
           let themes = data.themes || {};
           
           if (themes[themeId]) {
             delete themes[themeId];
             
-            chrome.storage.sync.set({ themes: themes }, function() {
+            chrome.storage.local.set({ themes: themes }, function() {
               if (chrome.runtime.lastError) {
                 console.error("Error deleting theme:", chrome.runtime.lastError);
                 alert("Error deleting theme. Please try again.");
               } else {
-                console.log("Theme deleted successfully!");
-                alert("Theme deleted successfully!");
+                createNotification(`The custom theme you have chosen has been successfully deleted.`, "#3c8443", "#ffffff");
                 setUpCustomThemesList();
               }
             });
@@ -613,3 +613,19 @@
           }
         });
       }
+
+      let konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter'];
+      let inputIndex = 0;
+
+      document.addEventListener('keydown', function(event) {
+          if (event.key === konamiCode[inputIndex]) {
+              inputIndex++;
+              if (inputIndex === konamiCode.length) {
+                createNotification(`Secret unlocked.`, "#3c8443", "#ffffff");
+                document.getElementById("super-secret-tab-header").style.visibility = "visible";
+                  inputIndex = 0;
+              }
+          } else {
+              inputIndex = 0;
+          }
+      });

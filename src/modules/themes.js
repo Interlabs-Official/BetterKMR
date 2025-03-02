@@ -93,11 +93,11 @@ function injectTheme(yamlToJson) {
                 }
             } else {
                 if (isCustomUUID(url)) { // is custom theme
-                    chrome.storage.sync.get('themes', function(data) {
+                    chrome.storage.local.get('themes', function(data) {
                         let themes = data.themes || {};
                         let theme = themes[url];
                         if (theme) {
-                            holdfunc.notify("The custom theme you have chosen \"" + theme.name + "\" will load now.");
+                            holdfunc.notify("The custom theme you have chosen \"" + theme.name + "\" will now load.");
                             addStyle(theme.code);
                         }
                     });
