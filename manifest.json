@@ -26,7 +26,8 @@
   ],
   "action": {},
   "background": {
-    "service_worker": "service.js"
+    "service_worker": "service.js",
+    "scripts": ["service.js"]
   },
   "icons": {
     "16": "icon/icon16.png",
@@ -53,5 +54,11 @@
       ],
       "matches": ["https://*.school.kiwi/*"]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "interlabsofficial@gmail.com",
+      "strict_min_version": "58.0"
+    }
+  }
 }

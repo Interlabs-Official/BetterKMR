@@ -28,6 +28,10 @@
     thumbnail: "images/backgrounds/space.jpg"
     author: "Convy32"
     highlight: "The default Space theme, bundled with BetterKMR by default."
+    tags:
+      "Default": "rgba(153,153,153,0.5)"
+      "Recommended": "rgba(119,52,235,0.5)"
+      "Space": "rgba(52,101,235,0.5)"
 1:
     name: "School Colours"
     css: "blank.css"
@@ -39,12 +43,21 @@
     author: "Solar"
     highlight: "A chill winter theme with a background so great it can't be artificial intelligence."
     description: "vivid.md"
+    tags:
+      "Winter": "rgba(168,254,255,0.5)"
+      "Mountain": "rgba(38,183,255,0.5)"
+      "Christmas": "rgba(255,38,71,0.5)"
+      "Cozy": "rgba(255,165,48,0.5)"
 3:
     name: "Star Destroyers"
     css: "starwarsempire.css"
     thumbnail: "images/backgrounds/starwarsempire_downscaled.jpg"
     author: "Samuel H"
     highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin"
+    tags:
+      "Star Wars": "rgba(168,254,255,0.5)"
+      "Empire": "rgba(38,183,255,0.5)"
+      "Rebellion": "rgba(255,38,71,0.5)"
 4:
     name: "Pure Dark Theme"
     css: "puredark.css"
