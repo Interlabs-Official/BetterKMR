@@ -26,15 +26,6 @@ chrome.action.onClicked.addListener(tab => {
     });
 });
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.injectScript == "navbar.js") {
-        console.log("Service worker received message from sender %s", sender.id, request)
-        console.log("Beginning to inject navbar.js into content page");
-        chrome.tabs.executeScript(sender.tab.id, {file: request.injectScript}, function () {
-          sendResponse({message: "Service worker processed the message"})
-        });
-  }
-})
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "checkPinned") {
       chrome.action.getUserSettings().then((settings) => {
           sendResponse({ isPinned: settings.isOnToolbar });

@@ -113,6 +113,7 @@ body .school-card {
 /* end */
 body .sk_table {
     color: #ffffff !important;
+    border-color: #63c8ff93 !important;
 }
 body .sk_btn, .sk_btn.disabled:hover {
     color: #ffffff !important;

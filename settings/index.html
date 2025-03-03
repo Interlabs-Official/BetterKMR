@@ -181,12 +181,13 @@
     /* theme selector */
     /* Container for the entire grid */
     .theme-grid {
-      display: grid;
+      /* display: grid; */
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1rem;
       padding: 1rem;
       max-width: 1200px;
       margin: 0 auto; /* Center the grid horizontally */
+      animation: fade-in 0.3s ease;
     }
 
     /* Each card container */
@@ -211,7 +212,10 @@
 
     /* Card content area */
     .theme-content {
-      padding: 1rem;
+      padding-top: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-bottom: 0.8rem;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
@@ -261,29 +265,46 @@
     }
 
     .theme-image-wrapper {
-        position: relative;
-        width: 100%;
-        height: 150px;
-        overflow: hidden;
+      position: relative;
+      width: 100%;
+      height: 150px;
+      overflow: hidden;
     }
 
     .theme-image-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .badge-container {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      display: flex; /* Use flexbox to align badges horizontally */
+      gap: 5px; /* Space between badges */
+    }
+
+    .badge {
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 3px 6px;
+      border-radius: 4px;
+      pointer-events: none;
+      white-space: nowrap; /* Prevent text from wrapping */
     }
 
     .external-js-badge {
-        position: absolute;
-        bottom: 5px;
-        right: 5px;
-        background-color: rgba(255, 0, 0, 0.8);
-        color: white;
-        font-size: 14px;
-        font-weight: bold;
-        padding: 3px 6px;
-        border-radius: 4px;
-        pointer-events: none;
+      background-color: rgba(255, 0, 0, 0.8);
+    }
+
+    .recommended-badge {
+      background-color: rgba(0, 128, 255, 0.8);
+    }
+
+    .experimental-badge {
+      background-color: rgba(120, 131, 26, 0.8);
     }
 
     #greyed-out-applied {
@@ -385,6 +406,238 @@
     .dialog-button-not:hover {
         background-color: #4242423a;
     }
+
+    #new-custom-theme-button {
+    position: absolute;
+    top: 170px;
+    right: 50px;
+    background-color: #4c91af;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #new-custom-theme-button:hover {
+    background-color: #1a7da7;
+  }
+
+  #gameCanvas {
+      background-color: #000;
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #333;
+    }
+    #controls {
+      margin: 10px;
+    }
+    #snakePlayBtn, #snakePauseBtn, #snakeRestartBtn {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 5px;
+      cursor: pointer;
+    }
+
+    .tag-container {
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .tag-scroll-wrapper {
+      display: flex;
+      padding-bottom: 5px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    .tag-scroll-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    .theme-tag {
+      display: inline-block;
+      padding: 0.3em 0.5em;
+      border-radius: 0.4em;
+      font-size: 1em;
+      margin-right: 0.5em;
+      margin-top: 7.5px;
+      white-space: nowrap;
+      color: white;
+    }
+
+    .theme-tag.default {
+      background-color: #77777785;
+    }
+
+    .theme-tag.recommended {
+      background-color: #4caf4f81;
+    }
+
+    .theme-tag.experimental {
+      background-color: #bdba3081;
+    }
+
+    .theme-tag.space {
+      background-color: #3f51b585;
+    }
+
+    .theme-tag.dark {
+      background-color: #21212185;
+    }
+
+    .theme-tag.light {
+      background-color: #f5f5f5;
+      color: black;
+    }
+    /* loader */
+    .loader {
+        transform: rotateZ(45deg);
+        perspective: 1000px;
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        color: #0077ffbe;
+        margin-top: 15px;
+      }
+        .loader:before,
+        .loader:after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: inherit;
+          height: inherit;
+          border-radius: 50%;
+          transform: rotateX(70deg);
+          animation: 1s spin linear infinite;
+        }
+        .loader:after {
+          color: #fff;
+          transform: rotateY(70deg);
+          animation-delay: .4s;
+        }
+
+      @keyframes rotate {
+        0% {
+          transform: translate(-50%, -50%) rotateZ(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotateZ(360deg);
+        }
+      }
+
+      @keyframes rotateccw {
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(-360deg);
+        }
+      }
+
+      @keyframes spin {
+        0%,
+        100% {
+          box-shadow: .2em 0px 0 0px currentcolor;
+        }
+        12% {
+          box-shadow: .2em .2em 0 0 currentcolor;
+        }
+        25% {
+          box-shadow: 0 .2em 0 0px currentcolor;
+        }
+        37% {
+          box-shadow: -.2em .2em 0 0 currentcolor;
+        }
+        50% {
+          box-shadow: -.2em 0 0 0 currentcolor;
+        }
+        62% {
+          box-shadow: -.2em -.2em 0 0 currentcolor;
+        }
+        75% {
+          box-shadow: 0px -.2em 0 0 currentcolor;
+        }
+        87% {
+          box-shadow: .2em -.2em 0 0 currentcolor;
+        }
+      }
+      .search-container {
+       	    margin: 15px 0;
+       	    width: 100%;
+       	  }
+       	  
+       	  .search-wrapper {
+       	    position: relative;
+       	    display: flex;
+       	    align-items: center;
+       	    width: 100%;
+       	    max-width: 600px;
+       	    margin: 0 auto;
+       	    background: #1b1b1b;
+       	    border-radius: 8px;
+       	    border: 1px solid #444;
+       	    overflow: hidden;
+       	  }
+       	  
+       	  .search-icon {
+       	    padding: 0 10px;
+       	    font-style: normal;
+       	    color: #777;
+       	  }
+       	  
+       	  #theme-search-input {
+       	    flex: 1;
+       	    background: transparent;
+       	    border: none;
+       	    color: #fff;
+       	    padding: 12px 0;
+       	    font-size: 16px;
+       	    font-family: 'Inter', sans-serif;
+       	    outline: none;
+       	  }
+       	  
+       	  #theme-search-input::placeholder {
+       	    color: #777;
+       	  }
+       	  
+       	  #clear-search-button {
+       	    background: transparent;
+       	    border: none;
+       	    color: #777;
+       	    padding: 0 10px;
+       	    font-size: 16px;
+       	    cursor: pointer;
+       	  }
+       	  
+       	  #clear-search-button:hover {
+       	    color: #fff;
+       	  }
+       	  
+       	  #no-theme-results {
+       	    text-align: center;
+       	    margin-top: 20px;
+       	    color: #999;
+       	    font-size: 1.1rem;
+       	  }
+       	  
+       	  /* Make tags more clickable */
+       	  .theme-tag {
+       	    cursor: pointer;
+       	    transition: opacity 0.2s ease;
+       	  }
+       	  
+       	  .theme-tag:hover {
+       	    opacity: 0.8;
+       	  }
   </style>
 </head>
 <body>
@@ -397,6 +650,7 @@
         <li data-tab="themes" class="tab-item">Themes</li>
         <li data-tab="privacy" class="tab-item">Privacy</li>
         <li data-tab="advanced" class="tab-item">Developer Settings</li>
+        <li data-tab="super-secret" class="tab-item" id="super-secret-tab-header" style="visibility: hidden;">Super Secret Settings</li>
       </ul>
     </aside>
     
@@ -422,8 +676,58 @@
       <div id="tab-themes" class="tab-content">
         <h1>Theme Browser</h1>
         <h3 style="font-weight: 300;">Once changes are made, refresh your school.kiwi page(s).</h3><br>
-        <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
-        <div class="theme-grid" id="theme-grid"></div>
+        <div class="nested-tabs">
+          <ul class="nested-tab-list">
+            <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
+            <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
+            <li data-nested-tab="custom-themes" class="nested-tab-item">Custom</li>
+          </ul>
+          <!-- Nested Tab Contents -->
+          <div id="nested-tab-default-themes" class="nested-tab-content active">
+            <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+            <div class="search-container">
+              <div class="search-wrapper">
+                <i class="search-icon">🔍</i>
+                <input type="text" id="theme-search-input" placeholder="Search themes or tags...">
+                <button id="clear-search-button">✕</button>
+              </div>
+              <p id="no-theme-results" style="display: none;">No themes found matching your search.</p>
+            </div>
+            <center><div class="loader" id="loader"></div></center>
+            <div class="theme-grid" id="theme-grid" style="display: none;"></div>
+          </div>
+          <div id="nested-tab-market-themes" class="nested-tab-content">
+            <br><h1 style="text-align: center; font-weight: 300; font-size: 60px;">Marketplace</h1>
+            <h2 style="text-align: center;">Coming soon! This will (maybe) soon be a place where you can distribute your custom themes.</h2>
+            <h3 style="text-align: center;">Keep watching this extension for future updates!</h3>
+          </div>
+          <div id="nested-tab-custom-themes" class="nested-tab-content">
+            <button id="new-custom-theme-button">New</button>
+            <br><h1>Your Themes<span
+              style="
+                background-color: rgb(68, 189, 230);
+                color: rgb(255, 255, 255);
+                padding: 0.2em 0.4em;
+                border-radius: 0.4em;
+                font-size: 0.6em;
+                vertical-align: middle;
+                margin-left: 0.7em;
+              "
+              >BETA</span
+            ><br></h1><h3 style="font-weight: 300;">NOTE: Due to quota issues, custom themes are stored locally instead of synced. Support may change in the future.</h3>
+            <ul id="custom-themes-list" style="list-style: none; padding: 0; margin-top: 20px;">
+              <!-- Example Theme Item -->
+              <!-- <li class="custom-theme-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
+                <span class="theme-name" style="font-size: 18px;">Example Theme</span>
+                <div class="theme-actions">
+                  <button class="edit-theme" style="background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Edit</button>
+                  <button class="add-js-theme" style="background: #f39c12; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Add JS</button>
+                  <button class="delete-theme" style="background: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Delete</button>
+                </div>
+              </li> -->
+            </ul>
+          </div>
+        </div>
       </div>
      <div id="tab-privacy" class="tab-content">
         <h1>BetterKMR Privacy</h1>
@@ -434,10 +738,17 @@
         <h3 style="font-weight: 300;">This is the Advanced section.</h3>
         <h3 style="font-weight: 300;">Some parts of this section are only available when built directly from the GitHub repo.</h3>
       </div>
+      <div id="tab-super-secret" class="tab-content">
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <div id="controls">
+          <button id="snakePlayBtn">Play</button>
+        </div>
+      </div>
     </main>
   </div>
   <script src="../frameworks/js-yaml.min.js"></script>
   <script src="lib.js"></script>
   <script src="script.js"></script>
+  <script src="snake.js"></script>
 </body>
 </html>
