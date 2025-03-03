@@ -570,7 +570,74 @@
           box-shadow: .2em -.2em 0 0 currentcolor;
         }
       }
-   
+      .search-container {
+       	    margin: 15px 0;
+       	    width: 100%;
+       	  }
+       	  
+       	  .search-wrapper {
+       	    position: relative;
+       	    display: flex;
+       	    align-items: center;
+       	    width: 100%;
+       	    max-width: 600px;
+       	    margin: 0 auto;
+       	    background: #1b1b1b;
+       	    border-radius: 8px;
+       	    border: 1px solid #444;
+       	    overflow: hidden;
+       	  }
+       	  
+       	  .search-icon {
+       	    padding: 0 10px;
+       	    font-style: normal;
+       	    color: #777;
+       	  }
+       	  
+       	  #theme-search-input {
+       	    flex: 1;
+       	    background: transparent;
+       	    border: none;
+       	    color: #fff;
+       	    padding: 12px 0;
+       	    font-size: 16px;
+       	    font-family: 'Inter', sans-serif;
+       	    outline: none;
+       	  }
+       	  
+       	  #theme-search-input::placeholder {
+       	    color: #777;
+       	  }
+       	  
+       	  #clear-search-button {
+       	    background: transparent;
+       	    border: none;
+       	    color: #777;
+       	    padding: 0 10px;
+       	    font-size: 16px;
+       	    cursor: pointer;
+       	  }
+       	  
+       	  #clear-search-button:hover {
+       	    color: #fff;
+       	  }
+       	  
+       	  #no-theme-results {
+       	    text-align: center;
+       	    margin-top: 20px;
+       	    color: #999;
+       	    font-size: 1.1rem;
+       	  }
+       	  
+       	  /* Make tags more clickable */
+       	  .theme-tag {
+       	    cursor: pointer;
+       	    transition: opacity 0.2s ease;
+       	  }
+       	  
+       	  .theme-tag:hover {
+       	    opacity: 0.8;
+       	  }
   </style>
 </head>
 <body>
@@ -618,6 +685,14 @@
           <!-- Nested Tab Contents -->
           <div id="nested-tab-default-themes" class="nested-tab-content active">
             <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+            <div class="search-container">
+              <div class="search-wrapper">
+                <i class="search-icon">🔍</i>
+                <input type="text" id="theme-search-input" placeholder="Search themes or tags...">
+                <button id="clear-search-button">✕</button>
+              </div>
+              <p id="no-theme-results" style="display: none;">No themes found matching your search.</p>
+            </div>
             <center><div class="loader" id="loader"></div></center>
             <div class="theme-grid" id="theme-grid" style="display: none;"></div>
           </div>

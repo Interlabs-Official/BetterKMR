@@ -1,4 +1,7 @@
-       /**********************************************************************
+       /* TODO: At a later date, this code needs to be reformed as it's not only bad to look at, but everything's in one file.
+	   It probably needs a complete rewrite at some point, but I'll do this when I'm bored. */
+
+	   /**********************************************************************
         * Initialization & Example Usage
         **********************************************************************/
        console.log(`%c[BetterKMR 📘] ` + `%cWelcome to the BetterKMR extension settings. Please do not paste/enter commands in this console unless you know what you're doing.`, 'color: #0091EA', 'color: #fff');
@@ -389,29 +392,127 @@
        		}
        	}
 
-       	doYAMLThemes();
+		doYAMLThemes();
 
-       	function assert(error) {
-       		console.log(`%c[BetterKMR 📕] ` + `%cAn error occurred while attempting to load a theme preview:\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
-       	}
+		function assert(error) {
+			console.log(`%c[BetterKMR 📕] ` + `%cAn error occurred while attempting to load a theme preview:\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+		}
 
-       	window.createNotification = function(message, color, frontcol) {
-       		const notificationContainer = document.getElementById('notification-container');
-       		const notification = document.createElement('div');
-       		notification.className = 'notification';
-       		notification.style.backgroundColor = color;
-       		notification.style.color = frontcol;
-       		notification.innerText = message;
+		window.createNotification = function(message, color, frontcol) {
+			const notificationContainer = document.getElementById('notification-container');
+			const notification = document.createElement('div');
+			notification.className = 'notification';
+			notification.style.backgroundColor = color;
+			notification.style.color = frontcol;
+			notification.innerText = message;
 
-       		const removeNotification = () => {
-       			notification.classList.add('hidden');
-       			setTimeout(() => notification.remove(), 500);
-       		};
+			const removeNotification = () => {
+				notification.classList.add('hidden');
+				setTimeout(() => notification.remove(), 500);
+			};
 
-       		notification.addEventListener('click', removeNotification);
-       		notificationContainer.appendChild(notification);
-       		setTimeout(removeNotification, 5000);
-       	}
+			notification.addEventListener('click', removeNotification);
+			notificationContainer.appendChild(notification);
+			setTimeout(removeNotification, 5000);
+		}
+
+		        function setupThemeSearch() {
+            console.log("Setting up theme search...");
+            const searchInput = document.getElementById('theme-search-input');
+            const clearButton = document.getElementById('clear-search-button');
+            
+            if (!searchInput || !clearButton) {
+                console.error("Theme search elements not found in DOM");
+                return;
+            }
+            
+            function filterThemes(searchText) {
+                console.log("Filtering themes with:", searchText);
+                const themeCards = document.querySelectorAll('.theme-card'); 
+                const normalizedSearch = searchText.toLowerCase().trim();
+                let matchCount = 0;
+                
+                themeCards.forEach(card => {
+                    if (card.id === "1") {
+                        return;
+                    }
+                    
+                    const title = card.querySelector('.theme-title').textContent.toLowerCase();
+                    const description = card.querySelector('.theme-description').textContent.toLowerCase();
+                    const authorElement = card.querySelector('.theme-author');
+                    const authorText = authorElement ? authorElement.textContent.toLowerCase() : '';
+                    const tagElements = card.querySelectorAll('.theme-tag');
+                    let tags = [];
+                    
+                    tagElements.forEach(tag => {
+                        tags.push(tag.textContent.toLowerCase());
+                    });
+                    
+                    if (normalizedSearch === '' || 
+                        title.includes(normalizedSearch) || 
+                        description.includes(normalizedSearch) || 
+                        authorText.includes(normalizedSearch) || 
+                        tags.some(tag => tag.includes(normalizedSearch))) {
+                        card.style.display = 'flex';
+                        matchCount++;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+                
+                const noResultsMessage = document.getElementById('no-theme-results');
+                if (noResultsMessage) {
+                    if (normalizedSearch !== '' && matchCount === 0) {
+                        noResultsMessage.style.display = 'block';
+                    } else {
+                        noResultsMessage.style.display = 'none';
+                    }
+                }
+            }
+            
+            searchInput.addEventListener('input', function() {
+                filterThemes(this.value);
+            });
+            
+            clearButton.addEventListener('click', function() {
+                searchInput.value = '';
+                filterThemes('');
+                searchInput.focus();
+            });
+            
+            function setupTagClickHandlers() {
+                console.log("Setting up tag click handlers");
+                const tagElements = document.querySelectorAll('.theme-tag');
+                tagElements.forEach(tag => {
+                    tag.addEventListener('click', function() {
+                        const tagText = this.textContent;
+                        console.log("Tag clicked:", tagText);
+                        searchInput.value = tagText;
+                        filterThemes(tagText);
+                        searchInput.focus();
+                    });
+                });
+            }
+            
+            const themeGrid = document.getElementById('theme-grid');
+            if (themeGrid) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.addedNodes.length > 0) {
+                            setupTagClickHandlers();
+                        }
+                    });
+                });
+                
+                observer.observe(themeGrid, { childList: true, subtree: true });
+            }
+            
+            setTimeout(setupTagClickHandlers, 2000);
+        }
+
+		setTimeout(function() {
+            setupThemeSearch();
+        }, 2000);
 
        	window.createDialog = function({title, content, buttons = []}) {
        		const overlay = document.createElement('div');
@@ -453,29 +554,48 @@
        		}
        	});
 
-       	const tabs = document.querySelectorAll('.tab-item');
-       	tabs.forEach(tab => {
-       		tab.addEventListener('click', () => {
-       			tabs.forEach(t => t.classList.remove('active'));
-       			tab.classList.add('active');
-
-       			const tabContents = document.querySelectorAll('.tab-content');
-       			tabContents.forEach(tc => tc.classList.remove('active'));
-       			
-       			const tabId = tab.getAttribute('data-tab');
-       			document.getElementById('tab-' + tabId).classList.add('active');
-
-       			if (tabId === "themes") {
-       				chrome.storage.sync.get(["theme-id-text"]).then((result) => {
-       					const id = result["theme-id-text"] || "0";
-       					const buttonById = getThemeCardButtonById(id);
-       					if (buttonById) {
-       						onApply(null, id, buttonById, false);
-       					}
-       				});
-       			}
-       		});
-       	});
+		const tabs = document.querySelectorAll('.tab-item');
+		tabs.forEach(tab => {
+			tab.addEventListener('click', () => {
+				tabs.forEach(t => t.classList.remove('active'));
+				tab.classList.add('active');
+		   
+				const tabContents = document.querySelectorAll('.tab-content');
+				tabContents.forEach(tc => tc.classList.remove('active'));
+				   
+				const tabId = tab.getAttribute('data-tab');
+				document.getElementById('tab-' + tabId).classList.add('active');
+		   
+				// reset nested tabs to first tab when switching main tabs
+				const activeTabContent = document.getElementById('tab-' + tabId);
+				if (activeTabContent) {
+					const nestedTabList = activeTabContent.querySelector('.nested-tab-list');
+					if (nestedTabList) {
+						const firstNestedTab = nestedTabList.querySelector('.nested-tab-item');
+						if (firstNestedTab) {
+							// simulate click on first nested tab
+							nestedTabs.forEach(nt => nt.classList.remove('active'));
+							firstNestedTab.classList.add('active');
+							   
+							const firstNestedTabId = firstNestedTab.getAttribute('data-nested-tab');
+							const nestedContents = document.querySelectorAll('.nested-tab-content');
+							nestedContents.forEach(content => content.classList.remove('active'));
+							document.getElementById('nested-tab-' + firstNestedTabId).classList.add('active');
+						}
+					}
+				}
+		   
+				if (tabId === "themes") {
+					chrome.storage.sync.get(["theme-id-text"]).then((result) => {
+						const id = result["theme-id-text"] || "0";
+						const buttonById = getThemeCardButtonById(id);
+						if (buttonById) {
+							onApply(null, id, buttonById, false);
+						}
+					});
+				}
+			});
+		});
 
        	const nestedTabs = document.querySelectorAll('.nested-tab-item');
        	nestedTabs.forEach(nTab => {
