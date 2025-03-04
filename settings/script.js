@@ -107,7 +107,7 @@
        		// Profile Picture Settings
        		settingsPage.addNestedSetting('profile', {
        			name: 'choose_profile_picture',
-       			label: 'Upload Profile Picture (PNG, JPG/JPEG)',
+       			label: 'Upload Profile Picture (PNG, JPG/JPEG, WEBP)',
        			tooltip: 'Adds a custom profile picture to remove your school photo.',
        			type: 'button',
        			default: null,
@@ -137,7 +137,8 @@
        			callback: (val) => saveSetting("theme-id-text", val)
        		});
 
-       		const [hide_external_js_warning] = await Promise.all([loadSettingPromise("hide_external_js_warning")]);
+			/* Doesn't work: may have a look at later */
+       		/* const [hide_external_js_warning] = await Promise.all([loadSettingPromise("hide_external_js_warning")]);
        		settingsPage.addSetting('advanced', {
        			name: 'hide_external_js_warning',
        			label: 'Hide External JS Warning',
@@ -145,7 +146,7 @@
        			type: 'toggle',
        			default: hide_external_js_warning ?? false,
        			callback: (val) => saveSetting("hide_external_js_warning", val)
-       		});
+       		}); */
 
 			const [show_attendance_info_class_name_tips] = await Promise.all([loadSettingPromise("show_attendance_info_class_name_tips")]);
        		settingsPage.addNestedSetting('general', {
@@ -178,6 +179,7 @@
 					callback: (val) => saveSetting("dynamic_navbar_hidden_navbar_pages", val)
 				}]
 			});
+			document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
        	};
 
        	initializeSettings();

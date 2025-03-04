@@ -7,15 +7,15 @@
     <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-body {
-  font-family: 'Inter', sans-serif;
-          margin: 0;
-          padding: 0;
-          background-color: #252534;
-          color: #ffffff;
-          display: flex;
-          height: 100vh;
-}
+    body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0f0f0f;
+    color: #ccc;
+    display: flex;
+    height: 100vh;
+  }
 
 .container {
   display: flex;
@@ -191,18 +191,34 @@ body {
             opacity: 1;
         }
 
-        .button { /* thank you w3schools */
-            font-family: 'Inter', sans-serif;
-            background-color: #008CBA;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
+        .button {
+          font-family: 'Inter', sans-serif;
+          background-color: #3498db;
+          border: none;
+          color: white;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 4px;
+        }
+
+        .next-button {
+          font-family: 'Inter', sans-serif;
+          background-color: #3498db;
+          border: none;
+          color: white;
+          padding: 15px 32px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 16px;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 4px;
         }
 
         /* file upload */
@@ -238,19 +254,6 @@ body {
             border-radius: 5px;
         }
 
-        .next-button {
-            font-family: 'Inter', sans-serif;
-            background-color: #00bbb2;
-            border: none;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
-        }
         .next-button[disabled] {
         background-color: #ccc; /* Disabled state color */
         cursor: not-allowed; 
@@ -270,7 +273,7 @@ body {
             <div class="huge-03">Click "Next" to proceed.</div>
             <br>
             <div class="huge-03_italic">A couple of notes here:</div>
-            <div class="huge-03_italic">* Only PNG and JPG/JPEG images are supported. For GIFs and other file types, use Profile Image URL instead.</div>
+            <div class="huge-03_italic">* Only PNG, JPG/JPEG, and WEBP images are supported. For GIFs and other file types, use Profile Image URL instead.</div>
             <div class="huge-03_italic">* Profile pictures made here won't use the Chrome sync feature (storage limits). Use Profile Image URL instead.</div>
             <button id="nextButton" class="button">Next</button>
         </div>
@@ -278,8 +281,8 @@ body {
         <div id="upload" class="wizard-step">
             <div class="huge-01_5">Upload a File</div>
             <div class="file-upload-container">
-                <label for="fileUpload" class="file-label">Choose an image (PNG, JPG, JPEG)</label>
-                <input type="file" id="fileUpload" accept=".png, .jpg, .jpeg" class="file-input" />
+              <label for="fileUpload" class="file-label">Choose an image (PNG, JPG, JPEG, WEBP)</label>
+              <input type="file" id="fileUpload" accept=".png, .jpg, .jpeg, .webp" class="file-input" />
                 <div class="huge-02" style="margin-top: 20px;">Note: This is only for preview purposes only, resolution will be set at the next stage.</div>
                 <div class="huge-03">This is why the content below may seem blurry.</div>
                 <div class="preview-container" id="previewContainer">
