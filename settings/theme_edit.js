@@ -106,9 +106,19 @@ function saveCode() {
     return;
   }
 
+  chrome.storage.local.getBytesInUse(null, function(bytesInUse) {
+    console.log(bytesInUse);
+    const availableBytes = 4 * 1024 * 1024 - bytesInUse; // 4MB limit
+    const cssByteSize = new Blob([editor.getValue()]).size;
+    if (cssByteSize > availableBytes) {
+      createNotification("Failed saving code: All custom theme code is too long. Please shorten this code below 4MB.", "#961a1a", "#ffffff");
+      return;
+    }
+  });
+
   if (!ascii.test(editor.getValue())) {
     console.log("Contains non-ASCII characters. Will not save.");
-    createNotification("Failed saving code: contains characters that aren't ASCII.", "#961a1a", "#ffffff");
+    createNotification("Failed saving code: Contains characters that aren't ASCII.", "#961a1a", "#ffffff");
     return;
   }
   

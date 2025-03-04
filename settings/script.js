@@ -226,6 +226,8 @@
        			addBadge(imgWrapper, '☑️ Recommended', 'recommended-badge');
        		} else if (title === 'Mountain Slideshow') {
        			addBadge(imgWrapper, '⚠️ Experimental', 'experimental-badge');
+       		} else if (title === 'Vivid Winter') {
+       			addBadge(imgWrapper, '🎬 Animated', 'animated-badge');
        		}
        		if (externalJS) {
        			addBadge(imgWrapper, 'External JS', 'external-js-badge');

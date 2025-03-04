@@ -5,8 +5,7 @@
   "description": "The ultimate revamp of KAMAR for the web",
   "permissions": [
     "tabs",
-    "storage",
-    "unlimitedStorage"
+    "storage"
   ],
   "host_permissions": [
     "https://*.school.kiwi/*"

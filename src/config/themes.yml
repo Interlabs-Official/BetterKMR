@@ -27,7 +27,7 @@
   css: "space.css"
   thumbnail: "images/backgrounds/space.jpg"
   author: "Convy32"
-  highlight: "The default Space theme, bundled with BetterKMR by default."
+  highlight: "The default Space theme, the BetterKMR default. (📸 Wallpapers.com)"
   tags:
     "Default": "rgba(153,153,153,0.5)"
     "Recommended": "rgba(119,52,235,0.5)"
@@ -42,21 +42,22 @@
 2:
   name: "Vivid Winter"
   css: "vivid.css"
-  thumbnail: "images/backgrounds/vivid.jpeg"
+  js: "vivid.js"
+  thumbnail: "images/backgrounds/vivid-rain-thumbnail.png"
   author: "Solar"
-  highlight: "A chill winter theme with a background so great it can't be artificial intelligence."
+  highlight: "A chill winter theme with a cozy background. (📸 Attribution to @LofiPlace on Pixabay)"
   description: "vivid.md"
   tags:
     "Winter": "rgba(168,254,255,0.5)"
-    "Mountain": "rgba(38,183,255,0.5)"
     "Christmas": "rgba(255,38,71,0.5)"
     "Cozy": "rgba(255,165,48,0.5)"
+    "Animated": "rgba(156,102,0,0.5)"
 3:
   name: "Star Destroyers"
   css: "starwarsempire.css"
   thumbnail: "images/backgrounds/starwarsempire_downscaled.jpg"
   author: "Samuel H"
-  highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin"
+  highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin (📸 WallpaperCave.com)"
   tags:
     "Star Wars": "rgba(255, 191, 0, 0.5)"
     "Dark Side": "rgba(213, 0, 0, 0.5)"
@@ -77,7 +78,7 @@
   js: "slideshow.js"
   thumbnail: "images/thumbnails/mountain-slideshow.jpg"
   author: "Solar"
-  highlight: "External JavaScript theme example, with six mountain images. Photos from Unsplash."
+  highlight: "External JavaScript theme example, with six mountain images. (📸 Various @ Unsplash)"
   tags:
     "Mountain": "rgba(79, 132, 102, 0.5)"
     "Slideshow": "rgba(156, 163, 175, 0.5)"
