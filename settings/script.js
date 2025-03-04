@@ -156,6 +156,28 @@
        			default: show_attendance_info_class_name_tips ?? true,
        			callback: (val) => saveSetting("show_attendance_info_class_name_tips", val)
        		});
+
+			// Modified Navbar Settings
+			const [dynamic_navbar, dynamic_navbar_hidden_navbar_pages] = await Promise.all([
+				loadSettingPromise("dynamic_navbar"),
+				loadSettingPromise("dynamic_navbar_hidden_navbar_pages")
+			]);
+			settingsPage.addNestedSetting('general', {
+				name: 'dynamic_navbar',
+				label: 'Dynamic Navbar',
+				tooltip: 'A modified, dynamic version of the navbar, enabled by default. Disable if there are issues.',
+				type: 'toggle',
+				default: dynamic_navbar ?? true,
+				callback: (val) => saveSetting("dynamic_navbar", val),
+				children: [{
+					name: 'dynamic_navbar_hidden_navbar_pages',
+					label: 'Hidden Navbar Pages',
+					tooltip: 'Pages to hide from the navbar. Separate with commas (e.g. "Student Details, Contact, Calendar").',
+					type: 'text',
+					default: dynamic_navbar_hidden_navbar_pages ?? '',
+					callback: (val) => saveSetting("dynamic_navbar_hidden_navbar_pages", val)
+				}]
+			});
        	};
 
        	initializeSettings();
@@ -751,7 +773,7 @@
        });
 
 	   /* the code below was totally made by me haha (it wasn't) (i don't think I would code the CSS in the JavaScript but ok) */
-		if (window.browser && browser.runtime) {
+		/* if (window.browser && browser.runtime) {
 			const firefoxWarning = document.createElement('div');
 			firefoxWarning.className = 'firefox-warning-banner';
 			firefoxWarning.style.backgroundColor = '#a83232';
@@ -803,4 +825,4 @@
 			}, 100);
 			
 			setTimeout(closeBanner, 7000);
-		}
+		} */

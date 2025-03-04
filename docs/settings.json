@@ -1,0 +1,8 @@
+{
+    "_comment": "Please read the Documentation to understand what all of this means!",
+    "general": {
+      "md_engine": "markdown-it",
+      "theme": "default-dark",
+      "last_created_footer": true
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "default_page": "Home",
+    "pages": {
+      "Home": "home.md",
+      "Getting Started": "getting-started.md",
+      "Guides": {
+        "Introduction": "guides/introduction.md",
+        "Advanced Usage": "guides/advanced-usage.md",
+        "Setup Guide": {
+          "Installation": "guides/installation.md",
+          "Configuration": "guides/configuration.md"
+        }
+      },
+      "API Reference": {
+        "Overview": "api/overview.md",
+        "Endpoints": {
+          "Authentication": "api/authentication.md",
+          "User Management": "api/user-management.md"
+        }
+      },
+      "FAQ": "faq.md"
+    }
+  }
+  

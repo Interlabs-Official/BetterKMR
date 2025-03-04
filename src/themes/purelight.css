@@ -26,20 +26,34 @@ body .sk_school_name {
    /* display: none; */
     background: -webkit-linear-gradient(#549ea8, #346369);
     -webkit-background-clip: text;
-    text-shadow: 2px 2px #003f87;
+    text-shadow: 2px 2px #1a1a1a;
     color: #f7f7f7 !important;
 }
-body .sk_thead th {
-    background-color: #409dc2 !important;
+body .sk_thead th, .sk_thead_cell {
+    background-color: #0c1010 !important;
+}
+body svg text {
+    fill: #000000 !important;
+}
+body .sk_border, .table th, .table td, .card {
+    border-color: #ffffff60 !important;
+}
+body .table-striped tbody {
+    background-color: #00000080 !important;
+}
+body .table thead th {
+    border-bottom-width: 1px;
+    vertical-align: middle;
+    background-color: #0c1010 !important;
 }
 .is-today {
-    background-color: #409dc257 !important;
+    background-color: #0c10102d !important;
 }
 body .sk_school_subheading {
  /*   display: none; */
     background: -webkit-linear-gradient(#0097a1, #003e68);
     -webkit-background-clip: text;
-    text-shadow: 2px 2px #003f87;
+    text-shadow: 2px 2px #1a1a1a;
     color: #f7f7f7 !important;
 }
 body .sk_nav {
@@ -76,23 +90,20 @@ body .card-body, .table td, tr {
     background: -webkit-linear-gradient(#49cea2, #00849b);
     color: #fff !important;
 }
-body .sk_thead_cell {
-    background-color: #409dc2 !important;
-}
 body .sk_btn.active, .sk_btn:active, .sk_btn:hover {
-    background-color: #63c9ff !important;
+    background-color: #1a2020 !important;
     border-color: black !important;
     color: white !important;
 }
 body .sk_btn, .sk_btn.disabled:hover {
-    background-color: #409dc2 !important;
+    background-color: #0c1010 !important;
     border-color: black !important;
 }
 body .nav-item.active .sk_nav_text {
-    color: #63c9ff !important;
+    color: #0c1010 !important;
 }
 a.sk_nav_text.nav-link.nav-link:hover {
-    color: #63c9ff !important;
+    color: #0c1010 !important;
 }
 /* light mode fixes */
 body .sk_nav_text {
@@ -119,16 +130,16 @@ body .sk_btn, .sk_btn.disabled:hover {
 }
 /* border override & light mode patches, calendar etc */
 body .calendar-day.sk_border {
-    border-color: #63c8ff93 !important;
+    border-color: #00000093 !important;
 }
 body .sk_border, .table th {
-    border-color: #63c8ff93 !important;
+    border-color: #00000093 !important;
 }
 body .sk_heading {
-    color: #fff !important;
+    color: #000000 !important;
 }
 .page-title h1 {
-    color: #fff !important;
+    color: #000000 !important;
   }
 body .card-body, .table td, tr {
     border-color: #fff !important;

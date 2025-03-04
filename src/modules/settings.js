@@ -78,8 +78,8 @@ function updateProfilePictureByURL() {
 }
 
 function updatePrivateMode() {
-    chrome.storage.sync.get(["privateMode"]).then((result) => {
-        if (result.privateMode) {
+    chrome.storage.sync.get(["private_mode"]).then((result) => {
+        if (result.private_mode) {
             const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
             if (schoolCardDob) { schoolCardDob.style.display = "none"; }
             if (window.location.href.includes("medical_details")) {
