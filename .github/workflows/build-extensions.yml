@@ -18,7 +18,7 @@ jobs:
       - name: Prepare manifest for Firefox
         if: matrix.browser == 'firefox'
         run: |
-          # Replace the service_worker key with scripts key in manifest.json
+          # Update the manifest for Firefox by replacing the service_worker key
           sed -i 's/"service_worker": "service.js"/"scripts": ["service.js"]/' manifest.json
           echo "Modified manifest for Firefox:"
           cat manifest.json
@@ -26,11 +26,12 @@ jobs:
       - name: Build extension
         run: |
           echo "Building extension for ${{ matrix.browser }}"
-          # Place your build commands here (e.g., zip the extension files)
+          # Create a zip file containing the extension files.
+          # Adjust the zip command if you need to exclude/include specific files.
           zip -r extension-${{ matrix.browser }}.zip .
 
       - name: Upload extension artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: extension-${{ matrix.browser }}
           path: extension-${{ matrix.browser }}.zip
