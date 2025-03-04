@@ -1,0 +1,36 @@
+name: Build Extensions
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chrome, firefox]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Prepare manifest for Firefox
+        if: matrix.browser == 'firefox'
+        run: |
+          # Replace the service_worker key with scripts key in manifest.json
+          sed -i 's/"service_worker": "service.js"/"scripts": ["service.js"]/' manifest.json
+          echo "Modified manifest for Firefox:"
+          cat manifest.json
+
+      - name: Build extension
+        run: |
+          echo "Building extension for ${{ matrix.browser }}"
+          # Place your build commands here (e.g., zip the extension files)
+          zip -r extension-${{ matrix.browser }}.zip .
+
+      - name: Upload extension artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: extension-${{ matrix.browser }}
+          path: extension-${{ matrix.browser }}.zip
