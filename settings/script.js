@@ -146,6 +146,16 @@
        			default: hide_external_js_warning ?? false,
        			callback: (val) => saveSetting("hide_external_js_warning", val)
        		});
+
+			const [show_attendance_info_class_name_tips] = await Promise.all([loadSettingPromise("show_attendance_info_class_name_tips")]);
+       		settingsPage.addNestedSetting('general', {
+       			name: 'show_attendance_info_class_name_tips',
+       			label: 'Show Class Name Info Tips (Attendance)',
+       			tooltip: 'Shows class name info tips on the attendance page. Note that this is only available for select schools.',
+       			type: 'toggle',
+       			default: show_attendance_info_class_name_tips ?? true,
+       			callback: (val) => saveSetting("show_attendance_info_class_name_tips", val)
+       		});
        	};
 
        	initializeSettings();
@@ -739,3 +749,58 @@
        		inputIndex = 0;
        	}
        });
+
+	   /* the code below was totally made by me haha (it wasn't) (i don't think I would code the CSS in the JavaScript but ok) */
+		if (window.browser && browser.runtime) {
+			const firefoxWarning = document.createElement('div');
+			firefoxWarning.className = 'firefox-warning-banner';
+			firefoxWarning.style.backgroundColor = '#a83232';
+			firefoxWarning.style.color = '#ffffff';
+			firefoxWarning.style.padding = '8px';
+			firefoxWarning.style.position = 'fixed';
+			firefoxWarning.style.top = '10px';
+			firefoxWarning.style.left = '50%';
+			firefoxWarning.style.transform = 'translateX(-50%) translateY(-100%)';
+			firefoxWarning.style.width = '80%';
+			firefoxWarning.style.maxWidth = '800px';
+			firefoxWarning.style.borderRadius = '5px';
+			firefoxWarning.style.zIndex = '9999';
+			firefoxWarning.style.textAlign = 'center';
+			firefoxWarning.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+			firefoxWarning.style.transition = 'transform 0.3s ease-in-out';
+			firefoxWarning.style.fontSize = '14px';
+			
+			const warningText = document.createElement('span');
+			warningText.textContent = 'This Firefox extension version is experimental and may have slight differences in functionality.';
+			
+			const closeButton = document.createElement('button');
+			closeButton.textContent = '×';
+			closeButton.style.marginLeft = '10px';
+			closeButton.style.background = 'none';
+			closeButton.style.border = 'none';
+			closeButton.style.color = '#ffffff';
+			closeButton.style.fontSize = '18px';
+			closeButton.style.cursor = 'pointer';
+			closeButton.style.float = 'right';
+			
+			const closeBanner = () => {
+				firefoxWarning.style.transform = 'translateX(-50%) translateY(-100%)';
+				setTimeout(() => {
+					if (firefoxWarning.parentNode) {
+						document.body.removeChild(firefoxWarning);
+					}
+				}, 300);
+			};
+			
+			closeButton.addEventListener('click', closeBanner);
+			
+			firefoxWarning.appendChild(warningText);
+			firefoxWarning.appendChild(closeButton);
+			document.body.appendChild(firefoxWarning);
+			
+			setTimeout(() => {
+				firefoxWarning.style.transform = 'translateX(-50%) translateY(0)';
+			}, 100);
+			
+			setTimeout(closeBanner, 7000);
+		}
