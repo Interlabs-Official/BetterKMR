@@ -1,0 +1,11 @@
+{
+    "default_page": "Home",
+    "pages": {
+      "Home": "home.md",
+      "Guides": {
+        "🏄 | Creating Custom Themes": "guides/creating-custom-themes.md"
+      },
+      "FAQ": "faq.md"
+    }
+  }
+  
