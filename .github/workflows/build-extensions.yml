@@ -28,7 +28,7 @@ jobs:
           echo "Building extension for ${{ matrix.browser }}"
           # Create a zip file containing the extension files.
           # Adjust the zip command if you need to exclude/include specific files.
-          zip -r extension-${{ matrix.browser }}.zip .
+          zip -r extension-${{ matrix.browser }}.zip . -x ".git/*"
 
       - name: Upload extension artifact
         uses: actions/upload-artifact@v4
