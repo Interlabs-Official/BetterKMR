@@ -27,7 +27,6 @@
   "action": {},
   "background": {
     "service_worker": "service.js",
-    "scripts": ["service.js"]
   },
   "icons": {
     "16": "icon/icon16.png",
