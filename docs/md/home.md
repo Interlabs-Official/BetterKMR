@@ -1,19 +1,15 @@
-# Welcome to the BetterKMR documentation!
-This is not the website's permanent location - when the repository goes public, it will be moved onto GitHub pages.
+![BetterKMR Logo](../../assets/images/logo.png)
 
-## Welcome to DocHaste
-Feel free to have a look around DocHaste to see how it works - it's relatively simple!\
-DocHaste supports Markdown, for example:
+# 🌊 Welcome!
 
-```
-## Hello!
-It seems you're new, how's it going?
-```
+This is the official documentation for BetterKMR. There's not much on here at the moment, but we're working on it!
 
-That above is a code block. You can surround what you want with three backticks (`).\
-If you want to learn more syntax, check out the [Markdown Guide](https://www.markdownguide.org/basic-syntax/).
+## 📝 Introduction
 
-To start making your own documentation, check out `docs.json` and play around with it.\
-To configure **DocHaste**, have a look at `settings.json`, but only tweak it if you know what you're doing.
+BetterKMR is a browser extension that aims to improve the user experience of school.kiwi websites for various schools across New Zealand.
+Recent Chromium based browsers are supported (e.g. Google Chrome, Brave, Arc) but as of now Firefox based browsers are also supported (e.g. Firefox, Zen Browser, LibreWolf).
 
-###### *(By default, the markdown engine used is `markdown-it`. You can change "md-engine" to `marked` in `settings.json` if you like.)*
+## 📦 Installation
+
+Installing BetterKMR is easy! You can download the latest version from both the Chrome Web Store and Firefox Add-ons.
+To install BetterKMR manually, you can download the latest release from the [releases page](https://github.com/InterLabs/BetterKMR/releases).

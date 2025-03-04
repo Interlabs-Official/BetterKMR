@@ -1,3 +1,4 @@
+<!-- no a lot of this I did not make I just wanted a better version of DocHaste so uhhh.. AI! -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,23 +7,66 @@
   <title>Documentation System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="darkmode.css">
 </head>
 <body>
   <div class="container">
     <aside class="sidebar">
-      <h2>Docs</h2>
-      <input type="text" id="search" placeholder="Search Docs..." oninput="filterDocs()" />
-      <ul id="tabs"></ul>
+      <div class="sidebar-header">
+        <h2><i class="fas fa-book"></i> Documentation</h2>
+      </div>
+      <div class="search-container">
+        <i class="fas fa-search search-icon"></i>
+        <input type="text" id="search" placeholder="Search docs..." oninput="filterDocs()" />
+      </div>
+      <nav class="sidebar-nav">
+        <ul id="tabs"></ul>
+      </nav>
     </aside>    
     <main id="content">
-      <div id="markdown-content"></div>
+      <header class="main-header">
+        <div class="breadcrumbs" id="breadcrumbs">
+          <a href="#"><i class="fas fa-home"></i></a>
+        </div>
+        <div class="toolbar">
+          <div class="width-control">
+            <button id="widthControlBtn" class="width-control-btn" title="Adjust content width">
+              <i class="fas fa-arrows-alt-h"></i>
+            </button>
+            <div id="widthDropdown" class="width-dropdown">
+              <div class="width-option" data-width="680px">
+                <span>Narrow</span><i class="fas fa-compress"></i>
+              </div>
+              <div class="width-option active" data-width="850px">
+                <span>Default</span><i class="fas fa-arrows-alt-h"></i>
+              </div>
+              <div class="width-option" data-width="1000px">
+                <span>Wide</span><i class="fas fa-expand"></i>
+              </div>
+              <div class="width-option" data-width="1200px">
+                <span>Extra Wide</span><i class="fas fa-expand-arrows-alt"></i>
+              </div>
+            </div>
+          </div>
+          <button id="darkModeToggle" title="Toggle color mode"><i class="fas fa-moon"></i></button>
+          <button id="fontSizeButton" title="Adjust font size"><i class="fas fa-text-height"></i></button>
+          <button id="shareButton" title="Share this page"><i class="fas fa-share-alt"></i></button>
+        </div>
+      </header>
+      <div class="content-wrapper">
+        <div id="markdown-content"></div>
+      </div>
     </main>
   </div>
+  
+  <div class="mobile-toggle" id="mobileToggle">
+    <i class="fas fa-bars"></i>
+  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+  <script src="../frameworks/marked.min.js"></script>
+  <script src="../frameworks/purify.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
