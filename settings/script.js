@@ -648,6 +648,169 @@
 
        	window.settingsPage = settingsPage;
        	window.isItemToggled = settingsPage.isItemToggled.bind(settingsPage);
+
+       	const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter'];
+       	let inputIndex = 0;
+       	
+       	document.addEventListener('keydown', event => {
+       		const isOnAboutTab = Array.from(tabs).find(tab => 
+       			tab.classList.contains('active') && tab.textContent == "About & Contact"
+       		) != null;
+
+       		if (event.key === konamiCode[inputIndex] && isOnAboutTab) {
+       			inputIndex++;
+       			if (inputIndex === konamiCode.length) {
+       				triggerSecretAnimation();
+       				inputIndex = 0;
+       			}
+       		} else {
+       			inputIndex = 0;
+       		}
+       	});
+
+       	function triggerSecretAnimation() {
+       		const animContainer = document.createElement('div');
+       		animContainer.id = 'konami-animation-container';
+       		document.body.appendChild(animContainer);
+       		
+       		const particleCanvas = document.createElement('canvas');
+       		particleCanvas.id = 'particle-canvas';
+       		particleCanvas.width = window.innerWidth;
+       		particleCanvas.height = window.innerHeight;
+       		particleCanvas.style.position = 'fixed';
+       		particleCanvas.style.top = '0';
+       		particleCanvas.style.left = '0';
+       		particleCanvas.style.pointerEvents = 'none';
+       		particleCanvas.style.zIndex = '9999';
+       		particleCanvas.style.opacity = '0';
+       		particleCanvas.style.transition = 'opacity 0.5s ease-in';
+       		animContainer.appendChild(particleCanvas);
+       		
+       		document.body.classList.add('konami-shake');
+       	
+       		setTimeout(() => {
+       			particleCanvas.style.opacity = '1';
+       			startParticleAnimation(particleCanvas);
+       		}, 100);
+       		
+       		const secretTab = document.getElementById('super-secret-tab-header');
+       		const tabRect = secretTab.getBoundingClientRect();
+       		
+       		setTimeout(() => {
+       			secretTab.style.visibility = 'visible';
+       			secretTab.classList.add('konami-reveal');
+       			
+       			const glowElement = document.createElement('div');
+       			glowElement.className = 'tab-glow';
+       			glowElement.style.position = 'absolute';
+       			glowElement.style.left = `${tabRect.left - 10}px`;
+       			glowElement.style.top = `${tabRect.top - 5}px`;
+       			glowElement.style.width = `${tabRect.width + 20}px`;
+       			glowElement.style.height = `${tabRect.height + 10}px`;
+       			animContainer.appendChild(glowElement);
+       			
+       			createNotification("Secret unlocked!", "#3c8443", "#ffffff");
+       		}, 1000);
+       		
+       		setTimeout(() => {
+       			document.body.classList.add('konami-shake-fadeout');
+       			setTimeout(() => {
+       				document.body.classList.remove('konami-shake');
+       				document.body.classList.remove('konami-shake-fadeout');
+       			}, 1000);
+       		}, 2000);
+       		
+       		setTimeout(() => {
+       			if (animContainer.parentNode) {
+       				document.body.removeChild(animContainer);
+       			}
+       		}, 5000);
+       	}
+       	
+       	function startParticleAnimation(canvas) {
+       		const ctx = canvas.getContext('2d');
+       		const particles = [];
+       		const secretTab = document.getElementById('super-secret-tab-header');
+       		const tabRect = secretTab.getBoundingClientRect();
+       		
+       		const originX = tabRect.left + tabRect.width / 2;
+       		const originY = tabRect.top + tabRect.height / 2;
+       		
+       		for (let i = 0; i < 150; i++) {
+       			particles.push({
+       				x: originX,
+       				y: originY,
+       				size: Math.random() * 8 + 2,
+       				color: getRandomColor(),
+       				speedX: (Math.random() - 0.5) * 15,
+       				speedY: (Math.random() - 0.5) * 15,
+       				life: Math.random() * 100 + 50,
+       				opacity: 1
+       			});
+       		}
+       		
+       		let animationFrame;
+       		let fadingOut = false;
+       		let fadeStart = 0;
+       		
+       		function animate(timestamp) {
+       			ctx.clearRect(0, 0, canvas.width, canvas.height);
+       			
+       			if (timestamp > 2000 && !fadingOut) {
+       				fadingOut = true;
+       				fadeStart = timestamp;
+       			}
+       			
+       			let globalOpacity = 1;
+       			if (fadingOut) {
+       				globalOpacity = Math.max(0, 1 - (timestamp - fadeStart) / 1000);
+       				canvas.style.opacity = globalOpacity;
+       			}
+       			
+       			let stillAlive = false;
+       			
+       			particles.forEach(p => {
+       				if (p.life > 0) {
+       					stillAlive = true;
+       					p.x += p.speedX;
+       					p.y += p.speedY;
+       					p.speedX *= 0.98;
+       					p.speedY *= 0.98;
+       					p.life--;
+       					p.opacity = Math.min(1, p.life / 30);
+       					
+       					ctx.globalAlpha = p.opacity * globalOpacity;
+       					ctx.fillStyle = p.color;
+       					ctx.beginPath();
+       					ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+       					ctx.fill();
+       				}
+       			});
+       			
+       			if (stillAlive && globalOpacity > 0) {
+       				animationFrame = requestAnimationFrame(animate);
+       			} else {
+       				cancelAnimationFrame(animationFrame);
+       			}
+       		}
+       		
+       		animationFrame = requestAnimationFrame(animate);
+       	}
+       	
+       	function getRandomColor() {
+       		const colors = [
+       			'#FF5252', // Red
+       			'#FF4081', // Pink
+       			'#7C4DFF', // Purple
+       			'#448AFF', // Blue
+       			'#64FFDA', // Teal
+       			'#B2FF59', // Light Green
+       			'#FFFF00', // Yellow
+       			'#FF9800'  // Orange
+       		];
+       		return colors[Math.floor(Math.random() * colors.length)];
+       	}
+
        });
 
        function createCustomThemeItem(themeName, customID) {
@@ -759,74 +922,3 @@
        		}
        	});
        }
-
-       const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter'];
-       let inputIndex = 0;
-
-       document.addEventListener('keydown', event => {
-       	if (event.key === konamiCode[inputIndex]) {
-       		inputIndex++;
-       		if (inputIndex === konamiCode.length) {
-       			createNotification("Secret unlocked.", "#3c8443", "#ffffff");
-       			document.getElementById("super-secret-tab-header").style.visibility = "visible";
-       			inputIndex = 0;
-       		}
-       	} else {
-       		inputIndex = 0;
-       	}
-       });
-
-	   /* the code below was totally made by me haha (it wasn't) (i don't think I would code the CSS in the JavaScript but ok) */
-		/* if (window.browser && browser.runtime) {
-			const firefoxWarning = document.createElement('div');
-			firefoxWarning.className = 'firefox-warning-banner';
-			firefoxWarning.style.backgroundColor = '#a83232';
-			firefoxWarning.style.color = '#ffffff';
-			firefoxWarning.style.padding = '8px';
-			firefoxWarning.style.position = 'fixed';
-			firefoxWarning.style.top = '10px';
-			firefoxWarning.style.left = '50%';
-			firefoxWarning.style.transform = 'translateX(-50%) translateY(-100%)';
-			firefoxWarning.style.width = '80%';
-			firefoxWarning.style.maxWidth = '800px';
-			firefoxWarning.style.borderRadius = '5px';
-			firefoxWarning.style.zIndex = '9999';
-			firefoxWarning.style.textAlign = 'center';
-			firefoxWarning.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
-			firefoxWarning.style.transition = 'transform 0.3s ease-in-out';
-			firefoxWarning.style.fontSize = '14px';
-			
-			const warningText = document.createElement('span');
-			warningText.textContent = 'This Firefox extension version is experimental and may have slight differences in functionality.';
-			
-			const closeButton = document.createElement('button');
-			closeButton.textContent = '×';
-			closeButton.style.marginLeft = '10px';
-			closeButton.style.background = 'none';
-			closeButton.style.border = 'none';
-			closeButton.style.color = '#ffffff';
-			closeButton.style.fontSize = '18px';
-			closeButton.style.cursor = 'pointer';
-			closeButton.style.float = 'right';
-			
-			const closeBanner = () => {
-				firefoxWarning.style.transform = 'translateX(-50%) translateY(-100%)';
-				setTimeout(() => {
-					if (firefoxWarning.parentNode) {
-						document.body.removeChild(firefoxWarning);
-					}
-				}, 300);
-			};
-			
-			closeButton.addEventListener('click', closeBanner);
-			
-			firefoxWarning.appendChild(warningText);
-			firefoxWarning.appendChild(closeButton);
-			document.body.appendChild(firefoxWarning);
-			
-			setTimeout(() => {
-				firefoxWarning.style.transform = 'translateX(-50%) translateY(0)';
-			}, 100);
-			
-			setTimeout(closeBanner, 7000);
-		} */
