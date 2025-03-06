@@ -24,6 +24,30 @@
        }
 
        document.addEventListener('DOMContentLoaded', () => {
+		const urlParams = new URLSearchParams(window.location.search);
+		const selectedTab = urlParams.get('tab-selected');
+		
+		if (selectedTab) {
+			// Wait a brief moment to ensure DOM is fully loaded
+			setTimeout(() => {
+				const tab = document.querySelector(`.tab-item[data-tab="${selectedTab}"]`);
+				if (tab) {
+					
+					document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+					document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+					
+					tab.classList.add('active');
+					const content = document.getElementById('tab-' + selectedTab);
+					if (content) {
+						content.classList.add('active');
+					} else {
+						console.error('Could not find content for tab:', selectedTab);
+					}
+				} else {
+					console.error('Could not find tab with data-tab:', selectedTab);
+				}
+			}, 100);
+		}
        	const settingsPage = new SettingsPage();
 
        	// Initialize settings
@@ -180,6 +204,13 @@
 				}]
 			});
 			document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
+			const handlerId = settingsPage.onTabSwitch((previousTab, newTab) => {
+				console.log(`Switched from ${previousTab || 'no tab'} to ${newTab}`);
+				
+				if (newTab !== 'Super Secret Settings') {
+					window.pauseGame();
+				}
+			});
        	};
 
        	initializeSettings();
@@ -593,7 +624,14 @@
 		const tabs = document.querySelectorAll('.tab-item');
 		tabs.forEach(tab => {
 			tab.addEventListener('click', () => {
-				tabs.forEach(t => t.classList.remove('active'));
+				let previousTabId = null;
+				tabs.forEach((t) => {
+					if (t.classList.contains('active')) {
+						t.classList.remove('active')
+						previousTabId = t.getAttribute('data-tab');
+					}
+				});
+				//tabs.forEach(t => t.classList.remove('active'));
 				tab.classList.add('active');
 		   
 				const tabContents = document.querySelectorAll('.tab-content');
@@ -603,6 +641,7 @@
 				document.getElementById('tab-' + tabId).classList.add('active');
 		   
 				// reset nested tabs to first tab when switching main tabs
+				const nestedTabs = document.querySelectorAll('.nested-tab-item');
 				const activeTabContent = document.getElementById('tab-' + tabId);
 				if (activeTabContent) {
 					const nestedTabList = activeTabContent.querySelector('.nested-tab-list');
@@ -630,19 +669,24 @@
 						}
 					});
 				}
+				settingsPage.triggerTabSwitch(previousTabId, tabId);
 			});
 		});
 
-       	const nestedTabs = document.querySelectorAll('.nested-tab-item');
-       	nestedTabs.forEach(nTab => {
-       		nTab.addEventListener('click', () => {
-       			nestedTabs.forEach(nt => nt.classList.remove('active'));
-       			nTab.classList.add('active');
+		window.selectNestedTab = function(nTab) {
+			const nestedTabs = document.querySelectorAll('.nested-tab-item');
+			nestedTabs.forEach(nt => nt.classList.remove('active'));
+			nTab.classList.add('active');
 
-       			const nestedTabId = nTab.getAttribute('data-nested-tab');
-       			const nestedContents = document.querySelectorAll('.nested-tab-content');
-       			nestedContents.forEach(content => content.classList.remove('active'));
-       			document.getElementById('nested-tab-' + nestedTabId).classList.add('active');
+			const nestedTabId = nTab.getAttribute('data-nested-tab');
+			const nestedContents = document.querySelectorAll('.nested-tab-content');
+			nestedContents.forEach(content => content.classList.remove('active'));
+			document.getElementById('nested-tab-' + nestedTabId).classList.add('active');
+		}
+
+       	document.querySelectorAll('.nested-tab-item').forEach(nTab => {
+       		nTab.addEventListener('click', () => {
+       			selectNestedTab(nTab);
        		});
        	});
 
@@ -657,9 +701,10 @@
        			tab.classList.contains('active') && tab.textContent == "About & Contact"
        		) != null;
 
-       		if (event.key === konamiCode[inputIndex] && isOnAboutTab) {
+       		if (event.key === konamiCode[inputIndex] && isOnAboutTab && !window.isSecretCodeActivated) {
        			inputIndex++;
        			if (inputIndex === konamiCode.length) {
+					window.isSecretCodeActivated = true;
        				triggerSecretAnimation();
        				inputIndex = 0;
        			}

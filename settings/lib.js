@@ -46,6 +46,7 @@ class SettingsPage {
   constructor() {
 
     this.settingsRegistry = {};
+    this.tabSwitchHandlers = []; // array to store tab switch event handlers
   }
 
   /**
@@ -343,6 +344,56 @@ addNestedSetting(nestedTabId, setting) {
       if (setting.callback) { setting.callback(e); }
     });
     return button;
+  }
+
+  /**
+     * Registers a callback function to be called when tabs are switched.
+     * @param {function} callback - Function that takes previousTab and newTab parameters
+     * @returns {number} Handler ID that can be used to remove the handler
+     */
+  onTabSwitch(callback) {
+    if (typeof callback !== 'function') {
+      console.error('Tab switch handler must be a function');
+      return -1;
+    }
+    this.tabSwitchHandlers.push(callback);
+    return this.tabSwitchHandlers.length - 1; // return the index as an ID
+  }
+
+  /**
+   * Removes a previously registered tab switch handler.
+   * @param {number} handlerId - The handler ID returned from onTabSwitch
+   * @returns {boolean} Whether the handler was successfully removed
+   */
+  removeTabSwitchHandler(handlerId) {
+    if (handlerId >= 0 && handlerId < this.tabSwitchHandlers.length) {
+      this.tabSwitchHandlers[handlerId] = null; // we null it out rather than splice to maintain indices
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Triggers all registered tab switch handlers.
+   * This should be called when a tab switch occurs.
+   * @param {string} previousTab - ID of the previous tab, can be null
+   * @param {string} newTab - ID of the new active tab, cannot be null
+   */
+  triggerTabSwitch(previousTab, newTab) {
+    if (newTab === null) {
+      console.error('New tab cannot be null when switching tabs');
+      return;
+    }
+    
+    for (const handler of this.tabSwitchHandlers) {
+      if (handler) {
+        try {
+          handler(previousTab, newTab);
+        } catch (e) {
+          console.error('Error in tab switch handler:', e);
+        }
+      }
+    }
   }
 
   /**

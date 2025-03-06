@@ -3,14 +3,14 @@ const ctx = canvas.getContext("2d");
 
 // Double the grid size but keep canvas the same
 const GRID_SIZE = 40;
-canvas.width = 800; // Double canvas size to maintain grid count
-canvas.height = 800;
+canvas.width = 600; // Double canvas size to maintain grid count
+canvas.height = 600;
 const CANVAS_SIZE = canvas.width;
 const GRID_COUNT = CANVAS_SIZE / GRID_SIZE;
-const WIN_LENGTH = Math.floor((CANVAS_SIZE / GRID_SIZE) ** 2 * 0.75); // Win when snake fills 75% of board
+const WIN_LENGTH = Math.floor((CANVAS_SIZE / GRID_SIZE) ** 2 * 0.5); // Win when snake fills 50% of board
 const INITIAL_SPEED = 150;
 const MIN_SPEED = 50; // Maximum speed (minimum delay)
-const SPEED_INCREASE = 2; // ms faster per food eaten
+const SPEED_INCREASE = 1; // ms faster per food eaten
 
 let snake = [];
 let food = {};
@@ -30,8 +30,62 @@ const COLORS = {
     },
     food: '#FF5722',
     border: '#333333',
-    text: '#ffffff'
+    text: '#ffffff',
+    menuBackground: 'rgba(0, 0, 0, 0.7)'
 };
+
+// Create menu elements
+const pauseMenu = document.createElement('div');
+pauseMenu.id = 'pauseMenu';
+pauseMenu.style.position = 'absolute';
+pauseMenu.style.top = '50%';
+pauseMenu.style.left = '50%';
+pauseMenu.style.transform = 'translate(-50%, -50%)';
+pauseMenu.style.backgroundColor = COLORS.menuBackground;
+pauseMenu.style.color = COLORS.text;
+pauseMenu.style.padding = '20px';
+pauseMenu.style.borderRadius = '10px';
+pauseMenu.style.textAlign = 'center';
+pauseMenu.style.display = 'none';
+pauseMenu.style.zIndex = '1000';
+pauseMenu.innerHTML = '<h2>Game Paused</h2><p>Press Space to resume</p>';
+
+const startMenu = document.createElement('div');
+startMenu.id = 'startMenu';
+startMenu.style.position = 'absolute';
+startMenu.style.top = '50%';
+startMenu.style.left = '50%';
+startMenu.style.transform = 'translate(-50%, -50%)';
+startMenu.style.backgroundColor = COLORS.menuBackground;
+startMenu.style.color = COLORS.text;
+startMenu.style.padding = '20px';
+startMenu.style.borderRadius = '10px';
+startMenu.style.textAlign = 'center';
+startMenu.style.zIndex = '1000';
+startMenu.innerHTML = '<h2>Snake Game</h2><p>Press Space to start game</p>' +
+                      '<p>Use Arrow Keys or WASD to move</p>';
+
+// Add menus to the canvas container
+canvas.parentElement.style.position = 'relative';
+canvas.parentElement.appendChild(pauseMenu);
+canvas.parentElement.appendChild(startMenu);
+
+// Show/hide menus
+function showPauseMenu() {
+    pauseMenu.style.display = 'block';
+}
+
+function hidePauseMenu() {
+    pauseMenu.style.display = 'none';
+}
+
+function showStartMenu() {
+    startMenu.style.display = 'block';
+}
+
+function hideStartMenu() {
+    startMenu.style.display = 'none';
+}
 
 function init() {
     // Start snake in the middle
@@ -169,6 +223,7 @@ function gameOver() {
     gameInterval = null;
     createNotification('Game Over! Score: ' + score, "#961a1a", "#ffffff");
     resetGame();
+    showStartMenu();
 }
 
 function victory() {
@@ -176,6 +231,7 @@ function victory() {
     gameInterval = null;
     createNotification('Victory! You filled the board!', "#3c8443", "#ffffff");
     resetGame();
+    showStartMenu();
 }
 
 function resetGame() {
@@ -190,60 +246,108 @@ function resetGame() {
             document.getElementById('tab-general').classList.add('active');
         }
     });
+    document.querySelectorAll('.nested-tab-item').forEach(nTab => {
+        if (nTab.getAttribute('data-nested-tab') === 'general') {
+            selectNestedTab(nTab);
+        }
+    });
+    window.isSecretCodeActivated = false;
+}
+
+window.pauseGame = function() {
+    if (gameInterval) {
+        isPaused = true;
+        showPauseMenu();
+    }
+}
+
+function resumeGame() {
+    if (gameInterval) {
+        isPaused = false;
+        hidePauseMenu();
+    }
+}
+
+function startGame() {
+    if (!gameInterval) {
+        init();
+        draw();
+        gameInterval = setInterval(gameLoop, currentSpeed);
+        isPaused = false;
+        hideStartMenu();
+    }
 }
 
 function handleKeydown(e) {
-    // Prevent default behavior for arrow keys
-    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "].includes(e.key)) {
+    // Prevent default behavior for arrow keys and WASD
+    if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "w", "a", "s", "d", "W", "A", "S", "D", " "].includes(e.key)) {
         e.preventDefault();
     }
 
-    if (!gameInterval && e.key !== " ") return; // Only allow space when game is not running
+    const isOnSecretTab = Array.from(document.querySelectorAll('.tab-item')).find(tab => 
+        tab.classList.contains('active') && tab.textContent == "Super Secret Settings"
+    ) != null;
+    if (e.key === " " && isOnSecretTab) {
+        // Space key behavior depends on game state
+        if (!gameInterval) {
+            startGame();
+        } else if (isPaused) {
+            resumeGame();
+        } else {
+            pauseGame();
+        }
+        return;
+    }
 
+    if (!gameInterval || isPaused) return; // Only register movement when game is running and not paused
+
+    // Check both arrow keys and WASD
     switch(e.key) {
         case "ArrowUp":
+        case "w":
+        case "W":
             if (direction.y === 0) { // Prevent 180-degree turns
                 nextDirection = {x: 0, y: -GRID_SIZE};
             }
             break;
         case "ArrowDown":
+        case "s":
+        case "S":
             if (direction.y === 0) {
                 nextDirection = {x: 0, y: GRID_SIZE};
             }
             break;
         case "ArrowLeft":
+        case "a":
+        case "A":
             if (direction.x === 0) {
                 nextDirection = {x: -GRID_SIZE, y: 0};
             }
             break;
         case "ArrowRight":
+        case "d":
+        case "D":
             if (direction.x === 0) {
                 nextDirection = {x: GRID_SIZE, y: 0};
             }
-            break;
-        case " ":
-            // Space bar to pause/unpause
-            isPaused = !isPaused;
             break;
     }
 }
 
 document.addEventListener("keydown", handleKeydown);
 
-const playButton = document.getElementById("snakePlayBtn");
-playButton.addEventListener("click", function() {
-    if (!gameInterval) {
-        init();
-        draw();
-        gameInterval = setInterval(gameLoop, currentSpeed);
-        isPaused = false;
-        playButton.textContent = "Pause";
-    } else {
-        isPaused = !isPaused;
-        playButton.textContent = isPaused ? "Resume" : "Pause";
+// Add focus/blur event listeners
+window.addEventListener("blur", function() {
+    if (gameInterval && !isPaused) {
+        pauseGame();
     }
 });
 
-// Initial draw
+// Hide the play button
+const playButton = document.getElementById("snakePlayBtn");
+playButton.style.display = "none";
+
+// Initial draw and show start menu
 init();
 draw();
+showStartMenu();

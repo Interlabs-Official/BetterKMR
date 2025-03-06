@@ -4,80 +4,316 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Theme Big Picture Page</title>
+    <title>Theme Details</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #1f2937;
+            background-color: #0f0f0f;
+            color: #ccc;
             padding: 20px;
+            line-height: 1.6;
         }
 
-        .button {
-            font-family: 'Inter';
-            color: white;
-            font-size: 24px;
-            margin-top: 0px;
-            margin-bottom: 10.5px;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fade-in 0.5s ease;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            color: #ccc;
+            font-size: 18px;
+            margin-bottom: 20px;
             background: none;
             border: none;
             cursor: pointer;
-        }
-
-        .image {
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
+            padding: 10px;
             border-radius: 8px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
+            transition: all 0.3s ease;
         }
 
-        .title {
-            margin-top: 1rem;
-            font-size: 1.8rem;
-            margin-left: 1.7rem;
+        .back-button:hover {
             color: white;
-            font-weight: bold;
+            background-color: #1b1b1ba9;
+            transform: translateX(-5px);
         }
 
-        .author {
-            color: #cccccc;
-            margin-left: 1.7rem;
-            padding: 0;
+        .back-button span {
+            margin-left: 5px;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: scale(1.01);
+        }
+
+        .theme-image {
+            width: 100%;
+            height: 350px;
+            object-fit: cover;
+            display: block;
+            transition: filter 0.5s ease;
+        }
+
+        .theme-info {
+            padding: 25px;
+            background-color: #1b1b1b;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .theme-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .theme-title {
+            font-size: 2.5rem;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .theme-author {
+            color: #aaa;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 400;
         }
 
         .description-container {
-            margin-bottom: 0px;
-            margin-top: 25px;
+            padding: 25px;
+            background-color: #1b1b1b;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .description-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
         .description-title {
             color: white;
-            margin-left: 1.7rem;
-            font-size: 24px;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
         }
 
         .description-text {
-            margin-left: 1.7rem;
+            color: #ddd;
+            line-height: 1.7;
+            font-size: 1.1rem;
+        }
+
+        .description-text h2 {
             color: white;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .description-text p {
+            margin-bottom: 15px;
+        }
+
+        .badge-container {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 15px 0;
+            gap: 8px;
+            animation: slide-in 0.5s ease;
+        }
+
+        @keyframes slide-in {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+        }
+
+        .badge.winter {
+            background-color: #3f87bf;
+        }
+
+        .badge.seasonal {
+            background-color: #8e44ad;
+        }
+
+        .badge.custom {
+            background-color: #27ae60;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .action-button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .apply-button {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .apply-button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .greyed-out-applied {
+            background-color: #555 !important;
+            color: #fff !important;
+        }
+
+        .greyed-out-applied:disabled {
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .theme-title {
+                font-size: 2rem;
+            }
+            
+            .theme-image {
+                height: 250px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        .scroll-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(52, 152, 219, 0.7);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+        
+        .scroll-indicator.visible {
+            opacity: 1;
+        }
+        
+        .scroll-indicator:hover {
+            background-color: rgba(52, 152, 219, 0.9);
+        }
+        
+        .scroll-arrow {
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            display: inline-block;
+            padding: 5px;
+            transform: rotate(-135deg);
         }
     </style>
 </head>
 
 <body>
-    <button type="button" id="button1" class="button">&larr; Back</button>
-    <img id="theme-image" class="image">
-    <h3 id="theme-title" class="title">N/A</h3>
-    <h3 id="theme-author" class="author">by ???</h3>
-    <div class="description-container">
-        <h3 class="description-title">Description</h3>
-        <div id="theme-description" class="description-text">No description found.</div>
+    <div class="container">
+        <button type="button" id="button1" class="back-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Back to themes</span>
+        </button>
+        
+        <div class="image-container">
+            <img id="theme-image" class="theme-image" alt="Theme Preview">
+        </div>
+        
+        <div class="theme-info">
+            <h1 id="theme-title" class="theme-title">Theme Title</h1>
+            <h2 id="theme-author" class="theme-author">by Author Name</h2>
+            
+            <div class="badge-container"></div>
+            
+            <div class="action-buttons">
+                <button class="action-button apply-button">Apply Theme</button>
+            </div>
+        </div>
+        
+        <div class="description-container">
+            <h2 class="description-title">Description</h2>
+            <div id="theme-description" class="description-text">Loading description...</div>
+        </div>
     </div>
+    
+    <div class="scroll-indicator" id="scrollToTop">
+        <i class="scroll-arrow"></i>
+    </div>
+    
+    <script src="../frameworks/js-yaml.min.js"></script>
+    <script src="../frameworks/purify.min.js"></script>
+    <script src="../frameworks/marked.min.js"></script>
+    <script src="theme_detail.js"></script>
 </body>
-<script src="../frameworks/js-yaml.min.js"></script>
-<script src="../frameworks/purify.min.js"></script>
-<script src="../frameworks/marked.min.js"></script>
-<script src="theme_detail.js"></script>
 </html>

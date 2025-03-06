@@ -18,7 +18,7 @@
 console.log(`%c[BetterKMR 📗] ` + `%cCore components loaded. Dynamic modules will now begin loading.`, 'color: #9CCC65', 'color: #fff');
 
 // thank you stack overflow
-function waitForElm(selector) {
+waitForElm = function(selector) {
     return new Promise(resolve => {
         if (document.querySelector(selector)) {
             return resolve(document.querySelector(selector));
