@@ -204,13 +204,6 @@
 				}]
 			});
 			document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
-			const handlerId = settingsPage.onTabSwitch((previousTab, newTab) => {
-				console.log(`Switched from ${previousTab || 'no tab'} to ${newTab}`);
-				
-				if (newTab !== 'Super Secret Settings') {
-					window.pauseGame();
-				}
-			});
        	};
 
        	initializeSettings();
@@ -738,7 +731,7 @@
        			startParticleAnimation(particleCanvas);
        		}, 100);
        		
-       		const secretTab = document.getElementById('super-secret-tab-header');
+       		const secretTab = document.getElementById('advanced-tab-header');
        		const tabRect = secretTab.getBoundingClientRect();
        		
        		setTimeout(() => {
@@ -775,7 +768,7 @@
        	function startParticleAnimation(canvas) {
        		const ctx = canvas.getContext('2d');
        		const particles = [];
-       		const secretTab = document.getElementById('super-secret-tab-header');
+       		const secretTab = document.getElementById('advanced-tab-header');
        		const tabRect = secretTab.getBoundingClientRect();
        		
        		const originX = tabRect.left + tabRect.width / 2;

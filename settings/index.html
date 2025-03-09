@@ -710,9 +710,8 @@
       <ul id="tab-list">
         <li data-tab="general" class="tab-item active">General</li>
         <li data-tab="themes" class="tab-item">Themes</li>
-        <li data-tab="advanced" class="tab-item">Developer Settings</li>
         <li data-tab="about-and-contact" class="tab-item">About & Contact</li>
-        <li data-tab="super-secret" class="tab-item" id="super-secret-tab-header" style="visibility: hidden;">Super Secret Settings</li>
+        <li data-tab="advanced" class="tab-item" style="visibility: hidden;" id="advanced-tab-header">Developer Settings</li>
       </ul>
     </aside>
     
@@ -802,18 +801,10 @@
         <h3 style="font-weight: 300;">This is the Advanced section.</h3>
         <h3 style="font-weight: 300;">Some parts of this section are only available when built directly from the GitHub repo.</h3>
       </div>
-      <div id="tab-super-secret" class="tab-content">
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
-        <div id="controls">
-          <button id="snakePlayBtn">Play</button>
-        </div>
-        <p style="color: #0f0f0f; text-align: center; cursor: default;">Remember that BetterKMR is not designed for games, but rather to enhance your Kamar experience.</p>
-      </div>
     </main>
   </div>
   <script src="../frameworks/js-yaml.min.js"></script>
   <script src="lib.js"></script>
   <script src="script.js"></script>
-  <script src="snake.js"></script>
 </body>
 </html>
