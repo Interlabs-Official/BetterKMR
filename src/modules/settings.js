@@ -82,21 +82,10 @@ function updatePrivateMode() {
         if (result.private_mode) {
             const schoolCardDob = document.getElementsByClassName("school-card-dob")[0];
             if (schoolCardDob) { schoolCardDob.style.display = "none"; }
-            if (window.location.href.includes("medical_details")) {
-                const pageTitle = document.getElementsByClassName("page-title")[0];
+            let location = window.location.href;
+            if (location.includes("medical_details") || location.includes("student_details") || location.includes("caregiver_details") || location.includes("emergency_contact_details")) {
+                const pageTitle = document.getElementsByClassName("sk-main")[0];
                 pageTitle.innerHTML = `<div class="alert alert-warning">You have enabled Private Mode, and this content is not available.</div>`
-                document.getElementsByClassName("sk_table")[0].remove();
-            }
-            if (window.location.href.includes("caregiver_details")) {
-                const pageTitle = document.getElementsByClassName("page-title")[0];
-                pageTitle.innerHTML = `<div class="alert alert-warning">You have enabled Private Mode, and this content is not available.</div>`
-                document.getElementsByClassName("nav-tabs")[0].remove();
-                document.getElementById("caregivers1").remove();
-            }
-            if (window.location.href.includes("emergency_contact_details")) {
-                const pageTitle = document.getElementsByClassName("page-title")[0];
-                pageTitle.innerHTML = `<div class="alert alert-warning">You have enabled Private Mode, and this content is not available.</div>`
-                document.getElementsByClassName("sk_table")[0].remove();
             }
         }
     });
