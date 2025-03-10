@@ -15,10 +15,11 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+import jsyaml from 'js-yaml';
 console.log(`%c[BetterKMR 📗] ` + `%cCore components loaded. Dynamic modules will now begin loading.`, 'color: #9CCC65', 'color: #fff');
 
 // thank you stack overflow
-waitForElm = function(selector) {
+const waitForElm = function(selector) {
     return new Promise(resolve => {
         if (document.querySelector(selector)) {
             return resolve(document.querySelector(selector));
@@ -61,42 +62,48 @@ function loader() {
         }
         (async () => {
             try {
-                var url = /* webpackIgnore: true */ chrome.runtime.getURL("src/config/scripts.yml")
-
-                fetch(url)
-                    .then(response => {
-                        if (!response.ok) {
-                            console.log(`%c[BetterKMR 📕] ` + `%cCritical failure! Failed to load base framework "frameworks/js-yaml.min.js":\n      ` + `%cBetterKMR base HTTP error! status: ${response.status}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
-                        }
-                        return response.text();
-                    })
-                    .then(data => {
-                        const yamlToJson = jsyaml.load(data);
-                        (async () => {
-                            for (let i = 0; i < yamlToJson.length; i++) {
-                                if (yamlToJson[i] == "src/modules/themes.js") {
-                                    console.log(`%c[BetterKMR 📔] ` + `%cSkipped loading dynamic module because it is in the ignore list: ` + yamlToJson[i], 'color:rgb(105, 58, 138)', 'color: #fff');
-                                    continue;
-                                }
-                                console.log(`%c[BetterKMR 📘] ` + `%cLoading dynamic module: ` + yamlToJson[i], 'color: #0091EA', 'color: #fff');
-                                try {
-                                    await import(/* webpackIgnore: true */ chrome.runtime.getURL(yamlToJson[i]));
-                                } catch (error) {
-                                    console.log(`%c[BetterKMR 📕] ` + `%cFailed loading module "${yamlToJson[i]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
-                                }
-                                if (yamlToJson.length - 1 === i) { // determine if loop has finished, while still being inside the loop
-                                    holdfunc.notify("Finished loading all dynamic modules.");
-                                }
-                            }
-                        })();
-                    })
-                    .catch(error => {
-                        console.log(`%c[BetterKMR 📕] ` + `%cCritical failure! Failed to load base framework "frameworks/js-yaml.min.js":\n      ` + `%cBetterKMR failed to fetch the file: ${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
-                    });
+              var url = chrome.runtime.getURL("src/config/scripts.yml")
+              fetch(url)
+                .then(response => {
+                  if (!response.ok) {
+                    console.log(`%c[BetterKMR 📕] %cHTTP error! status: ${response.status}`, 'color: #F44336', 'color: #fff');
+                  }
+                  return response.text();
+                })
+                .then(data => {
+                  const yamlToJson = jsyaml.load(data);
+                  (async () => {
+                    for (let i = 0; i < yamlToJson.length; i++) {
+                      if (yamlToJson[i] == "src/modules/themes.js") {
+                        console.log(`%c[BetterKMR 📔] %cSkipped loading dynamic module because it is in the ignore list: ${yamlToJson[i]}`, 'color:rgb(105, 58, 138)', 'color: #fff');
+                        continue;
+                      }
+                      console.log(`%c[BetterKMR 📘] %cLoading dynamic module: ${yamlToJson[i]}`, 'color: #0091EA', 'color: #fff');
+                      
+                      try {
+                        // Extract the module name from the path
+                        const fileName = yamlToJson[i].split('/').pop();
+                        const moduleName = fileName.replace('.js', '');
+                        
+                        // Load the bundled version instead of the source file
+                        await import(/* webpackIgnore: true */ chrome.runtime.getURL(`modules/${moduleName}.js`));
+                      } catch (error) {
+                        console.log(`%c[BetterKMR 📕] %cFailed loading module "${yamlToJson[i]}":\n      %c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                      }
+                      
+                      if (yamlToJson.length - 1 === i) {
+                        holdfunc.notify("Finished loading all dynamic modules.");
+                      }
+                    }
+                  })();
+                })
+                .catch(error => {
+                  console.log(`%c[BetterKMR 📕] %cFailed to fetch the file: ${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                });
             } catch (error) {
-                console.log(`%c[BetterKMR 📕] ` + `%cCritical failure! Failed to load base framework "frameworks/js-yaml.min.js":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+              console.log(`%c[BetterKMR 📕] %cError: ${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
             }
-        })();
+          })();
         const startTime = Date.now();
         const minDelay = 500;
 

@@ -1,3 +1,12 @@
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    const loadingScreen = document.getElementById('loading-screen');
+    if (loadingScreen) {
+      loadingScreen.classList.add('hidden');
+    }
+  }, 200);
+});
+
 const urlParams = new URLSearchParams(window.location.search);
 const themeID = urlParams.get('themeID');
 
@@ -50,7 +59,6 @@ function uuidv4() {
   );
 }
 
-// Add this function to load the theme when the page loads
 function loadTheme() {
   if (themeID) {
     chrome.storage.local.get('themes', function(data) {
@@ -157,7 +165,6 @@ function saveCode() {
       } else {
         console.log("Theme saved successfully!");
         createNotification(`Code saved.`, "#3c8443", "#ffffff");
-        // Update URL with new themeID
         let newUrl = new URL(window.location.href);
         newUrl.searchParams.set('themeID', actualThemeID);
         window.history.replaceState({}, '', newUrl);
@@ -166,7 +173,6 @@ function saveCode() {
   });
 }
 
-// Call loadTheme when the page loads
 document.addEventListener('DOMContentLoaded', loadTheme);
 document.getElementById('save-button').addEventListener('click', () => {
   saveCode();

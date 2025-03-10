@@ -17,6 +17,7 @@
 */
 
 /* script.js - settings/script.js */
+import jsyaml from 'js-yaml';
 document.addEventListener('DOMContentLoaded', () => {
     console.log(`%c[BetterKMR 📘] ` + `%cWelcome to the BetterKMR extension settings. Please do not paste/enter commands in this console unless you know what you're doing.`, 'color: #0091EA', 'color: #fff');
     const tabs = document.querySelectorAll('.tab');

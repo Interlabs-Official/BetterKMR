@@ -17,7 +17,7 @@
     },
     {
       "matches": ["https://*.school.kiwi/*"],
-      "js": ["frameworks/js-yaml.min.js", "frameworks/holdfunc.js", "src/modules/themes.js"],
+      "js": ["frameworks/holdfunc.js", "modules/themes.js"],
       "run_at": "document_start"
     }
   ],
@@ -41,6 +41,7 @@
         "src/themes/*",
         "src/themes/js/*",
         "src/modules/*",
+        "modules/*",
         "assets/images/backgrounds/*",
         "assets/images/backgrounds/slideshow/*",
         "assets/images/wizard/*",

@@ -700,9 +700,99 @@
             left: 0;
             pointer-events: none;
           }
+
+          #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0f0f0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+          }
+
+          .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+          }
+
+          .loading-logo {
+            font-size: 36px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(90deg, #2979ff, #56CCF2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+          }
+
+          .loading-text {
+            color: #ccc;
+            font-size: 16px;
+            margin-top: 10px;
+          }
+
+          .loading-spinner {
+            position: relative;
+            width: 70px;
+            height: 70px;
+          }
+
+          .spinner-circle {
+            position: absolute;
+            border: 4px solid transparent;
+            border-top-color: #2979ff;
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+          }
+
+          .spinner-circle-inner {
+            position: absolute;
+            border: 4px solid transparent;
+            border-radius: 50%;
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+            border-right-color: #56CCF2;
+            animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite reverse;
+          }
+
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+
+          .hidden {
+            opacity: 0;
+            visibility: hidden;
+          }
   </style>
 </head>
 <body>
+  <div id="loading-screen">
+    <div class="loading-content">
+      <div class="loading-logo">BetterKMR</div>
+      <div class="loading-spinner">
+        <div class="spinner-circle"></div>
+        <div class="spinner-circle-inner"></div>
+      </div>
+      <div class="loading-text">Loading settings...</div>
+    </div>
+  </div>
   <div id="notification-container"></div>
   <div class="settings-container">
     <!-- Sidebar with tabs -->
@@ -717,9 +807,9 @@
     
     <!-- Main content area -->
     <main class="content">
-      <div id="tab-general" class="tab-content active">
+      <div id="tab-general" class="tab-content">
         <h1>General Settings</h1>
-        <h3 style="font-weight: 300;">Once changes are made, refresh your school.kiwi page(s). Changes are made automatically once interacted.</h3>
+        <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar (school.kiwi) page(s). Changes are made automatically once interacted.</h3>
         <!-- Nested Tab Header -->
         <div class="nested-tabs">
           <ul class="nested-tab-list">
@@ -734,7 +824,7 @@
       <!-- Privacy and Advanced Tabs (their content areas) -->
       <div id="tab-themes" class="tab-content">
         <h1>Theme Browser</h1>
-        <h3 style="font-weight: 300;">Once changes are made, refresh your school.kiwi page(s).</h3><br>
+        <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar (school.kiwi) page(s).</h3><br>
         <div class="nested-tabs">
           <ul class="nested-tab-list">
             <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
@@ -790,6 +880,7 @@
         </div>
       </div>
      <div id="tab-about-and-contact" class="tab-content">
+      <img src="../icon/icon_transparent_128.png" alt="BetterKMR Logo" style="width: 100px; height: 100px;">
         <h1>BetterKMR</h1>
         <h3 style="font-weight: 300;" id="version-number">Version (unknown)</h3>
         <h3 style="font-weight: 300;">Created by <a href="https://github.com/Interlabs-Official" target="_blank" style="color: #fff;">InterLabs</a></h3>
@@ -803,7 +894,6 @@
       </div>
     </main>
   </div>
-  <script src="../frameworks/js-yaml.min.js"></script>
   <script src="lib.js"></script>
   <script src="script.js"></script>
 </body>

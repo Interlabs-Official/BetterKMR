@@ -1,3 +1,4 @@
+        import jsyaml from 'js-yaml';
         window.addEventListener('scroll', function() {
             const scrollIndicator = document.getElementById('scrollToTop');
             if (window.scrollY > 300) {

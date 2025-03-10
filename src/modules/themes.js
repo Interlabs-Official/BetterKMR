@@ -17,7 +17,9 @@
 */
 
 /* themes.js - src/modules/themes.js */
-
+import jsyaml from 'js-yaml';
+// webpack needs this context for some reason to stop it from showing a warning
+const themesJsContext = require.context('../themes/js/', false, /\.js$/);
 // thank you stack overflow - copied from content.js
 function waitForElm(selector) {
     return new Promise(resolve => {
@@ -84,8 +86,11 @@ function injectTheme(yamlToJson) {
                     (async () => {
                         console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for theme: ` + themePath["name"], 'color: #0091EA', 'color: #fff');
                         try {
-                            let src = /* webpackIgnore: true */ chrome.runtime.getURL("src/themes/js/" + themePath["js"]);
-                            await import(src);
+                            const jsFileName = themePath["js"];
+                            const module = await themesJsContext(`./${jsFileName}`);
+                            if (module.default) {
+                                module.default();
+                            }
                         } catch (error) {
                             console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${themePath["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
                         }

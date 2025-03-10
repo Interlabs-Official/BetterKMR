@@ -17,10 +17,12 @@
 */
 
 /* attendance-calendar-card.js - src/modules/attendance-calendar-card.js */
-const calendarCard = document.querySelector(".card-body");
-calendarCard.innerHTML += `
-<br>
-<img src="${/* webpackIgnore: true */ chrome.runtime.getURL("icon/icon_transparent_48.png")}" width="24px" height="24px">
-<a href="https://support.google.com/calendar/answer/37118" target="_blank">
-    Click here for instructions on importing into Google Calendar ꜛ
-</a>`;
+if (window.location.href.includes("attendance/week")) {
+    const calendarCard = document.querySelector(".card-body");
+    calendarCard.innerHTML += `
+    <br>
+    <img src="${/* webpackIgnore: true */ chrome.runtime.getURL("icon/icon_transparent_48.png")}" width="24px" height="24px">
+    <a href="https://support.google.com/calendar/answer/37118" target="_blank">
+        Click here for instructions on importing into Google Calendar ꜛ
+    </a>`;
+}

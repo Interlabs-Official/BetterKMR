@@ -17,6 +17,7 @@
 */
 
 /* info-tips.js - src/modules/info-tips.js */
+
 chrome.storage.sync.get(["show_attendance_info_class_name_tips"]).then((result) => {
     if (result["show_attendance_info_class_name_tips"] == "false" || result["show_attendance_info_class_name_tips"] == false) {
         return;

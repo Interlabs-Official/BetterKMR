@@ -1,9 +1,18 @@
        /* TODO: At a later date, this code needs to be reformed as it's not only bad to look at, but everything's in one file.
 	   It probably needs a complete rewrite at some point, but I'll do this when I'm bored. */
-
+	   import jsyaml from 'js-yaml';
 	   /**********************************************************************
         * Initialization & Example Usage
         **********************************************************************/
+	   document.addEventListener('DOMContentLoaded', () => {
+		setTimeout(() => {
+		  const loadingScreen = document.getElementById('loading-screen');
+		  if (loadingScreen) {
+			loadingScreen.classList.add('hidden');
+			document.getElementById('tab-general').classList.add('active');
+		  }
+		}, 200);
+	  });
        console.log(`%c[BetterKMR 📘] ` + `%cWelcome to the BetterKMR extension settings. Please do not paste/enter commands in this console unless you know what you're doing.`, 'color: #0091EA', 'color: #fff');
 
        function formatCurrentDate() {
@@ -136,7 +145,7 @@
        			type: 'button',
        			default: null,
        			callback: () => {
-       				window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/legacy/pfp_wizard.html");
+       				window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/pfp_wizard.html");
        			}
        		});
 
