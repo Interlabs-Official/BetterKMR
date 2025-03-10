@@ -1,7 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const themeID = urlParams.get('themeID');
 
-if (!themeID) { window.location.href = chrome.runtime.getURL("settings/index.html");}
+if (!themeID) { window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html");}
 
 let editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
     mode: "css",

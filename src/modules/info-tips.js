@@ -23,8 +23,7 @@ chrome.storage.sync.get(["show_attendance_info_class_name_tips"]).then((result) 
     }
 
     try {
-        const jsonUrl = chrome.runtime.getURL('');
-        fetch(chrome.runtime.getURL("details/classLists/school01.yml"))
+        fetch(/* webpackIgnore: true */ chrome.runtime.getURL("details/classLists/school01.yml"))
         .then(response => response.text())
         .then(data => {
             const infoClasses = jsyaml.load(data);

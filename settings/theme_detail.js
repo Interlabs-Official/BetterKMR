@@ -58,7 +58,7 @@
             window.history.back();
         });
         
-        fetch(chrome.runtime.getURL("src/config/themes.yml"))
+        fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"))
         .then(response => response.text())
         .then(data => {
             const yamlToJson = jsyaml.load(data);
@@ -84,7 +84,7 @@
             if (typeof theme.description == 'undefined' || theme.description == null) {
                 document.getElementById('theme-description').innerHTML = DOMPurify.sanitize(marked.parse(theme.highlight));
             } else {
-                fetch(chrome.runtime.getURL("src/themes/descriptions/" + theme.description))
+                fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/themes/descriptions/" + theme.description))
                     .then(response => response.text())
                     .then(data => {
                         document.getElementById('theme-description').innerHTML = DOMPurify.sanitize(marked.parse(data));

@@ -37,6 +37,7 @@ const common = {
         { from: 'settings', to: 'settings' },
         { from: 'src', to: 'src' },
         { from: 'assets', to: 'assets' },
+        { from: 'details', to: 'details' },
       ],
     }),
   ],

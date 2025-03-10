@@ -276,6 +276,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     
       function backToSettings() {
-        window.location.href = chrome.runtime.getURL("settings/index.html");
+        window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html");
       }
   });

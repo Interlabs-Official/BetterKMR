@@ -18,8 +18,8 @@ function createDynamicVideo(sourceUrl, videoId = 'myVideo') {
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", (event) => {
-      createDynamicVideo(chrome.runtime.getURL('assets/images/backgrounds/vivid-rain.mp4'));  
+      createDynamicVideo(/* webpackIgnore: true */ chrome.runtime.getURL('assets/images/backgrounds/vivid-rain.mp4'));  
     });
   } else {
-    createDynamicVideo(chrome.runtime.getURL('assets/images/backgrounds/vivid-rain.mp4'));
+    createDynamicVideo(/* webpackIgnore: true */ chrome.runtime.getURL('assets/images/backgrounds/vivid-rain.mp4'));
   }

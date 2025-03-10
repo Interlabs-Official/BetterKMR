@@ -123,7 +123,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
         ];
 
         const userMenuItems = [
-            { text: "BetterKMR Menu", href: chrome.runtime.getURL("settings/index.html"), target: "_blank" },
+            { text: "BetterKMR Menu", href: /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html"), target: "_blank" },
             { isDivider: true },
             { text: "Student Details", href: "/student_details", className: "nav-link-student_details" },
             { text: "Caregiver Details", href: "/caregiver_details", className: "nav-link-caregiver_details" },
@@ -314,7 +314,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
         // if modified navbar is disabled, the only thing we'll do is add the BetterKMR Menu link
         var some_element = document.getElementsByClassName("dropdown-header sk_nav_text")[0];
         if (some_element) {
-            some_element.insertAdjacentHTML('afterend', `<a href="${chrome.runtime.getURL("settings/index.html")}" target="_blank" class="sk_nav_text nav-link">BetterKMR Menu</a>`);
+            some_element.insertAdjacentHTML('afterend', `<a href="${/* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html")}" target="_blank" class="sk_nav_text nav-link">BetterKMR Menu</a>`);
         }
     }
 });

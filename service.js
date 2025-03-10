@@ -22,7 +22,7 @@
 // Listen for tab updates (navigation, reload, etc.)
 chrome.action.onClicked.addListener(tab => { 
     chrome.tabs.create({
-        url: chrome.runtime.getURL("settings/index.html")
+        url: /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html")
     });
 });
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

@@ -61,7 +61,7 @@ function isCustomUUID(id) {
     }, 40);
 })();
 
-fetch(chrome.runtime.getURL("src/config/themes.yml"))
+fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"))
     .then(response => response.text())
     .then(data => {
         const yamlToJson = jsyaml.load(data);
@@ -76,7 +76,7 @@ function injectTheme(yamlToJson) {
         if (themePath) {
                 holdfunc.notify("The theme you have chosen \"" + themePath["css"] + "\" will begin loading shortly.");
                 const link = document.createElement("link");
-                link.href = chrome.runtime.getURL("src/themes/" + themePath["css"]);
+                link.href = /* webpackIgnore: true */ chrome.runtime.getURL("src/themes/" + themePath["css"]);
                 link.type = "text/css";
                 link.rel = "stylesheet";
                 document.head.appendChild(link);
@@ -84,7 +84,7 @@ function injectTheme(yamlToJson) {
                     (async () => {
                         console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for theme: ` + themePath["name"], 'color: #0091EA', 'color: #fff');
                         try {
-                            let src = chrome.runtime.getURL("src/themes/js/" + themePath["js"]);
+                            let src = /* webpackIgnore: true */ chrome.runtime.getURL("src/themes/js/" + themePath["js"]);
                             await import(src);
                         } catch (error) {
                             console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${themePath["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');

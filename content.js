@@ -61,7 +61,7 @@ function loader() {
         }
         (async () => {
             try {
-                var url = chrome.runtime.getURL("src/config/scripts.yml")
+                var url = /* webpackIgnore: true */ chrome.runtime.getURL("src/config/scripts.yml")
 
                 fetch(url)
                     .then(response => {

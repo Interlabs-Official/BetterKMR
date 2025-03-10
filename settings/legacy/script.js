@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     activateTab('general');
-    document.getElementById("mainlogo").src = chrome.runtime.getURL("icon/btrkmr_transparent_logo.png")
+    document.getElementById("mainlogo").src = /* webpackIgnore: true */ chrome.runtime.getURL("icon/btrkmr_transparent_logo.png")
 
     // Load settings from storage
     chrome.storage.sync.get(Object.keys(settings), (result) => {
@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function doYAMLThemes() {
-        fetch(chrome.runtime.getURL("src/config/themes.yml"))
+        fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"))
             .then(response => response.text())
             .then(data => {
                 const yamlToJson = jsyaml.load(data);
@@ -354,6 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.getElementById("goToWizard").addEventListener('click', (event) => {
-        window.location.href = chrome.runtime.getURL("settings/pfp_wizard.html");
+        window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/pfp_wizard.html");
     })
 });

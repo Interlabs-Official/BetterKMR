@@ -136,7 +136,7 @@
        			type: 'button',
        			default: null,
        			callback: () => {
-       				window.location.href = chrome.runtime.getURL("settings/legacy/pfp_wizard.html");
+       				window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/legacy/pfp_wizard.html");
        			}
        		});
 
@@ -271,7 +271,7 @@
        		titleRow.appendChild(h2);
 
        		img.addEventListener('click', () => {
-       			window.location.href = chrome.runtime.getURL(
+       			window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL(
        				'settings/theme_detail.html?themeID=' + customID
        			);
        		});
@@ -283,7 +283,7 @@
        			const [hide_external_js_warning] = await Promise.all([loadSettingPromise('hide_external_js_warning')]);
        			
        			if (externalJS && (!hide_external_js_warning)) {
-       				const response = await fetch(chrome.runtime.getURL('src/config/general.yml'));
+       				const response = await fetch(/* webpackIgnore: true */ chrome.runtime.getURL('src/config/general.yml'));
        				const data = await response.text();
        				const yamlToJson = jsyaml.load(data);
        				
@@ -404,7 +404,7 @@
 
        	async function doYAMLThemes() {
        		try {
-       			const response = await fetch(chrome.runtime.getURL("src/config/themes.yml"));
+       			const response = await fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"));
        			const data = await response.text();
        			const yamlToJson = jsyaml.load(data);
        			const themeCount = Object.keys(yamlToJson).length;
@@ -893,7 +893,7 @@
        	const deleteButton = createButton("delete-theme", "#e74c3c", "Delete");
 
        	editButton.addEventListener('click', () => {
-       		window.location.href = chrome.runtime.getURL(`settings/theme_edit.html?themeID=${customID}`);
+       		window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL(`settings/theme_edit.html?themeID=${customID}`);
        	});
 
        	deleteButton.addEventListener('click', () => deleteTheme(customID));
@@ -937,7 +937,7 @@
        setUpCustomThemesList();
 
        document.getElementById("new-custom-theme-button").addEventListener('click', () => {
-       	window.location.href = chrome.runtime.getURL("settings/theme_edit.html?themeID=new_theme");
+       	window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/theme_edit.html?themeID=new_theme");
        });
 
        function deleteTheme(themeId) {
