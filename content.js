@@ -80,8 +80,7 @@ function loader() {
                                 }
                                 console.log(`%c[BetterKMR 📘] ` + `%cLoading dynamic module: ` + yamlToJson[i], 'color: #0091EA', 'color: #fff');
                                 try {
-                                    const module = await import(/* webpackIgnore: true */ chrome.runtime.getURL(yamlToJson[i]));
-                                    return module;
+                                    await import(/* webpackIgnore: true */ chrome.runtime.getURL(yamlToJson[i]));
                                 } catch (error) {
                                     console.log(`%c[BetterKMR 📕] ` + `%cFailed loading module "${yamlToJson[i]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
                                 }
