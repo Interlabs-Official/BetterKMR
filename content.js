@@ -80,10 +80,10 @@ function loader() {
                                 }
                                 console.log(`%c[BetterKMR 📘] ` + `%cLoading dynamic module: ` + yamlToJson[i], 'color: #0091EA', 'color: #fff');
                                 try {
-                                    let src = chrome.runtime.getURL(yamlToJson[i]);
-                                    await import(src);
+                                    const module = await import(/* webpackIgnore: true */ chrome.runtime.getURL(path));
+                                    return module;
                                 } catch (error) {
-                                    console.log(`%c[BetterKMR 📕] ` + `%cFailed loading dynamic module "${yamlToJson[i]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+                                    console.log(`%c[BetterKMR 📕] ` + `%cFailed loading module "${path}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
                                 }
                                 if (yamlToJson.length - 1 === i) { // determine if loop has finished, while still being inside the loop
                                     holdfunc.notify("Finished loading all dynamic modules.");
