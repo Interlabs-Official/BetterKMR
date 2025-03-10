@@ -7,31 +7,41 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        browser: [chrome, firefox]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Prepare manifest for Firefox
-        if: matrix.browser == 'firefox'
-        run: |
-          # Update the manifest for Firefox by replacing the service_worker key
-          sed -i 's/"service_worker": "service.js"/"scripts": ["service.js"]/' manifest.json
-          echo "Modified manifest for Firefox:"
-          cat manifest.json
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
 
-      - name: Build extension
-        run: |
-          echo "Building extension for ${{ matrix.browser }}"
-          # Create a zip file containing the extension files.
-          # Adjust the zip command if you need to exclude/include specific files.
-          zip -r extension-${{ matrix.browser }}.zip . -x ".git/*"
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Upload extension artifact
+      - name: Build extensions
+        run: npm run build:all
+        
+      - name: Create Chrome ZIP
+        run: |
+          cd dist/chrome
+          zip -r ../../extension-chrome.zip .
+
+      - name: Create Firefox ZIP
+        run: |
+          cd dist/firefox
+          zip -r ../../extension-firefox.zip .
+
+      - name: Upload Chrome extension artifact
         uses: actions/upload-artifact@v4
         with:
-          name: extension-${{ matrix.browser }}
-          path: extension-${{ matrix.browser }}.zip
+          name: extension-chrome
+          path: extension-chrome.zip
+
+      - name: Upload Firefox extension artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-firefox
+          path: extension-firefox.zip
