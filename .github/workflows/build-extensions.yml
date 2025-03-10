@@ -24,24 +24,16 @@ jobs:
       - name: Build extensions
         run: npm run build:all
         
-      - name: Create Chrome ZIP
-        run: |
-          cd dist/chrome
-          zip -r ../../extension-chrome.zip .
-
-      - name: Create Firefox ZIP
-        run: |
-          cd dist/firefox
-          zip -r ../../extension-firefox.zip .
-
       - name: Upload Chrome extension artifact
         uses: actions/upload-artifact@v4
         with:
-          name: extension-chrome
-          path: extension-chrome.zip
+          name: extension-chrome.zip
+          path: dist/chrome/
+          compression-level: 9
 
       - name: Upload Firefox extension artifact
         uses: actions/upload-artifact@v4
         with:
-          name: extension-firefox
-          path: extension-firefox.zip
+          name: extension-firefox.zip
+          path: dist/firefox/
+          compression-level: 9
