@@ -20,21 +20,32 @@
 import jsyaml from 'js-yaml';
 // webpack needs this context for some reason to stop it from showing a warning
 const themesJsContext = require.context('../themes/js/', false, /\.js$/);
+let themeLoaded = false;
 // thank you stack overflow - copied from content.js
+
+/* apparently this can do something */
+function addPreconnect() {
+    const link = document.createElement('link');
+    link.rel = 'preconnect';
+    link.href = chrome.runtime.getURL('');
+    document.head.appendChild(link);
+}
+
 function waitForElm(selector) {
     return new Promise(resolve => {
-        if (document.querySelector(selector)) {
-            return resolve(document.querySelector(selector));
+        const element = document.querySelector(selector);
+        if (element) {
+            return resolve(element);
         }
 
         const observer = new MutationObserver(mutations => {
-            if (document.querySelector(selector)) {
+            const element = document.querySelector(selector);
+            if (element) {
                 observer.disconnect();
-                resolve(document.querySelector(selector));
+                resolve(element);
             }
         });
 
-        // If you get "parameter 1 is not of type 'Node'" error, see https://stackoverflow.com/a/77855838/492336
         observer.observe(document.documentElement, {
             childList: true,
             subtree: true
@@ -42,46 +53,48 @@ function waitForElm(selector) {
     });
 }
 
+const UUID_REGEX = /^[a-z,0-9,-]{36,36}$/;
+
 function isCustomUUID(id) {
-    let regex = /^[a-z,0-9,-]{36,36}$/;
-    return regex.test(id);
+    return UUID_REGEX.test(id);
 }
 
-    function addStyle(styleString) {
-        const style = document.createElement('style');
-        style.textContent = styleString;
-        document.head.append(style);
-      }
+function addStyle(styleString) {
+    const style = document.createElement('style');
+    style.appendChild(document.createTextNode(styleString));
+    document.head.appendChild(style);
+}
 
 // code to hide the school logo until all has loaded. works really well on pure dark theme.
-(async () => {
-    let curInterval = setInterval(function() {
-        if (document.getElementsByClassName("sk_header_content")[0]) {
-            document.getElementsByClassName("sk_header_content")[0].style.visibility = "hidden";
-            clearInterval(curInterval);
-        }
-    }, 40);
-})();
+waitForElm(".sk_header_content").then(element => {
+    addPreconnect();
+    element.style.visibility = "hidden";
+});
 
 fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"))
     .then(response => response.text())
     .then(data => {
-        const yamlToJson = jsyaml.load(data);
-        injectTheme(yamlToJson);
+        if (!themeLoaded) { // prevents double loading
+            const yamlToJson = jsyaml.load(data);
+            injectTheme(yamlToJson);
+            themeLoaded = true;
+        }
     })
     .catch(error => console.error("Failed to load themes:", error));
 
-function injectTheme(yamlToJson) {
-    chrome.storage.sync.get(["theme-id-text"]).then((result) => {
-        const url = result["theme-id-text"] || "0";
-        const themePath = yamlToJson[url];
-        if (themePath) {
+    function injectTheme(yamlToJson) {
+        chrome.storage.sync.get(["theme-id-text"]).then((result) => {
+            const url = result["theme-id-text"] || "0";
+            const themePath = yamlToJson[url];
+            
+            if (themePath) {
                 holdfunc.notify("The theme you have chosen \"" + themePath["css"] + "\" will begin loading shortly.");
                 const link = document.createElement("link");
                 link.href = /* webpackIgnore: true */ chrome.runtime.getURL("src/themes/" + themePath["css"]);
                 link.type = "text/css";
                 link.rel = "stylesheet";
                 document.head.appendChild(link);
+                
                 if (themePath["js"] != null) {
                     (async () => {
                         console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for theme: ` + themePath["name"], 'color: #0091EA', 'color: #fff');
@@ -96,17 +109,15 @@ function injectTheme(yamlToJson) {
                         }
                     })();
                 }
-            } else {
-                if (isCustomUUID(url)) { // is custom theme
-                    chrome.storage.local.get('themes', function(data) {
-                        let themes = data.themes || {};
-                        let theme = themes[url];
-                        if (theme) {
-                            holdfunc.notify("The custom theme you have chosen \"" + theme.name + "\" will now load.");
-                            addStyle(theme.code);
-                        }
-                    });
-                }
+            } else if (isCustomUUID(url)) { // is custom theme
+                chrome.storage.local.get('themes', function(data) {
+                    let themes = data.themes || {};
+                    let theme = themes[url];
+                    if (theme) {
+                        holdfunc.notify("The custom theme you have chosen \"" + theme.name + "\" will now load.");
+                        addStyle(theme.code);
+                    }
+                });
             }
-    });
-}
+        });
+    }

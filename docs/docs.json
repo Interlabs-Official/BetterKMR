@@ -3,7 +3,8 @@
     "pages": {
       "Home": "home.md",
       "Guides": {
-        "🏄 | Creating Custom Themes": "guides/creating-custom-themes.md"
+        "🏄 | Creating Custom Themes": "guides/creating-custom-themes.md",
+        "🔨 | Building & Developing": "guides/building-developing.md"
       },
       "FAQ": "faq.md"
     }

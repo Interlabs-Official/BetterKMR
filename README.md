@@ -63,6 +63,7 @@ npm run build:firefox
 # or for both
 npm run build:all
 ```
+Please note that the compiled version of BetterKMR will be available in the `dist` folder. This includes the live-refreshable version as well.
 Firefox builds are experimental and not supported, which may change at a later date. Please do not make bug reports for them.<br>
 If you would like to contribute and/or fix issues, feel free to [create a pull request.](https://github.com/Interlabs-Official/BetterKMR/pulls)
 

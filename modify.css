@@ -234,3 +234,11 @@ label {
   color: #fff;
 }
 /* other elements, like border colour, need to be overridden in your theme. check vivid.css for examples */
+
+/*
+Shortens the heights of non-periods on the attendance page, except the second to last one
+because of Period 5. This can be overridden in any theme by using the !important flag.
+*/
+.calendar-day.non-period.sk_border:not(:nth-last-child(2)) {
+  min-height: 0;
+}
