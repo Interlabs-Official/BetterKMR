@@ -33,3 +33,4 @@
 - src/modules/info-tips.js
 - src/modules/logintitle.js
 - src/modules/attendance-calendar-card.js
+- src/modules/notices.js

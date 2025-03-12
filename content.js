@@ -81,11 +81,9 @@ function loader() {
                       console.log(`%c[BetterKMR 📘] %cLoading dynamic module: ${yamlToJson[i]}`, 'color: #0091EA', 'color: #fff');
                       
                       try {
-                        // Extract the module name from the path
                         const fileName = yamlToJson[i].split('/').pop();
                         const moduleName = fileName.replace('.js', '');
                         
-                        // Load the bundled version instead of the source file
                         await import(/* webpackIgnore: true */ chrome.runtime.getURL(`modules/${moduleName}.js`));
                       } catch (error) {
                         console.log(`%c[BetterKMR 📕] %cFailed loading module "${yamlToJson[i]}":\n      %c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');

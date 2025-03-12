@@ -212,6 +212,26 @@
 					callback: (val) => saveSetting("dynamic_navbar_hidden_navbar_pages", val)
 				}]
 			});
+			const [better_notices_enabled, hide_rss_link_better_notices] = await Promise.all([
+				loadSettingPromise("better_notices_enabled"),
+				loadSettingPromise("hide_rss_link_better_notices")
+			]);
+			settingsPage.addNestedSetting('general', {
+				name: 'better_notices_enabled',
+				label: 'Better Notices Page',
+				tooltip: 'Improves the experience of the notices page, allowing you to delete specific/all notices.',
+				type: 'toggle',
+				default: better_notices_enabled ?? true,
+				callback: (val) => saveSetting("better_notices_enabled", val),
+				children: [{
+					name: 'hide_rss_link_better_notices',
+					label: 'Hide RSS Link',
+					tooltip: 'Hides the RSS link on the notices page, because why would an everyday user need it?',
+					type: 'toggle',
+					default: hide_rss_link_better_notices ?? false,
+					callback: (val) => saveSetting("hide_rss_link_better_notices", val)
+				}]
+			});
 			document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
        	};
 
