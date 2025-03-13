@@ -176,10 +176,10 @@ body .sk_nav_text {
     color: #ffffff !important;
 }
 body .nav-item.active .sk_nav_text {
-    color: #0b2c2e !important;
+    color: #00faff !important;
 }
 a.sk_nav_text.nav-link.nav-link:hover {
-    color: #0b2c2e !important;
+    color: #01bfbf !important;
 }
 body .container {
     color: white;
@@ -202,4 +202,11 @@ th.results-section-header.sk_thead_cell {
 }
 tr.sk_thead {
     background: #0c1010;
+}
+/* light mode fixes 2 */
+.sk_heading {
+    color: #ffffff !important;
+}
+.calendar-day {
+    color: #ffffff !important;
 }

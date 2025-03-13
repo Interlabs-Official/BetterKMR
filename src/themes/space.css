@@ -187,3 +187,10 @@ th.results-section-header.sk_thead_cell {
 tr.sk_thead {
     background: #004970;
 }
+/* light mode fixes 2 */
+.sk_heading {
+    color: #ffffff !important;
+}
+.calendar-day {
+    color: #ffffff !important;
+}
