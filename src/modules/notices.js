@@ -502,6 +502,29 @@ if (window.location.href.includes("notices")) {
                 });
             }
 
+
+            const container = document.querySelector(".page-title");
+ 
+
+            container.insertAdjacentHTML("afterend", `<p style="text-align: center; color:rgb(218, 218, 218); text-shadow: 1px 1px rgb(0, 0, 0);" id="notice-tip">Tip: Drag the Title to the right or press the "X" button when hovering to close the notice.</p>`);
+
+
+            setTimeout(() => {
+                const noticeTip = document.getElementById("notice-tip");
+
+                noticeTip.classList.add("fade-in-notice-tip");
+
+                setTimeout(() => {
+                    noticeTip.style.transition = "opacity 0.5s ease-out, height 0.5s ease-out, margin 0.5s ease-out";
+                    noticeTip.style.opacity = "0";
+                    noticeTip.style.height = "0";
+                    noticeTip.style.margin = "0";
+                    setTimeout(() => {
+                        noticeTip.style.display = "none";
+                    }, 500);
+                }, 1000);
+            }, 5000);
+
             const observer = new MutationObserver((mutations) => {
 
                 const shouldProcess = mutations.some(mutation => {

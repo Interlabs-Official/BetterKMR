@@ -42,9 +42,8 @@ function loadSettingPromise(key) {
 /**********************************************************************
  * SettingsPage Class
  **********************************************************************/
-class SettingsPage {
+export class SettingsPage {
   constructor() {
-
     this.settingsRegistry = {};
     this.tabSwitchHandlers = []; // array to store tab switch event handlers
   }
@@ -410,3 +409,6 @@ addNestedSetting(nestedTabId, setting) {
     return false;
   }
 }
+
+// Export other functions if needed
+export { saveSetting, loadSetting, loadSettingPromise };

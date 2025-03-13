@@ -18,6 +18,15 @@ const moduleFiles = fs.readdirSync('./src/modules')
     return entries;
   }, {});
 
+// Find all settings JS files
+const settingsFiles = fs.readdirSync('./settings')
+  .filter(file => file.endsWith('.js'))
+  .reduce((entries, file) => {
+    const name = `settings/${file.replace('.js', '')}`;
+    entries[name] = `./settings/${file}`;
+    return entries;
+  }, {});
+
 // common configuration for both browsers
 const common = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -25,8 +34,8 @@ const common = {
   entry: {
     content: './content.js',
     service: './service.js',
-    'settings/script': './settings/script.js',
-    ...moduleFiles
+    ...moduleFiles,
+    ...settingsFiles
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -60,7 +69,7 @@ const common = {
         { from: 'frameworks', to: 'frameworks' },
         { from: 'settings', to: 'settings', 
           globOptions: {
-            ignore: ['**/settings/script.js'] // don't copy this as it's bundled by webpack
+            ignore: ['**/settings/*.js'] // don't copy JS files from settings as they're bundled by webpack
           }
         },
         { from: 'src', to: 'src',
