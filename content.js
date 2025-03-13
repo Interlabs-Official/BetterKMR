@@ -46,15 +46,15 @@ const ignoreList = [
 
 function loader() {
     waitForElm('body').then((elm) => {
-        const loader = document.createElement('div');
-        loader.className = 'loader';
+        //const loader = document.createElement('div');
+        //loader.className = 'loader';
 
-        document.body.appendChild(loader);
+        //document.body.appendChild(loader);
 
-        loader.style.visibility = "visible";
+        //loader.style.visibility = "visible";
 
         function showContent() {
-            loader.classList.add('hidden');
+            //loader.classList.add('hidden');
             document.getElementsByClassName("nav-and-main")[0].style.visibility = 'visible';
             if (document.getElementsByClassName("sk_header_content")[0]) {
                 document.getElementsByClassName("sk_header_content")[0].style.visibility = "visible";
