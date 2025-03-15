@@ -147,11 +147,47 @@
 
       // Keep track of added elements
       let addedElements = [];
+
+      
+      // Add this near the top of your file, after any imports but before other code
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(() => {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+          }
+        }, 200);
+      });
+
+      document.addEventListener('DOMContentLoaded', function() {
+        // Get theme ID from URL if it exists
+        const urlParams = new URLSearchParams(window.location.search);
+        const themeID = urlParams.get('themeID');
+        
+        if (themeID && themeID !== 'new_theme') {
+          loadThemeForEditing(themeID);
+        }
+        
+        // Set up save button
+        document.getElementById('save-button').addEventListener('click', saveTheme);
+        
+        // Hide loading screen after a brief delay
+        setTimeout(() => {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+          }
+        }, 200);
+      });
       
       // Tab switching functionality
       const tabs = document.querySelectorAll('.tab-item');
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
+          if (tab.textContent === '← Back') {
+            window.history.back();
+            return;
+          }
           tabs.forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
           
@@ -826,107 +862,475 @@
           .join(' '); */
           return name;
       }
+
+      // Define a proper getAllCustomThemes function
+      function getAllCustomThemes(callback) {
+        chrome.storage.local.get('themes', function(data) {
+          const themes = data.themes || {};
+          callback(themes);
+        });
+      }
+
+      // Update the loadThemeForEditing function to use this correctly
+      // Update loadThemeForEditing to handle complex properties correctly
+      function loadThemeForEditing(themeId) {
+        getAllCustomThemes(function(themes) {
+          const theme = themes[themeId];
+          if (!theme) {
+            console.error('Theme not found:', themeId);
+            createNotification("Theme not found. Creating a new theme instead.", "#e74c3c", "#ffffff");
+            return;
+          }
+          
+          // Set theme name
+          document.getElementById('theme-name').value = theme.name;
+          
+          // Clear any existing elements
+          const addedElementsContainer = document.getElementById('added-elements-container');
+          if (addedElementsContainer) {
+            addedElementsContainer.innerHTML = '';
+          }
+          
+          // Reset the addedElements array
+          addedElements = [];
+          
+          // Load saved elements if they exist
+          if (theme.elements && Array.isArray(theme.elements)) {
+            theme.elements.forEach(element => {
+              // Find the matching element template
+              const elementTemplate = availableElements.find(temp => temp.id === element.id);
+              if (elementTemplate) {
+                // Add the element to the UI
+                addElement(elementTemplate);
+                
+                // Now set all the property values from the saved theme
+                if (element.properties) {
+                  Object.entries(element.properties).forEach(([propName, propValue]) => {
+                    const property = elementTemplate.properties.find(p => p.name === propName);
+                    if (property) {
+                      const propId = `${element.id}-${propName}`;
+                      
+                      // Handle different property types
+                      if (property.type === 'image-upload') {
+                        // For image upload, we need to handle the base64 data and update the UI
+                        const dataInput = document.getElementById(`${propId}-data`);
+                        const preview = document.getElementById(`${propId}-preview`);
+                        const dropArea = document.getElementById(`${propId}-drop-area`);
+                        const imageContainer = document.getElementById(`${propId}-image-container`);
+                        
+                        if (dataInput && propValue) {
+                          // Set the image data
+                          dataInput.value = propValue;
+                          
+                          // Show the preview if we have an image
+                          if (preview && propValue.startsWith('data:image')) {
+                            // Show the image container and hide the drop area
+                            if (imageContainer) imageContainer.style.display = 'block';
+                            if (dropArea) dropArea.style.display = 'none';
+                            
+                            // Update the preview image
+                            preview.src = propValue;
+                            preview.style.display = 'block';
+                            
+                            // If there's a clear button, make sure it's visible
+                            const clearBtn = document.getElementById(`${propId}-clear`);
+                            if (clearBtn) clearBtn.style.display = 'block';
+                          }
+                        }
+                      } 
+                      else if (property.type === 'color') {
+                        // Handle colors with transparency (similar to before)
+                        const input = document.getElementById(propId);
+                        const hexDisplay = document.getElementById(`${propId}-hex`);
+                        
+                        if (input && hexDisplay) {
+                          // Handle colors with transparency
+                          if (propValue && propValue.length === 9) { // Full hex with alpha #RRGGBBAA
+                            const alphaHex = propValue.substring(7, 9);
+                            const alphaDecimal = parseInt(alphaHex, 16) / 255;
+                            const alphaPercent = Math.round(alphaDecimal * 100);
+                            const colorWithoutAlpha = propValue.substring(0, 7);
+                            
+                            input.value = colorWithoutAlpha;
+                            hexDisplay.textContent = propValue;
+                            
+                            // Check if transparency is already enabled
+                            const alphaContainer = document.querySelector(`#${propId}-parent .alpha-slider-container`);
+                            const alphaToggleBtn = document.querySelector(`#${propId}-parent .alpha-toggle-btn`);
+                            
+                            if (!alphaContainer && alphaToggleBtn) {
+                              // If alpha slider doesn't exist but we have alpha value, trigger the toggle
+                              alphaToggleBtn.click(); // Enable transparency
+                              
+                              // Now set the slider value
+                              setTimeout(() => {
+                                const alphaSlider = document.querySelector(`#${propId}-parent .alpha-slider`);
+                                const alphaValue = document.querySelector(`#${propId}-parent .alpha-value`);
+                                
+                                if (alphaSlider && alphaValue) {
+                                  alphaSlider.value = alphaPercent;
+                                  alphaValue.textContent = `${alphaPercent}%`;
+                                }
+                              }, 50); // Short delay to ensure toggle has completed
+                            } else if (alphaContainer) {
+                              // Alpha container already exists, just update values
+                              const alphaSlider = alphaContainer.querySelector('.alpha-slider');
+                              const alphaValue = alphaContainer.querySelector('.alpha-value');
+                              
+                              if (alphaSlider && alphaValue) {
+                                alphaSlider.value = alphaPercent;
+                                alphaValue.textContent = `${alphaPercent}%`;
+                              }
+                            }
+                          } else {
+                            // Regular color without alpha
+                            input.value = propValue;
+                            hexDisplay.textContent = propValue;
+                          }
+                        }
+                      }
+                      else if (property.type === 'gradient') {
+                        // Handle gradient properties
+                        const startInput = document.getElementById(`${propId}-start`);
+                        const startHex = document.getElementById(`${propId}-start-hex`);
+                        const endInput = document.getElementById(`${propId}-end`);
+                        const endHex = document.getElementById(`${propId}-end-hex`);
+                        const direction = document.getElementById(`${propId}-direction`);
+                        
+                        if (propValue && typeof propValue === 'object') {
+                          if (startInput && startHex && propValue.start) {
+                            startInput.value = propValue.start.substring(0, 7); // Remove alpha if present
+                            startHex.textContent = propValue.start;
+                          }
+                          if (endInput && endHex && propValue.end) {
+                            endInput.value = propValue.end.substring(0, 7); // Remove alpha if present
+                            endHex.textContent = propValue.end;
+                          }
+                          if (direction && propValue.direction) {
+                            direction.value = propValue.direction;
+                          }
+                        }
+                      } 
+                      else if (property.type === 'checkbox' || property.type === 'toggle') {
+                        const checkbox = document.getElementById(propId);
+                        if (checkbox) {
+                          checkbox.checked = propValue;
+                          
+                          // Trigger change event to show/hide dependent content
+                          const event = new Event('change', { bubbles: true });
+                          checkbox.dispatchEvent(event);
+                        }
+                      } 
+                      else if (property.type === 'select') {
+                        const select = document.getElementById(propId);
+                        if (select) {
+                          select.value = propValue;
+                          
+                          // Trigger change event in case select has dependent fields
+                          const event = new Event('change', { bubbles: true });
+                          select.dispatchEvent(event);
+                        }
+                      } 
+                      else if (property.type === 'text' || property.type === 'url' || property.type === 'number') {
+                        const input = document.getElementById(propId);
+                        if (input) {
+                          input.value = propValue;
+                        }
+                      }
+                      // Handle any future property types here - making it extensible
+                      else if (property.type) {
+                        // Generic handler for any other property types
+                        // This catches any property types we haven't explicitly handled
+                        console.log(`Loading property of type ${property.type}: ${propName} = ${propValue}`);
+                        const input = document.getElementById(propId);
+                        if (input) {
+                          // First, try setting the value directly
+                          try {
+                            input.value = propValue;
+                          } catch (e) {
+                            console.warn(`Could not set value directly for ${property.type} property ${propName}`);
+                            // For complex types, try to use a data attribute as fallback
+                            input.setAttribute('data-value', JSON.stringify(propValue));
+                          }
+                        }
+                      }
+                    }
+                  });
+                }
+              }
+            });
+          }
+          
+          // Load CSS if present
+          if (theme.code) {
+            cssEditor.setValue(theme.code);
+          }
+          
+          // Trigger any post-load initialization that might be needed
+          if (typeof postLoad === 'function') {
+            try {
+              postLoad(theme.elements);
+            } catch (e) {
+              console.error('Error in postLoad function:', e);
+            }
+          }
+        });
+      }
       
       // Save theme functionality
       document.getElementById('save-button').addEventListener('click', saveTheme);
-      
-      function saveTheme() {
-        // Collect basic theme information
-        const theme = {
-          name: document.getElementById('theme-name').value,
-          customCSS: document.getElementById('editor').value,
-          elements: []
-        };
-        
-        // Collect all custom elements
-        addedElements.forEach(element => {
-          const elementData = {
-            id: element.id,
-            name: element.name,
-            properties: {}
-          };
-          
-          // Collect property values
-          element.properties.forEach(property => {
-            const propId = `${element.id}-${property.name}`;
+
+      // Add a helper function to properly refresh image previews
+      function updateImagePreviews() {
+        document.querySelectorAll('[id$="-data"]').forEach(dataInput => {
+          if (dataInput.value && dataInput.value.startsWith('data:image')) {
+            const propId = dataInput.id.replace('-data', '');
+            const preview = document.getElementById(`${propId}-preview`);
+            const dropArea = document.getElementById(`${propId}-drop-area`);
+            const imageContainer = document.getElementById(`${propId}-image-container`);
             
-            if (property.type === 'color') {
-              const hexDisplay = document.getElementById(`${propId}-hex`);
-              if (hexDisplay) {
-                elementData.properties[property.name] = hexDisplay.textContent;
-              }
-            } else if (property.type === 'gradient') {
-              const startHex = document.getElementById(`${propId}-start-hex`);
-              const endHex = document.getElementById(`${propId}-end-hex`);
-              const direction = document.getElementById(`${propId}-direction`);
+            if (preview) {
+              const previewImg = document.getElementById(`${propId}-img`);
+              previewImg.src = dataInput.value;
+              console.log("set preview src to ", dataInput.value);
+              const infoDisplay = document.getElementById(`${propId}-info`);
+              updateImageInfo(dataInput.value, infoDisplay);
+              previewImg.style.display = 'block';
+            }
+            
+            if (imageContainer) imageContainer.style.display = 'block';
+            if (dropArea) dropArea.style.display = 'none';
+          }
+        });
+      }
+      
+      // Update the saveTheme function to properly generate CSS and save toggle values
+      // Update saveTheme to properly handle all property types and ensure robust saving
+      function saveTheme() {
+        // Disable save button to prevent multiple clicks
+        const saveButton = document.getElementById('save-button');
+        saveButton.disabled = true;
+        saveButton.textContent = 'Saving...';
+        console.log("Saving theme...");
+        
+        try {
+          // Get theme name and validate
+          const themeName = document.getElementById('theme-name').value.trim();
+          if (!themeName) {
+            createNotification("Please enter a theme name before continuing.", "#961a1a", "#ffffff");
+            saveButton.disabled = false;
+            saveButton.textContent = 'Save Theme';
+            return;
+          }
+          
+          // Check storage size before saving
+          chrome.storage.local.getBytesInUse(null, function(bytesInUse) {
+            const maxBytes = 100 * 1024 * 1024; // 100MB
+            
+            if (bytesInUse > maxBytes) {
+              createNotification("Storage limit reached (100MB). Please delete some themes before adding more.", "#961a1a", "#ffffff");
+              saveButton.disabled = false;
+              saveButton.textContent = 'Save Theme';
+              return;
+            }
+            
+            try {
+              // Collect theme data
+              const theme = {
+                name: themeName,
+                elements: []
+              };
               
-              if (startHex && endHex && direction) {
-                elementData.properties[property.name] = {
-                  start: startHex.textContent,
-                  end: endHex.textContent,
-                  direction: direction.value
+              // Collect all custom elements
+              addedElements.forEach(element => {
+                const elementData = {
+                  id: element.id,
+                  name: element.name,
+                  properties: {}
                 };
+                
+                // Collect property values
+                element.properties.forEach(property => {
+                  const propId = `${element.id}-${property.name}`;
+                  
+                  if (property.type === 'color') {
+                    const hexDisplay = document.getElementById(`${propId}-hex`);
+                    if (hexDisplay) {
+                      elementData.properties[property.name] = hexDisplay.textContent;
+                    }
+                  } else if (property.type === 'gradient') {
+                    const startHex = document.getElementById(`${propId}-start-hex`);
+                    const endHex = document.getElementById(`${propId}-end-hex`);
+                    const direction = document.getElementById(`${propId}-direction`);
+                    
+                    elementData.properties[property.name] = {
+                      start: startHex ? startHex.textContent : '#ffffff',
+                      end: endHex ? endHex.textContent : '#000000',
+                      direction: direction ? direction.value : 'to bottom'
+                    };
+                  } else if (property.type === 'image-upload') {
+                    const dataInput = document.getElementById(`${propId}-data`);
+                    if (dataInput) {
+                      elementData.properties[property.name] = dataInput.value;
+                    }
+                  } else if (property.type === 'checkbox' || property.type === 'toggle') {
+                    const checkbox = document.getElementById(propId);
+                    if (checkbox) {
+                      elementData.properties[property.name] = checkbox.checked;
+                    }
+                  } else if (property.type === 'select' || property.type === 'dropdown') {
+                    const select = document.getElementById(propId);
+                    if (select) {
+                      elementData.properties[property.name] = select.value;
+                    }
+                  } else if (property.type === 'text' || property.type === 'url' || property.type === 'number') {
+                    const input = document.getElementById(propId);
+                    if (input) {
+                      elementData.properties[property.name] = input.value;
+                    }
+                  } else {
+                    // Catch-all for any other property types not explicitly handled
+                    console.log(`Saving property of type ${property.type}: ${property.name}`);
+                    const element = document.getElementById(propId);
+                    if (element) {
+                      // Try different strategies for getting the value based on element type
+                      if (element.tagName === 'INPUT' || element.tagName === 'SELECT' || element.tagName === 'TEXTAREA') {
+                        elementData.properties[property.name] = element.value;
+                      } else if (element.tagName === 'DIV' || element.tagName === 'SPAN') {
+                        // For containers, check for data attributes first
+                        if (element.hasAttribute('data-value')) {
+                          try {
+                            elementData.properties[property.name] = JSON.parse(element.getAttribute('data-value'));
+                          } catch (e) {
+                            elementData.properties[property.name] = element.getAttribute('data-value');
+                          }
+                        } else {
+                          elementData.properties[property.name] = element.textContent;
+                        }
+                      } else {
+                        // Last resort - try to stringify any complex data
+                        try {
+                          const dataValue = element.getAttribute('data-value');
+                          if (dataValue) {
+                            elementData.properties[property.name] = JSON.parse(dataValue);
+                          } else {
+                            elementData.properties[property.name] = element.value || element.textContent;
+                          }
+                        } catch (e) {
+                          console.warn(`Could not save value for ${property.type} property ${property.name}`, e);
+                        }
+                      }
+                    }
+                  }
+                });
+                
+                theme.elements.push(elementData);
+              });
+              
+              console.log("Elements collected:", theme.elements);
+              
+              // Generate CSS for the theme
+              try {
+                postSave(theme.elements);
+                cssEditor.save();
+              } catch (error) {
+                console.error("Error generating CSS:", error);
+                createNotification("Error generating CSS. Default CSS will be used.", "#e74c3c", "#ffffff");
               }
-            } else if (property.type === 'image-upload') {
-              const dataInput = document.getElementById(`${propId}-data`);
-              if (dataInput) {
-                elementData.properties[property.name] = dataInput.value;
+              
+              // Get the theme ID from URL or generate a new one
+              const urlParams = new URLSearchParams(window.location.search);
+              let themeId = urlParams.get('themeID');
+              
+              if (!themeId || themeId === 'new_theme') {
+                themeId = uuidv4();
               }
-            } else if (property.type !== 'button') { // Skip button properties when saving
-              const propElement = document.getElementById(propId);
-              if (propElement) {
-                elementData.properties[property.name] = propElement.type === 'checkbox' ? 
-                                                        propElement.checked : 
-                                                        propElement.value;
-              }
-            } else {
-              const propElement = document.getElementById(propId);
-              if (propElement) {
-                elementData.properties[property.name] = propElement.value;
-              }
+              
+              getAllCustomThemes(function(themes) {
+                try {
+                  // Create the theme data object
+                  console.log("Get all custom themes:", themes);
+                  const themeData = {
+                    id: themeId,
+                    name: themeName,
+                    code: cssEditor.getValue(),
+                    elements: theme.elements,
+                    lastModified: new Date().toISOString()
+                  };
+                  
+                  // Add to themes collection
+                  themes[themeId] = themeData;
+                  
+                  // Save to Chrome storage
+                  chrome.storage.local.set({ themes: themes }, function() {
+                    if (chrome.runtime.lastError) {
+                      console.error("Error saving theme:", chrome.runtime.lastError);
+                      createNotification("Failed saving theme, check console for details.", "#961a1a", "#ffffff");
+                    } else {
+                      console.log("Theme saved successfully!");
+                      createNotification(`Theme "${themeName}" saved successfully! It's now available in the Custom Themes section.`, "#3c8443", "#ffffff");
+                      
+                      // Update URL if this was a new theme
+                      if (urlParams.get('themeID') === 'new_theme') {
+                        let newUrl = new URL(window.location.href);
+                        newUrl.searchParams.set('themeID', themeId);
+                        window.history.replaceState({}, '', newUrl);
+                      }
+                    }
+                    saveButton.disabled = false;
+                    saveButton.textContent = 'Save Theme';
+                  });
+                } catch (error) {
+                  console.error("Error in theme saving process:", error);
+                  createNotification("An unexpected error occurred while saving.", "#961a1a", "#ffffff");
+                  saveButton.disabled = false;
+                  saveButton.textContent = 'Save Theme';
+                }
+              });
+            } catch (error) {
+              console.error("Error collecting theme data:", error);
+              createNotification("An unexpected error occurred while preparing your theme.", "#961a1a", "#ffffff");
+              saveButton.disabled = false;
+              saveButton.textContent = 'Save Theme';
             }
           });
-          
-          theme.elements.push(elementData);
-        });
-        
-        // For the custom CSS, make sure you're getting the value from CodeMirror
-        cssEditor.save(); // This updates the value of the textarea
-        theme.customCSS = document.getElementById('editor').value;
-        
-        // Here you would save the theme to storage
-        console.log('Theme saved:', theme);
-        alert('Theme saved successfully!');
-        postSave(theme.elements);
+        } catch (error) {
+          console.error("Critical error in save process:", error);
+          createNotification("A critical error occurred. Please try again.", "#961a1a", "#ffffff");
+          saveButton.disabled = false;
+          saveButton.textContent = 'Save Theme';
+        }
       }
 
-      function postSave(elements) {
-        let css = '';
+// Fix postSave function to correctly handle image uploads
+function postSave(elements) {
+  let css = '';
 
-        for (i in elements) {
-            var element = elements[i];
+  for (let i in elements) {
+    const element = elements[i];
 
-            // Handle elements based on their ID
-            // Handle elements based on their ID
-            if (element.id == "backimg-setting") {
-                cssEditor.setValue("");
-                console.log(element);
-                console.log(element.properties);
-                css += `
+    // Handle elements based on their ID
+    if (element.id == "backimg-setting") {
+      cssEditor.setValue("");
+      console.log(element);
+      console.log(element.properties);
+      css += `
 .sk_page {
   background-color: ${element.properties["Background Colour"] ?? "#000000"}!important;
 `
-                // Check if we have an uploaded image first
-                const uploadedImage = element.properties["Or Upload Background Image"];
-                if (uploadedImage) {
-                    css += `  background: url("${uploadedImage}") ${element.properties["Background Colour"] ?? "#000000"} top fixed no-repeat !important;\n`;
-                }
-                // If no uploaded image, use the URL if provided
-                else if (element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"] != "") {
-                    css += `  background: url("${element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"] ?? ""}") ${element.properties["Background Colour"] ?? "#000000"} top fixed no-repeat !important;\n`;
-                }
+      // Check if we have an uploaded image first
+      const uploadedImage = element.properties["Or Upload Background Image"];
+      if (uploadedImage) {
+        css += `  background-image: url("${uploadedImage}") !important;\n`;
+        css += `  background-color: ${element.properties["Background Colour"] ?? "#000000"} !important;\n`;
+      }
+      // If no uploaded image, use the URL if provided
+      else if (element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]) {
+        css += `  background-image: url("${element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]}") !important;\n`;
+        css += `  background-color: ${element.properties["Background Colour"] ?? "#000000"} !important;\n`;
+      }
 
-                css += `
+      css += `
   background-size: ${element.properties["Background Size"] ?? "cover"} !important;
   background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
   background-position: ${element.properties["Background Position"] ?? "center center"} !important;
@@ -935,23 +1339,25 @@
 .sk_header {
   background-color: ${element.properties["Background Colour"] ?? "#000000"}!important;
 `
-                // Check if we have an uploaded image first
-                if (uploadedImage) {
-                    css += `  background: url("${uploadedImage}") ${element.properties["Background Colour"] ?? "#000000"} top fixed no-repeat !important;\n`;
-                }
-                // If no uploaded image, use the URL if provided
-                else if (element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"] != "") {
-                    css += `  background: url("${element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"] ?? ""}") ${element.properties["Background Colour"] ?? "#000000"} top fixed no-repeat !important;\n`;
-                }
+      // Check if we have an uploaded image first
+      if (uploadedImage) {
+        css += `  background-image: url("${uploadedImage}") !important;\n`;
+        css += `  background-color: ${element.properties["Background Colour"] ?? "#000000"} !important;\n`;
+      }
+      // If no uploaded image, use the URL if provided
+      else if (element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]) {
+        css += `  background-image: url("${element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]}") !important;\n`;
+        css += `  background-color: ${element.properties["Background Colour"] ?? "#000000"} !important;\n`;
+      }
 
-                css += `
+      css += `
   background-size: ${element.properties["Background Size"] ?? "cover"} !important;
   background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
   background-position: ${element.properties["Background Position"] ?? "center center"} !important;
   background-attachment: ${element.properties["Background Attachment"] ?? "fixed"} !important;
 }
 `
-            } //end backimg-setting
+    } //end backimg-setting
             if (element.id == "school-name-and-motto") {
                 css += `
 .sk_school_name {
@@ -1339,4 +1745,55 @@ ${element.properties["CSS Properties"]}
           // For backward compatibility or if only a single color is provided
           return gradientProp;
         }
+      }
+
+      window.createNotification = function(message, color, frontcol) {
+        const notificationContainer = document.getElementById('notification-container');
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.style.backgroundColor = color;
+        notification.style.color = frontcol;
+        notification.innerText = message;
+    
+        const removeNotification = () => {
+          notification.classList.add('hidden');
+          setTimeout(() => notification.remove(), 500);
+        };
+    
+        notification.addEventListener('click', removeNotification);
+        notificationContainer.appendChild(notification);
+        setTimeout(removeNotification, 5000);
+      }
+
+      function uuidv4() {
+        return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, c =>
+          (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+        );
+      }
+
+      // Add helper function to extract alpha value from hex color
+      function getAlphaFromHex(hexColor) {
+        if (hexColor && hexColor.length === 9) {
+          const alphaHex = hexColor.substring(7, 9);
+          return parseInt(alphaHex, 16) / 255;
+        }
+        return 1; // Default to fully opaque
+      }
+
+      document.addEventListener("keydown", function(e) {
+        if (e.keyCode === 83 && (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)) {
+          e.preventDefault();
+          const saveButton = document.getElementById('save-button');
+          if (!saveButton.disabled) {
+            saveButton.click();
+          }
+        }
+      }, false);
+
+      function postLoad(elements) {
+        // Refresh image previews after a brief delay to ensure DOM is ready
+        setTimeout(updateImagePreviews, 100);
+        
+        // Any other initialization needed after loading
+        console.log('Theme loaded successfully with', elements.length, 'elements');
       }

@@ -648,6 +648,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	const tabs = document.querySelectorAll('.tab-item');
 	tabs.forEach(tab => {
 		tab.addEventListener('click', () => {
+			if (tab.textContent === 'Docs & Discord ↗') {
+				window.open('https://interlabs-official.github.io/BetterKMR/', '_blank').focus();
+				return;
+			}
 			let previousTabId = null;
 			tabs.forEach((t) => {
 				if (t.classList.contains('active')) {
@@ -924,7 +928,7 @@ function createCustomThemeItem(themeName, customID) {
 	const deleteButton = createButton("delete-theme", "#e74c3c", "Delete");
 
 	editButton.addEventListener('click', () => {
-		window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL(`settings/theme_edit.html?themeID=${customID}`);
+		showEditorSelectionDialog(customID, false);
 	});
 
 	deleteButton.addEventListener('click', () => deleteTheme(customID));
@@ -968,7 +972,7 @@ function setUpCustomThemesList() {
 setUpCustomThemesList();
 
 document.getElementById("new-custom-theme-button").addEventListener('click', () => {
-	window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/theme_edit.html?themeID=new_theme");
+	showEditorSelectionDialog('new_theme', true);
 });
 
 function deleteTheme(themeId) {
@@ -989,5 +993,34 @@ function deleteTheme(themeId) {
 			console.log("Theme not found.");
 			alert("Theme not found.");
 		}
+	});
+}
+
+// Add a function to show the editor selection dialog
+function showEditorSelectionDialog(themeId, isNew = false) {
+	createDialog({
+		title: isNew ? 'Create New Theme' : 'Edit Theme',
+		content: 'How would you like to edit this theme?',
+		buttons: [
+			{
+				text: 'Visual Theme Editor (experimental)',
+				callback: () => {
+					window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL(`settings/visual_theme.html?themeID=${themeId}`);
+				},
+				classname: 'dialog-button'
+			},
+			{
+				text: 'Code Editor',
+				callback: () => {
+					window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL(`settings/theme_edit.html?themeID=${themeId}`);
+				},
+				classname: 'dialog-button'
+			},
+			{
+				text: 'Cancel',
+				callback: () => console.log('Cancelled editor selection'),
+				classname: 'dialog-button-not'
+			}
+		]
 	});
 }

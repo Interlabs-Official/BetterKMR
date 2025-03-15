@@ -50,7 +50,7 @@ body .sk-main-content {
 body .sk_school_name {
    /* display: none; */
     background: -webkit-linear-gradient(#549ea8, #346369);
-    -webkit-background-clip: text;
+    background-clip: text;
     text-shadow: 2px 2px #003f87;
     color: #f7f7f7 !important;
 }
@@ -63,7 +63,7 @@ body .sk_thead th {
 body .sk_school_subheading {
  /*   display: none; */
     background: -webkit-linear-gradient(#0097a1, #003e68);
-    -webkit-background-clip: text;
+    background-clip: text;
     text-shadow: 2px 2px #003f87;
     color: #f7f7f7 !important;
 }
