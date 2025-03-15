@@ -1,3 +1,6 @@
+body {
+    font-family: 'Inter' !important;
+}
 .sk_page {
     transition: background 1s ease-in-out;
     background-size:     cover !important;                      /* <------ */

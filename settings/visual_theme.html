@@ -175,8 +175,8 @@
         
         .toggle-switch {
             position: relative;
-            width: 50px;
-            height: 24px;
+            width: 60px;
+            height: 34px;
         }
         
         .toggle-switch input {
@@ -461,7 +461,49 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999;
         }
+
+        #editor {
+      height: 1500px;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+
+    .CodeMirror {
+      height: 80% !important;
+    }
+
+    .CodeMirror-code {
+      font-size: 16px;
+    }
+
+    .CodeMirror-gutter-wrapper {
+      padding-right: 50px;
+    }
+
+    /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #272727; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
     </style>
+      <link rel="stylesheet" href="../frameworks/codemirror/codemirror.min.css"></link>
+      <link rel="stylesheet" href="../frameworks/codemirror/ayu-dark.css"></link>
+      <link rel="stylesheet" href="../frameworks/codemirror/show-hint.css"></link>
+      <link rel="stylesheet" href="../frameworks/codemirror/codemirror-colorpicker.css"></link>
   </head>
   <body>
     <div id="dialog-overlay" class="dialog-overlay"></div>
@@ -607,8 +649,8 @@
         <div id="tab-css" class="tab-content">
           <h1>Custom CSS</h1>
           <div class="setting-item">
-            <label class="setting-label" for="custom-css">Enter your custom CSS:</label>
-            <textarea id="custom-css" class="text-area code-area">/* Add your custom CSS here */
+            <label class="setting-label" for="editor">Below is a preview of the compiled CSS BetterKMR builds. Note that you cannot modify the code below.<br>If you need to make changes to the CSS, it's suggested to use the Code Editor instead.<br>Interact with the box below to update the preview.</label>
+            <textarea id="editor">/* Add your custom CSS here */
             
 /* This will be applied to all KAMAR pages */
 /* Example:
@@ -623,6 +665,11 @@ body {
       </main>
     </div>
 
+    <script src="../frameworks/codemirror/codemirror.min.js"></script>
+    <script src="../frameworks/codemirror/css.min.js"></script>
+    <script src="../frameworks/codemirror/show-hint.min.js"></script>
+    <script src="../frameworks/codemirror/css-hint.min.js"></script>
+    <script src="../frameworks/codemirror/codemirror-colorpicker.min.js"></script>
     <script src="visual_theme.js"></script>
   </body>
 </html>

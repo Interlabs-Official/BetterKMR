@@ -1,4 +1,7 @@
 /* Vivid theme, which is a base for some other themes too, includes patches for light mode. */
+body {
+    font-family: 'Inter' !important;
+}
 #myVideo {
     position: fixed;
     right: 0;

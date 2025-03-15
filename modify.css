@@ -13,9 +13,6 @@
 .sk_header {
   background-color: #000000!important;
 }
-body {
-    font-family: 'Inter' !important;
-}
 .sk_table, .calendar-grid, .calendar-column, .tt-day-wrap, .calendar-day {
     overflow: visible !important;
 }

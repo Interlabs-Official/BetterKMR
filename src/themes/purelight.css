@@ -1,3 +1,6 @@
+body {
+    font-family: 'Inter' !important;
+}
 .sk_page {
     background-color: #ffffff!important;
     background-size:     cover !important;                      /* <------ */
