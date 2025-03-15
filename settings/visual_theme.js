@@ -827,33 +827,6 @@
           return name;
       }
       
-      // Custom font functionality
-      document.getElementById('font-family').addEventListener('change', function() {
-        const customFontContainer = document.getElementById('custom-font-container');
-        if (this.value === 'custom') {
-          customFontContainer.style.display = 'block';
-        } else {
-          customFontContainer.style.display = 'none';
-        }
-      });
-      
-      // Update color hex values when colors change
-      document.getElementById('background-color').addEventListener('input', function(e) {
-        document.getElementById('bg-color-hex').textContent = e.target.value;
-      });
-      
-      document.getElementById('text-color').addEventListener('input', function(e) {
-        document.getElementById('text-color-hex').textContent = e.target.value;
-      });
-      
-      document.getElementById('accent-color').addEventListener('input', function(e) {
-        document.getElementById('accent-color-hex').textContent = e.target.value;
-      });
-      
-      document.getElementById('header-color').addEventListener('input', function(e) {
-        document.getElementById('header-color-hex').textContent = e.target.value;
-      });
-      
       // Save theme functionality
       document.getElementById('save-button').addEventListener('click', saveTheme);
       
@@ -861,17 +834,6 @@
         // Collect basic theme information
         const theme = {
           name: document.getElementById('theme-name').value,
-          enableTransitions: document.getElementById('enable-transitions').checked,
-          themeType: document.getElementById('theme-type').value,
-          backgroundImage: document.getElementById('background-image').value,
-          backgroundFixed: document.getElementById('bg-fixed').checked,
-          fontFamily: document.getElementById('font-family').value === 'custom' ? 
-                     document.getElementById('custom-font').value : 
-                     document.getElementById('font-family').value,
-          backgroundColor: document.getElementById('background-color').value,
-          textColor: document.getElementById('text-color').value,
-          accentColor: document.getElementById('accent-color').value,
-          headerColor: document.getElementById('header-color').value,
           customCSS: document.getElementById('editor').value,
           elements: []
         };
