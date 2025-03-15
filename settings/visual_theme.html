@@ -541,25 +541,6 @@
             <label class="setting-label" for="theme-name">Theme Name:</label>
             <input type="text" id="theme-name" class="text-input" placeholder="My Custom Theme">
           </div>
-          
-          <div class="setting-item">
-            <div class="toggle-container">
-              <span class="toggle-label">Enable CSS Transitions</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="enable-transitions" checked>
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-          
-          <div class="setting-item">
-            <label class="setting-label" for="theme-type">Theme Type:</label>
-            <select id="theme-type" class="select-dropdown">
-              <option value="dark" selected>Dark Theme</option>
-              <option value="light">Light Theme</option>
-              <option value="custom">Custom</option>
-            </select>
-          </div>
         </div>
         
         <div id="tab-appearance" class="tab-content">
@@ -568,82 +549,11 @@
           <button id="add-element-button" class="add-element-button">Add Element</button>
           
           <div id="added-elements-container">
-            <!-- Added elements will go here -->
+            <!-- added elements will go here -->
           </div>
-          
-          <div class="setting-item">
-            <label class="setting-label" for="background-image">Background Image URL:</label>
-            <input type="text" id="background-image" class="text-input" placeholder="https://example.com/image.jpg">
-          </div>
-          
-          <div class="setting-item">
-            <div class="toggle-container">
-              <span class="toggle-label">Background Image Fixed Position</span>
-              <label class="toggle-switch">
-                <input type="checkbox" id="bg-fixed">
-                <span class="slider"></span>
-              </label>
-            </div>
-          </div>
-          
-          <div class="setting-item">
-            <label class="setting-label" for="font-family">Font Family:</label>
-            <select id="font-family" class="select-dropdown">
-              <option value="Inter" selected>Inter (Default)</option>
-              <option value="Arial">Arial</option>
-              <option value="Roboto">Roboto</option>
-              <option value="Open Sans">Open Sans</option>
-              <option value="custom">Custom...</option>
-            </select>
-          </div>
-          
-          <div class="setting-item" id="custom-font-container" style="display: none;">
-            <label class="setting-label" for="custom-font">Custom Font:</label>
-            <input type="text" id="custom-font" class="text-input" placeholder="Font name or URL">
-          </div>
-        </div>
         
         <div id="tab-colors" class="tab-content">
-          <h1>Theme Colors</h1>
-          <div class="setting-item">
-            <label class="setting-label" for="background-color">Background Color:</label>
-            <div class="color-picker-container">
-              <div class="color-picker">
-                <input type="color" id="background-color" value="#0f0f0f">
-              </div>
-              <span id="bg-color-hex" class="color-hex-value">#0f0f0f</span>
-            </div>
-          </div>
-          
-          <div class="setting-item">
-            <label class="setting-label" for="text-color">Text Color:</label>
-            <div class="color-picker-container">
-              <div class="color-picker">
-                <input type="color" id="text-color" value="#ffffff">
-              </div>
-              <span id="text-color-hex" class="color-hex-value">#ffffff</span>
-            </div>
-          </div>
-          
-          <div class="setting-item">
-            <label class="setting-label" for="accent-color">Accent Color:</label>
-            <div class="color-picker-container">
-              <div class="color-picker">
-                <input type="color" id="accent-color" value="#2979ff">
-              </div>
-              <span id="accent-color-hex" class="color-hex-value">#2979ff</span>
-            </div>
-          </div>
-          
-          <div class="setting-item">
-            <label class="setting-label" for="header-color">Header Color:</label>
-            <div class="color-picker-container">
-              <div class="color-picker">
-                <input type="color" id="header-color" value="#111111">
-              </div>
-              <span id="header-color-hex" class="color-hex-value">#111111</span>
-            </div>
-          </div>
+
         </div>
         
         <div id="tab-css" class="tab-content">

@@ -112,7 +112,7 @@
           description: "Something missing from the above settings? Add it here!",
           properties: [
             { name: "Below, you can add your own CSS styles that will trail on after the settings from the Visual Theme Editor.", type: "tooltip" },
-            { name: "Additional CSS Properties", type: "text", default: "" },
+            { name: "CSS Properties", type: "text", default: "" },
             { name: "If you don't know what this is, it's best to remove it.", type: "tooltip" },
             { name: "If you want to add something that's not in the settings, but don't know how to code, feel free to ask in the Discord! https://discord.gg/HjJvakyAXe", type: "tooltip" },
           ]
@@ -1108,6 +1108,11 @@ body {
 }
 `
               }
+            }
+            if (element.id == "additional-css-properties") {
+              css += `
+${element.properties["CSS Properties"]}
+`
             }
         }
 
