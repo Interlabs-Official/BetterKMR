@@ -36,10 +36,9 @@ function getDaySuffix(day) {
 
 document.addEventListener('DOMContentLoaded', () => {
 	const urlParams = new URLSearchParams(window.location.search);
-	const selectedTab = urlParams.get('tab-selected');
 	
-	if (selectedTab) {
-		// Wait a brief moment to ensure DOM is fully loaded
+	if (urlParams.get('tab-selected')) {
+		const selectedTab = urlParams.get('tab-selected');
 		setTimeout(() => {
 			const tab = document.querySelector(`.tab-item[data-tab="${selectedTab}"]`);
 			if (tab) {
@@ -58,6 +57,40 @@ document.addEventListener('DOMContentLoaded', () => {
 				console.error('Could not find tab with data-tab:', selectedTab);
 			}
 		}, 100);
+	} else if (urlParams.get('nested-tab-selected')) {
+		const selectedTab = urlParams.get('nested-tab-selected');
+		setTimeout(() => {
+			const tab = document.querySelector(`.nested-tab-item[data-nested-tab="${selectedTab}"]`);
+			if (tab) {
+				document.querySelectorAll('.nested-tab-item').forEach(t => t.classList.remove('active'));
+				document.querySelectorAll('.nested-tab-content').forEach(tc => tc.classList.remove('active'));
+				
+				tab.classList.add('active');
+				if (tab) {
+					for (var i = 0; i < document.querySelectorAll('.tab-content').length; i++) {
+						document.querySelectorAll('.tab-content')[i].classList.remove('active');
+					}
+					tab.parentElement.parentElement.parentElement.classList.add('active'); // Sneaky little fix
+					tab.classList.add('active');
+					/* Instead of this, which I started off doing:
+					const nestedTabs = document.getElementById('tab-themes').querySelector('.nested-tabs');
+					for (var i = 0; i < nestedTabs.childNodes.length; i++) {
+						if (nestedTabs.childNodes[i].getAttribute('id') === `nested-tab-${selectedTab}`) {
+							// Do stuff
+						}
+					}
+					// I soon realised that I could literally do this */
+					const actualNestedTab = document.getElementById(`nested-tab-${selectedTab}`);
+					if (actualNestedTab) {
+						actualNestedTab.classList.add('active');
+					}
+				} else {
+					console.error('Could not find content for nested tab:', selectedTab);
+				}
+			} else {
+				console.error('Could not find nested tab with data-nested-tab:', selectedTab);
+			}
+		}, 200);
 	}
 	const settingsPage = new SettingsPage();
 
@@ -645,10 +678,14 @@ document.addEventListener('DOMContentLoaded', () => {
        		}
        	});
 
+		if (Math.random() > 0.75) {
+			createNotification("If you haven't already, you should join our Discord! Go to the About & Contact section.", "#738adb", "#ffffff");
+		}
+
 	const tabs = document.querySelectorAll('.tab-item');
 	tabs.forEach(tab => {
 		tab.addEventListener('click', () => {
-			if (tab.textContent === 'Docs & Discord ↗') {
+			if (tab.textContent === 'Website & Docs ↗') {
 				window.open('https://interlabs-official.github.io/BetterKMR/', '_blank').focus();
 				return;
 			}

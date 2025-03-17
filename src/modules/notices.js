@@ -502,28 +502,33 @@ if (window.location.href.includes("notices")) {
                 });
             }
 
-
-            const container = document.querySelector(".page-title");
- 
-
-            container.insertAdjacentHTML("afterend", `<p style="text-align: center; color:rgb(218, 218, 218); text-shadow: 1px 1px rgb(0, 0, 0);" id="notice-tip">Tip: Drag the Title to the right or press the "X" button when hovering to close the notice.</p>`);
-
-
-            setTimeout(() => {
-                const noticeTip = document.getElementById("notice-tip");
-
-                noticeTip.classList.add("fade-in-notice-tip");
+            function addNoticeTip() {
+                const container = document.querySelector(".page-title");
+                container.insertAdjacentHTML("afterend", `<p style="text-align: center; color:rgb(218, 218, 218); text-shadow: 1px 1px rgb(0, 0, 0);" id="notice-tip">Tip: Drag the Title to the right or press the "X" button when hovering to close the notice.</p>`);
 
                 setTimeout(() => {
-                    noticeTip.style.transition = "opacity 0.5s ease-out, height 0.5s ease-out, margin 0.5s ease-out";
-                    noticeTip.style.opacity = "0";
-                    noticeTip.style.height = "0";
-                    noticeTip.style.margin = "0";
+                    const noticeTip = document.getElementById("notice-tip");
+
+                    noticeTip.classList.add("fade-in-notice-tip");
+
                     setTimeout(() => {
-                        noticeTip.style.display = "none";
-                    }, 500);
-                }, 1000);
-            }, 5000);
+                        noticeTip.style.transition = "opacity 0.5s ease-out, height 0.5s ease-out, margin 0.5s ease-out";
+                        noticeTip.style.opacity = "0";
+                        noticeTip.style.height = "0";
+                        noticeTip.style.margin = "0";
+                        setTimeout(() => {
+                            noticeTip.remove();
+                            chrome.storage.sync.set({"fade-in-notice-tip": true})
+                        }, 500);
+                    }, 1000);
+                }, 5000);
+            }
+
+            chrome.storage.sync.get(["fade-in-notice-tip"]).then((result) => {
+                if (!result["fade-in-notice-tip"]) {
+                    addNoticeTip();
+                }
+            });
 
             const observer = new MutationObserver((mutations) => {
 
@@ -577,6 +582,16 @@ if (window.location.href.includes("notices")) {
                     }
 
                     if (!isViewingPastNotices) {
+
+                        const showTipBtn = document.createElement('a');
+                        showTipBtn.href = 'javascript:void(0)';
+                        showTipBtn.className = 'sk_btn btn active btn-sm';
+                        showTipBtn.textContent = '🛈';
+                        showTipBtn.setAttribute('style', 'background-color: #404040 !important; color: white !important; border-color: #ffffff !important;');
+                        showTipBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            addNoticeTip();
+                        });
 
                         const restoreBtn = document.createElement('a');
                         restoreBtn.href = 'javascript:void(0)';
@@ -645,6 +660,7 @@ if (window.location.href.includes("notices")) {
 
                         page_title_notices.insertBefore(dismissAllBtn, page_title_notices.firstChild);
                         page_title_notices.insertBefore(restoreBtn, page_title_notices.firstChild);
+                        page_title_notices.insertBefore(showTipBtn, page_title_notices.firstChild);
                     }
                 }
         });

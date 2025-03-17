@@ -653,6 +653,16 @@
             <label class="setting-label" for="theme-name">Theme Name:</label>
             <input type="text" id="theme-name" class="text-input" placeholder="My Custom Theme">
           </div>
+
+          <div class="setting-item">
+            <div class="toggle-container">
+              <span class="toggle-label">Auto Apply Theme on Save</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="apply-theme-auto" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
         </div>
         
         <div id="tab-appearance" class="tab-content">
@@ -669,16 +679,7 @@
           <h1>Custom CSS</h1>
           <div class="setting-item">
             <label class="setting-label" for="editor">Below is a preview of the compiled CSS BetterKMR builds. Note that you cannot modify the code below.<br>If you need to make changes to the CSS, it's suggested to use the Code Editor instead.<br>Interact with the box below to update the preview.</label>
-            <textarea id="editor">/* Add your custom CSS here */
-            
-/* This will be applied to all KAMAR pages */
-/* Example:
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: #0f0f0f;
-  color: #ffffff;
-}
-*/</textarea>
+            <textarea id="editor">/* CSS will be compiled here */</textarea>
           </div>
         </div>
       </main>
