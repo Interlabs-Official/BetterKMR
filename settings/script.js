@@ -740,13 +740,19 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (Math.random() > 0.75) {
 			createNotification("If you haven't already, you should join our Discord! Go to the About & Contact section.", "#738adb", "#ffffff");
 		}
-
 	const tabs = document.querySelectorAll('.tab-item');
 	tabs.forEach(tab => {
 		tab.addEventListener('click', () => {
 			if (tab.textContent === 'Website & Docs ↗') {
 				window.open('https://interlabs-official.github.io/BetterKMR/', '_blank').focus();
 				return;
+			}
+			if (tab.textContent === 'About & Contact') {
+				document.body.classList.add('gradient-background');
+				document.querySelector('.sidebar').classList.add('sidebar-transparency');
+			} else {
+				document.body.classList.remove('gradient-background');
+				document.querySelector('.sidebar').classList.remove('sidebar-transparency');
 			}
 			let previousTabId = null;
 			tabs.forEach((t) => {
@@ -1132,7 +1138,6 @@ function deleteTheme(themeId) {
 	});
 }
 
-// Add a function to show the editor selection dialog
 function showEditorSelectionDialog(themeId, isNew = false) {
 	createDialog({
 		title: isNew ? 'Create New Theme' : 'Edit Theme',
@@ -1159,4 +1164,21 @@ function showEditorSelectionDialog(themeId, isNew = false) {
 			}
 		]
 	});
+}
+
+if (document.getElementById("tab-general")) {
+		var ran = Math.random()
+		console.log("Threshold to get the \"support\" notification: " + ran + " / 0.85");
+		if (ran > 0.85) {
+			document.getElementById("tab-general").insertAdjacentHTML("beforebegin", `
+				<div id="update-notice" class="update-notice">
+				  <span class="update-text">BetterKMR needs your help! If you find any bugs or glitches, please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
+				  <span class="smaller-text">Click this notification to close.</span>
+			  </div>
+					`);
+			document.getElementById("update-notice").addEventListener('click', () => {
+					document.getElementById("update-notice").remove();
+			});
+			//chrome.storage.sync.set({ 'update_notice_closed': true });
+		}
 }

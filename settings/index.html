@@ -780,6 +780,74 @@
             opacity: 0;
             visibility: hidden;
           }
+
+              /* Update Notice */
+    .update-notice {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 0, 0.507);
+      border: 1px solid rgba(70, 252, 242, 0.4);
+      box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
+      animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
+      cursor: pointer;
+    }
+    
+    .update-text {
+      color: rgba(70, 252, 242, 1);
+      font-weight: 400;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice {
+      background: transparent;
+      border: none;
+      color: rgba(70, 252, 242, 0.8);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 0 0 10px;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice:hover {
+      color: #fff;
+    }
+    
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
+      }
+      to {
+        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
+      }
+    }
+    .smaller-text {
+      color: rgb(204, 204, 204);
+    }
+
+    .gradient-background {
+  background: linear-gradient(200deg,#0000bb,#111111);
+  background-size: 120% 120%;
+  animation: gradient-animation 6s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sidebar-transparency {
+  background-color: #00000047;
+}
   </style>
 </head>
 <body>

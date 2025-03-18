@@ -2089,3 +2089,7 @@ function saveSetting(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
   }
 }
+    document.getElementById("update-notice").addEventListener('click', () => {
+        document.getElementById("update-notice").remove();
+    });
+    //chrome.storage.sync.set({ 'update_notice_closed': true });

@@ -600,6 +600,53 @@
         transform: rotate(360deg);
       }
     }
+
+                  /* Update Notice */
+                  .update-notice {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      width: 85%;
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 0, 0.507);
+      border: 1px solid rgba(70, 252, 242, 0.4);
+      box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
+      animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
+      cursor: pointer;
+    }
+    
+    .update-text {
+      color: rgba(70, 252, 242, 1);
+      font-weight: 400;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice {
+      background: transparent;
+      border: none;
+      color: rgba(70, 252, 242, 0.8);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 0 0 10px;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice:hover {
+      color: #fff;
+    }
+    
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
+      }
+      to {
+        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
+      }
+    }
+    .smaller-text {
+      color: rgb(204, 204, 204);
+    }
     </style>
       <link rel="stylesheet" href="../frameworks/codemirror/codemirror.min.css"></link>
       <link rel="stylesheet" href="../frameworks/codemirror/ayu-dark.css"></link>
@@ -651,7 +698,7 @@
           <h1>Theme Configuration</h1>
           <div class="setting-item">
             <label class="setting-label" for="theme-name">Theme Name:</label>
-            <input type="text" id="theme-name" class="text-input" placeholder="My Custom Theme">
+            <input type="text" id="theme-name" class="text-input" placeholder="My Custom Theme" maxlength="64">
           </div>
 
           <div class="setting-item">
@@ -681,6 +728,10 @@
             <label class="setting-label" for="editor">Below is a preview of the compiled CSS BetterKMR builds. Note that you cannot modify the code below.<br>If you need to make changes to the CSS, it's suggested to use the Code Editor instead.<br>Interact with the box below to update the preview.</label>
             <textarea id="editor">/* CSS will be compiled here */</textarea>
           </div>
+        </div>
+        <div id="update-notice" class="update-notice">
+          <span class="update-text">If you find any bugs or glitches, or even want to suggest (please do!) please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
+          <span class="smaller-text">Thank you for using BetterKMR! (also please rate it on the Chrome Web Store!)</span>
         </div>
       </main>
     </div>
