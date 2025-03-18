@@ -70,6 +70,7 @@ chrome.runtime.onInstalled.addListener((details) => {
             },
             function () {}
           );
+          chrome.storage.sync.set({'update_notice_closed': false});
           break;
        case 'chrome_update':
        case 'shared_module_update':

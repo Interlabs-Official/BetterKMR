@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}, 200);
 });
+
 console.log(`%c[BetterKMR 📘] ` + `%cWelcome to the BetterKMR extension settings. Please do not paste/enter commands in this console unless you know what you're doing.`, 'color: #0091EA', 'color: #fff');
 
 function formatCurrentDate() {
@@ -56,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			} else {
 				console.error('Could not find tab with data-tab:', selectedTab);
 			}
-		}, 1000);
+		}, 300);
 	} else if (urlParams.get('nested-tab-selected')) {
 		const selectedTab = urlParams.get('nested-tab-selected');
 		setTimeout(() => {
@@ -102,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			} else {
 				console.error('Could not find nested tab with data-nested-tab:', selectedTab);
 			}
-		}, 1000);
+		}, 250);
 	}
 	const settingsPage = new SettingsPage();
 
@@ -279,6 +280,31 @@ document.addEventListener('DOMContentLoaded', () => {
 				callback: (val) => saveSetting("hide_rss_link_better_notices", val)
 			}]
 		});
+		// Danger Zone
+		settingsPage.addNestedSetting('danger-zone', {
+			name: 'reset_all_data',
+			label: 'Reset Chrome Extension (All Data)',
+			tooltip: 'Removes all data stored by the extension, including settings and themes. Cannot be undone.',
+			type: 'button',
+			default: null,
+			callback: () => {
+				createDialog({
+					title: `Reset BetterKMR Data`,
+					content: 'Hold on! Are you sure you want to reset BetterKMR data? <br>This action restores BetterKMR to stock settings and can\'t be undone.<br><br>What you\'ll clear:<br>- All settings data<br>- All themes data, including Custom Themes<br><br>Are you sure you want to clear your data?',
+					buttons: [
+						{
+							text: 'Cancel',
+							callback: () => console.log('Cancelled'),
+							classname: 'dialog-button-not',
+						},
+						{
+							text: 'OK',
+							callback: () => clearAllData(),
+						},
+					],
+				});
+			}
+		});
 		document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
 	};
 
@@ -296,6 +322,25 @@ document.addEventListener('DOMContentLoaded', () => {
 		badge.className = `badge ${badgeClass}`;
 		badge.textContent = text;
 		badgeContainer.appendChild(badge);
+	}
+
+	function clearAllData() {
+		chrome.storage.sync.clear(function() {
+			var error = chrome.runtime.lastError;
+			if (error) {
+				console.error(error);
+			}
+			createDialog({
+				title: `BetterKMR Data Reset`,
+				content: 'Successfully cleared all of your data.',
+				buttons: [
+					{
+						text: 'OK',
+						callback: () => window.location.reload(),
+					},
+				],
+			});
+		});
 	}
 
 	function createThemeCard(
@@ -562,6 +607,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
+            searchInput.value = '';
+            
             function filterThemes(searchText) {
                 console.log("Filtering themes with:", searchText);
                 const themeCards = document.querySelectorAll('.theme-card'); 
@@ -744,21 +791,45 @@ document.addEventListener('DOMContentLoaded', () => {
 					if (buttonById) {
 						onApply(null, id, buttonById, false);
 					}
+					setUpCustomThemesList();
 				});
+				
+				const searchInput = document.getElementById('theme-search-input');
+				if (searchInput) {
+					searchInput.value = '';
+				}
 			}
 			settingsPage.triggerTabSwitch(previousTabId, tabId);
 		});
 	});
 
 	window.selectNestedTab = function(nTab) {
-		const nestedTabs = document.querySelectorAll('.nested-tab-item');
-		nestedTabs.forEach(nt => nt.classList.remove('active'));
-		nTab.classList.add('active');
+		document.querySelectorAll('.nested-tab-item').forEach(t => t.classList.remove('active'));
+		document.querySelectorAll('.nested-tab-content').forEach(tc => tc.classList.remove('active'));
 
-		const nestedTabId = nTab.getAttribute('data-nested-tab');
-		const nestedContents = document.querySelectorAll('.nested-tab-content');
-		nestedContents.forEach(content => content.classList.remove('active'));
-		document.getElementById('nested-tab-' + nestedTabId).classList.add('active');
+		nTab.classList.add('active');
+		const tabId = nTab.getAttribute('data-nested-tab');
+		document.getElementById('nested-tab-' + tabId).classList.add('active');
+		
+		if (tabId === "default-themes" || tabId === "market-themes" || tabId === "custom-themes") {
+			const searchInput = document.getElementById('theme-search-input');
+			if (searchInput) {
+				searchInput.value = '';
+				const themeCards = document.querySelectorAll('.theme-card');
+				themeCards.forEach(card => {
+					if (card.id !== "1") {
+						card.style.display = 'flex';
+					}
+				});
+				const noResultsMessage = document.getElementById('no-theme-results');
+				if (noResultsMessage) {
+					noResultsMessage.style.display = 'none';
+				}
+			}
+			if (tabId === "custom-themes") {
+				setUpCustomThemesList();
+			}
+		}
 	}
 
    	document.querySelectorAll('.nested-tab-item').forEach(nTab => {
@@ -1011,9 +1082,25 @@ function getAllCustomThemes(callback) {
 function setUpCustomThemesList() {
 	const customThemesList = document.getElementById("custom-themes-list");
 	customThemesList.innerHTML = '';
-	getAllCustomThemes(themes => {
-		Object.entries(themes).forEach(([id, theme]) => {
-			customThemesList.appendChild(createCustomThemeItem(theme.name, id));
+	
+	chrome.storage.sync.get(["theme-id-text"], (result) => {
+		const currentThemeId = result["theme-id-text"] || "0";
+		
+		getAllCustomThemes(themes => {
+			Object.entries(themes).forEach(([id, theme]) => {
+				const themeItem = createCustomThemeItem(theme.name, id);
+				
+				if (id === currentThemeId) {
+					const applyButton = themeItem.querySelector('.apply-custom-theme');
+					if (applyButton) {
+						applyButton.setAttribute("id", "greyed-out-applied");
+						applyButton.disabled = true;
+						applyButton.textContent = "In Use";
+					}
+				}
+				
+				customThemesList.appendChild(themeItem);
+			});
 		});
 	});
 }

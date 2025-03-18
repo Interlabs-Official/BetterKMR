@@ -47,7 +47,7 @@ const ignoreList = [
 function loader() {
     waitForElm('body').then((elm) => {
         const loader = document.createElement('div');
-        loader.className = 'loader';
+        loader.className = 'very-loader';
 
         document.body.appendChild(loader);
 
