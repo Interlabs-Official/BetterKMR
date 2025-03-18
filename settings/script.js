@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			} else {
 				console.error('Could not find tab with data-tab:', selectedTab);
 			}
-		}, 100);
+		}, 1000);
 	} else if (urlParams.get('nested-tab-selected')) {
 		const selectedTab = urlParams.get('nested-tab-selected');
 		setTimeout(() => {
@@ -64,14 +64,23 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (tab) {
 				document.querySelectorAll('.nested-tab-item').forEach(t => t.classList.remove('active'));
 				document.querySelectorAll('.nested-tab-content').forEach(tc => tc.classList.remove('active'));
+				document.querySelectorAll('.tab-item').forEach(tc => tc.classList.remove('active'));
 				
 				tab.classList.add('active');
 				if (tab) {
 					for (var i = 0; i < document.querySelectorAll('.tab-content').length; i++) {
 						document.querySelectorAll('.tab-content')[i].classList.remove('active');
 					}
-					tab.parentElement.parentElement.parentElement.classList.add('active'); // Sneaky little fix
+					const parentElm = tab.parentElement.parentElement.parentElement; // Sneaky little fix
+					var currentElm = null;
+					parentElm.classList.add('active');
 					tab.classList.add('active');
+					if (parentElm.getAttribute('id')) {
+						if (parentElm.getAttribute('id').startsWith('tab-')) {
+							currentElm = parentElm.getAttribute('id').substring(4);
+						}
+					}
+					console.log(tab.parentElement.parentElement.parentElement.getAttribute('id'));
 					/* Instead of this, which I started off doing:
 					const nestedTabs = document.getElementById('tab-themes').querySelector('.nested-tabs');
 					for (var i = 0; i < nestedTabs.childNodes.length; i++) {
@@ -84,13 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
 					if (actualNestedTab) {
 						actualNestedTab.classList.add('active');
 					}
+					if (currentElm != null) {
+						document.querySelector(`.tab-item[data-tab="${currentElm}"]`).classList.add('active');
+					}
 				} else {
 					console.error('Could not find content for nested tab:', selectedTab);
 				}
 			} else {
 				console.error('Could not find nested tab with data-nested-tab:', selectedTab);
 			}
-		}, 200);
+		}, 1000);
 	}
 	const settingsPage = new SettingsPage();
 
