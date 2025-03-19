@@ -30,7 +30,7 @@ function doStuff() {
                 `)
             document.getElementById("update-notice").addEventListener("click", () => {
                 window.open(
-                    "https://github.com/Interlabs-Official/BetterKMR/releases/latest",
+                    "https://interlabs-official.github.io/BetterKMR/docs/?page=v1.1.0",
                     '_blank'
                   );
             });

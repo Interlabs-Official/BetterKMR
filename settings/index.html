@@ -412,7 +412,24 @@
     }
 
     #new-custom-theme-button {
-    position: absolute;
+    background-color: #4c91af;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #new-custom-theme-button:hover {
+    background-color: #1a7da7;
+  }
+
+  #submit-your-theme-button {
+    position: fixed;
     top: 170px;
     right: 50px;
     background-color: #4c91af;
@@ -427,7 +444,7 @@
     cursor: pointer;
   }
 
-  #new-custom-theme-button:hover {
+  #submit-your-theme-button:hover {
     background-color: #1a7da7;
   }
 
@@ -896,12 +913,12 @@
       <div id="tab-themes" class="tab-content">
         <h1>Theme Browser</h1>
         <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar page(s).</h3>
-        <a style="font-weight:300;" href="https://interlabs-official.github.io/betterkmr/docs/V1.1CHANGELOGHEREHELPMEEEE">How to submit your own theme</a>
         <div class="nested-tabs">
           <ul class="nested-tab-list">
             <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
             <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
-            <li data-nested-tab="custom-themes" class="nested-tab-item">Custom [NEW]</li>
+            <li data-nested-tab="custom-themes" class="nested-tab-item">Custom</li>
+            <li data-nested-tab="submit-your-themes" id="submit-theme-tab" class="nested-tab-item">Submit Theme ↓</li>
           </ul>
           <!-- Nested Tab Contents -->
           <div id="nested-tab-default-themes" class="nested-tab-content active">
@@ -922,6 +939,8 @@
             <br><h1 style="text-align: center; font-weight: 300; font-size: 60px;">Marketplace</h1>
             <h2 style="text-align: center;">Coming soon! This will be a place where you can distribute your custom themes.</h2>
             <h3 style="text-align: center;">Keep watching this space for future updates!</h3>
+          </div>
+          <div id="nested-tab-submit-your-themes" class="nested-tab-content">
           </div>
           <div id="nested-tab-custom-themes" class="nested-tab-content">
             <button id="new-custom-theme-button">New</button>
