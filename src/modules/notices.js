@@ -112,6 +112,9 @@ if (window.location.href.includes("notices")) {
                         opacity: 1;
                     }
                 }
+                #dismiss-all-btn {
+                    color: #fff !important;
+                }
             `;
             document.head.appendChild(style);
 
@@ -608,8 +611,8 @@ if (window.location.href.includes("notices")) {
                         dismissAllBtn.href = 'javascript:void(0)';
                         dismissAllBtn.className = 'sk_btn btn btn-sm';
                         dismissAllBtn.textContent = 'Dismiss All';
-                        dismissAllBtn.setAttribute('style', 'background-color: #8B0000 !important');
-                        dismissAllBtn.style.color = 'white';
+                        dismissAllBtn.setAttribute('id', "dismiss-all-btn");
+                        dismissAllBtn.setAttribute('style', 'background-color: #8B0000 !important;');
                         dismissAllBtn.style.marginRight = '8px';
 
                         dismissAllBtn.addEventListener('click', function(e) {

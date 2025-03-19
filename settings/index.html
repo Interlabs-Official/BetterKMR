@@ -412,6 +412,9 @@
     }
 
     #new-custom-theme-button {
+    position: absolute;
+    top: 170px;
+    right: 50px;
     background-color: #4c91af;
     border: none;
     color: white;
@@ -427,42 +430,6 @@
   #new-custom-theme-button:hover {
     background-color: #1a7da7;
   }
-
-  #submit-your-theme-button {
-    position: fixed;
-    top: 170px;
-    right: 50px;
-    background-color: #4c91af;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  #submit-your-theme-button:hover {
-    background-color: #1a7da7;
-  }
-
-  #gameCanvas {
-      background-color: #000;
-      display: block;
-      margin: 20px auto;
-      border: 2px solid #333;
-    }
-    #controls {
-      margin: 10px;
-    }
-    #snakePlayBtn, #snakePauseBtn, #snakeRestartBtn {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin: 5px;
-      cursor: pointer;
-    }
 
     .tag-container {
       width: 100%;
@@ -800,6 +767,7 @@
 
               /* Update Notice */
     .update-notice {
+      position: fixed;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -810,6 +778,8 @@
       box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
       animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
       cursor: pointer;
+      bottom: 0;
+      z-index: 500;
     }
     
     .update-text {
@@ -865,6 +835,10 @@
 .sidebar-transparency {
   background-color: #00000047;
 }
+
+a {
+  color: #fff;
+}
   </style>
 </head>
 <body>
@@ -917,7 +891,7 @@
           <ul class="nested-tab-list">
             <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
             <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
-            <li data-nested-tab="custom-themes" class="nested-tab-item">Custom</li>
+            <li data-nested-tab="custom-themes" class="nested-tab-item">✨ Custom</li>
             <li data-nested-tab="submit-your-themes" id="submit-theme-tab" class="nested-tab-item">Submit Theme ↓</li>
           </ul>
           <!-- Nested Tab Contents -->
@@ -941,6 +915,71 @@
             <h3 style="text-align: center;">Keep watching this space for future updates!</h3>
           </div>
           <div id="nested-tab-submit-your-themes" class="nested-tab-content">
+            <h1 style="text-align: center; font-weight: 300; font-size: 45px;">Submit Your Theme!</h1>
+            <p style="text-align: center; font-weight: 300; font-size: 18px;">Once you've created your custom theme, you can submit it to be available in the "Default Themes" category!</p>
+            <p style="text-align: center; font-weight: 300; font-size: 18px;"><b>Please read the entire page before submitting your theme.</b></p>
+            <p style="text-align: center; font-weight: 300; font-size: 18px;"><b>If you submit/update a theme, you agree to the conditions at the bottom of the page and the whole page.</b></p>
+            <br>
+            <div style="display: flex; align-items: center; justify-content: space-between; margin: 0 20px;">
+              <div style="flex: 1;">
+                <p style="text-align: left; font-weight: 300; font-size: 18px;">
+                  When/if you submit your theme and its CSS, our team will review your submission and if approved, your theme will be featured in the Default Themes section for all BetterKMR users to enjoy!<br><br>
+                  Make sure your theme has been thoroughly tested for optimal compatibility and user experience. High-quality submissions have a better chance of being approved. You also must agree to the conditions at the bottom of the page.<br><br>
+                  <p style="font-size: 23px;">How do I get my custom theme's CSS?</p><br>
+                  <p style="text-align: left; font-weight: 300; font-size: 18px;">
+                    1. Just find your theme in the Custom Themes tab and click on Edit.<br>
+                    2. Click on "Code Editor" when the dialog shows up.<br>
+                    3. Copy and paste the <b>whole CSS</b> into wherever you're going to upload it!<br>
+                  </p><br>
+                  <p style="font-size: 23px;">How can I submit my theme?</p><br>
+                  <p style="text-align: left; font-weight: 300; font-size: 18px;">
+                    There are two ways you can get your theme on the "Default Themes" page as of currently:<br><br>
+                    1. Submitting a pull request via our GitHub repository (fastest, but requires some knowledge of GitHub) (a guide may be coming soon)<br>
+                    2. Emailing to us <a href="mailto:interlabsofficial@gmail.com?subject=Theme%20Submission&body=Theme%20Name%3A%20NAME%20HERE%0ATheme%20Author%3A%20NAME%20HERE%0ATheme%20Description%20(Max%2032%20characters)%3A%20DESCRIPTION%20HERE%0ATheme%20Tags%20(Optional)%3A%20TAGS%20HERE%0AThumbnail%20Image%20(can%20be%20background%20image%2C%20link%20or%20upload%20below)%3A%20IMAGE%20HERE%0A%0ASubmit%20your%20theme%20as%20a%20css%20file%2C%20or%20paste%20the%20contents%20below.%0A%0AAny%20updates%2C%20email%20us%20again%20through%20this%20thread." target="_blank">here</a>.<br>
+                    <br>When you submit a theme, you must include your theme name, description (max 32 characters), author (your name), tags w/ colours, and the complete CSS. Note that there is a maximum of 2 tags (16 characters per tag max).
+                  </p>
+                </p>
+              </div>
+              <div style="margin-left: 20px;">
+                <img src="../assets/images/your_theme_img.png" alt="Theme Submission" width="512" height="512">
+              </div>
+            </div>
+            <br><p style="text-align: left; font-weight: 300; font-size: 18px; white-space: pre; margin-left: 20px;">
+<a href="mailto:interlabsofficial@gmail.com?subject=Theme%20Submission&body=Theme%20Name%3A%20NAME%20HERE%0ATheme%20Author%3A%20NAME%20HERE%0ATheme%20Description%20(Max%2032%20characters)%3A%20DESCRIPTION%20HERE%0ATheme%20Tags%20(Optional)%3A%20TAGS%20HERE%0AThumbnail%20Image%20(can%20be%20background%20image%2C%20link%20or%20upload%20below)%3A%20IMAGE%20HERE%0A%0ASubmit%20your%20theme%20as%20a%20css%20file%2C%20or%20paste%20the%20contents%20below.%0A%0AAny%20updates%2C%20email%20us%20again%20through%20this%20thread." target="_blank">When sending an email, the email should/must look something like this:</a><br>
+<code>From: YOUR NAME HERE <youremailhere@example.com>
+To: interlabsofficial@gmail.com
+Subject: [Theme Submission] THEME NAME HERE
+Date: DATE HERE
+--text follows this line--
+Theme Name: NAME HERE
+Theme Author: NAME HERE
+Theme Description (Max 32 characters): DESCRIPTION HERE
+Theme Tags (Optional): TAGS HERE
+Thumbnail Image (can be background image, link or upload below): IMAGE HERE
+                
+Submit your theme as a CSS file, or paste the contents below.
+Any updates, email us again through this thread.</code><br>
+<p style="font-size: 23px; margin-left: 20px;">My theme has been approved! When will I be able to see it?</p><br>
+<p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">
+  Your theme (should) be included in the next update, assuming that the current update isn't awaiting review in the Chrome Web Store.
+  <br>Because of that, if the theme updates and you don't see your theme, it (should) be in the next one.
+</p><br>
+<p style="font-size: 23px; margin-left: 20px;">How can I push an update to my theme?</p><br>
+<p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">
+  Just email us again through the already existing thread, stating what you've changed, send over the whole new CSS, and if it gets
+  <br>approved, it (should) be available in the next update. The same applies for pull requests, but make a new pull request.
+</p><br>
+<p style="font-size: 23px; margin-left: 20px;">Conditions of submitting/updating a theme:</p><br>
+<p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">
+  You must agree to the <a href="https://github.com/InterLabsOfficial/BetterKMR/blob/main/LICENSE" target="_blank">AGPL-3.0 license</a>.
+  <br>For every image, you agree that you own that image and must share evidence doing so. Please state this in the email or pull request.
+  <br>We get the rights to own those images too, as we need them for display purposes and you agree that these can be used commercially.
+  <br>We cannot be held liable for any content submitted/updated. Do not submit troll themes/bad themes. We have the right to reject any theme.
+</p><br>
+<p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">If you disagree or cannot fulfill any of the content listed above, please do NOT submit/update a theme.</p>
+<p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">If you have any questions, please let us know via <a href="mailto:interlabsofficial@gmail.com" target="_blank">Email</a> or <a href="https://discord.gg/HjJvakyAXe" target="_blank">Discord</a>.</p>
+            </p>
+            <br>
           </div>
           <div id="nested-tab-custom-themes" class="nested-tab-content">
             <button id="new-custom-theme-button">New</button>

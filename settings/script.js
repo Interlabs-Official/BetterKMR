@@ -812,10 +812,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	window.selectNestedTab = function(nTab) {
 		const tabId = nTab.getAttribute('data-nested-tab');
 		console.log(tabId);
-		if (tabId === "submit-your-themes") {
+		/*if (tabId === "submit-your-themes") {
 			window.open("mailto:interlabsofficial@gmail.com?subject=Theme%20Submission&body=Theme%20Name%3A%20NAME%20HERE%0ATheme%20Author%3A%20NAME%20HERE%0ATheme%20Description%20(Max%2032%20characters)%3A%20DESCRIPTION%20HERE%0ATheme%20Tags%20(Optional)%3A%20TAGS%20HERE%0AThumbnail%20Image%20(can%20be%20background%20image%2C%20link%20or%20upload%20below)%3A%20IMAGE%20HERE%0A%0ASubmit%20your%20theme%20as%20a%20css%20file%2C%20or%20paste%20the%20contents%20below.%0A%0AAny%20updates%2C%20email%20us%20again%20through%20this%20thread.");
 			return;
-		}
+		} */
 		document.querySelectorAll('.nested-tab-item').forEach(t => t.classList.remove('active'));
 		document.querySelectorAll('.nested-tab-content').forEach(tc => tc.classList.remove('active'));
 
@@ -1062,7 +1062,23 @@ function createCustomThemeItem(themeName, customID) {
 		showEditorSelectionDialog(customID, false);
 	});
 
-	deleteButton.addEventListener('click', () => deleteTheme(customID));
+	deleteButton.addEventListener('click', () => {
+			createDialog({
+				title: `Delete Theme`,
+				content: `Delete theme "${themeName}"?`,
+				buttons: [
+					{
+						text: 'Yes',
+						callback: () => deleteTheme(customID),
+					},
+					{
+						text: 'No',
+						callback: () => console.log("Cancelled deletion of theme \"${themeName}\""),
+						classname: 'dialog-button-not',
+					},
+				],
+			});
+	});
 
 	applyButton.addEventListener('click', () => {
 		const previousButton = document.getElementById("greyed-out-applied");
@@ -1178,7 +1194,7 @@ if (document.getElementById("tab-general")) {
 			document.getElementById("tab-general").insertAdjacentHTML("beforebegin", `
 				<div id="update-notice" class="update-notice">
 				  <span class="update-text">BetterKMR needs your help! If you find any bugs or glitches, please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
-				  <span class="smaller-text">Click this notification to close.</span>
+				  <span class="smaller-text">&nbsp;Click this notification to close.</span>
 			  </div>
 					`);
 			document.getElementById("update-notice").addEventListener('click', () => {
