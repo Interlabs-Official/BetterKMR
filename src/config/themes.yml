@@ -55,9 +55,9 @@
 3:
   name: "Star Destroyers"
   css: "starwarsempire.css"
-  thumbnail: "images/backgrounds/starwarsempire_downscaled.jpg"
+  thumbnail: "images/backgrounds/star_destroyers_updated.png"
   author: "Samuel H"
-  highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin (📸 WallpaperCave.com)"
+  highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin (📸 Star Wars | EAW)"
   tags:
     "Star Wars": "rgba(255, 191, 0, 0.5)"
     "Dark Side": "rgba(213, 0, 0, 0.5)"

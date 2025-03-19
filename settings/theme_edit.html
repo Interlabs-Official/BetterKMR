@@ -121,7 +121,7 @@
       font-weight: 600;
       color: #fff;
       background: linear-gradient(90deg, #4CAF50, #2979ff);
-      -webkit-background-clip: text;
+      background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: 1px;
@@ -183,7 +183,7 @@
 <body>
   <div id="loading-screen">
     <div class="loading-content">
-      <div class="loading-logo">Theme Editor</div>
+      <div class="loading-logo">Code Editor</div>
       <div class="loading-spinner">
         <div class="spinner-circle"></div>
         <div class="spinner-circle-inner"></div>
@@ -202,7 +202,8 @@
   <main>
     <h1>Code Editor: CSS</h1>
     <h3 style="font-weight: 300;">Once you make changes, press Save. Only ASCII-compatible characters are supported.</h3>
-    <h3 style="font-weight: 200;">The maximum total custom theme limit is 4MB.</h3>
+    <h3 style="font-weight: 200;">Note that if you're editing a Visual Theme Editor based theme, these changes will get wiped the next time you save from it.</h3>
+    <h3 style="font-weight: 200;">The maximum total custom theme limit is 100MB.</h3>
     <h3 style="font-weight: 200;">Press Ctrl+S/Cmd+S to Save. Ctrl+Scroll on the Code Editor to zoom in/out.</h3>
     <br>
     <textarea id="editor">

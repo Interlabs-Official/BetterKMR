@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Visual Editor - BetterKMR</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; color: #ccc; font-weight: 400; }
+        
+        /* Container & Layout */
+        .settings-container { display: flex; min-height: 100vh; }
+        .sidebar { width: 250px; background-color: #111111; border-right: 1px solid #444;}
+        .sidebar ul { list-style: none; padding: 0; }
+        .tab-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
+        .tab-item.active {
+            box-shadow: inset 4px 0 #29ff54;
+            color: #fff;
+        }
+        .tab-item:hover:not(.active) {
+            box-shadow: inset 4px 0 #29ff3e7e;
+        }
+        .tab-item:hover {
+            background: #1b1b1ba9;
+        }
+        .content { flex: 1; padding: 20px; }
+        .tab-content { display: none; animation: fade-in 0.3s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fade-in {
+          from {
+              opacity: 0;
+              transform: translateY(10px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        /* Form Elements Styling */
+        .setting-item {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+        
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #ddd;
+        }
+        
+        /* Text inputs */
+        .text-input {
+            width: 100%;
+            max-width: 400px;
+            background-color: #222;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            transition: border-color 0.2s ease;
+        }
+        
+        .text-input:focus {
+            outline: none;
+            border-color: #2979ff;
+            box-shadow: 0 0 0 1px rgba(41, 121, 255, 0.3);
+        }
+        
+        /* Textarea */
+        .text-area {
+            width: 100%;
+            height: 300px;
+            background-color: #222;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+        
+        .code-area {
+            font-family: monospace;
+        }
+        
+        .text-area:focus {
+            outline: none;
+            border-color: #2979ff;
+            box-shadow: 0 0 0 1px rgba(41, 121, 255, 0.3);
+        }
+        
+        /* Dropdown select */
+        .select-dropdown {
+            width: 100%;
+            max-width: 400px;
+            background-color: #222;
+            border: 1px solid #444;
+            color: #fff;
+            padding: 10px 12px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            padding-right: 30px;
+            cursor: pointer;
+        }
+        
+        .select-dropdown:focus {
+            outline: none;
+            border-color: #2979ff;
+            box-shadow: 0 0 0 1px rgba(41, 121, 255, 0.3);
+        }
+        
+        /* Button styles */
+        .button {
+            background-color: #2979ff;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .button:hover {
+            background-color: #1c68e0;
+        }
+        
+        .button:active {
+            background-color: #1052c0;
+        }
+        
+        .button.secondary {
+            background-color: #555;
+        }
+        
+        .button.success {
+            background-color: #4CAF50;
+        }
+        
+        .button.success:hover {
+            background-color: #3e8e41;
+        }
+        
+        /* Toggle switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .toggle-label {
+            font-size: 16px;
+            color: #ddd;
+            flex: 1;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 34px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        .toggle-switch input:checked + .slider {
+            background-color: #2979ff;
+        }
+        
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Color picker */
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .color-picker {
+            width: 50px;
+            height: 30px;
+            overflow: hidden;
+            border-radius: 4px;
+            border: 1px solid #444;
+        }
+        
+        .color-picker input {
+            width: 150%;
+            height: 150%;
+            transform: translate(-17%, -17%);
+            cursor: pointer;
+        }
+        
+        .color-hex-value {
+            font-family: monospace;
+            color: #ddd;
+        }
+        
+        .save-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .save-button:hover {
+            background-color: #3e8e41;
+        }
+        
+        /* New additions for element dialog */
+        .add-element-button {
+            margin-bottom: 20px;
+            padding: 10px 16px;
+            background-color: #2979ff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            cursor: pointer;
+        }
+        
+        .add-element-button:hover {
+            background-color: #1c68e0;
+        }
+        
+        .add-element-button::before {
+            content: "+";
+            font-size: 18px;
+            margin-right: 8px;
+        }
+        
+        .element-dialog {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            max-width: 90vw;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .element-dialog-header {
+            padding: 15px 20px;
+            background-color: #222;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .element-dialog-title {
+            font-size: 18px;
+            color: #fff;
+            font-weight: 500;
+        }
+        
+        .element-dialog-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        
+        .element-dialog-close:hover {
+            color: #fff;
+        }
+        
+        .element-dialog-search {
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .element-dialog-search input {
+            width: 100%;
+            padding: 10px 12px;
+            background-color: #333;
+            border: 1px solid #444;
+            color: #fff;
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .element-dialog-search input:focus {
+            outline: none;
+            border-color: #2979ff;
+        }
+        
+        .element-dialog-list {
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        
+        .element-dialog-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .element-dialog-item:hover {
+            background-color: #2a2a2a;
+        }
+        
+        .element-dialog-item.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .element-dialog-item-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .element-dialog-item-name {
+            font-size: 15px;
+            color: #fff;
+        }
+        
+        .element-dialog-item-desc {
+            font-size: 12px;
+            color: #999;
+            margin-top: 3px;
+        }
+        
+        .element-dialog-item-add {
+            background-color: #2979ff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        
+        .element-dialog-item-add:hover {
+            background-color: #1c68e0;
+        }
+        
+        .element-dialog-item.disabled .element-dialog-item-add {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        
+        /* Custom element styles */
+        .added-element {
+            background-color: #222;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            border: 1px solid #444;
+            overflow: hidden;
+        }
+        
+        .added-element-header {
+            background-color: #2a2a2a;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #444;
+        }
+        
+        .added-element-title {
+            font-size: 16px;
+            color: #fff;
+        }
+        
+        .added-element-remove {
+            background: none;
+            border: none;
+            color: #ff5252;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .added-element-content {
+            padding: 15px;
+        }
+        
+        .added-element-property {
+            margin-bottom: 12px;
+        }
+        
+        .added-element-property:last-child {
+            margin-bottom: 0;
+        }
+        
+        .dialog-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        #editor {
+      height: 1500px;
+      border: 1px solid #444;
+      border-radius: 4px;
+    }
+
+    .CodeMirror {
+      height: 80% !important;
+    }
+
+    .CodeMirror-code {
+      font-size: 16px;
+    }
+
+    .CodeMirror-gutter-wrapper {
+      padding-right: 50px;
+    }
+
+    /* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #272727; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+#notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .notification {
+        background-color: #f9c2c2; /* Default color */
+        color: #333;
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: opacity 0.5s ease;
+        cursor: pointer;
+    }
+
+    .notification.hidden {
+        opacity: 0;
+    }
+    #loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0f0f0f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
+    }
+
+    .loading-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .loading-logo {
+      font-size: 36px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(90deg, #4CAF50, #2979ff);
+      background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .loading-text {
+      color: #ccc;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+
+    .loading-spinner {
+      position: relative;
+      width: 70px;
+      height: 70px;
+    }
+
+    .spinner-circle {
+      position: absolute;
+      border: 4px solid transparent;
+      border-top-color: #4CAF50;
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    }
+
+    .spinner-circle-inner {
+      position: absolute;
+      border: 4px solid transparent;
+      border-radius: 50%;
+      width: 60%;
+      height: 60%;
+      top: 20%;
+      left: 20%;
+      border-right-color: #2979ff;
+      animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite reverse;
+    }
+
+    .hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+                  /* Update Notice */
+                  .update-notice {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      width: 85%;
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 0, 0.507);
+      border: 1px solid rgba(70, 252, 242, 0.4);
+      box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
+      animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
+      cursor: pointer;
+    }
+    
+    .update-text {
+      color: rgba(70, 252, 242, 1);
+      font-weight: 400;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice {
+      background: transparent;
+      border: none;
+      color: rgba(70, 252, 242, 0.8);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 0 0 10px;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice:hover {
+      color: #fff;
+    }
+    
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
+      }
+      to {
+        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
+      }
+    }
+    .smaller-text {
+      color: rgb(204, 204, 204);
+    }
+    </style>
+      <link rel="stylesheet" href="../frameworks/codemirror/codemirror.min.css"></link>
+      <link rel="stylesheet" href="../frameworks/codemirror/ayu-dark.css"></link>
+      <link rel="stylesheet" href="../frameworks/codemirror/show-hint.css"></link>
+      <link rel="stylesheet" href="../frameworks/codemirror/codemirror-colorpicker.css"></link>
+  </head>
+  <body>
+    <div id="loading-screen">
+      <div class="loading-content">
+        <div class="loading-logo">Theme Editor</div>
+        <div class="loading-spinner">
+          <div class="spinner-circle"></div>
+          <div class="spinner-circle-inner"></div>
+        </div>
+        <div class="loading-text">Loading editor...</div>
+      </div>
+    </div>
+    <div id="notification-container"></div>
+    <div id="dialog-overlay" class="dialog-overlay"></div>
+    <div id="element-dialog" class="element-dialog">
+      <div class="element-dialog-header">
+        <h3 class="element-dialog-title">Add Element</h3>
+        <button class="element-dialog-close">&times;</button>
+      </div>
+      <div class="element-dialog-search">
+        <input type="text" placeholder="Search elements..." id="element-search">
+      </div>
+      <div class="element-dialog-list" id="element-list">
+        <!-- Elements will be added here by JavaScript -->
+      </div>
+    </div>
+    
+    <button id="save-button" class="save-button">Save Theme</button>
+    
+    <div class="settings-container">
+      <!-- Sidebar with tabs -->
+      <aside class="sidebar">
+        <ul id="tab-list">
+          <li data-tab="go-back" class="tab-item">← Back</li>
+          <li data-tab="configuration" class="tab-item active">Configuration</li>
+          <li data-tab="appearance" class="tab-item">Elements</li>
+          <li data-tab="css" class="tab-item">Custom CSS</li>
+        </ul>
+      </aside>
+      
+      <!-- Main content area -->
+      <main class="content">
+        <div id="tab-configuration" class="tab-content active">
+          <h1>Theme Configuration</h1>
+          <div class="setting-item">
+            <label class="setting-label" for="theme-name">Theme Name:</label>
+            <input type="text" id="theme-name" class="text-input" placeholder="My Custom Theme" maxlength="64">
+          </div>
+
+          <div class="setting-item">
+            <div class="toggle-container">
+              <span class="toggle-label">Auto Apply Theme on Save</span>
+              <label class="toggle-switch">
+                <input type="checkbox" id="apply-theme-auto" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+        
+        <div id="tab-appearance" class="tab-content">
+          <h1>Theme Elements</h1>
+          
+          <button id="add-element-button" class="add-element-button">Add Element</button>
+          
+          <div id="added-elements-container">
+            <!-- added elements will go here -->
+          </div>
+        </div>
+        
+        <div id="tab-css" class="tab-content">
+          <h1>Custom CSS</h1>
+          <div class="setting-item">
+            <label class="setting-label" for="editor">Below is a preview of the compiled CSS BetterKMR builds. Note that you cannot modify the code below.<br>If you need to make changes to the CSS, it's suggested to use the Code Editor instead.<br>Interact with the box below to update the preview.</label>
+            <textarea id="editor">/* CSS will be compiled here */</textarea>
+          </div>
+        </div>
+        <div id="update-notice" class="update-notice">
+          <span class="update-text">If you find any bugs or glitches, or even want to suggest (please do!) please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
+          <span class="smaller-text">Thank you for using BetterKMR! (also please rate it on the Chrome Web Store!)</span>
+        </div>
+      </main>
+    </div>
+
+    <script src="../frameworks/codemirror/codemirror.min.js"></script>
+    <script src="../frameworks/codemirror/css.min.js"></script>
+    <script src="../frameworks/codemirror/show-hint.min.js"></script>
+    <script src="../frameworks/codemirror/css-hint.min.js"></script>
+    <script src="../frameworks/codemirror/codemirror-colorpicker.min.js"></script>
+    <script src="visual_theme.js"></script>
+  </body>
+</html>

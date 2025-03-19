@@ -1,3 +1,6 @@
+body {
+    font-family: 'Inter' !important;
+}
 .sk_page {
     background-color: #ffffff!important;
     background-size:     cover !important;                      /* <------ */
@@ -25,7 +28,7 @@ body .sk-main-content {
 body .sk_school_name {
    /* display: none; */
     background: -webkit-linear-gradient(#549ea8, #346369);
-    -webkit-background-clip: text;
+    background-clip: text;
     text-shadow: 2px 2px #1a1a1a;
     color: #f7f7f7 !important;
 }
@@ -52,7 +55,7 @@ body .table thead th {
 body .sk_school_subheading {
  /*   display: none; */
     background: -webkit-linear-gradient(#0097a1, #003e68);
-    -webkit-background-clip: text;
+    background-clip: text;
     text-shadow: 2px 2px #1a1a1a;
     color: #f7f7f7 !important;
 }

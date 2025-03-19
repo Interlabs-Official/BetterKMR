@@ -13,9 +13,6 @@
 .sk_header {
   background-color: #000000!important;
 }
-body {
-    font-family: 'Inter' !important;
-}
 .sk_table, .calendar-grid, .calendar-column, .tt-day-wrap, .calendar-day {
     overflow: visible !important;
 }
@@ -242,3 +239,82 @@ because of Period 5. This can be overridden in any theme by using the !important
 .calendar-day.non-period.sk_border:not(:nth-last-child(2)) {
   min-height: 0;
 }
+    /* Update Notice */
+    .update-notice {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 0, 0.507);
+      border: 1px solid rgba(70, 252, 242, 0.4);
+      box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
+      animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
+      cursor: pointer;
+    }
+    
+    .update-text {
+      color: rgba(70, 252, 242, 1);
+      font-weight: 400;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice {
+      background: transparent;
+      border: none;
+      color: rgba(70, 252, 242, 0.8);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 0 0 10px;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice:hover {
+      color: #fff;
+    }
+    
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
+      }
+      to {
+        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
+      }
+    }
+    .smaller-text {
+      color: rgb(204, 204, 204);
+    }
+    .very-loader {
+      width: 48px;
+      height: 48px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      display: inline-block;
+      border-top: 4px solid #FFF;
+      border-right: 4px solid transparent;
+      box-sizing: border-box;
+      animation: rotation-er 1s linear infinite;
+    }
+    .very-loader::after {
+      content: '';  
+      box-sizing: border-box;
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border-bottom: 4px solid #008cff;
+      border-left: 4px solid transparent;
+    }
+    @keyframes rotation-er {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    } 

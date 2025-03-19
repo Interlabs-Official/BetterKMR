@@ -33,3 +33,48 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       return true;
   }
 });
+chrome.runtime.onInstalled.addListener((details) => {
+    const currentVersion = chrome.runtime.getManifest().version
+    const previousVersion = details.previousVersion
+    const reason = details.reason
+    
+    console.log(`Previous Version: ${previousVersion }`)
+    console.log(`Current Version: ${currentVersion }`)
+ 
+    switch (reason) {
+       case 'install':
+        chrome.notifications.create(
+            "betterkmr-install",
+            {
+              type: "basic",
+              iconUrl: "icon/icon128.png",
+              title: "BetterKMR Installed",
+              message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`,
+            },
+            function () {}
+          );
+          
+          break;
+       case 'update':
+        var message = `BetterKMR has been updated/reloaded to v${currentVersion}.`
+        if (previousVersion !== currentVersion) {
+            message = `BetterKMR has been updated to v${currentVersion} from v${previousVersion}.`
+        }
+        chrome.notifications.create(
+            "betterkmr-update",
+            {
+              type: "basic",
+              iconUrl: "icon/icon128.png",
+              title: "BetterKMR Update",
+              message: message,
+            },
+            function () {}
+          );
+          chrome.storage.sync.set({'update_notice_closed': false});
+          break;
+       case 'chrome_update':
+       case 'shared_module_update':
+       default: // other install events
+          break;
+    }
+ })

@@ -56,7 +56,7 @@
         });
 
         document.querySelector('.back-button').addEventListener('click', function() {
-            window.history.back();
+            window.location.href = chrome.runtime.getURL("settings/index.html") + "?tab-selected=themes";
         });
         
         fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"))

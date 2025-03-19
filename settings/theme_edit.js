@@ -114,12 +114,14 @@ function saveCode() {
     return;
   }
 
+  var failedSavingCode = false;
   chrome.storage.local.getBytesInUse(null, function(bytesInUse) {
     console.log(bytesInUse);
-    const availableBytes = 4 * 1024 * 1024 - bytesInUse; // 4MB limit
+    const availableBytes = 100 * 1024 * 1024 - bytesInUse; // 4MB limit
     const cssByteSize = new Blob([editor.getValue()]).size;
     if (cssByteSize > availableBytes) {
-      createNotification("Failed saving code: All custom theme code is too long. Please shorten this code below 4MB.", "#961a1a", "#ffffff");
+      failedSavingCode = true;
+      createNotification("Failed saving code: All custom theme code is too long. Please shorten this code below 100MB.", "#961a1a", "#ffffff");
       return;
     }
   });
@@ -163,11 +165,13 @@ function saveCode() {
         console.error("Error saving theme:", chrome.runtime.lastError);
         createNotification("Failed saving code, check console for details.", "#961a1a", "#ffffff");
       } else {
-        console.log("Theme saved successfully!");
-        createNotification(`Code saved.`, "#3c8443", "#ffffff");
-        let newUrl = new URL(window.location.href);
-        newUrl.searchParams.set('themeID', actualThemeID);
-        window.history.replaceState({}, '', newUrl);
+        if (failedSavingCode == false) {
+          console.log("Theme saved successfully!");
+          createNotification(`Code saved.`, "#3c8443", "#ffffff");
+          let newUrl = new URL(window.location.href);
+          newUrl.searchParams.set('themeID', actualThemeID);
+          window.history.replaceState({}, '', newUrl);
+        }
       }
     });
   });

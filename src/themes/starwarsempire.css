@@ -1,14 +1,17 @@
+body {
+    font-family: 'Inter' !important;
+}
 .sk_page {
-    background-color: #0c1010!important;
-    background: url("../../assets/images/backgrounds/starwarsempire.png") #1C1C1C top fixed no-repeat !important;
+    background-color: #000000!important;
+    background: url("../../assets/images/backgrounds/star_destroyers_updated.png") #1C1C1C top fixed no-repeat !important;
     background-size:     cover !important;                      /* <------ */
     background-repeat:   no-repeat !important;
     background-position: center center !important;              /* optional, center the image */
     background-attachment: fixed !important;
 }
 .sk_header {
-    background-color: #b9913c!important;
-    background: url("../../assets/images/backgrounds/starwarsempire.png") #1C1C1C top fixed no-repeat !important;
+    background-color: #000000!important;
+    background: url("../../assets/images/backgrounds/star_destroyers_updated.png") #1C1C1C top fixed no-repeat !important;
     background-size:     cover !important;                      /* <------ */
     background-repeat:   no-repeat !important;
     background-position: center center !important;              /* optional, center the image */
@@ -17,14 +20,14 @@
 body .sk_school_name {
    /* display: none; */
     background: -webkit-linear-gradient(#549ea8, #346369);
-    -webkit-background-clip: text;
+    background-clip: text;
     text-shadow: 2px 2px #0c1010;
     color: #f7f7f7 !important;
 }
 body .sk_school_subheading {
  /*   display: none; */
     background: -webkit-linear-gradient(#0097a1, #003e68);
-    -webkit-background-clip: text;
+    background-clip: text;
     text-shadow: 2px 2px #0c1010;
     color: #f7f7f7 !important;
 }

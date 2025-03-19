@@ -412,7 +412,24 @@
     }
 
     #new-custom-theme-button {
-    position: absolute;
+    background-color: #4c91af;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  #new-custom-theme-button:hover {
+    background-color: #1a7da7;
+  }
+
+  #submit-your-theme-button {
+    position: fixed;
     top: 170px;
     right: 50px;
     background-color: #4c91af;
@@ -427,7 +444,7 @@
     cursor: pointer;
   }
 
-  #new-custom-theme-button:hover {
+  #submit-your-theme-button:hover {
     background-color: #1a7da7;
   }
 
@@ -727,7 +744,7 @@
             font-weight: 600;
             color: #fff;
             background: linear-gradient(90deg, #2979ff, #56CCF2);
-            -webkit-background-clip: text;
+            background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
             letter-spacing: 1px;
@@ -780,6 +797,74 @@
             opacity: 0;
             visibility: hidden;
           }
+
+              /* Update Notice */
+    .update-notice {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      background-color: rgba(0, 0, 0, 0.507);
+      border: 1px solid rgba(70, 252, 242, 0.4);
+      box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
+      animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
+      cursor: pointer;
+    }
+    
+    .update-text {
+      color: rgba(70, 252, 242, 1);
+      font-weight: 400;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice {
+      background: transparent;
+      border: none;
+      color: rgba(70, 252, 242, 0.8);
+      font-size: 16px;
+      cursor: pointer;
+      padding: 0 0 0 10px;
+      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+    }
+    
+    .close-notice:hover {
+      color: #fff;
+    }
+    
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
+      }
+      to {
+        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
+      }
+    }
+    .smaller-text {
+      color: rgb(204, 204, 204);
+    }
+
+    .gradient-background {
+  background: linear-gradient(200deg,#0000bb,#111111);
+  background-size: 120% 120%;
+  animation: gradient-animation 6s ease infinite;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sidebar-transparency {
+  background-color: #00000047;
+}
   </style>
 </head>
 <body>
@@ -801,6 +886,7 @@
         <li data-tab="general" class="tab-item active">General</li>
         <li data-tab="themes" class="tab-item">Themes</li>
         <li data-tab="about-and-contact" class="tab-item">About & Contact</li>
+        <li data-tab="go-back" class="tab-item">Website & Docs ↗</li>
         <li data-tab="advanced" class="tab-item" style="visibility: hidden;" id="advanced-tab-header">Developer Settings</li>
       </ul>
     </aside>
@@ -809,27 +895,30 @@
     <main class="content">
       <div id="tab-general" class="tab-content">
         <h1>General Settings</h1>
-        <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar (school.kiwi) page(s). Changes are made automatically once interacted.</h3>
+        <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar page(s). Changes are made automatically once interacted.</h3>
         <!-- Nested Tab Header -->
         <div class="nested-tabs">
           <ul class="nested-tab-list">
             <li data-nested-tab="general" class="nested-tab-item active">General</li>
             <li data-nested-tab="profile" class="nested-tab-item">Profile</li>
+            <li data-nested-tab="danger-zone" class="nested-tab-item">Danger Zone</li>
           </ul>
           <!-- Nested Tab Contents -->
           <div id="nested-tab-general" class="nested-tab-content active"></div>
           <div id="nested-tab-profile" class="nested-tab-content"></div>
+          <div id="nested-tab-danger-zone" class="nested-tab-content"></div>
         </div>
       </div>
       <!-- Privacy and Advanced Tabs (their content areas) -->
       <div id="tab-themes" class="tab-content">
         <h1>Theme Browser</h1>
-        <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar (school.kiwi) page(s).</h3><br>
+        <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar page(s).</h3>
         <div class="nested-tabs">
           <ul class="nested-tab-list">
             <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
             <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
             <li data-nested-tab="custom-themes" class="nested-tab-item">Custom</li>
+            <li data-nested-tab="submit-your-themes" id="submit-theme-tab" class="nested-tab-item">Submit Theme ↓</li>
           </ul>
           <!-- Nested Tab Contents -->
           <div id="nested-tab-default-themes" class="nested-tab-content active">
@@ -850,6 +939,8 @@
             <br><h1 style="text-align: center; font-weight: 300; font-size: 60px;">Marketplace</h1>
             <h2 style="text-align: center;">Coming soon! This will be a place where you can distribute your custom themes.</h2>
             <h3 style="text-align: center;">Keep watching this space for future updates!</h3>
+          </div>
+          <div id="nested-tab-submit-your-themes" class="nested-tab-content">
           </div>
           <div id="nested-tab-custom-themes" class="nested-tab-content">
             <button id="new-custom-theme-button">New</button>

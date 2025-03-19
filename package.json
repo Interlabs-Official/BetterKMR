@@ -18,7 +18,10 @@
     "author": "InterLabs",
     "license": "AGPL-3.0-only",
     "devDependencies": {
+        "@babel/core": "^7.26.10",
+        "@babel/preset-env": "^7.26.9",
         "@types/chrome": "^0.0.308",
+        "babel-loader": "^10.0.0",
         "copy-webpack-plugin": "^13.0.0",
         "css-loader": "^7.1.2",
         "js-yaml": "^4.1.0",

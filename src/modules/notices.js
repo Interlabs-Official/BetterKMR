@@ -188,7 +188,7 @@ if (window.location.href.includes("notices")) {
 
                         card.classList.add('card-pinned');
                         pinBtn.classList.add('pinned');
-                        pinBtn.innerHTML = '📌';
+                        pinBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>';
 
                         if (closeBtn) closeBtn.style.display = 'none';
                     } else {
@@ -200,7 +200,7 @@ if (window.location.href.includes("notices")) {
 
                         card.classList.remove('card-pinned');
                         pinBtn.classList.remove('pinned');
-                        pinBtn.innerHTML = '📍';
+                        pinBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>';
 
                         if (closeBtn) closeBtn.style.display = '';
 
@@ -349,7 +349,7 @@ if (window.location.href.includes("notices")) {
 
                             const pinBtn = document.createElement('button');
                             pinBtn.className = 'card-pin-btn';
-                            pinBtn.innerHTML = isPinned ? '📌' : '📍';
+                            pinBtn.innerHTML = isPinned ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>';
                             pinBtn.title = isPinned ? 'Unpin notice' : 'Pin notice';
                             if (isPinned) pinBtn.classList.add('pinned');
 
@@ -502,6 +502,34 @@ if (window.location.href.includes("notices")) {
                 });
             }
 
+            function addNoticeTip() {
+                const container = document.querySelector(".page-title");
+                container.insertAdjacentHTML("afterend", `<p style="text-align: center; color:rgb(218, 218, 218); text-shadow: 1px 1px rgb(0, 0, 0);" id="notice-tip">Tip: Drag the Title to the right or press the "X" button when hovering to close the notice.</p>`);
+
+                setTimeout(() => {
+                    const noticeTip = document.getElementById("notice-tip");
+
+                    noticeTip.classList.add("fade-in-notice-tip");
+
+                    setTimeout(() => {
+                        noticeTip.style.transition = "opacity 0.5s ease-out, height 0.5s ease-out, margin 0.5s ease-out";
+                        noticeTip.style.opacity = "0";
+                        noticeTip.style.height = "0";
+                        noticeTip.style.margin = "0";
+                        setTimeout(() => {
+                            noticeTip.remove();
+                            chrome.storage.sync.set({"fade-in-notice-tip": true})
+                        }, 500);
+                    }, 1000);
+                }, 5000);
+            }
+
+            chrome.storage.sync.get(["fade-in-notice-tip"]).then((result) => {
+                if (!result["fade-in-notice-tip"]) {
+                    addNoticeTip();
+                }
+            });
+
             const observer = new MutationObserver((mutations) => {
 
                 const shouldProcess = mutations.some(mutation => {
@@ -555,11 +583,20 @@ if (window.location.href.includes("notices")) {
 
                     if (!isViewingPastNotices) {
 
+                        const showTipBtn = document.createElement('a');
+                        showTipBtn.href = 'javascript:void(0)';
+                        showTipBtn.className = 'sk_btn btn active btn-sm';
+                        showTipBtn.textContent = '🛈';
+                        showTipBtn.setAttribute('style', 'background-color: #404040 !important; color: white !important; border-color: #ffffff !important;');
+                        showTipBtn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            addNoticeTip();
+                        });
+
                         const restoreBtn = document.createElement('a');
                         restoreBtn.href = 'javascript:void(0)';
                         restoreBtn.className = 'sk_btn btn active btn-sm';
-                        restoreBtn.textContent = 'Restore Today\'s Notices';
-
+                        restoreBtn.textContent = 'Restore';
                         restoreBtn.addEventListener('click', function(e) {
                             e.preventDefault();
                             chrome.storage.sync.set({'deleted-today-notices': []}, function() {
@@ -570,7 +607,7 @@ if (window.location.href.includes("notices")) {
                         const dismissAllBtn = document.createElement('a');
                         dismissAllBtn.href = 'javascript:void(0)';
                         dismissAllBtn.className = 'sk_btn btn btn-sm';
-                        dismissAllBtn.textContent = 'Dismiss All Notices';
+                        dismissAllBtn.textContent = 'Dismiss All';
                         dismissAllBtn.setAttribute('style', 'background-color: #8B0000 !important');
                         dismissAllBtn.style.color = 'white';
                         dismissAllBtn.style.marginRight = '8px';
@@ -623,6 +660,7 @@ if (window.location.href.includes("notices")) {
 
                         page_title_notices.insertBefore(dismissAllBtn, page_title_notices.firstChild);
                         page_title_notices.insertBefore(restoreBtn, page_title_notices.firstChild);
+                        page_title_notices.insertBefore(showTipBtn, page_title_notices.firstChild);
                     }
                 }
         });

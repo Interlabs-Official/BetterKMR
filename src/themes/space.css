@@ -1,3 +1,6 @@
+body {
+    font-family: 'Inter' !important;
+}
 .sk_page {
     background-color: #19372e!important;
     background: url("../../assets/images/backgrounds/space.jpg") #1C1C1C top fixed no-repeat !important;
