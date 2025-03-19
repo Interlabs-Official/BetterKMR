@@ -1571,7 +1571,7 @@ console.log(element);
 console.log(element.properties);
 css += `
 .sk_page {
-background-color: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
 `
 // Check if we have an uploaded image first
 const uploadedImage = element.properties["Or Upload Background Image"];
@@ -1586,13 +1586,13 @@ else if (element.properties["Background Image URL (empty if none, replaces Backg
 }
 
 css += `
-background-size: ${element.properties["Background Size"] ?? "cover"} !important;
-background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
-background-position: ${element.properties["Background Position"] ?? "center center"} !important;
-background-attachment: ${element.properties["Background Attachment"] ?? "fixed"} !important;
+  background-size: ${element.properties["Background Size"] ?? "cover"} !important;
+  background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
+  background-position: ${element.properties["Background Position"] ?? "center center"} !important;
+  background-attachment: ${element.properties["Background Attachment"] ?? "fixed"} !important;
 }
 .sk_header {
-background-color: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
 `
 // Check if we have an uploaded image first
 if (uploadedImage) {
@@ -1606,22 +1606,22 @@ else if (element.properties["Background Image URL (empty if none, replaces Backg
 }
 
 css += `
-background-size: ${element.properties["Background Size"] ?? "cover"} !important;
-background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
-background-position: ${element.properties["Background Position"] ?? "center center"} !important;
-background-attachment: ${element.properties["Background Attachment"] ?? "fixed"} !important;
+  background-size: ${element.properties["Background Size"] ?? "cover"} !important;
+  background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
+  background-position: ${element.properties["Background Position"] ?? "center center"} !important;
+  background-attachment: ${element.properties["Background Attachment"] ?? "fixed"} !important;
 }
 `
 } //end backimg-setting
       if (element.id == "school-name-and-motto") {
           css += `
 .sk_school_name {
-color: ${applyAlphaToColor(element.properties["Name Colour"]) ?? "#f7f7f7"}!important;
-${element.properties["Text Shadow"] === true ?? element.properties["Name Shadow Colour"] ? `text-shadow: ${applyAlphaToColor(element.properties["Name Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
+  color: ${applyAlphaToColor(element.properties["Name Colour"]) ?? "#f7f7f7"}!important;
+  ${element.properties["Text Shadow"] === true ?? element.properties["Name Shadow Colour"] ? `text-shadow: ${applyAlphaToColor(element.properties["Name Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
 }
 .sk_school_subheading {
-color: ${applyAlphaToColor(element.properties["Motto Colour"]) ?? "#f7f7f7"}!important;
-${element.properties["Text Shadow"] === true ?? element.properties["Motto Shadow Colour"] ? `text-shadow: ${applyAlphaToColor(element.properties["Motto Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
+  color: ${applyAlphaToColor(element.properties["Motto Colour"]) ?? "#f7f7f7"}!important;
+  ${element.properties["Text Shadow"] === true ?? element.properties["Motto Shadow Colour"] ? `text-shadow: ${applyAlphaToColor(element.properties["Motto Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
 }
     `
       }
@@ -1631,7 +1631,7 @@ ${element.properties["Text Shadow"] === true ?? element.properties["Motto Shadow
 
           css += `
 .is-today {
-background-color: ${highlightColor}!important;
+  background-color: ${highlightColor}!important;
 }
     `
       }
@@ -1645,40 +1645,44 @@ background-color: ${highlightColor}!important;
           // Create CSS for each gradient
           css += `
 .btn-success {
-background: ${processGradient(presentGradient)}!important;
-color: ${applyAlphaToColor(element.properties["Text Colour (Present)"]) ?? "#ffffff"}!important;
+  background: ${processGradient(presentGradient)}!important;
+  color: ${applyAlphaToColor(element.properties["Text Colour (Present)"]) ?? "#ffffff"}!important;
 }
 .btn-info {
-background: ${processGradient(lateGradient)}!important;
-color: ${applyAlphaToColor(element.properties["Text Colour (Late)"]) ?? "#ffffff"}!important;
+  background: ${processGradient(lateGradient)}!important;
+  color: ${applyAlphaToColor(element.properties["Text Colour (Late)"]) ?? "#ffffff"}!important;
 }
 .btn-danger {
-background: ${processGradient(unjustifiedGradient)}!important;
-color: ${applyAlphaToColor(element.properties["Text Colour (Unjustified)"]) ?? "#ffffff"}!important;
+  background: ${processGradient(unjustifiedGradient)}!important;
+  color: ${applyAlphaToColor(element.properties["Text Colour (Unjustified)"]) ?? "#ffffff"}!important;
 }
 .btn-warning {
-background: ${processGradient(justifiedGradient)}!important;
-color: ${applyAlphaToColor(element.properties["Text Colour (Justified)"]) ?? "#ffffff"}!important;
+  background: ${processGradient(justifiedGradient)}!important;
+  color: ${applyAlphaToColor(element.properties["Text Colour (Justified)"]) ?? "#ffffff"}!important;
 }
     `
       }
       if (element.id == "navbar-colours") {
           css += `
 body .sk_nav {
-background: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
-color: ${applyAlphaToColor(element.properties["Text Colour"]) ?? "#ffffff"}!important;
-${element.properties["Box Shadow"] === true ? `box-shadow: ${applyAlphaToColor(element.properties["Box Shadow Colour"])} ${element.properties["Box Shadow Offset X"]}px ${element.properties["Box Shadow Offset Y"]}px;` : ""}
-}`
+  background: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColor(element.properties["Text Colour"]) ?? "#ffffff"}!important;
+  ${element.properties["Box Shadow"] === true ? `box-shadow: ${applyAlphaToColor(element.properties["Box Shadow Colour"])} ${element.properties["Box Shadow Offset X"]}px ${element.properties["Box Shadow Offset Y"]}px;` : ""}
+}
+body .sk_nav_text {
+  color: ${applyAlphaToColor(element.properties["Text Colour"]) ?? "#ffffff"}!important;
+}
+`
           if (element.properties["Active Text Colour"] != "") {
               css += `
 body .nav-item.active .sk_nav_text {
-color: ${applyAlphaToColor(element.properties["Active Text Colour"]) ?? "#63c9ff"}!important;
+  color: ${applyAlphaToColor(element.properties["Active Text Colour"]) ?? "#63c9ff"}!important;
 }`
           }
           if (element.properties["Active Hover Text Colour"] != "") {
               css += `
 body .sk_nav_text.nav-link.nav-link:hover {
-color: ${applyAlphaToColor(element.properties["Active Hover Text Colour"]) ?? "#8fd8ff"}!important;
+  color: ${applyAlphaToColor(element.properties["Active Hover Text Colour"]) ?? "#8fd8ff"}!important;
 }
 `
           }
@@ -1689,8 +1693,8 @@ color: ${applyAlphaToColor(element.properties["Active Hover Text Colour"]) ?? "#
               fontName = element.properties["Custom Google Font Name"].trim();
 css = `@import url('https://fonts.googleapis.com/css2?family=${fontName}&display=swap');
 body {
-font-family: "${fontName}", sans-serif !important;
-font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
+  font-family: "${fontName}", sans-serif !important;
+  font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
 }
 ` + css;
           } else {
@@ -1703,8 +1707,13 @@ font-family: "${element.properties["Preset Font Family"]}", sans-serif !importan
           if (element.properties["Include School Name & Motto"] == true) {
             css += `
 body .sk_school_name {
-font-family: "${fontName}", sans-serif !important;
-font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
+  font-family: "${fontName}", sans-serif !important;
+  font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
+}
+
+body .sk_school_subheading {
+  font-family: "${fontName}", sans-serif !important;
+  font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
 }
 `;
           }
@@ -1713,16 +1722,22 @@ font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"
         if (element.properties["Main Content Box"] == true) {
           css += `
 body .sk_text.sk_page.sk-main-content {
-background: ${applyAlphaToColor(element.properties["Main Content Box Background Colour (sk_main_content)"]) ?? "#000000"}!important;
-color: ${applyAlphaToColor(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
+  background: ${applyAlphaToColor(element.properties["Main Content Box Background Colour (sk_main_content)"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColor(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
+}
+body .d-flex {
+  color: ${applyAlphaToColor(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
+}
+body .sk_table {
+  color: ${applyAlphaToColor(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
 }
 `
 
 if (element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"] != "") {
 css += `
 body .sk_btn.active, body .sk_btn:hover {
-background-color: ${applyAlphaToColor(element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"]) ?? "#000000"}!important;
-color: ${applyAlphaToColor(element.properties["Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
+  background-color: ${applyAlphaToColor(element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColor(element.properties["Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
 }
 `
 }
@@ -1730,18 +1745,18 @@ color: ${applyAlphaToColor(element.properties["Button Hover & Active Text Colour
         if (element.properties["Table Colour Scheming"] == true) {
           css += `
 body .sk_thead_cell, body .sk_thead th {
-background-color: ${applyAlphaToColor(element.properties["Table Header Colour (sk_thead_cell)"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColor(element.properties["Table Header Colour (sk_thead_cell)"]) ?? "#000000"}!important;
 }
 .sk_border {
-border-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border)"]) ?? "#000000"}!important;
+  border-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border)"]) ?? "#000000"}!important;
 }
 `
         }
         if (element.properties["Generic"] == true) {
           css += `
 .sk_btn {
-background-color: ${applyAlphaToColor(element.properties["Button Colour (sk_btn)"]) ?? "#000000"}!important;
-color: ${applyAlphaToColor(element.properties["Button Text Colour (sk_btn)"]) ?? "#ffffff"}!important;
+  background-color: ${applyAlphaToColor(element.properties["Button Colour (sk_btn)"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColor(element.properties["Button Text Colour (sk_btn)"]) ?? "#ffffff"}!important;
 }
 `
         }
