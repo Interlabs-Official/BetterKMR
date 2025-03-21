@@ -577,44 +577,51 @@ function addElement(element) {
       const deleteBtn = document.getElementById(propId);
       if (deleteBtn) {
         deleteBtn.addEventListener('click', () => {
-          // Find the upload control this button is associated with
-          const uploadControlName = property.visibleWhen;
-          const uploadPropId = `${element.id}-${uploadControlName.replace(/\s+/g, '-')}`;
-          const dataInput = document.getElementById(`${uploadPropId}-data`);
-          const preview = document.getElementById(`${uploadPropId}-preview`);
-          const dropArea = document.getElementById(`${uploadPropId}-drop-area`);
-          
-          if (dataInput && preview && dropArea) {
-            // Clear the data
+          const uploadId = propId.replace('-Delete-Uploaded-Image', '-Or-Upload-Background-Image');
+          const fileInput = document.getElementById(uploadId);
+          const dataInput = document.getElementById(`${uploadId}-data`);
+          const previewImg = document.getElementById(`${uploadId}-img`);
+          const preview = document.getElementById(`${uploadId}-preview`);
+          const dropArea = document.getElementById(`${uploadId}-drop-area`);
+          const infoDisplay = document.getElementById(`${uploadId}-info`);
+
+          if (fileInput) {
+            fileInput.value = '';
+          }
+
+          if (dataInput) {
             dataInput.value = '';
-            // Hide preview, show drop area
+            dataInput.setAttribute('data-has-image', 'false');
+          }
+
+          if (previewImg) {
+            previewImg.src = '';
+          }
+          
+          if (preview) {
             preview.style.display = 'none';
+          }
+          if (dropArea) {
             dropArea.style.display = 'block';
-            // Hide this button
-            deleteBtn.parentElement.style.display = 'none';
+          }
+          
+          if (infoDisplay) {
+            infoDisplay.textContent = '';
+          }
+
+          if (dataInput) {
+            dataInput.dispatchEvent(new Event('change'));
           }
         });
       }
     }
   });
   
-  // Setup remove button
   const removeButton = addedElement.querySelector('.added-element-remove');
   removeButton.addEventListener('click', () => removeElement(element.id));
 }
 
-function handleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay) {
-  if (!file.type.match('image.*')) {
-    alert('Please select an image file');
-    return;
-  }
-  
-  // Check file size (limit to 5MB)
-  if (file.size > 5 * 1024 * 1024) {
-    alert('Image is too large. Please select an image under 5MB.');
-    return;
-  }
-  
+function actualHandleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay) {
   const reader = new FileReader();
   
   reader.onload = (e) => {
@@ -624,22 +631,61 @@ function handleImageUpload(file, dataInput, previewImg, preview, dropArea, infoD
     preview.style.display = 'block';
     dropArea.style.display = 'none';
     
-    // Update image info
     updateImageInfo(base64data, infoDisplay);
     
-    // Trigger change event on dataInput to update visibility of controlled elements
     dataInput.dispatchEvent(new Event('change'));
     
-    // Update the attribute to trigger MutationObserver
     dataInput.setAttribute('data-has-image', 'true');
   };
   
   reader.readAsDataURL(file);
 }
 
-// Add function to update image info display
+function handleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay) {
+  if (!file.type.match('image.*')) {
+    createNotification("Please select an image file.", "#e74c3c", "#ffffff");
+    return;
+  }
+  
+  if (file.size > 5 * 1024 * 1024) {
+    createNotification("Image is too large! Please select an image under 5MB.", "#e74c3c", "#ffffff");
+    return;
+  }
+
+  const img = new Image();
+  img.onload = () => {
+    if (img.width < 800 || img.height < 600) {
+      createDialog({
+        title: 'Small Image Warning',
+        content: `This image is quite small, as it is less than 800x600 pixels, the bare minimum.<br>Do you want to use this image? Note that there may be some low quality pixelation issues.<br><br>Selected image width & height: ${img.width}×${img.height} pixels.`,
+        buttons: [
+          {
+            text: 'Yes',
+            callback: () => {
+              actualHandleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay);
+            }
+          },
+          {
+            text: 'No',
+            callback: () => {
+              URL.revokeObjectURL(img.src);
+              img.src = '';
+              const fileInput = document.querySelector(`input[type="file"][id$="-Or-Upload-Background-Image"]`);
+              if (fileInput) {
+                fileInput.value = '';
+              }
+            }
+          }
+        ]
+      });
+    } else {
+      actualHandleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay);
+    }
+  };
+  img.src = URL.createObjectURL(file);
+}
+
 function updateImageInfo(base64data, infoDisplay) {
-  // Calculate approximate size
   const approxSize = Math.round((base64data.length * 3) / 4);
   let sizeDisplay = '';
   
@@ -649,7 +695,6 @@ function updateImageInfo(base64data, infoDisplay) {
     sizeDisplay = `${(approxSize / 1024).toFixed(2)} KB`;
   }
   
-  // Create a temporary image to get dimensions
   const img = new Image();
   img.onload = () => {
     infoDisplay.textContent = `${img.width} × ${img.height} (${sizeDisplay})`;
@@ -661,14 +706,12 @@ function toggleVisibilityBasedOnValue(elementId, controlName, hasValue) {
   const element = document.querySelector(`.added-element[data-element-id="${elementId}"]`);
   if (!element) return;
   
-  // Find all properties that should be visible when this control has a value
   const controlProperties = element.querySelectorAll(`[data-visible-when="${controlName}"]`);
   controlProperties.forEach(prop => {
     prop.style.display = hasValue ? 'inline-block' : 'none';
   });
 }
 
-// Function to toggle visibility of elements based on toggle state
 function toggleVisibilityBasedOnToggle(elementId, toggleName, isChecked) {
   const elementsToControl = document.querySelectorAll(`[data-visible-when="${toggleName}"]`);
   elementsToControl.forEach(el => {
@@ -2108,3 +2151,38 @@ function saveSetting(key, value) {
         document.getElementById("update-notice").remove();
     });
     //chrome.storage.sync.set({ 'update_notice_closed': true });
+
+    window.createDialog = function({title, content, buttons = []}) {
+      console.log("Creating dialog with title:", title);
+      const overlay = document.createElement('div');
+      overlay.className = 'dialog-overlay-fixed';
+
+      const dialog = document.createElement('div');
+      dialog.className = 'dialog-box';
+
+      const titleElement = document.createElement('h2');
+      titleElement.className = 'dialog-title';
+      titleElement.textContent = title;
+
+      const contentElement = document.createElement('p');
+      contentElement.className = 'dialog-content';
+      contentElement.innerHTML = content;
+
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'dialog-buttons';
+
+      buttons.forEach(({text, callback, classname}) => {
+        const button = document.createElement('button');
+        button.className = classname || 'dialog-button';
+        button.textContent = text;
+        button.onclick = () => {
+          callback?.();
+          document.body.removeChild(overlay);
+        };
+        buttonContainer.appendChild(button);
+      });
+
+      dialog.append(titleElement, contentElement, buttonContainer);
+      overlay.appendChild(dialog);
+      document.body.appendChild(overlay);
+    }
