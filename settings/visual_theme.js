@@ -2186,3 +2186,167 @@ function saveSetting(key, value) {
       overlay.appendChild(dialog);
       document.body.appendChild(overlay);
     }
+
+// Replace the existing export button event listener with this:
+
+document.getElementById("export-button").addEventListener('click', () => {
+  createDialog({
+    title: 'Import/Export',
+    content: `What would you like to do?<br><br>Importing from File means you can upload a theme file to import settings.<br>Exporting to File will download a theme file with your current settings.`,
+    buttons: [
+      {
+        text: 'Import from File',
+        callback: () => {
+          // Create hidden file input
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.accept = '.tkmr';
+          
+          fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              try {
+                const themeData = JSON.parse(e.target.result);
+                
+                // Validate theme data
+                if (!themeData.name || !themeData.elements) {
+                  throw new Error('Invalid theme file format');
+                }
+                
+                // Clear existing elements
+                const container = document.getElementById('added-elements-container');
+                container.innerHTML = '';
+                addedElements = [];
+                
+                // Set theme name
+                document.getElementById('theme-name').value = themeData.name;
+                
+                // Load elements
+                themeData.elements.forEach(element => {
+                  const elementTemplate = availableElements.find(temp => temp.id === element.id);
+                  if (elementTemplate) {
+                    addElement(elementTemplate);
+                    
+                    // Set properties
+                    if (element.properties) {
+                      Object.entries(element.properties).forEach(([propName, propValue]) => {
+                        const property = elementTemplate.properties.find(p => p.name === propName);
+                        if (property) {
+                          const propId = `${element.id}-${propName.replace(/\s+/g, '-')}`;
+                          const input = document.getElementById(propId);
+                          
+                          if (input) {
+                            if (property.type === 'image-upload') {
+                              const dataInput = document.getElementById(`${propId}-data`);
+                              if (dataInput && propValue) {
+                                dataInput.value = propValue;
+                                const event = new Event('change');
+                                dataInput.dispatchEvent(event);
+                              }
+                            } else if (property.type === 'toggle' || property.type === 'checkbox') {
+                              input.checked = propValue;
+                              const event = new Event('change');
+                              input.dispatchEvent(event);
+                            } else {
+                              input.value = propValue;
+                              const event = new Event('change');
+                              input.dispatchEvent(event);
+                            }
+                          }
+                        }
+                      });
+                    }
+                  }
+                });
+                
+                // Trigger post-load updates
+                postLoad(themeData.elements);
+                createNotification("Theme imported successfully!", "#3c8443", "#ffffff");
+                
+              } catch (error) {
+                console.error('Import error:', error);
+                createNotification("Failed to import theme: Invalid file format", "#961a1a", "#ffffff");
+              }
+            };
+            reader.readAsText(file);
+          });
+          
+          fileInput.click();
+        }
+      },
+      {
+        text: 'Export to File',
+        callback: () => {
+          const themeName = document.getElementById('theme-name').value.trim();
+          if (!themeName) {
+            createNotification("Please enter a theme name before continuing.", "#961a1a", "#ffffff");
+            return;
+          }
+          try {
+            // Collect theme data
+            const theme = {
+              name: themeName,
+              elements: []
+            };
+            
+            // Collect all element data
+            addedElements.forEach(element => {
+              const elementData = {
+                id: element.id,
+                name: element.name,
+                properties: {}
+              };
+              
+              element.properties.forEach(property => {
+                const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
+                
+                if (property.type === 'image-upload') {
+                  const dataInput = document.getElementById(`${propId}-data`);
+                  if (dataInput) {
+                    elementData.properties[property.name] = dataInput.value;
+                  }
+                } else if (property.type === 'toggle' || property.type === 'checkbox') {
+                  const input = document.getElementById(propId);
+                  if (input) {
+                    elementData.properties[property.name] = input.checked;
+                  }
+                } else {
+                  const input = document.getElementById(propId);
+                  if (input) {
+                    elementData.properties[property.name] = input.value;
+                  }
+                }
+              });
+              
+              theme.elements.push(elementData);
+            });
+            
+            // Create and download file
+            const blob = new Blob([JSON.stringify(theme, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${themeName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.tkmr`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            createNotification("Theme exported successfully!", "#3c8443", "#ffffff");
+            
+          } catch (error) {
+            console.error('Export error:', error);
+            createNotification("Failed to export theme", "#961a1a", "#ffffff");
+          }
+        }
+      },
+      {
+        text: 'Cancel',
+        callback: () => {}
+      }
+    ]
+  });
+});

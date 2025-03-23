@@ -262,6 +262,25 @@
         .save-button:hover {
             background-color: #3e8e41;
         }
+
+        .export-button {
+            position: absolute;
+            top: 20px;
+            right: 160px;
+            background-color: #4c8baf;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .export-button:hover {
+            background-color: #4c8baf;
+        }
         
         /* New additions for element dialog */
         .add-element-button {
@@ -747,6 +766,7 @@
       </div>
     </div>
     
+    <button id="export-button" class="export-button">Import/Export</button>
     <button id="save-button" class="save-button">Save Theme</button>
     
     <div class="settings-container">

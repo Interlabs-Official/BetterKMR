@@ -78,3 +78,24 @@ chrome.runtime.onInstalled.addListener((details) => {
           break;
     }
  })
+chrome.runtime.onInstalled.addListener(() => {
+  fetch(chrome.runtime.getURL("src/config/themes.yml"))
+      .then(response => response.text())
+      .then(data => {
+          const yamlToJson = jsyaml.load(data);
+          chrome.storage.local.set({
+              themesConfig: yamlToJson
+          }); // store in local storage
+          console.log("Themes configuration loaded and cached.");
+      })
+      .catch(error => console.error("Failed to load themes:", error));
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === "getThemesConfig") {
+      chrome.storage.local.get("themesConfig", (data) => {
+          sendResponse(data.themesConfig);
+      });
+      return true; // indicate that the response will be sent asynchronously
+  }
+});
