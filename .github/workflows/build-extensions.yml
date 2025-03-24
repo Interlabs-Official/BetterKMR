@@ -23,7 +23,11 @@ jobs:
 
       - name: Build extensions
         run: npm run build:all
-        
+
+      - name: Prepare Firefox manifest
+        run: |
+          sed -i 's/"service_worker": "service.js"/"scripts": ["service.js"]/' dist/firefox/manifest.json
+
       - name: Upload Chrome extension artifact
         uses: actions/upload-artifact@v4
         with:
