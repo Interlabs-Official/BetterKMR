@@ -99,6 +99,7 @@ const availableElements = [
       { name: "Button Text Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
       { name: "Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#000000", visibleWhen: "Generic" },
       { name: "Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
+      { name: "Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_hover_colour" },
     ]
   },
   {
@@ -1803,6 +1804,13 @@ body .sk_thead_cell, body .sk_thead th {
 }
 `
         }
+      }
+      if (element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"] != "") {
+        css += `
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: ${applyAlphaToColor(element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
+}
+`
       }
       if (element.id == "additional-css-properties") {
         css += `

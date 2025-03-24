@@ -45,6 +45,10 @@ const ignoreList = [
 ]
 
 function loader() {
+  if (window.location.pathname === "/rss") {
+    console.log(`%c[BetterKMR 📕] %cSkipping loading dynamic modules because this is not a direct Kamar page.`, 'color:rgb(105, 58, 138)', 'color: #fff');
+    return;
+  }
     waitForElm('body').then((elm) => {
         const loader = document.createElement('div');
         loader.className = 'very-loader';

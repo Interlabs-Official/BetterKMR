@@ -107,8 +107,8 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 	const settingsPage = new SettingsPage();
 
-	// Initialize settings
-	const initializeSettings = async () => {
+	// Initialise settings
+	const initialiseSettings = async () => {
 		// Private Mode Settings
 		const [private_mode, super_private_mode] = await Promise.all([
 			loadSettingPromise("private_mode"),
@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
 	};
 
-	initializeSettings();
+	initialiseSettings();
 
 	function addBadge(imgWrapper, text, badgeClass) {
 		let badgeContainer = imgWrapper.querySelector('.badge-container');

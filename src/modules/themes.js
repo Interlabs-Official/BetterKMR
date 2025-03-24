@@ -55,6 +55,9 @@ function waitForElm(selector, timeout = 5000) { // Add a timeout
 
         timer = setTimeout(() => {
             observer.disconnect();
+            if (window.location.pathname === "/rss") {
+                return;
+            }
             reject(new Error(`Timeout waiting for element: ${selector}`));
         }, timeout);
     });
@@ -102,6 +105,10 @@ getThemesConfig()
     .catch(error => console.error("Failed to load themes:", error));
 
     function injectTheme(yamlToJson) {
+        if (window.location.pathname === "/rss") {
+            console.log(`%c[BetterKMR 📕] %cSkipping the theme loader because this is not a direct Kamar page.`, 'color:rgb(105, 58, 138)', 'color: #fff');
+            return;
+        }
         chrome.storage.sync.get(["theme-id-text"]).then((result) => {
             const url = result["theme-id-text"] || "0";
             const themePath = yamlToJson[url];
