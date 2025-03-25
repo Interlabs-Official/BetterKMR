@@ -91,6 +91,7 @@ const availableElements = [
       { name: "By default in Kamar, the background colour is completely transparent.", type: "tooltip", visibleWhen: "Main Content Box" },
       { name: "Main Content Box Background Colour (sk_main_content)", type: "color", default: "#000000", visibleWhen: "Main Content Box" },
       { name: "Main Content Box Text Colour (sk_main_content)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
+      { name: "Navbar/Card Background Colour (card-body)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
       { name: "Table Colour Scheming", type: "toggle", default: false, controlsVisibility: ["Table Header Colour (sk_thead_cell)", "Table Border Colour (sk_border)" ]},
       { name: "Table Header Colour (sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
       { name: "Table Border Colour (sk_border)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
@@ -1659,6 +1660,7 @@ css += `
 } //end backimg-setting
       if (element.id == "school-name-and-motto") {
           css += `
+/* BetterKMR Compiled: School Name & Motto */
 .sk_school_name {
   color: ${applyAlphaToColor(element.properties["Name Colour"]) ?? "#f7f7f7"}!important;
   ${element.properties["Text Shadow"] === true ?? element.properties["Name Shadow Colour"] ? `text-shadow: ${applyAlphaToColor(element.properties["Name Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
@@ -1674,6 +1676,7 @@ css += `
           const highlightColor = applyAlphaToColor(highlightColorObj);
 
           css += `
+/* BetterKMR Compiled: Today's Attendance Highlight */
 .is-today {
   background-color: ${highlightColor}!important;
 }
@@ -1688,6 +1691,7 @@ css += `
 
           // Create CSS for each gradient
           css += `
+/* BetterKMR Compiled: Attendance Gradients */
 .btn-success {
   background: ${processGradient(presentGradient)}!important;
   color: ${applyAlphaToColor(element.properties["Text Colour (Present)"]) ?? "#ffffff"}!important;
@@ -1708,6 +1712,7 @@ css += `
       }
       if (element.id == "navbar-colours") {
           css += `
+/* BetterKMR Compiled: Navbar Colours */
 body .sk_nav {
   background: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Text Colour"]) ?? "#ffffff"}!important;
@@ -1735,7 +1740,8 @@ body .sk_nav_text.nav-link.nav-link:hover {
           var fontName = "Inter";
           if (element.properties["Use custom font from Google Fonts"] == true) {
               fontName = element.properties["Custom Google Font Name"].trim();
-css = `@import url('https://fonts.googleapis.com/css2?family=${fontName}&display=swap');
+css = `/* BetterKMR Compiled: Font Family (set to top) */
+@import url('https://fonts.googleapis.com/css2?family=${fontName}&display=swap');
 body {
   font-family: "${fontName}", sans-serif !important;
   font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
@@ -1765,6 +1771,7 @@ body .sk_school_subheading {
       if (element.id == "main-colour-schemes") {
         if (element.properties["Main Content Box"] == true) {
           css += `
+/* BetterKMR Compiled: Main Colour Schemes */
 body .sk_text.sk_page.sk-main-content {
   background: ${applyAlphaToColor(element.properties["Main Content Box Background Colour (sk_main_content)"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
@@ -1779,6 +1786,7 @@ body .sk_table {
 
 if (element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"] != "") {
 css += `
+/* BetterKMR Compiled: Button Hover & Active Background Colour */
 body .sk_btn.active, body .sk_btn:hover {
   background-color: ${applyAlphaToColor(element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
@@ -1788,6 +1796,7 @@ body .sk_btn.active, body .sk_btn:hover {
         }
         if (element.properties["Table Colour Scheming"] == true) {
           css += `
+/* BetterKMR Compiled: Table Colour Scheming */
 body .sk_thead_cell, body .sk_thead th {
   background-color: ${applyAlphaToColor(element.properties["Table Header Colour (sk_thead_cell)"]) ?? "#000000"}!important;
 }
@@ -1798,6 +1807,7 @@ body .sk_thead_cell, body .sk_thead th {
         }
         if (element.properties["Generic"] == true) {
           css += `
+/* BetterKMR Compiled: Generic */
 .sk_btn {
   background-color: ${applyAlphaToColor(element.properties["Button Colour (sk_btn)"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Button Text Colour (sk_btn)"]) ?? "#ffffff"}!important;
@@ -1807,8 +1817,17 @@ body .sk_thead_cell, body .sk_thead th {
       }
       if (element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"] != "") {
         css += `
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
 body .sk_btn:hover, body .sk_btn.active {
   border-color: ${applyAlphaToColor(element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
+}
+`
+      }
+      if (element.properties["Navbar/Card Background Colour (card-body)"] != "") {
+        css += `
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: ${applyAlphaToColor(element.properties["Navbar/Card Background Colour (card-body)"]) ?? "#ffffff"}!important;
 }
 `
       }
