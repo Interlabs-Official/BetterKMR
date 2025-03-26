@@ -24,13 +24,13 @@ function doStuff() {
         if (mainNav) {
             mainNav.insertAdjacentHTML("beforebegin", `
                         <div id="update-notice" class="update-notice">
-                            <span class="update-text">BetterKMR has updated to v${chrome.runtime.getManifest().version} - Visual Theme Editor & More! Click here to read the change log.</span>
+                            <span class="update-text">BetterKMR has updated to v${chrome.runtime.getManifest().version} - ADDCHANGELOGSUMMARYHERE & More! Click here to read the change log.</span>
                             <span class="smaller-text">This notice will go away when you refresh.</span>
                         </div>
                 `)
             document.getElementById("update-notice").addEventListener("click", () => {
                 window.open(
-                    "https://interlabs-official.github.io/BetterKMR/docs/changelog/v1_1_0/",
+                    "https://interlabs-official.github.io/BetterKMR/docs/changelog/v1_1_1/",
                     '_blank'
                   );
             });
