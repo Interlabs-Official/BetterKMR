@@ -2227,7 +2227,7 @@ document.getElementById("export-button").addEventListener('click', () => {
           // Create hidden file input
           const fileInput = document.createElement('input');
           fileInput.type = 'file';
-          fileInput.accept = '.tkmr';
+          fileInput.accept = '.bkt';
           
           fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
@@ -2356,7 +2356,7 @@ document.getElementById("export-button").addEventListener('click', () => {
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${themeName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.tkmr`;
+            a.download = `${themeName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.bkt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
