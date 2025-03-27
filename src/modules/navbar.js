@@ -171,7 +171,20 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             avatarLink.setAttribute('data-target', '#profile-image');
             
             const avatar = document.createElement('img');
-            avatar.src = '/students/profile';
+            // reusing local.get because it can't be used via sync at the top, has to be local atm
+            chrome.storage.local.get('choose_profile_picture', function(result) {
+                if (result['choose_profile_picture']) {
+                    if (avatar) {
+                        holdfunc.notify("Custom profile picture found and set (first 50 characters): " + result['choose_profile_picture'].slice(0, 50) + "...");
+                        avatar.src = result['choose_profile_picture'];
+                    } else {
+                        holdfunc.notify("Avatar image failed to load. Please report this to the developers or refresh your page.");
+                    }
+                } else {
+                    holdfunc.notify("No custom profile picture was found. Resorting to student default profile picture.");
+                    avatar.src = '/students/profile';
+                }
+            });
             avatar.className = 'avatar';
             
             avatarLink.appendChild(avatar);
