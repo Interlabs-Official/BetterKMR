@@ -93,3 +93,13 @@
     "Light": "rgba(255, 255, 255, 0.5)"
     "Minimal": "rgba(220, 220, 220, 0.5)"
     "Simple": "rgba(240, 240, 240, 0.5)"
+7:
+  name: "Minecraft"
+  css: "minecraft.css"
+  thumbnail: "ADDTHUMBNAIL"
+  author: "Convy32"
+  highlight: "Please help me fix this"
+  tags:
+    "TAG": "rgba(255, 255, 255, 0.5)"
+    "TAGTAG": "rgba(220, 220, 220, 0.5)"
+    "TAGTAGTAG": "rgba(240, 240, 240, 0.5)"

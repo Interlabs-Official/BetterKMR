@@ -116,11 +116,12 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                 folderId: "menu-folder20240123022746",
                 children: [
                     { text: "Reports", href: "/reports", className: "nav-link-reports" },
-                    { text: "Surveys", href: "/surveys", className: "nav-link-surveys" },
                     { text: "Pastoral", href: "/pastoral", className: "nav-link-pastoral" }
                 ]
             },
+            { text: "Surveys", href: "/surveys", className: "nav-item nav-item-surveys" },
             { text: "Contact", href: "/contact_us", className: "nav-item nav-item-contact_us" }
+
         ];
 
         const userMenuItems = [
