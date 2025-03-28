@@ -94,12 +94,11 @@
     "Minimal": "rgba(220, 220, 220, 0.5)"
     "Simple": "rgba(240, 240, 240, 0.5)"
 7:
-  name: "Minecraft"
+  name: "Minecraft Theme"
   css: "minecraft.css"
-  thumbnail: "ADDTHUMBNAIL"
+  thumbnail: "images/backgrounds/minecraft-landscape.jpg"
   author: "Convy32"
-  highlight: "Please help me fix this"
+  highlight: "As a child, I yearn for the mines. Theme drafted by Solar."
   tags:
-    "TAG": "rgba(255, 255, 255, 0.5)"
-    "TAGTAG": "rgba(220, 220, 220, 0.5)"
-    "TAGTAGTAG": "rgba(240, 240, 240, 0.5)"
+    "Minecraft": "rgba(79, 132, 102, 0.5)"
+    "Video Game": "rgba(156, 163, 175, 0.5)"
