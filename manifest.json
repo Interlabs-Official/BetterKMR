@@ -50,7 +50,8 @@
         "assets/images/thumbnails/*",
         "settings/*",
         "frameworks/codemirror/*",
-        "src/fonts/*"
+        "src/fonts/*",
+        "src/pages/*.html"
       ],
       "matches": ["https://*.school.kiwi/*"]
     }

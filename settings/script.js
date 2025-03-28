@@ -36,6 +36,7 @@ function getDaySuffix(day) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+	initSettingsTheme();
 	const urlParams = new URLSearchParams(window.location.search);
 	
 	if (urlParams.get('tab-selected')) {
@@ -306,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 		document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
+		document.body.style.visibility = 'visible';
 	};
 
 	initialiseSettings();
@@ -1202,4 +1204,42 @@ if (document.getElementById("tab-general")) {
 			});
 			//chrome.storage.sync.set({ 'update_notice_closed': true });
 		}
+}
+
+function handleSettingsTheme(theme, doUpdate) {
+	console.log(theme);
+	if (theme === 'default' && doUpdate != true) return;
+    const existingThemeLink = document.getElementById('settings-theme-stylesheet');
+    if (existingThemeLink) {
+        existingThemeLink.remove();
+    }
+
+    //if (theme !== 'settings-default') {
+        const link = document.createElement('link');
+        link.id = 'settings-theme-stylesheet';
+        link.rel = 'stylesheet';
+        link.href = `../src/themes/${theme}.css`;
+        document.head.appendChild(link);
+    //}
+
+    chrome.storage.sync.set({ settingsTheme: theme });
+    
+	if (doUpdate == true) {
+		createNotification(`Settings theme updated! Some changes may require a refresh.`, "#3c8443", "#ffffff");
+	}
+}
+
+// Update the initSettingsTheme function
+function initSettingsTheme() {
+    const themeSelector = document.getElementById('settings-theme-selector');
+    
+    chrome.storage.sync.get(['settingsTheme'], function(result) {
+        const savedTheme = result.settingsTheme || 'default';
+        themeSelector.value = savedTheme;
+        handleSettingsTheme(savedTheme);
+    });
+
+    themeSelector.addEventListener('change', function() {
+        handleSettingsTheme(themeSelector.value, true);
+    });
 }

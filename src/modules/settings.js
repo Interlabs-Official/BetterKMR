@@ -38,7 +38,10 @@ function updateProfilePicture() {
     const profileBox = document.querySelector(".pb-3");
     chrome.storage.local.get('choose_profile_picture', function(result) {
         if (result['choose_profile_picture']) {
-            if (avatar) { avatar.src = result['choose_profile_picture']; }
+            if (avatar && result['choose_profile_picture'] != avatar.src) {
+                avatar.src = result['choose_profile_picture'];
+                holdfunc.notify("Attempt #2: Custom profile picture found and set (first 50 characters): " + result['choose_profile_picture'].slice(0, 50) + "...");
+            }
             if (profileBox) { profileBox.src = result['choose_profile_picture']; }
         } else {
             // resort to old method
@@ -46,6 +49,7 @@ function updateProfilePicture() {
                 if (result.profilePicUrl) {
                     if (avatar) {
                         avatar.src = result.profilePicUrl;
+                        holdfunc.notify("Attempt #2: Custom profile picture found and set (first 50 characters): " + result['profilePicUrl'].slice(0, 50) + "...");
                     }
                     if (profileBox) {
                         profileBox.src = result.profilePicUrl;
