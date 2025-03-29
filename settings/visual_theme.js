@@ -94,13 +94,15 @@ const availableElements = [
       { name: "Navbar/Card Background Colour (card-body)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
       { name: "Table Colour Scheming", type: "toggle", default: false, controlsVisibility: ["Table Header Colour (sk_thead_cell)", "Table Border Colour (sk_border)" ]},
       { name: "Table Header Colour (sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
-      { name: "Table Border Colour (sk_border)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
+      { name: "Table Border Colour (sk_border, sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
       { name: "Generic", type: "toggle", default: false, controlsVisibility: ["Button Colour (sk_btn)", "Button Text Colour (sk_btn)"]},
       { name: "Button Colour (sk_btn)", type: "color", default: "#000000", visibleWhen: "Generic" },
       { name: "Button Text Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
       { name: "Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#000000", visibleWhen: "Generic" },
       { name: "Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
+      { name: "Button Border Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_border_colour" },
       { name: "Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_hover_colour" },
+      { name: "Link Text Colour (a)", type: "color", default: "#0066ff", visibleWhen: "Generic", uniqueId: "a_link_text_colour" },
     ]
   },
   {
@@ -1798,10 +1800,10 @@ body .sk_btn.active, body .sk_btn:hover {
           css += `
 /* BetterKMR Compiled: Table Colour Scheming */
 body .sk_thead_cell, body .sk_thead th {
-  background-color: ${applyAlphaToColor(element.properties["Table Header Colour (sk_thead_cell)"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border, sk_thead_cell)"]) ?? "#000000"}!important;
 }
-.sk_border {
-  border-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border)"]) ?? "#000000"}!important;
+body .sk_border, body .sk_thead_cell, body .table td, body .table th {
+  border-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border, sk_thead_cell)"]) ?? "#000000"}!important;
 }
 `
         }
@@ -1828,6 +1830,22 @@ body .sk_btn:hover, body .sk_btn.active {
 /* BetterKMR Compiled: Navbar/Card Background Colour */
 body .card-body {
   background-color: ${applyAlphaToColor(element.properties["Navbar/Card Background Colour (card-body)"]) ?? "#ffffff"}!important;
+}
+`
+      }
+      if (element.properties["Button Border Colour (sk_btn)"] != "") {
+        css += `
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: ${applyAlphaToColor(element.properties["Button Border Colour (sk_btn)"]) ?? "#ffffff"}!important;
+}
+`
+      }
+      if (element.properties["Link Text Colour (a)"] != "") {
+        css += `
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: ${applyAlphaToColor(element.properties["Link Text Colour (a)"]) ?? "#ffffff"}!important;
 }
 `
       }
@@ -2218,8 +2236,8 @@ function saveSetting(key, value) {
 
 document.getElementById("export-button").addEventListener('click', () => {
   createDialog({
-    title: 'Import/Export',
-    content: `What would you like to do?<br><br>Importing from File means you can upload a theme file to import settings.<br>Exporting to File will download a theme file with your current settings.`,
+    title: 'Import/Export (Experimental)',
+    content: `What would you like to do?<br><br>Importing from File means you can upload a theme file to import settings.<br>Exporting to File will download a theme file with your current settings.<br>Exporting to CSS will download a CSS file with your current settings.<br><br>You may need to save your theme before continuing.<br>At the moment, themes are version dependent.`,
     buttons: [
       {
         text: 'Import from File',
@@ -2313,13 +2331,11 @@ document.getElementById("export-button").addEventListener('click', () => {
             return;
           }
           try {
-            // Collect theme data
             const theme = {
               name: themeName,
               elements: []
             };
             
-            // Collect all element data
             addedElements.forEach(element => {
               const elementData = {
                 id: element.id,
@@ -2368,6 +2384,25 @@ document.getElementById("export-button").addEventListener('click', () => {
             console.error('Export error:', error);
             createNotification("Failed to export theme", "#961a1a", "#ffffff");
           }
+        }
+      },
+      {
+        text: 'Export to CSS',
+        classname: 'dialog-button',
+        callback: () => {
+          const cssContent = cssEditor.getValue();
+                
+          const blob = new Blob([cssContent], {type: 'text/css'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${document.getElementById('theme-name').value.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.css`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          createNotification("Theme CSS exported successfully!", "#3c8443", "#ffffff");
         }
       },
       {
