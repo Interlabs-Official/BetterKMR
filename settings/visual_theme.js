@@ -2372,6 +2372,7 @@ document.getElementById("export-button").addEventListener('click', () => {
       },
       {
         text: 'Cancel',
+        classname: 'dialog-button-not',
         callback: () => {}
       }
     ]

@@ -1167,11 +1167,11 @@ function showEditorSelectionDialog(themeId, isNew = false) {
 		content: 'How would you like to edit this theme?',
 		buttons: [
 			{
-				text: 'Visual Theme Editor (experimental)',
+				text: 'Visual Theme Editor',
 				callback: () => {
 					window.location.href = /* webpackIgnore: true */ chrome.runtime.getURL(`settings/visual_theme.html?themeID=${themeId}`);
 				},
-				classname: 'dialog-button'
+				classname: 'vtt-button'
 			},
 			{
 				text: 'Code Editor',

@@ -32,6 +32,7 @@
       color: #9e9e9e;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     .tab-item.active {
@@ -219,6 +220,11 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
+    /* fixes search and weird layout */
+    .theme-card[style="display: flex;"] {
+      display: initial !important;
+    }
+
     .theme-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
@@ -257,12 +263,14 @@
 
     .download-button {
       background: linear-gradient(135deg, #2979ff 0%, #1e88e5 100%);
+      font-family: 'Lexend Deca', sans-serif;
       color: white;
       padding: 8px 16px;
       border-radius: 6px;
       border: none;
       font-weight: 500;
       transition: all 0.2s ease;
+      cursor: pointer;
     }
 
     .download-button:hover {
@@ -330,7 +338,9 @@
     }
 
     #greyed-out-applied {
-      background-color: #555 !important;
+      font-family: 'Lexend Deca', sans-serif;
+      background: rgb(0,0,0);
+      background: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(56,56,56,1) 100%);
       color: #fff !important;
     }
 
@@ -371,7 +381,8 @@
     }
 
     .dialog-box {
-      background: #1d1d1d;
+      background: rgb(0,0,0);
+      background: linear-gradient(360deg, rgb(14, 14, 14) 0%, rgba(48,48,48,0.6082808123249299) 100%);
       color: #fff;
       font-family: 'Inter', sans-serif;
       padding: 20px;
@@ -397,7 +408,8 @@
     }
 
     .dialog-button {
-      background-color: #007bff;
+      background: rgb(0,55,91);
+      background: linear-gradient(360deg, rgba(0,55,91,1) 0%, rgba(0,185,255,1) 100%);
       color: #fff;
       border: none;
       padding: 8px 16px;
@@ -408,11 +420,13 @@
     }
 
     .dialog-button:hover {
-      background-color: #0056b3;
+      background: rgb(0,55,91);
+      background: linear-gradient(360deg, rgba(0,55,91,1) 0%, rgb(85, 210, 255) 100%);
     }
 
     .dialog-button-not {
-      background-color: #6b6b6b3d;
+      background: rgb(0,0,0);
+      background: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(56,56,56,1) 100%);
       color: #fff;
       border: none;
       padding: 8px 16px;
@@ -423,13 +437,14 @@
     }
 
     .dialog-button-not:hover {
-      background-color: #4242423a;
+      background: rgb(0,0,0);
+      background: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(91,91,91,1) 100%);
     }
 
     #new-custom-theme-button {
       position: absolute;
-      top: 170px;
-      right: 50px;
+      top: 210px;
+      right: 40px;
       background-color: #4c91af;
       border: none;
       color: white;

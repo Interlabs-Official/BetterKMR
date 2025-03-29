@@ -10,6 +10,132 @@
       background-color: #0f0f0f;
       visibility: hidden;
     }
+.rainbow_text_animated {
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 6s ease-in-out infinite;
+    background-size: 400% 100%;
+}
+
+@keyframes rainbow_animation {
+    0%,100% {
+        background-position: 0 0;
+    }
+
+    50% {
+        background-position: 100% 0;
+    }
+}
+
+#nested-tab-custom-themes {
+  padding: 0.5rem;
+}
+
+#new-custom-theme-button {
+  background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  color: white;
+  position: absolute;
+  top: 170px;
+  right: 30px;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#new-custom-theme-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-theme-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-theme-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.theme-name {
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+}
+
+.theme-actions button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  margin-left: 8px;
+}
+
+.theme-actions button:hover {
+  opacity: 0.9;
+}
+
+.edit-theme {
+  font-family: 'Inter', sans-serif;
+  background: rgb(0,55,91);
+  background: linear-gradient(360deg, rgba(0,55,91,1) 0%, rgba(0,185,255,1) 100%);
+  color: white;
+}
+
+.add-js-theme {
+  font-family: 'Inter', sans-serif;
+  background: rgb(91,84,0);
+  background: linear-gradient(360deg, rgba(91,84,0,1) 0%, rgba(241,255,0,1) 100%);
+  color: white;
+}
+
+.delete-theme {
+  font-family: 'Inter', sans-serif;
+  background: rgb(91,0,0);
+  background: linear-gradient(360deg, rgba(91,0,0,1) 0%, rgba(255,0,0,1) 100%);
+  color: white;
+}
+
+/* Empty state styling */
+#custom-themes-list:empty::after {
+  content: "No custom themes yet. Click 'New' to create one!";
+  display: block;
+  text-align: center;
+  color: #6b7280;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.vtt-button {
+      background: rgb(0,65,10);
+      background: linear-gradient(360deg, rgba(0,65,10,1) 0%, rgba(0,175,41,1) 100%);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+}
+
+.vtt-button:hover {
+  background: rgb(0,65,10);
+  background: linear-gradient(360deg, rgba(0,65,10,1) 0%, rgba(0,190,49,1) 100%);
+}
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
 </head>
@@ -32,7 +158,7 @@
         <li data-tab="general" class="tab-item active">General</li>
         <li data-tab="themes" class="tab-item">Themes</li>
         <li data-tab="about-and-contact" class="tab-item">About & Contact</li>
-        <li data-tab="go-back" class="tab-item">Website & Docs ↗</li>
+        <li data-tab="go-back" class="tab-item">Website & Docs <span style="font-size: 14px;">↗</span></li>
         <li data-tab="advanced" class="tab-item" style="visibility: hidden;" id="advanced-tab-header">Developer Settings</li>
       </ul>
     </aside>
@@ -63,12 +189,12 @@
           <ul class="nested-tab-list">
             <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
             <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
-            <li data-nested-tab="custom-themes" class="nested-tab-item">Custom</li>
+            <li data-nested-tab="custom-themes" class="nested-tab-item rainbow_text_animated">Custom</li>
             <li data-nested-tab="submit-your-themes" id="submit-theme-tab" class="nested-tab-item">Submit Theme ↓</li>
           </ul>
           <!-- Nested Tab Contents -->
           <div id="nested-tab-default-themes" class="nested-tab-content active">
-            <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+            <div class="theme-card school-colours" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
             <div class="search-container">
               <div class="search-wrapper">
                 <i class="search-icon">🔍</i>
