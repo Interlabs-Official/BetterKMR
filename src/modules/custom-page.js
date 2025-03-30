@@ -17,7 +17,63 @@
 */
 
 /* custom-page.js - src/modules/custom-page.js */
-if (window.location.pathname == "/example-page") {
+import jsyaml from 'js-yaml';
+function doCustomPage() {
+    try {
+        var url = chrome.runtime.getURL("src/config/pages.yml")
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    console.log(`%c[BetterKMR 📕] %cHTTP error! status: ${response.status}`, 'color: #F44336', 'color: #fff');
+                }
+                return response.text();
+            })
+            .then(data => {
+                const yamlToJson = jsyaml.load(data);
+                Object.entries(yamlToJson["pages"]).forEach(([key, page]) => {
+                    if (window.location.pathname == "/" + key.toLowerCase()) {
+                        const sk_text = document.getElementsByClassName("sk_text")[0];
+                        const sk_main = document.getElementsByClassName("sk-main")[0];
+                        sk_text.remove();
+                        try {
+                            var secondURL = chrome.runtime.getURL(`/src/pages/${page}`);
+                            fetch(secondURL)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! status: ${response.status}`);
+                                    }
+                                    return response.text();
+                                })
+                                .then(data => {
+                                    document.title = key + " (BetterKMR)";
+                                    sk_main.innerHTML = "<br>" + data;
+                                    sk_main.style.color = "#ffffff";
+                                })
+                                .catch(error => {
+                                    console.log(
+                                        `%c[BetterKMR 📕] %cFailed to load page ${page}: ${error}`, 
+                                        'color: #F44336', 
+                                        'color: #fff'
+                                    );
+                                    sk_main.innerHTML = `<div class="error" style="color: #fff; margin-top: 20px;"><img src="${/* webpackIgnore: true */ chrome.runtime.getURL("icon/icon_transparent_48.png")}" width="24px" height="24px"> Failed to load custom BetterKMR page. Please contact the author of this page and check the console for more information.</div>`;
+                                });
+                        } catch (e) {
+                            console.log(
+                                `%c[BetterKMR 📕] %cError occurred while loading custom page: ${e}`, 
+                                'color: #F44336', 
+                                'color: #fff'
+                            );
+                        }
+                        /* to delete the whole lot, use document.documentElement.innerHTML = "" */
+                    }
+                });
+            });
+        } catch (e) {
+            console.log(`%c[BetterKMR 📕] %cError occurred while loading custom page: ${e}`, 'color: #F44336', 'color: #fff') ;
+        }
+}
+doCustomPage();
+/*if (window.location.pathname == "/example-page") {
     const sk_text = document.getElementsByClassName("sk_text")[0];
     const sk_main = document.getElementsByClassName("sk-main")[0];
     sk_text.remove();
@@ -30,7 +86,7 @@ if (window.location.pathname == "/example-page") {
         If a page defined already exists, BetterKMR will automatically override it.</p>
 	</div>
     # What's up?
-    `) */
+    `)
     sk_main.innerHTML = marked.parse("# Welcome to your custom BetterKMR page! \nHere, you can define your own HTML as well as extra JavaScript and CSS.\n\nIf a page defined already exists, BetterKMR will automatically override it.\n\nCustom HTML pages also support standard markdown, too!")
     sk_main.style.color = "#ffffff"
-}
+} */

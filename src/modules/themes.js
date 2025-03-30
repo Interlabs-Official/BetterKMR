@@ -31,16 +31,18 @@ function addPreconnect() {
     document.head.appendChild(link);
 }
 
-function waitForElm(selector) {
-    return new Promise(resolve => {
+function waitForElm(selector, timeout = 5000) { // Add a timeout
+    return new Promise((resolve, reject) => {
         const element = document.querySelector(selector);
         if (element) {
             return resolve(element);
         }
 
+        let timer = null;
         const observer = new MutationObserver(mutations => {
             const element = document.querySelector(selector);
             if (element) {
+                clearTimeout(timer);
                 observer.disconnect();
                 resolve(element);
             }
@@ -50,6 +52,14 @@ function waitForElm(selector) {
             childList: true,
             subtree: true
         });
+
+        timer = setTimeout(() => {
+            observer.disconnect();
+            if (window.location.pathname === "/rss") {
+                return;
+            }
+            reject(new Error(`Timeout waiting for element: ${selector}`));
+        }, timeout);
     });
 }
 
@@ -71,11 +81,23 @@ waitForElm(".sk_header_content").then(element => {
     element.style.visibility = "hidden";
 });
 
-fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"))
-    .then(response => response.text())
-    .then(data => {
+async function getThemesConfig() {
+    return new Promise((resolve, reject) => {
+        chrome.runtime.sendMessage({
+            type: "getThemesConfig"
+        }, (response) => {
+            if (response) {
+                resolve(response);
+            } else {
+                reject(new Error("Failed to retrieve themes config from background script."));
+            }
+        });
+    });
+}
+
+getThemesConfig()
+    .then(yamlToJson => {
         if (!themeLoaded) { // prevents double loading
-            const yamlToJson = jsyaml.load(data);
             injectTheme(yamlToJson);
             themeLoaded = true;
         }
@@ -83,6 +105,10 @@ fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"))
     .catch(error => console.error("Failed to load themes:", error));
 
     function injectTheme(yamlToJson) {
+        if (window.location.pathname === "/rss") {
+            console.log(`%c[BetterKMR 📕] %cSkipping the theme loader because this is not a direct Kamar page.`, 'color:rgb(105, 58, 138)', 'color: #fff');
+            return;
+        }
         chrome.storage.sync.get(["theme-id-text"]).then((result) => {
             const url = result["theme-id-text"] || "0";
             const themePath = yamlToJson[url];

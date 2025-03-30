@@ -247,16 +247,16 @@ because of Period 5. This can be overridden in any theme by using the !important
       padding: 12px 16px;
       margin-bottom: 20px;
       background-color: rgba(0, 0, 0, 0.507);
-      border: 1px solid rgba(70, 252, 242, 0.4);
-      box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
+      border: 1px solid rgba(209, 70, 252, 0.4);
+      box-shadow: 0 0 10px rgba(194, 70, 252, 0.3), 0 0 20px rgba(200, 70, 252, 0.1);
       animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
       cursor: pointer;
     }
     
     .update-text {
-      color: rgba(70, 252, 242, 1);
+      color: rgb(235, 170, 255);
       font-weight: 400;
-      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
+      text-shadow: 0 0 5px rgba(216, 70, 252, 0.7);
     }
     
     .close-notice {
@@ -275,10 +275,10 @@ because of Period 5. This can be overridden in any theme by using the !important
     
     @keyframes glow {
       from {
-        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
+        box-shadow: 0 0 5px rgba(209, 70, 252, 0.3), 0 0 10px rgba(200, 70, 252, 0.1);
       }
       to {
-        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
+        box-shadow: 0 0 10px rgba(194, 70, 252, 0.5), 0 0 20px rgba(164, 70, 252, 0.3);
       }
     }
     .smaller-text {
@@ -317,4 +317,4 @@ because of Period 5. This can be overridden in any theme by using the !important
       100% {
         transform: rotate(360deg);
       }
-    } 
+    }

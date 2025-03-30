@@ -17,25 +17,44 @@
 */
 
 /* change-log-main-page.js - src/modules/change-log-main-page.js */
+import jsyaml from 'js-yaml';
 function doStuff() {
     chrome.storage.sync.get(['update_notice_closed'], function(result) {
         if (result.update_notice_closed == true) return;
-        const mainNav = document.querySelector(".sk-main-content");
-        if (mainNav) {
-            mainNav.insertAdjacentHTML("beforebegin", `
-                        <div id="update-notice" class="update-notice">
-                            <span class="update-text">BetterKMR has updated to v${chrome.runtime.getManifest().version} - Visual Theme Editor & More! Click here to read the change log.</span>
-                            <span class="smaller-text">This notice will go away when you refresh.</span>
-                        </div>
-                `)
-            document.getElementById("update-notice").addEventListener("click", () => {
-                window.open(
-                    "https://interlabs-official.github.io/BetterKMR/docs/changelog/v1_1_0/",
-                    '_blank'
-                  );
-            });
-            chrome.storage.sync.set({'update_notice_closed': true});
-        }
+        try {
+            var url = chrome.runtime.getURL("src/config/general.yml")
+            fetch(url)
+              .then(response => {
+                if (!response.ok) {
+                  console.log(`%c[BetterKMR 📕] %cHTTP error! status: ${response.status}`, 'color: #F44336', 'color: #fff');
+                }
+                return response.text();
+              })
+              .then(data => {
+                const yamlToJson = jsyaml.load(data);
+                console.log(yamlToJson);
+                if (yamlToJson["changelog-highlight"]) {
+                    const mainNav = document.querySelector(".sk-main-content");
+                    if (mainNav) {
+                        mainNav.insertAdjacentHTML("beforebegin", `
+                                    <div id="update-notice" class="update-notice">
+                                        <span class="update-text">BetterKMR has updated to v${chrome.runtime.getManifest().version} - ${yamlToJson["changelog-highlight"]} Click here to read the change log.</span>
+                                        <span class="smaller-text">This notice will go away when you refresh.</span>
+                                    </div>
+                            `)
+                        document.getElementById("update-notice").addEventListener("click", () => {
+                            window.open(
+                                "https://interlabs-official.github.io/BetterKMR/docs/changelog/v1_1_1/",
+                                '_blank'
+                            );
+                        });
+                        chrome.storage.sync.set({'update_notice_closed': true});
+                    }
+                }
+        });
+    } catch (e) {
+        console.log(`%c[BetterKMR 📕] %cError occurred while loading update highlight: ${e}`, 'color: #F44336', 'color: #fff') ;
+    }
     });
 }
 

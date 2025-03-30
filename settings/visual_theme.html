@@ -262,6 +262,25 @@
         .save-button:hover {
             background-color: #3e8e41;
         }
+
+        .export-button {
+            position: absolute;
+            top: 20px;
+            right: 160px;
+            background-color: #4c8baf;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 100;
+        }
+        
+        .export-button:hover {
+            background-color: #4c8baf;
+        }
         
         /* New additions for element dialog */
         .add-element-button {
@@ -607,10 +626,9 @@
       justify-content: space-between;
       align-items: center;
       padding: 12px 16px;
-      width: 85%;
+      width: 100%;
       margin-bottom: 20px;
-      background-color: rgba(0, 0, 0, 0.507);
-      border: 1px solid rgba(70, 252, 242, 0.4);
+      background-color: rgba(0, 0, 0, 0.164);
       box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
       animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
       cursor: pointer;
@@ -638,14 +656,86 @@
     
     @keyframes glow {
       from {
-        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
+        box-shadow: 0 0 5px rgba(70, 252, 243, 0.1), 0 0 10px rgba(70, 252, 242, 0.05);
       }
       to {
-        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
+        box-shadow: 0 0 10px rgba(70, 252, 242, 0.1), 0 0 20px rgba(70, 252, 242, 0.05);
       }
     }
     .smaller-text {
       color: rgb(204, 204, 204);
+      text-align: right;
+    }
+    .dialog-overlay-fixed {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+    }
+
+    .dialog-box {
+        background: rgb(0,0,0);
+        background: linear-gradient(360deg, rgb(14, 14, 14) 0%, rgba(48,48,48,0.6082808123249299) 100%);
+        color: #fff;
+        font-family: 'Inter', sans-serif;
+        padding: 20px;
+        border-radius: 8px;
+        min-width: 300px;
+        text-align: center;
+    }
+
+    .dialog-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .dialog-content {
+        font-size: 1rem;
+        margin-bottom: 20px;
+    }
+
+    .dialog-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .dialog-button {
+        background: rgb(0,55,91);
+        background: linear-gradient(360deg, rgba(0,55,91,1) 0%, rgba(0,185,255,1) 100%);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+
+    .dialog-button:hover {
+        background-color: #0056b3;
+    }
+
+    .dialog-button-not {
+        background: rgb(0,0,0);
+        background: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(56,56,56,1) 100%);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+    }
+
+    .dialog-button-not:hover {
+        background-color: #4242423a;
     }
     </style>
       <link rel="stylesheet" href="../frameworks/codemirror/codemirror.min.css"></link>
@@ -679,6 +769,7 @@
       </div>
     </div>
     
+    <button id="export-button" class="export-button">Import/Export</button>
     <button id="save-button" class="save-button">Save Theme</button>
     
     <div class="settings-container">
@@ -710,6 +801,10 @@
               </label>
             </div>
           </div>
+          <div id="update-notice" class="update-notice">
+            <span class="update-text">If you find any bugs or glitches, or even want to suggest (please do!) please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
+            <span class="smaller-text">Thank you for using BetterKMR! (also please rate it on the Chrome Web Store!)</span>
+          </div>
         </div>
         
         <div id="tab-appearance" class="tab-content">
@@ -728,10 +823,6 @@
             <label class="setting-label" for="editor">Below is a preview of the compiled CSS BetterKMR builds. Note that you cannot modify the code below.<br>If you need to make changes to the CSS, it's suggested to use the Code Editor instead.<br>Interact with the box below to update the preview.</label>
             <textarea id="editor">/* CSS will be compiled here */</textarea>
           </div>
-        </div>
-        <div id="update-notice" class="update-notice">
-          <span class="update-text">If you find any bugs or glitches, or even want to suggest (please do!) please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
-          <span class="smaller-text">Thank you for using BetterKMR! (also please rate it on the Chrome Web Store!)</span>
         </div>
       </main>
     </div>

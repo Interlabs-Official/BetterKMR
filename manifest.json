@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BetterKMR",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "The ultimate revamp of Kamar (school.kiwi) for the web",
   "permissions": [
     "storage",
@@ -49,7 +49,9 @@
         "assets/images/wizard/*",
         "assets/images/thumbnails/*",
         "settings/*",
-        "frameworks/codemirror/*"
+        "frameworks/codemirror/*",
+        "src/fonts/*",
+        "src/pages/*.html"
       ],
       "matches": ["https://*.school.kiwi/*"]
     }

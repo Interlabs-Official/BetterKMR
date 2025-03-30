@@ -5,841 +5,164 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BetterKMR Settings</title>
   <!-- Import the Inter font -->
-  <style>
-    /* Base reset & font */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; color: #ccc; font-weight: 400; }
-    
-    /* Container & Layout */
-    .settings-container { display: flex; min-height: 100vh; }
-    .sidebar { width: 250px; background-color: #111111; border-right: 1px solid #444;}
-    .sidebar ul { list-style: none; padding: 0; }
-    .tab-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
-    .tab-item.active {
-        box-shadow: inset 4px 0 #2979ff;
-        color: #fff;
+   <style>
+    body {
+      background-color: #0f0f0f;
+      visibility: hidden;
     }
-    .tab-item:hover:not(.active) {
-        box-shadow: inset 4px 0 #2978ff7e;
-    }
-    .tab-item:hover {
-        background: #1b1b1ba9;
-    }
-    .content { flex: 1; padding: 20px; }
-    .tab-content { display: none; animation: fade-in 0.3s ease; }
-    .tab-content.active { display: block; }
+.rainbow_text_animated {
+    background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rainbow_animation 6s ease-in-out infinite;
+    background-size: 400% 100%;
+}
 
-    @keyframes fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
+@keyframes rainbow_animation {
+    0%,100% {
+        background-position: 0 0;
     }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+
+    50% {
+        background-position: 100% 0;
     }
 }
 
-    /* Nested Tabs (for sub-tab controls inside a tab) */
-    .nested-tabs { margin-top: 20px; }
-    .nested-tab-list {
-      list-style: none;
-      display: flex;
-      border-bottom: 1px solid #444;
-      margin-bottom: 10px;
-      padding-left: 0;
-    }
-    .nested-tab-item {
-      font-size: 20px;
-      padding: 10px 15px;
-      cursor: pointer;
-      color: #ccc;
-      border: 1px solid transparent;
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-      margin-right: 5px;
-    }
-    .nested-tab-item.active {
-      /* background-color: #3498db; */
-      box-shadow: inset 0 -4px 2px -2px #2978ff7e;
-      color: #fff;
-      /* border-color: #3498db; */
-    }
-    .nested-tab-content { display: none; }
-    .nested-tab-content.active { display: block; }
-
-   /* Settings items */
-    .setting-item { border-bottom: 1px solid #444; padding: 10px 0; }
-    .setting-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      cursor: pointer;
-    }
-    .setting-label { font-size: 20px; font-weight: 300; }
-    
-    /* Info tooltip */
-    .info-icon {
-      margin-left: 8px;
-      cursor: help;
-      position: relative;
-      display: inline-block;
-    }
-    .info-icon:hover .tooltip { visibility: visible; opacity: 1; }
-    .tooltip {
-        visibility: hidden;
-    width: 200px;
-    background-color: #252525;
-    color: #fff;
-    text-align: center;
-    border-radius: 8px;
-    padding: 10px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -100px;
-    opacity: 0;
-    transition: opacity 0.3s, visibility 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    font-size: 0.9em;
-    }
-    .tooltip::after {
-      content: "";
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: #555 transparent transparent transparent;
-    }
-    
-    /* Control elements */
-    .control { margin-left: auto; }
-    
-    /* Toggle Switch */
-    .toggle-switch { position: relative; width: 50px; height: 24px; }
-    .toggle-switch input { display: none; }
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #ccc;
-      transition: .4s;
-      border-radius: 24px;
-    }
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .4s;
-      border-radius: 50%;
-    }
-    .toggle-switch input:checked + .slider { background-color: #3498db; }
-    .toggle-switch input:checked + .slider:before { transform: translateX(26px); }
-    
-    /* Dropdown & Text Box */
-    .dropdown, .text-box {
-      padding: 5px;
-      background-color: #444;
-      color: #fff;
-      border: none;
-      border-radius: 4px;
-    }
-    
-    /* Button */
-    .blue-button {
-      background-color: #3498db;
-      color: white;
-      padding: 5px 10px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    
-    /* Child Settings (collapsible) */
-    .child-settings {
-      margin-top: 10px;
-      margin-left: 20px;
-      border-left: 2px solid #3498db;
-      padding-left: 10px;
-      display: none;
-    }
-    .expand-arrow { font-size: 16px; margin-left: 10px; }
-
-    .betterkmr-logo {
-        background-image: url('../assets/images/logo.png');
-        background-repeat: no-repeat;
-    }
-
-    /* theme selector */
-    /* Container for the entire grid */
-    .theme-grid {
-      /* display: grid; */
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1rem;
-      padding: 1rem;
-      max-width: 1200px;
-      margin: 0 auto; /* Center the grid horizontally */
-      animation: fade-in 0.3s ease;
-    }
-
-    /* Each card container */
-    .theme-card {
-      background-color: #1b1b1b;
-      border-radius: 8px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Thumbnail image */
-    .theme-card img {
-      position: relative;
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      cursor: pointer;
-    }
-
-    /* Card content area */
-    .theme-content {
-      padding-top: 1rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
-      padding-bottom: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      gap: 0.5rem;
-    }
-
-    /* Title row: space between title and download button */
-    .title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* Title styling */
-    .theme-title {
-      font-size: 1.2rem;
-      margin: 0;
-      flex: 1;
-    }
-
-    /* Download button styling */
-    .download-button {
-      background-color: #007bff;
-      color: #fff;
-      border: none;
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.9rem;
-    }
-    .download-button:hover {
-      background-color: #0056b3; /* Darker blue on hover */
-    }
-
-    /* Author styling */
-    .theme-author {
-      font-style: italic;
-      font-size: 0.9rem;
-      color: #bbb;
-      margin: 0;
-    }
-
-    /* Description styling */
-    .theme-description {
-      font-size: 0.95rem;
-      margin: 0;
-    }
-
-    .theme-image-wrapper {
-      position: relative;
-      width: 100%;
-      height: 150px;
-      overflow: hidden;
-    }
-
-    .theme-image-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .badge-container {
-      position: absolute;
-      bottom: 5px;
-      right: 5px;
-      display: flex; /* Use flexbox to align badges horizontally */
-      gap: 5px; /* Space between badges */
-    }
-
-    .badge {
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      padding: 3px 6px;
-      border-radius: 4px;
-      pointer-events: none;
-      white-space: nowrap; /* Prevent text from wrapping */
-    }
-
-    .external-js-badge {
-      background-color: rgba(255, 0, 0, 0.8);
-    }
-
-    .recommended-badge {
-      background-color: rgba(0, 128, 255, 0.8);
-    }
-
-    .animated-badge {
-      background-color: rgba(156, 102, 0, 0.8);
-    }
-
-    .experimental-badge {
-      background-color: rgba(120, 131, 26, 0.8);
-    }
-
-    #greyed-out-applied {
-        background-color: #555 !important;
-        color: #fff !important;
-    }
-
-    #greyed-out-applied:disabled {
-        cursor: not-allowed;
-    }
-
-    #notification-container {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-    }
-
-    .notification {
-        background-color: #f9c2c2; /* Default color */
-        color: #333;
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        transition: opacity 0.5s ease;
-        cursor: pointer;
-    }
-
-    .notification.hidden {
-        opacity: 0;
-    }
-
-    .dialog-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Semi-transparent */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-    }
-
-    .dialog-box {
-        background: #1d1d1d;
-        color: #fff;
-        font-family: 'Inter', sans-serif;
-        padding: 20px;
-        border-radius: 8px;
-        min-width: 300px;
-        text-align: center;
-    }
-
-    .dialog-title {
-        font-size: 1.2rem;
-        margin-bottom: 10px;
-    }
-
-    .dialog-content {
-        font-size: 1rem;
-        margin-bottom: 20px;
-    }
-
-    .dialog-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-    }
-
-    .dialog-button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background 0.2s;
-    }
-
-    .dialog-button:hover {
-        background-color: #0056b3;
-    }
-
-    .dialog-button-not {
-        background-color: #6b6b6b3d;
-        color: #fff;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: background 0.2s;
-    }
-
-    .dialog-button-not:hover {
-        background-color: #4242423a;
-    }
-
-    #new-custom-theme-button {
-    position: absolute;
-    top: 170px;
-    right: 50px;
-    background-color: #4c91af;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  #new-custom-theme-button:hover {
-    background-color: #1a7da7;
-  }
-
-    .tag-container {
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-    }
-
-    .tag-scroll-wrapper {
-      display: flex;
-      padding-bottom: 5px;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-    }
-
-    .tag-scroll-wrapper::-webkit-scrollbar {
-      display: none;
-    }
-
-    .theme-tag {
-      display: inline-block;
-      padding: 0.3em 0.5em;
-      border-radius: 0.4em;
-      font-size: 1em;
-      margin-right: 0.5em;
-      margin-top: 7.5px;
-      white-space: nowrap;
-      color: white;
-    }
-
-    .theme-tag.default {
-      background-color: #77777785;
-    }
-
-    .theme-tag.recommended {
-      background-color: #4caf4f81;
-    }
-
-    .theme-tag.experimental {
-      background-color: #bdba3081;
-    }
-
-    .theme-tag.space {
-      background-color: #3f51b585;
-    }
-
-    .theme-tag.dark {
-      background-color: #21212185;
-    }
-
-    .theme-tag.light {
-      background-color: #f5f5f5;
-      color: black;
-    }
-    /* loader */
-    .loader {
-        transform: rotateZ(45deg);
-        perspective: 1000px;
-        border-radius: 50%;
-        width: 48px;
-        height: 48px;
-        color: #0077ffbe;
-        margin-top: 15px;
-      }
-        .loader:before,
-        .loader:after {
-          content: '';
-          display: block;
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: inherit;
-          height: inherit;
-          border-radius: 50%;
-          transform: rotateX(70deg);
-          animation: 1s spin linear infinite;
-        }
-        .loader:after {
-          color: #fff;
-          transform: rotateY(70deg);
-          animation-delay: .4s;
-        }
-
-      @keyframes rotate {
-        0% {
-          transform: translate(-50%, -50%) rotateZ(0deg);
-        }
-        100% {
-          transform: translate(-50%, -50%) rotateZ(360deg);
-        }
-      }
-
-      @keyframes rotateccw {
-        0% {
-          transform: translate(-50%, -50%) rotate(0deg);
-        }
-        100% {
-          transform: translate(-50%, -50%) rotate(-360deg);
-        }
-      }
-
-      @keyframes spin {
-        0%,
-        100% {
-          box-shadow: .2em 0px 0 0px currentcolor;
-        }
-        12% {
-          box-shadow: .2em .2em 0 0 currentcolor;
-        }
-        25% {
-          box-shadow: 0 .2em 0 0px currentcolor;
-        }
-        37% {
-          box-shadow: -.2em .2em 0 0 currentcolor;
-        }
-        50% {
-          box-shadow: -.2em 0 0 0 currentcolor;
-        }
-        62% {
-          box-shadow: -.2em -.2em 0 0 currentcolor;
-        }
-        75% {
-          box-shadow: 0px -.2em 0 0 currentcolor;
-        }
-        87% {
-          box-shadow: .2em -.2em 0 0 currentcolor;
-        }
-      }
-      .search-container {
-       	    margin: 15px 0;
-       	    width: 100%;
-       	  }
-       	  
-       	  .search-wrapper {
-       	    position: relative;
-       	    display: flex;
-       	    align-items: center;
-       	    width: 100%;
-       	    max-width: 600px;
-       	    margin: 0 auto;
-       	    background: #1b1b1b;
-       	    border-radius: 8px;
-       	    border: 1px solid #444;
-       	    overflow: hidden;
-       	  }
-       	  
-       	  .search-icon {
-       	    padding: 0 10px;
-       	    font-style: normal;
-       	    color: #777;
-       	  }
-       	  
-       	  #theme-search-input {
-       	    flex: 1;
-       	    background: transparent;
-       	    border: none;
-       	    color: #fff;
-       	    padding: 12px 0;
-       	    font-size: 16px;
-       	    font-family: 'Inter', sans-serif;
-       	    outline: none;
-       	  }
-       	  
-       	  #theme-search-input::placeholder {
-       	    color: #777;
-       	  }
-       	  
-       	  #clear-search-button {
-       	    background: transparent;
-       	    border: none;
-       	    color: #777;
-       	    padding: 0 10px;
-       	    font-size: 16px;
-       	    cursor: pointer;
-       	  }
-       	  
-       	  #clear-search-button:hover {
-       	    color: #fff;
-       	  }
-       	  
-       	  #no-theme-results {
-       	    text-align: center;
-       	    margin-top: 20px;
-       	    color: #999;
-       	    font-size: 1.1rem;
-       	  }
-       	  
-       	  /* Make tags more clickable */
-       	  .theme-tag {
-       	    cursor: pointer;
-       	    transition: opacity 0.2s ease;
-       	  }
-       	  
-       	  .theme-tag:hover {
-       	    opacity: 0.8;
-       	  }
-
-          /* konami code animation styles */
-          @keyframes shake {
-            0% { transform: translate(0, 0) rotate(0deg); }
-            10% { transform: translate(-5px, -5px) rotate(-1deg); }
-            20% { transform: translate(5px, -5px) rotate(1deg); }
-            30% { transform: translate(-5px, 5px) rotate(0deg); }
-            40% { transform: translate(5px, 5px) rotate(1deg); }
-            50% { transform: translate(-5px, -5px) rotate(-1deg); }
-            60% { transform: translate(5px, -5px) rotate(0deg); }
-            70% { transform: translate(-5px, 5px) rotate(-1deg); }
-            80% { transform: translate(-5px, -5px) rotate(1deg); }
-            90% { transform: translate(5px, -5px) rotate(0deg); }
-            100% { transform: translate(0, 0) rotate(0deg); }
-          }
-          
-          .konami-shake {
-            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both infinite;
-            transform-origin: center center;
-          }
-          
-          .konami-shake-fadeout {
-            animation-duration: 3s;
-            animation-iteration-count: 1;
-          }
-          
-          @keyframes glow-pulse {
-            0% { box-shadow: 0 0 5px 2px rgba(255, 215, 0, 0.5); }
-            50% { box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.8); }
-            100% { box-shadow: 0 0 5px 2px rgba(255, 215, 0, 0.5); }
-          }
-          
-          .tab-glow {
-            animation: glow-pulse 1.5s ease-in-out infinite;
-            border-radius: 4px;
-            opacity: 0;
-            animation: glow-pulse 1.5s ease-in-out infinite, fade-in-out 4s forwards;
-          }
-          
-          @keyframes fade-in-out {
-            0% { opacity: 0; }
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { opacity: 0; }
-          }
-          
-          .konami-reveal {
-            animation: glow-pulse 1.5s ease-in-out 2;
-            position: relative;
-            z-index: 100;
-          }
-          
-          #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-          }
-
-          #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #0f0f0f;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            transition: opacity 0.6s ease-out, visibility 0.6s ease-out;
-          }
-
-          .loading-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-          }
-
-          .loading-logo {
-            font-size: 36px;
-            font-weight: 600;
-            color: #fff;
-            background: linear-gradient(90deg, #2979ff, #56CCF2);
-            background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-          }
-
-          .loading-text {
-            color: #ccc;
-            font-size: 16px;
-            margin-top: 10px;
-          }
-
-          .loading-spinner {
-            position: relative;
-            width: 70px;
-            height: 70px;
-          }
-
-          .spinner-circle {
-            position: absolute;
-            border: 4px solid transparent;
-            border-top-color: #2979ff;
-            border-radius: 50%;
-            width: 100%;
-            height: 100%;
-            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
-          }
-
-          .spinner-circle-inner {
-            position: absolute;
-            border: 4px solid transparent;
-            border-radius: 50%;
-            width: 60%;
-            height: 60%;
-            top: 20%;
-            left: 20%;
-            border-right-color: #56CCF2;
-            animation: spin 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite reverse;
-          }
-
-          @keyframes spin {
-            0% {
-              transform: rotate(0deg);
-            }
-            100% {
-              transform: rotate(360deg);
-            }
-          }
-
-          .hidden {
-            opacity: 0;
-            visibility: hidden;
-          }
-
-              /* Update Notice */
-    .update-notice {
-      position: fixed;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      background-color: rgba(0, 0, 0, 0.507);
-      border: 1px solid rgba(70, 252, 242, 0.4);
-      box-shadow: 0 0 10px rgba(70, 252, 242, 0.3), 0 0 20px rgba(70, 252, 242, 0.1);
-      animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
-      cursor: pointer;
-      bottom: 0;
-      z-index: 500;
-    }
-    
-    .update-text {
-      color: rgba(70, 252, 242, 1);
-      font-weight: 400;
-      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
-    }
-    
-    .close-notice {
-      background: transparent;
-      border: none;
-      color: rgba(70, 252, 242, 0.8);
-      font-size: 16px;
-      cursor: pointer;
-      padding: 0 0 0 10px;
-      text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
-    }
-    
-    .close-notice:hover {
-      color: #fff;
-    }
-    
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 5px rgba(70, 252, 242, 0.3), 0 0 10px rgba(70, 252, 242, 0.1);
-      }
-      to {
-        box-shadow: 0 0 10px rgba(70, 252, 242, 0.5), 0 0 20px rgba(70, 252, 242, 0.3);
-      }
-    }
-    .smaller-text {
-      color: rgb(204, 204, 204);
-    }
-
-    .gradient-background {
-  background: linear-gradient(200deg,#0000bb,#111111);
-  background-size: 120% 120%;
-  animation: gradient-animation 6s ease infinite;
+#nested-tab-custom-themes {
+  padding: 0.5rem;
 }
 
-@keyframes gradient-animation {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+#new-custom-theme-button {
+  background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  color: white;
+  position: absolute;
+  top: 170px;
+  right: 30px;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.sidebar-transparency {
-  background-color: #00000047;
+#new-custom-theme-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
 
-a {
+.custom-theme-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-theme-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.theme-name {
+  font-size: 18px;
+  font-weight: 500;
   color: #fff;
 }
-  </style>
+
+.theme-actions button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  margin-left: 8px;
+}
+
+.theme-actions button:hover {
+  opacity: 0.9;
+}
+
+.edit-theme, .apply-custom-theme, .download-button {
+  font-family: 'Inter', sans-serif;
+  background: rgb(0,55,91);
+  background: linear-gradient(360deg, rgba(0,55,91,1) 0%, rgba(0,185,255,1) 100%);
+  color: white;
+}
+
+.add-js-theme {
+  font-family: 'Inter', sans-serif;
+  background: rgb(91,84,0);
+  background: linear-gradient(360deg, rgba(91,84,0,1) 0%, rgba(241,255,0,1) 100%);
+  color: white;
+}
+
+.delete-theme {
+  font-family: 'Inter', sans-serif;
+  background: rgb(91,0,0);
+  background: linear-gradient(360deg, rgba(91,0,0,1) 0%, rgba(255,0,0,1) 100%);
+  color: white;
+}
+.edit-theme:hover, .apply-custom-theme:hover, .download-button:hover, .add-js-theme:hover, .delete-theme:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Empty state styling */
+#custom-themes-list:empty::after {
+  content: "No custom themes yet. Click 'New' to create one!";
+  display: block;
+  text-align: center;
+  color: #6b7280;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.vtt-button {
+      background: rgb(0,65,10);
+      background: linear-gradient(360deg, rgba(0,65,10,1) 0%, rgba(0,175,41,1) 100%);
+        color: #fff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: background 0.2s;
+}
+
+.vtt-button:hover {
+  background: rgb(0,65,10);
+  background: linear-gradient(360deg, rgba(0,65,10,1) 0%, rgba(0,190,49,1) 100%);
+}
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 4px solid #FFF;
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  margin-bottom: 10px;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+   
+   </style>
+   <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
 </head>
 <body>
   <div id="loading-screen">
@@ -860,7 +183,7 @@ a {
         <li data-tab="general" class="tab-item active">General</li>
         <li data-tab="themes" class="tab-item">Themes</li>
         <li data-tab="about-and-contact" class="tab-item">About & Contact</li>
-        <li data-tab="go-back" class="tab-item">Website & Docs ↗</li>
+        <li data-tab="go-back" class="tab-item">Website & Docs <span style="font-size: 14px;">↗</span></li>
         <li data-tab="advanced" class="tab-item" style="visibility: hidden;" id="advanced-tab-header">Developer Settings</li>
       </ul>
     </aside>
@@ -891,12 +214,12 @@ a {
           <ul class="nested-tab-list">
             <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
             <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
-            <li data-nested-tab="custom-themes" class="nested-tab-item">✨ Custom</li>
+            <li data-nested-tab="custom-themes" class="nested-tab-item rainbow_text_animated">Custom</li>
             <li data-nested-tab="submit-your-themes" id="submit-theme-tab" class="nested-tab-item">Submit Theme ↓</li>
           </ul>
           <!-- Nested Tab Contents -->
           <div id="nested-tab-default-themes" class="nested-tab-content active">
-            <div class="theme-card" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+            <div class="theme-card school-colours" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
             <div class="search-container">
               <div class="search-wrapper">
                 <i class="search-icon">🔍</i>
@@ -923,42 +246,28 @@ a {
             <div style="display: flex; align-items: center; justify-content: space-between; margin: 0 20px;">
               <div style="flex: 1;">
                 <p style="text-align: left; font-weight: 300; font-size: 18px;">
-                  When/if you submit your theme and its CSS, our team will review your submission and if approved, your theme will be featured in the Default Themes section for all BetterKMR users to enjoy!<br><br>
+                  Last updated 30/03/2025<br><br>
+                  When/if you submit your theme and its .bkt file, our team will review your submission and if approved, your theme will be featured in the Default Themes section for all BetterKMR users to enjoy!<br><br>
                   Make sure your theme has been thoroughly tested for optimal compatibility and user experience. High-quality submissions have a better chance of being approved. You also must agree to the conditions at the bottom of the page.<br><br>
-                  <p style="font-size: 23px;">How do I get my custom theme's CSS?</p><br>
+                  <h1>Main Questions</h1><br>
+                  <p style="font-size: 23px;">How do I get my custom theme file?</p><br>
                   <p style="text-align: left; font-weight: 300; font-size: 18px;">
-                    1. Just find your theme in the Custom Themes tab and click on Edit.<br>
-                    2. Click on "Code Editor" when the dialog shows up.<br>
-                    3. Copy and paste the <b>whole CSS</b> into wherever you're going to upload it!<br>
+                    1. Just find your theme in the Custom tab and click on Edit.<br>
+                    2. Click on "Visual Theme Editor" when the dialog shows up.<br>
+                    3. Click on "Import/Export" and then click Export to File. You should then get a .bkt file you can attach to the form. <br>
                   </p><br>
                   <p style="font-size: 23px;">How can I submit my theme?</p><br>
                   <p style="text-align: left; font-weight: 300; font-size: 18px;">
-                    There are two ways you can get your theme on the "Default Themes" page as of currently:<br><br>
-                    1. Submitting a pull request via our GitHub repository (fastest, but requires some knowledge of GitHub) (a guide may be coming soon)<br>
-                    2. Emailing to us <a href="mailto:interlabsofficial@gmail.com?subject=Theme%20Submission&body=Theme%20Name%3A%20NAME%20HERE%0ATheme%20Author%3A%20NAME%20HERE%0ATheme%20Description%20(Max%2032%20characters)%3A%20DESCRIPTION%20HERE%0ATheme%20Tags%20(Optional)%3A%20TAGS%20HERE%0AThumbnail%20Image%20(can%20be%20background%20image%2C%20link%20or%20upload%20below)%3A%20IMAGE%20HERE%0A%0ASubmit%20your%20theme%20as%20a%20css%20file%2C%20or%20paste%20the%20contents%20below.%0A%0AAny%20updates%2C%20email%20us%20again%20through%20this%20thread." target="_blank">here</a>.<br>
-                    <br>When you submit a theme, you must include your theme name, description (max 32 characters), author (your name), tags w/ colours, and the complete CSS. Note that there is a maximum of 2 tags (16 characters per tag max).
+                    There's now only one way you can get your theme on the "Default Themes" page as of currently:<br><br>
+                    Read the guidelines below and <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3vJEGhCO8UhHTNtoQ9BaIRYspHAVyVagzs5J_sGaFNVx3fA/viewform" target="_blank">fill out the form here</a>. If you don't know how to get your theme's .bkt file, refer above "How do I get my custom theme file?"<br>
+                    <br>When you submit a theme, you must include your theme name, description (max 50 characters), author (your name), tags w/ colours, and the complete .bkt file. Note that there is a maximum of 2 tags (16 characters per tag max).
                   </p>
                 </p>
               </div>
               <div style="margin-left: 20px;">
                 <img src="../assets/images/your_theme_img.png" alt="Theme Submission" width="512" height="512">
               </div>
-            </div>
-            <br><p style="text-align: left; font-weight: 300; font-size: 18px; white-space: pre; margin-left: 20px;">
-<a href="mailto:interlabsofficial@gmail.com?subject=Theme%20Submission&body=Theme%20Name%3A%20NAME%20HERE%0ATheme%20Author%3A%20NAME%20HERE%0ATheme%20Description%20(Max%2032%20characters)%3A%20DESCRIPTION%20HERE%0ATheme%20Tags%20(Optional)%3A%20TAGS%20HERE%0AThumbnail%20Image%20(can%20be%20background%20image%2C%20link%20or%20upload%20below)%3A%20IMAGE%20HERE%0A%0ASubmit%20your%20theme%20as%20a%20css%20file%2C%20or%20paste%20the%20contents%20below.%0A%0AAny%20updates%2C%20email%20us%20again%20through%20this%20thread." target="_blank">When sending an email, the email should/must look something like this:</a><br>
-<code>From: YOUR NAME HERE <youremailhere@example.com>
-To: interlabsofficial@gmail.com
-Subject: [Theme Submission] THEME NAME HERE
-Date: DATE HERE
---text follows this line--
-Theme Name: NAME HERE
-Theme Author: NAME HERE
-Theme Description (Max 32 characters): DESCRIPTION HERE
-Theme Tags (Optional): TAGS HERE
-Thumbnail Image (can be background image, link or upload below): IMAGE HERE
-                
-Submit your theme as a CSS file, or paste the contents below.
-Any updates, email us again through this thread.</code><br>
+            </div><br><h1 style="margin-left: 20px;">Frequently Asked Questions</h1><br>
 <p style="font-size: 23px; margin-left: 20px;">My theme has been approved! When will I be able to see it?</p><br>
 <p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">
   Your theme (should) be included in the next update, assuming that the current update isn't awaiting review in the Chrome Web Store.
@@ -966,9 +275,10 @@ Any updates, email us again through this thread.</code><br>
 </p><br>
 <p style="font-size: 23px; margin-left: 20px;">How can I push an update to my theme?</p><br>
 <p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">
-  Just email us again through the already existing thread, stating what you've changed, send over the whole new CSS, and if it gets
-  <br>approved, it (should) be available in the next update. The same applies for pull requests, but make a new pull request.
+  Just submit the form again (with the same email address you used in the form), stating what you've changed, send over the new .bkt file, and if it gets
+  <br>approved, it (should) be available in the next update.
 </p><br>
+<br><h1 style="margin-left: 20px;">Theme Conditions</h1><br>
 <p style="font-size: 23px; margin-left: 20px;">Conditions of submitting/updating a theme:</p><br>
 <p style="text-align: left; font-weight: 300; font-size: 18px; margin-left: 20px;">
   You must agree to the <a href="https://github.com/InterLabsOfficial/BetterKMR/blob/main/LICENSE" target="_blank">AGPL-3.0 license</a>.
@@ -1017,11 +327,23 @@ Any updates, email us again through this thread.</code><br>
         <h3 style="font-weight: 300;">Found an issue or a bug? You can report it on our <a href="https://discord.gg/4MkRmFmHz2" target="_blank" style="color: #fff;">Discord</a> or most preferably on our <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub</a> repository.</h3>
         <h3 style="font-weight: 300;">Just want to email us about anything? Email us at <a href="mailto:interlabsofficial@gmail.com" style="color: #fff;">interlabsofficial@gmail.com</a>.</h3>
      </div>
-      <div id="tab-advanced" class="tab-content">
-        <h1>Advanced / Developer Settings</h1>
-        <h3 style="font-weight: 300;">This is the Advanced section.</h3>
-        <h3 style="font-weight: 300;">Some parts of this section are only available when built directly from the GitHub repo.</h3>
+    <div id="tab-advanced" class="tab-content">
+      <h1>Advanced / Developer Settings</h1>
+      <h3 style="font-weight: 300;">This is the Advanced section.</h3>
+      <h3 style="font-weight: 300;">Some parts of this section are only available when built directly from the GitHub repo.</h3>
+      
+      <div class="setting-item">
+        <div class="setting-header">
+          <span class="setting-label">Settings Theme</span>
+          <div class="control">
+            <select id="settings-theme-selector" class="dropdown">
+              <option value="default">Default</option>
+              <option value="settings-default-visual-refresh-01b_beta">Visual Refresh (Beta): settings-default-visual-refresh-01b_beta</option>
+            </select>
+          </div>
+        </div>
       </div>
+    </div>
     </main>
   </div>
   <script src="lib.js"></script>

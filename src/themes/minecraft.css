@@ -1,0 +1,114 @@
+@font-face {
+  font-family: "Monocraft";
+  src: url("../../src/fonts/Monocraft.ttf") format("truetype");
+}
+body {
+  font-family: "Monocraft" !important;
+  font-weight: 400 !important;
+}
+
+body .sk_school_name {
+  font-family: "Monocraft", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+body .sk_school_subheading {
+  font-family: "Monocraft", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+.sk_page {
+  background-color: #000000!important;
+  background-image: url("/assets/images/backgrounds/minecraft-landscape.jpg") !important;
+  background-color: #000000 !important;
+
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+}
+.sk_header {
+  background-color: #000000!important;
+  background-image: url("/assets/images/backgrounds/minecraft-landscape.jpg") !important;
+  background-color: #000000 !important;
+
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+}
+
+.is-today {
+  background-color: rgba(76, 175, 80, 0.5)!important;
+}
+    
+.sk_school_name {
+  color: #f7f7f7!important;
+  text-shadow: #008509 2px 2px;
+}
+.sk_school_subheading {
+  color: #f7f7f7!important;
+  text-shadow: #008509 2px 2px;
+}
+    
+.btn-success {
+  background: linear-gradient(to bottom, #49cea2, #00849b)!important;
+  color: #ffffff!important;
+}
+.btn-info {
+  background: linear-gradient(to bottom, #28a3a1, #003363)!important;
+  color: #ffffff!important;
+}
+.btn-danger {
+  background: linear-gradient(to bottom, #d80000, #640000)!important;
+  color: #ffffff!important;
+}
+.btn-warning {
+  background: linear-gradient(to bottom, #edff4c, #849b00)!important;
+  color: #ffffff!important;
+}
+    
+body .sk_nav {
+  background: rgba(70, 175, 77, 0.5)!important;
+  color: #ffffff!important;
+  box-shadow: rgba(52, 131, 58, 0.5) 5px 5px;
+}
+body .sk_nav_text {
+  color: #ffffff!important;
+}
+
+body .nav-item.active .sk_nav_text {
+  color: #63c9ff!important;
+}
+body .sk_nav_text.nav-link.nav-link:hover {
+  color: #8fd8ff!important;
+}
+
+body .sk_text.sk_page.sk-main-content {
+  background: rgba(0, 0, 0, 0.5)!important;
+  color: #ffffff!important;
+}
+body .d-flex {
+  color: #ffffff!important;
+}
+body .sk_table {
+  color: #ffffff!important;
+}
+
+body .sk_btn.active, body .sk_btn:hover {
+  background-color: #107556!important;
+  color: #ffffff!important;
+}
+
+body .sk_thead_cell, body .sk_thead th {
+  background-color: rgba(55, 174, 63, 0.8)!important;
+}
+.sk_border {
+  border-color: #34833a!important;
+}
+
+.sk_btn {
+  background-color: #024733!important;
+  color: #ffffff!important;
+}
+

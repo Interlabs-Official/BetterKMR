@@ -26,3 +26,5 @@ trusted-authors:
   - Solar
   - Convy32
   - Samuel H
+# Appears on "BetterKMR has updated to <version> - <changelog-highlight> Click here to read the change log."
+changelog-highlight: Import/Export Themes & More!

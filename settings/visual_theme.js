@@ -91,14 +91,18 @@ const availableElements = [
       { name: "By default in Kamar, the background colour is completely transparent.", type: "tooltip", visibleWhen: "Main Content Box" },
       { name: "Main Content Box Background Colour (sk_main_content)", type: "color", default: "#000000", visibleWhen: "Main Content Box" },
       { name: "Main Content Box Text Colour (sk_main_content)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
+      { name: "Navbar/Card Background Colour (card-body)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
       { name: "Table Colour Scheming", type: "toggle", default: false, controlsVisibility: ["Table Header Colour (sk_thead_cell)", "Table Border Colour (sk_border)" ]},
       { name: "Table Header Colour (sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
-      { name: "Table Border Colour (sk_border)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
+      { name: "Table Border Colour (sk_border, sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
       { name: "Generic", type: "toggle", default: false, controlsVisibility: ["Button Colour (sk_btn)", "Button Text Colour (sk_btn)"]},
       { name: "Button Colour (sk_btn)", type: "color", default: "#000000", visibleWhen: "Generic" },
       { name: "Button Text Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
       { name: "Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#000000", visibleWhen: "Generic" },
       { name: "Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
+      { name: "Button Border Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_border_colour" },
+      { name: "Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_hover_colour" },
+      { name: "Link Text Colour (a)", type: "color", default: "#0066ff", visibleWhen: "Generic", uniqueId: "a_link_text_colour" },
     ]
   },
   {
@@ -577,44 +581,51 @@ function addElement(element) {
       const deleteBtn = document.getElementById(propId);
       if (deleteBtn) {
         deleteBtn.addEventListener('click', () => {
-          // Find the upload control this button is associated with
-          const uploadControlName = property.visibleWhen;
-          const uploadPropId = `${element.id}-${uploadControlName.replace(/\s+/g, '-')}`;
-          const dataInput = document.getElementById(`${uploadPropId}-data`);
-          const preview = document.getElementById(`${uploadPropId}-preview`);
-          const dropArea = document.getElementById(`${uploadPropId}-drop-area`);
-          
-          if (dataInput && preview && dropArea) {
-            // Clear the data
+          const uploadId = propId.replace('-Delete-Uploaded-Image', '-Or-Upload-Background-Image');
+          const fileInput = document.getElementById(uploadId);
+          const dataInput = document.getElementById(`${uploadId}-data`);
+          const previewImg = document.getElementById(`${uploadId}-img`);
+          const preview = document.getElementById(`${uploadId}-preview`);
+          const dropArea = document.getElementById(`${uploadId}-drop-area`);
+          const infoDisplay = document.getElementById(`${uploadId}-info`);
+
+          if (fileInput) {
+            fileInput.value = '';
+          }
+
+          if (dataInput) {
             dataInput.value = '';
-            // Hide preview, show drop area
+            dataInput.setAttribute('data-has-image', 'false');
+          }
+
+          if (previewImg) {
+            previewImg.src = '';
+          }
+          
+          if (preview) {
             preview.style.display = 'none';
+          }
+          if (dropArea) {
             dropArea.style.display = 'block';
-            // Hide this button
-            deleteBtn.parentElement.style.display = 'none';
+          }
+          
+          if (infoDisplay) {
+            infoDisplay.textContent = '';
+          }
+
+          if (dataInput) {
+            dataInput.dispatchEvent(new Event('change'));
           }
         });
       }
     }
   });
   
-  // Setup remove button
   const removeButton = addedElement.querySelector('.added-element-remove');
   removeButton.addEventListener('click', () => removeElement(element.id));
 }
 
-function handleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay) {
-  if (!file.type.match('image.*')) {
-    alert('Please select an image file');
-    return;
-  }
-  
-  // Check file size (limit to 5MB)
-  if (file.size > 5 * 1024 * 1024) {
-    alert('Image is too large. Please select an image under 5MB.');
-    return;
-  }
-  
+function actualHandleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay) {
   const reader = new FileReader();
   
   reader.onload = (e) => {
@@ -624,22 +635,61 @@ function handleImageUpload(file, dataInput, previewImg, preview, dropArea, infoD
     preview.style.display = 'block';
     dropArea.style.display = 'none';
     
-    // Update image info
     updateImageInfo(base64data, infoDisplay);
     
-    // Trigger change event on dataInput to update visibility of controlled elements
     dataInput.dispatchEvent(new Event('change'));
     
-    // Update the attribute to trigger MutationObserver
     dataInput.setAttribute('data-has-image', 'true');
   };
   
   reader.readAsDataURL(file);
 }
 
-// Add function to update image info display
+function handleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay) {
+  if (!file.type.match('image.*')) {
+    createNotification("Please select an image file.", "#e74c3c", "#ffffff");
+    return;
+  }
+  
+  if (file.size > 5 * 1024 * 1024) {
+    createNotification("Image is too large! Please select an image under 5MB.", "#e74c3c", "#ffffff");
+    return;
+  }
+
+  const img = new Image();
+  img.onload = () => {
+    if (img.width < 800 || img.height < 600) {
+      createDialog({
+        title: 'Small Image Warning',
+        content: `This image is quite small, as it is less than 800x600 pixels, the bare minimum.<br>Do you want to use this image? Note that there may be some low quality pixelation issues.<br><br>Selected image width & height: ${img.width}×${img.height} pixels.`,
+        buttons: [
+          {
+            text: 'Yes',
+            callback: () => {
+              actualHandleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay);
+            }
+          },
+          {
+            text: 'No',
+            callback: () => {
+              URL.revokeObjectURL(img.src);
+              img.src = '';
+              const fileInput = document.querySelector(`input[type="file"][id$="-Or-Upload-Background-Image"]`);
+              if (fileInput) {
+                fileInput.value = '';
+              }
+            }
+          }
+        ]
+      });
+    } else {
+      actualHandleImageUpload(file, dataInput, previewImg, preview, dropArea, infoDisplay);
+    }
+  };
+  img.src = URL.createObjectURL(file);
+}
+
 function updateImageInfo(base64data, infoDisplay) {
-  // Calculate approximate size
   const approxSize = Math.round((base64data.length * 3) / 4);
   let sizeDisplay = '';
   
@@ -649,7 +699,6 @@ function updateImageInfo(base64data, infoDisplay) {
     sizeDisplay = `${(approxSize / 1024).toFixed(2)} KB`;
   }
   
-  // Create a temporary image to get dimensions
   const img = new Image();
   img.onload = () => {
     infoDisplay.textContent = `${img.width} × ${img.height} (${sizeDisplay})`;
@@ -661,14 +710,12 @@ function toggleVisibilityBasedOnValue(elementId, controlName, hasValue) {
   const element = document.querySelector(`.added-element[data-element-id="${elementId}"]`);
   if (!element) return;
   
-  // Find all properties that should be visible when this control has a value
   const controlProperties = element.querySelectorAll(`[data-visible-when="${controlName}"]`);
   controlProperties.forEach(prop => {
     prop.style.display = hasValue ? 'inline-block' : 'none';
   });
 }
 
-// Function to toggle visibility of elements based on toggle state
 function toggleVisibilityBasedOnToggle(elementId, toggleName, isChecked) {
   const elementsToControl = document.querySelectorAll(`[data-visible-when="${toggleName}"]`);
   elementsToControl.forEach(el => {
@@ -1615,6 +1662,7 @@ css += `
 } //end backimg-setting
       if (element.id == "school-name-and-motto") {
           css += `
+/* BetterKMR Compiled: School Name & Motto */
 .sk_school_name {
   color: ${applyAlphaToColor(element.properties["Name Colour"]) ?? "#f7f7f7"}!important;
   ${element.properties["Text Shadow"] === true ?? element.properties["Name Shadow Colour"] ? `text-shadow: ${applyAlphaToColor(element.properties["Name Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
@@ -1630,6 +1678,7 @@ css += `
           const highlightColor = applyAlphaToColor(highlightColorObj);
 
           css += `
+/* BetterKMR Compiled: Today's Attendance Highlight */
 .is-today {
   background-color: ${highlightColor}!important;
 }
@@ -1644,6 +1693,7 @@ css += `
 
           // Create CSS for each gradient
           css += `
+/* BetterKMR Compiled: Attendance Gradients */
 .btn-success {
   background: ${processGradient(presentGradient)}!important;
   color: ${applyAlphaToColor(element.properties["Text Colour (Present)"]) ?? "#ffffff"}!important;
@@ -1664,6 +1714,7 @@ css += `
       }
       if (element.id == "navbar-colours") {
           css += `
+/* BetterKMR Compiled: Navbar Colours */
 body .sk_nav {
   background: ${applyAlphaToColor(element.properties["Background Colour"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Text Colour"]) ?? "#ffffff"}!important;
@@ -1691,7 +1742,8 @@ body .sk_nav_text.nav-link.nav-link:hover {
           var fontName = "Inter";
           if (element.properties["Use custom font from Google Fonts"] == true) {
               fontName = element.properties["Custom Google Font Name"].trim();
-css = `@import url('https://fonts.googleapis.com/css2?family=${fontName}&display=swap');
+css = `/* BetterKMR Compiled: Font Family (set to top) */
+@import url('https://fonts.googleapis.com/css2?family=${fontName}&display=swap');
 body {
   font-family: "${fontName}", sans-serif !important;
   font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
@@ -1721,6 +1773,7 @@ body .sk_school_subheading {
       if (element.id == "main-colour-schemes") {
         if (element.properties["Main Content Box"] == true) {
           css += `
+/* BetterKMR Compiled: Main Colour Schemes */
 body .sk_text.sk_page.sk-main-content {
   background: ${applyAlphaToColor(element.properties["Main Content Box Background Colour (sk_main_content)"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
@@ -1735,6 +1788,7 @@ body .sk_table {
 
 if (element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"] != "") {
 css += `
+/* BetterKMR Compiled: Button Hover & Active Background Colour */
 body .sk_btn.active, body .sk_btn:hover {
   background-color: ${applyAlphaToColor(element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
@@ -1744,22 +1798,56 @@ body .sk_btn.active, body .sk_btn:hover {
         }
         if (element.properties["Table Colour Scheming"] == true) {
           css += `
+/* BetterKMR Compiled: Table Colour Scheming */
 body .sk_thead_cell, body .sk_thead th {
-  background-color: ${applyAlphaToColor(element.properties["Table Header Colour (sk_thead_cell)"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border, sk_thead_cell)"]) ?? "#000000"}!important;
 }
-.sk_border {
-  border-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border)"]) ?? "#000000"}!important;
+body .sk_border, body .sk_thead_cell, body .table td, body .table th {
+  border-color: ${applyAlphaToColor(element.properties["Table Border Colour (sk_border, sk_thead_cell)"]) ?? "#000000"}!important;
 }
 `
         }
         if (element.properties["Generic"] == true) {
           css += `
+/* BetterKMR Compiled: Generic */
 .sk_btn {
   background-color: ${applyAlphaToColor(element.properties["Button Colour (sk_btn)"]) ?? "#000000"}!important;
   color: ${applyAlphaToColor(element.properties["Button Text Colour (sk_btn)"]) ?? "#ffffff"}!important;
 }
 `
         }
+      }
+      if (element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"] != "") {
+        css += `
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: ${applyAlphaToColor(element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
+}
+`
+      }
+      if (element.properties["Navbar/Card Background Colour (card-body)"] != "") {
+        css += `
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: ${applyAlphaToColor(element.properties["Navbar/Card Background Colour (card-body)"]) ?? "#ffffff"}!important;
+}
+`
+      }
+      if (element.properties["Button Border Colour (sk_btn)"] != "") {
+        css += `
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: ${applyAlphaToColor(element.properties["Button Border Colour (sk_btn)"]) ?? "#ffffff"}!important;
+}
+`
+      }
+      if (element.properties["Link Text Colour (a)"] != "") {
+        css += `
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: ${applyAlphaToColor(element.properties["Link Text Colour (a)"]) ?? "#ffffff"}!important;
+}
+`
       }
       if (element.id == "additional-css-properties") {
         css += `
@@ -2108,3 +2196,220 @@ function saveSetting(key, value) {
         document.getElementById("update-notice").remove();
     });
     //chrome.storage.sync.set({ 'update_notice_closed': true });
+
+    window.createDialog = function({title, content, buttons = []}) {
+      console.log("Creating dialog with title:", title);
+      const overlay = document.createElement('div');
+      overlay.className = 'dialog-overlay-fixed';
+
+      const dialog = document.createElement('div');
+      dialog.className = 'dialog-box';
+
+      const titleElement = document.createElement('h2');
+      titleElement.className = 'dialog-title';
+      titleElement.textContent = title;
+
+      const contentElement = document.createElement('p');
+      contentElement.className = 'dialog-content';
+      contentElement.innerHTML = content;
+
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'dialog-buttons';
+
+      buttons.forEach(({text, callback, classname}) => {
+        const button = document.createElement('button');
+        button.className = classname || 'dialog-button';
+        button.textContent = text;
+        button.onclick = () => {
+          callback?.();
+          document.body.removeChild(overlay);
+        };
+        buttonContainer.appendChild(button);
+      });
+
+      dialog.append(titleElement, contentElement, buttonContainer);
+      overlay.appendChild(dialog);
+      document.body.appendChild(overlay);
+    }
+
+// Replace the existing export button event listener with this:
+
+document.getElementById("export-button").addEventListener('click', () => {
+  createDialog({
+    title: 'Import/Export (Experimental)',
+    content: `What would you like to do?<br><br>Importing from File means you can upload a theme file to import settings.<br>Exporting to File will download a theme file with your current settings.<br>Exporting to CSS will download a CSS file with your current settings.<br><br>You may need to save your theme before continuing.<br>At the moment, themes are version dependent.`,
+    buttons: [
+      {
+        text: 'Import from File',
+        callback: () => {
+          // Create hidden file input
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.accept = '.bkt';
+          
+          fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              try {
+                const themeData = JSON.parse(e.target.result);
+                
+                // Validate theme data
+                if (!themeData.name || !themeData.elements) {
+                  throw new Error('Invalid theme file format');
+                }
+                
+                // Clear existing elements
+                const container = document.getElementById('added-elements-container');
+                container.innerHTML = '';
+                addedElements = [];
+                
+                // Set theme name
+                document.getElementById('theme-name').value = themeData.name;
+                
+                // Load elements
+                themeData.elements.forEach(element => {
+                  const elementTemplate = availableElements.find(temp => temp.id === element.id);
+                  if (elementTemplate) {
+                    addElement(elementTemplate);
+                    
+                    // Set properties
+                    if (element.properties) {
+                      Object.entries(element.properties).forEach(([propName, propValue]) => {
+                        const property = elementTemplate.properties.find(p => p.name === propName);
+                        if (property) {
+                          const propId = `${element.id}-${propName.replace(/\s+/g, '-')}`;
+                          const input = document.getElementById(propId);
+                          
+                          if (input) {
+                            if (property.type === 'image-upload') {
+                              const dataInput = document.getElementById(`${propId}-data`);
+                              if (dataInput && propValue) {
+                                dataInput.value = propValue;
+                                const event = new Event('change');
+                                dataInput.dispatchEvent(event);
+                              }
+                            } else if (property.type === 'toggle' || property.type === 'checkbox') {
+                              input.checked = propValue;
+                              const event = new Event('change');
+                              input.dispatchEvent(event);
+                            } else {
+                              input.value = propValue;
+                              const event = new Event('change');
+                              input.dispatchEvent(event);
+                            }
+                          }
+                        }
+                      });
+                    }
+                  }
+                });
+                
+                // Trigger post-load updates
+                postLoad(themeData.elements);
+                createNotification("Theme imported successfully!", "#3c8443", "#ffffff");
+                
+              } catch (error) {
+                console.error('Import error:', error);
+                createNotification("Failed to import theme: Invalid file format", "#961a1a", "#ffffff");
+              }
+            };
+            reader.readAsText(file);
+          });
+          
+          fileInput.click();
+        }
+      },
+      {
+        text: 'Export to File',
+        callback: () => {
+          const themeName = document.getElementById('theme-name').value.trim();
+          if (!themeName) {
+            createNotification("Please enter a theme name before continuing.", "#961a1a", "#ffffff");
+            return;
+          }
+          try {
+            const theme = {
+              name: themeName,
+              elements: []
+            };
+            
+            addedElements.forEach(element => {
+              const elementData = {
+                id: element.id,
+                name: element.name,
+                properties: {}
+              };
+              
+              element.properties.forEach(property => {
+                const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
+                
+                if (property.type === 'image-upload') {
+                  const dataInput = document.getElementById(`${propId}-data`);
+                  if (dataInput) {
+                    elementData.properties[property.name] = dataInput.value;
+                  }
+                } else if (property.type === 'toggle' || property.type === 'checkbox') {
+                  const input = document.getElementById(propId);
+                  if (input) {
+                    elementData.properties[property.name] = input.checked;
+                  }
+                } else {
+                  const input = document.getElementById(propId);
+                  if (input) {
+                    elementData.properties[property.name] = input.value;
+                  }
+                }
+              });
+              
+              theme.elements.push(elementData);
+            });
+            
+            // Create and download file
+            const blob = new Blob([JSON.stringify(theme, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${themeName.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.bkt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            createNotification("Theme exported successfully!", "#3c8443", "#ffffff");
+            
+          } catch (error) {
+            console.error('Export error:', error);
+            createNotification("Failed to export theme", "#961a1a", "#ffffff");
+          }
+        }
+      },
+      {
+        text: 'Export to CSS',
+        classname: 'dialog-button',
+        callback: () => {
+          const cssContent = cssEditor.getValue();
+                
+          const blob = new Blob([cssContent], {type: 'text/css'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `${document.getElementById('theme-name').value.replace(/[^a-z0-9]/gi, '_').toLowerCase()}.css`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+
+          createNotification("Theme CSS exported successfully!", "#3c8443", "#ffffff");
+        }
+      },
+      {
+        text: 'Cancel',
+        classname: 'dialog-button-not',
+        callback: () => {}
+      }
+    ]
+  });
+});

@@ -116,10 +116,14 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                 folderId: "menu-folder20240123022746",
                 children: [
                     { text: "Reports", href: "/reports", className: "nav-link-reports" },
-                    { text: "Pastoral", href: "/pastoral", className: "nav-link-pastoral" }
+                    { text: "Surveys", href: "/surveys", className: "nav-link-surveys" },
+                    { text: "Pastoral", href: "/pastoral", className: "nav-link-pastoral" },
+                    { text: "Notes", href: "/surveys", className: "nav-link-surveys" }
                 ]
             },
+            { text: "Surveys", href: "/surveys", className: "nav-item nav-item-surveys" },
             { text: "Contact", href: "/contact_us", className: "nav-item nav-item-contact_us" }
+
         ];
 
         const userMenuItems = [
@@ -164,6 +168,27 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             const accountItemDiv = document.createElement('div');
             accountItemDiv.className = 'account-item';
             
+            const betterKMRMenuLink = document.createElement('a');
+            betterKMRMenuLink.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html");
+            betterKMRMenuLink.target = '_blank';
+            betterKMRMenuLink.className = 'avatar-container';
+            betterKMRMenuLink.style.animation = "betterkmr-glow 2s ease-in-out infinite alternate";
+
+            const glowStyle = document.createElement('style');
+            glowStyle.textContent = `
+            @keyframes betterkmr-glow {
+                from {
+                    filter: drop-shadow(0 0 0.2rem rgba(255, 255, 255, 0.2));
+                }
+                to {
+                    filter: drop-shadow(0 0 1rem rgba(255, 255, 255, 0.8));
+                }
+            }`;
+            document.head.appendChild(glowStyle);
+            
+            const kmrMenuImage = document.createElement('img');
+            kmrMenuImage.src = chrome.runtime.getURL("icon/icon_transparent_48.png");
+
             const avatarLink = document.createElement('a');
             avatarLink.href = '#';
             avatarLink.className = 'avatar-container';
@@ -171,9 +196,23 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             avatarLink.setAttribute('data-target', '#profile-image');
             
             const avatar = document.createElement('img');
-            avatar.src = '/students/profile';
+            // reusing local.get because it can't be used via sync at the top, has to be local atm
+            chrome.storage.local.get('choose_profile_picture', function(result) {
+                if (result['choose_profile_picture']) {
+                    if (avatar) {
+                        holdfunc.notify("Custom profile picture found and set (first 50 characters): " + result['choose_profile_picture'].slice(0, 50) + "...");
+                        avatar.src = result['choose_profile_picture'];
+                    } else {
+                        holdfunc.notify("Avatar image failed to load. Please report this to the developers or refresh your page.");
+                    }
+                } else {
+                    holdfunc.notify("No custom profile picture was found on initial load. This may change when the full content loads.");
+                    avatar.src = '/students/profile';
+                }
+            });
             avatar.className = 'avatar';
             
+            betterKMRMenuLink.appendChild(kmrMenuImage);
             avatarLink.appendChild(avatar);
             
             const accountLink = document.createElement('a');
@@ -188,6 +227,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             accountText.textContent = 'My Account';
             
             accountLink.appendChild(accountText);
+            accountItemDiv.appendChild(betterKMRMenuLink);
             accountItemDiv.appendChild(avatarLink);
             accountItemDiv.appendChild(accountLink);
             
