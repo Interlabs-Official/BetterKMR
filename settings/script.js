@@ -533,43 +533,46 @@ document.addEventListener('DOMContentLoaded', () => {
 			const themeCount = Object.keys(yamlToJson).length;
 			let loadedThemes = 0;
 
-			Object.entries(yamlToJson).forEach(([key, theme]) => {
-				if (!key) {
-					assert("A specific theme does not have a key.");
+			const themesArray = Object.entries(yamlToJson)
+				.filter(([key]) => key !== "1")
+				.map(([key, theme]) => ({
+					key,
+					...theme,
+					order_id: theme.order_id ?? Number.MAX_SAFE_INTEGER
+				}));
+
+			themesArray.sort((a, b) => a.order_id - b.order_id);
+
+			themesArray.forEach(theme => {
+				if (!theme.css) {
+					assert(`Theme with key "${theme.key}" does not have a CSS stylesheet attached!`);
+					return;
+				}
+				if (!theme.author) {
+					assert(`Theme with key "${theme.key}" does not have an author!`);
 					return;
 				}
 
-				if (key !== "1") {
-					if (!theme.css) {
-						assert(`Theme with key "${key}" does not have a CSS stylesheet attached!`);
-						return;
-					}
-					if (!theme.author) {
-						assert(`Theme with key "${key}" does not have an author!`);
-						return;
-					}
-
-					createThemeCard(
-						key,
-						theme.name,
-						"../../assets/" + theme.thumbnail,
-						theme.author,
-						theme.highlight,
-						theme.description || null,
-						theme.js,
-						onApply,
-						theme.tags
-					);
-				}
+				createThemeCard(
+					theme.key,
+					theme.name,
+					"../../assets/" + theme.thumbnail,
+					theme.author,
+					theme.highlight,
+					theme.description || null,
+					theme.js,
+					onApply,
+					theme.tags
+				);
 				loadedThemes++;
-
-				if (loadedThemes === themeCount) {
-					setTimeout(() => {
-						document.getElementById("loader").style.display = "none";
-						document.getElementById("theme-grid").style.display = "grid";
-					}, 1250);
-				}
 			});
+
+			if (loadedThemes === themesArray.length) {
+				setTimeout(() => {
+					document.getElementById("loader").style.display = "none";
+					document.getElementById("theme-grid").style.display = "grid";
+				}, 1250);
+			}
 		} catch (error) {
 			console.error("Failed to load themes:", error);
 		}

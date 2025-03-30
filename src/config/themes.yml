@@ -28,6 +28,7 @@
   thumbnail: "images/backgrounds/space.jpg"
   author: "Convy32"
   highlight: "The default Space theme, the BetterKMR default. (📸 Wallpapers.com)"
+  order_id: 0
   tags:
     "Default": "rgba(153,153,153,0.5)"
     "Recommended": "rgba(119,52,235,0.5)"
@@ -47,6 +48,7 @@
   author: "Solar"
   highlight: "A chill winter theme with a cozy background. (📸 Attribution to @LofiPlace on Pixabay)"
   description: "vivid.md"
+  order_id: 1
   tags:
     "Winter": "rgba(168,254,255,0.5)"
     "Christmas": "rgba(255,38,71,0.5)"
@@ -58,6 +60,7 @@
   thumbnail: "images/backgrounds/star_destroyers_updated.png"
   author: "Samuel H"
   highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin (📸 Star Wars | EAW)"
+  order_id: 5
   tags:
     "Star Wars": "rgba(255, 191, 0, 0.5)"
     "Dark Side": "rgba(213, 0, 0, 0.5)"
@@ -68,6 +71,7 @@
   thumbnail: "images/thumbnails/pure-dark.png"
   author: "Solar"
   highlight: "When you just need that peace and quiet. It's silence for your screen."
+  order_id: 6
   tags:
     "Dark": "rgba(0, 0, 0, 0.5)"
     "Minimal": "rgba(128, 128, 128, 0.5)"
@@ -79,6 +83,7 @@
   thumbnail: "images/thumbnails/mountain-slideshow.jpg"
   author: "Solar"
   highlight: "External JavaScript theme example, with six mountain images. (📸 Various @ Unsplash)"
+  order_id: 4
   tags:
     "Mountain": "rgba(79, 132, 102, 0.5)"
     "Slideshow": "rgba(156, 163, 175, 0.5)"
@@ -89,6 +94,7 @@
   thumbnail: "images/thumbnails/pure-light.png"
   author: "Solar"
   highlight: "Not the best theme if you want to keep your eyes safe."
+  order_id: 7
   tags:
     "Light": "rgba(255, 255, 255, 0.5)"
     "Minimal": "rgba(220, 220, 220, 0.5)"
@@ -99,6 +105,7 @@
   thumbnail: "images/backgrounds/minecraft-landscape.jpg"
   author: "Convy32"
   highlight: "As a child, I yearn for the mines. Theme drafted by Solar."
+  order_id: 2
   tags:
     "Minecraft": "rgba(79, 132, 102, 0.5)"
     "Video Game": "rgba(156, 163, 175, 0.5)"
@@ -109,6 +116,7 @@
   thumbnail: "images/backgrounds/ocean.png"
   author: "Solar"
   highlight: "Probably the most chill theme yet. (Dark Mode) (📸 Attribution to calimasterx on Pixabay)"
+  order_id: 3
   tags:
     "Water": "rgba(168,254,255,0.5)"
     "Chill": "rgba(255,255,255,0.5)"
