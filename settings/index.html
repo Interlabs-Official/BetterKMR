@@ -107,6 +107,10 @@
   background: linear-gradient(360deg, rgba(91,0,0,1) 0%, rgba(255,0,0,1) 100%);
   color: white;
 }
+.edit-theme:hover, .apply-custom-theme:hover, .download-button:hover, .add-js-theme:hover, .delete-theme:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+}
 
 /* Empty state styling */
 #custom-themes-list:empty::after {
@@ -136,6 +140,27 @@
   background: rgb(0,65,10);
   background: linear-gradient(360deg, rgba(0,65,10,1) 0%, rgba(0,190,49,1) 100%);
 }
+
+.loader {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-block;
+  border-top: 4px solid #FFF;
+  border-right: 4px solid transparent;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+  margin-bottom: 10px;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+   
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
 </head>
