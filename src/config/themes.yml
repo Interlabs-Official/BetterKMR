@@ -102,3 +102,14 @@
   tags:
     "Minecraft": "rgba(79, 132, 102, 0.5)"
     "Video Game": "rgba(156, 163, 175, 0.5)"
+8:
+  name: "Ocean Theme"
+  css: "ocean.css"
+  js: "ocean.js"
+  thumbnail: "images/backgrounds/ocean.png"
+  author: "Solar"
+  highlight: "Probably the most chill theme yet. (Dark Mode) (📸 Attribution to calimasterx on Pixabay)"
+  tags:
+    "Water": "rgba(168,254,255,0.5)"
+    "Chill": "rgba(255,255,255,0.5)"
+    "Animated": "rgba(0,21,85,0.5)"
