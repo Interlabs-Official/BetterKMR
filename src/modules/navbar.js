@@ -96,7 +96,8 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                     { text: "Current Year", href: "/results_list", className: "nav-link-results_list" },
                     { text: "All Results", href: "/results_all", className: "nav-link-results_all" },
                     { text: "Recognitions", href: "/results_recognitions", className: "nav-link-results_recognitions" },
-                    { text: "Awards", href: "/results_awards", className: "nav-link-results_awards" }
+                    { text: "Awards", href: "/results_awards", className: "nav-link-results_awards" },
+                    { text: "Groups", href: "/groups", className: "nav-link-groups" }
                 ]
             },
             { 
