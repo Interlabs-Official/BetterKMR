@@ -48,6 +48,7 @@
         "assets/images/backgrounds/slideshow/*",
         "assets/images/wizard/*",
         "assets/images/thumbnails/*",
+        "assets/images/font-awesome/*",
         "settings/*",
         "frameworks/codemirror/*",
         "src/fonts/*",

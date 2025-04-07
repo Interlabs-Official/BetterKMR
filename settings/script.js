@@ -817,6 +817,10 @@ document.addEventListener('DOMContentLoaded', () => {
 	window.selectNestedTab = function(nTab) {
 		const tabId = nTab.getAttribute('data-nested-tab');
 		console.log(tabId);
+		if (tabId === "navbar-editor") {
+			window.location.href = (/* webpackIgnore: true */ chrome.runtime.getURL("settings/navbar_drop.html"));
+			return;
+		}
 		/*if (tabId === "submit-your-themes") {
 			window.open("mailto:interlabsofficial@gmail.com?subject=Theme%20Submission&body=Theme%20Name%3A%20NAME%20HERE%0ATheme%20Author%3A%20NAME%20HERE%0ATheme%20Description%20(Max%2032%20characters)%3A%20DESCRIPTION%20HERE%0ATheme%20Tags%20(Optional)%3A%20TAGS%20HERE%0AThumbnail%20Image%20(can%20be%20background%20image%2C%20link%20or%20upload%20below)%3A%20IMAGE%20HERE%0A%0ASubmit%20your%20theme%20as%20a%20css%20file%2C%20or%20paste%20the%20contents%20below.%0A%0AAny%20updates%2C%20email%20us%20again%20through%20this%20thread.");
 			return;
