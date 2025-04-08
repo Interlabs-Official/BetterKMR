@@ -198,6 +198,63 @@ document.addEventListener('DOMContentLoaded', () => {
 			}
 		});
 
+		// By the way, yes this was AI. WHY? because of this weird implementation and no way to properly add just one more button in regular HTML
+// Add this to your script (after DOM exists)
+const addDeleteButton = () => {
+	// Target specific upload button using your provided selector
+	const uploadBtn = document.querySelector("#nested-tab-profile > div:nth-child(1) > div > button");
+	
+	if (!uploadBtn) {
+	  console.error('Upload button not found! Check selector:', "#nested-tab-profile > div:nth-child(1) > div > button");
+	  return;
+	}
+  
+	// Create delete button
+	const deleteBtn = document.createElement('button');
+	deleteBtn.className = 'red-button delete-profile-pic blue-button';
+	deleteBtn.innerHTML = '<i class="fa fa-trash-o"></i>'; 
+	
+	// Modified click handler with confirmation dialog
+	deleteBtn.addEventListener('click', () => {
+	  createDialog({
+		title: 'Delete Profile Picture',
+		content: 'Are you sure you want to delete your profile picture?',
+		buttons: [
+		  {
+			text: 'Yes',
+			callback: async () => {
+			  try {
+				await chrome.storage.local.remove('choose_profile_picture');
+				console.log('Profile picture cleared');
+				// Silent visual feedback
+				deleteBtn.innerHTML = '<i class="fa fa-check"></i>';
+				deleteBtn.disabled = true;
+			  } catch (error) {
+				console.error('Deletion failed:', error);
+				deleteBtn.innerHTML = '<i class="fa fa-times"></i>';
+			  }
+			}
+		  },
+		  {
+			text: 'No',
+			//callback: () => console.log('Deletion cancelled'), NOT NEEDED
+			classname: 'dialog-button-not'
+		  }
+		]
+	  });
+	});
+  
+	// Insert delete button next to upload button
+	uploadBtn.insertAdjacentElement('afterend', deleteBtn);
+  };
+  
+  // Run when page loads
+  document.addEventListener('DOMContentLoaded', addDeleteButton);
+  // Fallback in case DOM loads slowly
+  setTimeout(addDeleteButton, 500);
+  
+  // end weird implementation
+  
 		const [profile_picture_url] = await Promise.all([loadSettingPromise("profile_picture_url")]);
 		settingsPage.addNestedSetting('profile', {
 			name: 'profile_picture_url',
