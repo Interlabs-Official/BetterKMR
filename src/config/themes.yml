@@ -103,8 +103,8 @@
   name: "Minecraft Theme"
   css: "minecraft.css"
   thumbnail: "images/backgrounds/minecraft-landscape.jpg"
-  author: "Convy32"
-  highlight: "As a child, I yearn for the mines. Theme drafted by Solar."
+  author: "Solar"
+  highlight: "Build. Explore. Create."
   order_id: 2
   tags:
     "Minecraft": "rgba(79, 132, 102, 0.5)"

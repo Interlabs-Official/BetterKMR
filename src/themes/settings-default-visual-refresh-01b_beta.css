@@ -486,6 +486,8 @@
       font-weight: 500;
       transition: all 0.2s ease;
       cursor: pointer;
+      margin-left: 0.5%;
+      margin-right: 0.5%;
     }
 
     .theme-tag:hover {
