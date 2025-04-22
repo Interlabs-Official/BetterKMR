@@ -44,6 +44,9 @@ var defaultNavItems = [
 
 ];
 
+let liveRefreshTimeout;
+const TYPING_TIMEOUT = 500; // ms to wait after typing stops before saving
+
 document.addEventListener("DOMContentLoaded", function() {
     chrome.storage.sync.get(STORAGE_KEY, function(result) {
         if (result[STORAGE_KEY]) {
@@ -87,6 +90,32 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("button1").addEventListener("click", () => {
         window.history.back();
     });
+
+    const actionButtons = document.querySelector('.action-buttons');
+    const liveRefreshLabel = document.createElement('label');
+    liveRefreshLabel.className = 'custom-checkbox';
+
+    const liveRefreshCheckbox = document.createElement('input');
+    liveRefreshCheckbox.type = 'checkbox';
+    liveRefreshCheckbox.id = 'live_refresh';
+    liveRefreshCheckbox.checked = true;
+
+    const checkboxText = document.createElement('span');
+    checkboxText.textContent = 'Autosave';
+
+    liveRefreshLabel.appendChild(liveRefreshCheckbox);
+    liveRefreshLabel.appendChild(checkboxText);
+    actionButtons.appendChild(liveRefreshLabel);
+    
+    const elementList = document.getElementById('element_list');
+    elementList.addEventListener('input', function(e) {
+        if (e.target.tagName === 'INPUT' && liveRefreshCheckbox.checked) {
+            clearTimeout(liveRefreshTimeout);
+            liveRefreshTimeout = setTimeout(() => {
+                saveNavbarConfig();
+            }, TYPING_TIMEOUT);
+        }
+    });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -98,13 +127,112 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 200);
   });
 
+  function createUrlComboBox() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'url-input-wrapper';
+    
+    const input = document.createElement('input');
+    input.className = 'url-combo';
+    input.type = 'text';
+    input.placeholder = 'Enter directory here e.g. /calendar';
+    
+    const dropdown = document.createElement('div');
+    dropdown.className = 'url-dropdown';
+    
+    const commonUrls = [
+        { url: '/notices', label: 'View all school notices and announcements' },
+        { url: '/attendance', label: 'Check your attendance record' },
+        { url: '/calendar', label: 'View school calendar and events' },
+        { url: '/results_list', label: 'View your current year results' },
+        { url: '/results_all', label: 'View all your academic results' },
+        { url: '/results_summary', label: 'View your results summary' },
+        { url: '/results_recognitions', label: 'View your recognitions' },
+        { url: '/results_awards', label: 'View your awards' },
+        { url: '/reports', label: 'Access your school reports' },
+        { url: '/pastoral', label: 'View pastoral records' },
+        { url: '/notes', label: 'Access your notes' },
+        { url: '/surveys', label: 'Complete school surveys' },
+        { url: '/contact_us', label: 'Contact school staff' },
+        { url: '/groups', label: 'View your groups and classes' }
+    ];
+    
+    commonUrls.forEach(({url, label}) => {
+        const item = document.createElement('div');
+        item.className = 'url-dropdown-item';
+        
+        const title = document.createElement('span');
+        title.className = 'url-item-title';
+        title.textContent = url;
+        
+        const subtitle = document.createElement('span');
+        subtitle.className = 'url-item-subtitle';
+        subtitle.textContent = label;
+        
+        item.appendChild(title);
+        item.appendChild(subtitle);
+        item.dataset.value = url;
+        
+        item.addEventListener('click', () => {
+            input.value = url;
+            dropdown.classList.remove('show');
+            input.dispatchEvent(new Event('input'));
+            input.focus();
+        });
+        
+        dropdown.appendChild(item);
+    });
+    
+    // Toggle dropdown on input focus
+    input.addEventListener('focus', () => {
+        dropdown.classList.add('show');
+    });
+    
+    // Filter items as user types
+    input.addEventListener('input', (e) => {
+        const value = e.target.value.toLowerCase();
+        const items = dropdown.querySelectorAll('.url-dropdown-item');
+        
+        items.forEach(item => {
+            const itemValue = item.dataset.value.toLowerCase();
+            const itemText = item.textContent.toLowerCase();
+            const shouldShow = itemValue.includes(value) || itemText.includes(value);
+            item.style.display = shouldShow ? 'flex' : 'none';
+        });
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!wrapper.contains(e.target)) {
+            dropdown.classList.remove('show');
+        }
+    });
+    
+    // Add dropdown arrow indicator
+    const indicator = document.createElement('div');
+    indicator.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>`;
+    indicator.style.position = 'absolute';
+    indicator.style.right = '12px';
+    indicator.style.top = '50%';
+    indicator.style.transform = 'translateY(-50%)';
+    indicator.style.pointerEvents = 'none';
+    indicator.style.color = '#666';
+    
+    wrapper.appendChild(input);
+    wrapper.appendChild(dropdown);
+    wrapper.appendChild(indicator);
+    
+    return wrapper;
+}
+
 function addElementToList(elmList, item) {
     if (!item.dropdown) {
         const elm = document.createElement("div");
         elm.classList.add("element");
         const label1 = document.createElement("label");
         label1.for = "a_page_" + item.text;
-        label1.textContent = "Element";
+        label1.textContent = "Title";
         const input1 = document.createElement("input");
         input1.type = "text";
         input1.id = "a_page_" + item.text;
@@ -113,17 +241,29 @@ function addElementToList(elmList, item) {
         const label2 = document.createElement("label");
         label2.for = "b_page_" + item.text;
         label2.style = "color: #8f8f8f; font-style: italic;";
-        label2.textContent = "points to";
-        const input2 = document.createElement("input");
-        input2.type = "text";
+        label2.textContent = "URL";
+        const urlWrapper = createUrlComboBox();
+        const input2 = urlWrapper.querySelector('input');
         input2.id = "b_page_" + item.text;
         input2.value = item.href;
-        input2.placeholder = "Enter directory here e.g. /calendar or enter URL";
+        const deleteBtn = document.createElement("button");
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.onclick = () => elm.remove();
+        const deleteImg = document.createElement("img");
+        deleteImg.src = "../assets/images/font-awesome/trash-solid.svg";
+        deleteImg.width = "12";
+        deleteImg.height = "12";
+        deleteImg.classList.add("svg-white");
+        deleteBtn.appendChild(deleteImg);
 
+        const moveButtons = createMoveButtons(elm);
+        
         elm.appendChild(label1);
         elm.appendChild(input1);
         elm.appendChild(label2);
-        elm.appendChild(input2);
+        elm.appendChild(urlWrapper);
+        elm.appendChild(deleteBtn);
+        elm.appendChild(moveButtons);
         elmList.appendChild(elm);
     } else {
         const elm = document.createElement("div");
@@ -136,15 +276,18 @@ function addElementToList(elmList, item) {
         input1.id = "dropdown_" + item.text;
         input1.value = item.text;
         input1.placeholder = "Enter your element name here e.g. Calendar";
+        const moveButtons = createMoveButtons(elm);
+        
         elm.appendChild(label1);
         elm.appendChild(input1);
+        elm.appendChild(moveButtons);
         elmList.appendChild(elm);
         for (const instance of item.children) {
             const elm = document.createElement("div");
             elm.classList.add("element");
             const label1 = document.createElement("label");
             label1.for = "a_dropdown_" + instance.text;
-            label1.textContent = "Element";
+            label1.textContent = "Title";
             const input1 = document.createElement("input");
             input1.type = "text";
             input1.id = "a_dropdown_" + instance.text;
@@ -153,12 +296,11 @@ function addElementToList(elmList, item) {
             const label2 = document.createElement("label");
             label2.for = "b_dropdown_" + instance.text;
             label2.style = "color: #8f8f8f; font-style: italic;";
-            label2.textContent = "points to";
-            const input2 = document.createElement("input");
-            input2.type = "text";
+            label2.textContent = "URL";
+            const urlWrapper = createUrlComboBox();
+            const input2 = urlWrapper.querySelector('input');
             input2.id = "b_dropdown_" + instance.text;
             input2.value = instance.href;
-            input2.placeholder = "Enter directory here e.g. /calendar or enter URL";
             const label3 = document.createElement("label");
             label3.for = "b_dropdown_" + instance.text;
             label3.style = "color: #8f8f8f; font-style: italic;";
@@ -168,13 +310,37 @@ function addElementToList(elmList, item) {
             input3.id = "b_dropdown_" + instance.text;
             input3.value = item.text;
             input3.placeholder = "Enter directory here e.g. /calendar or enter URL";
+            const addItemBtn = document.createElement("button");
+            addItemBtn.classList.add("add-item-btn");
+            addItemBtn.onclick = () => addDropdownItem(elm, input1.value);
+            const addImg = document.createElement("img");
+            addImg.src = "../assets/images/font-awesome/plus-solid.svg";
+            addImg.width = "12";
+            addImg.height = "12";
+            addImg.classList.add("svg-white");
+            addItemBtn.appendChild(addImg);
+    
+            const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("delete-btn");
+            deleteBtn.onclick = () => elm.remove();
+            const deleteImg = document.createElement("img");
+            deleteImg.src = "../assets/images/font-awesome/trash-solid.svg";
+            deleteImg.width = "12";
+            deleteImg.height = "12";
+            deleteImg.classList.add("svg-white");
+            deleteBtn.appendChild(deleteImg);
 
+            const moveButtons = createMoveButtons(elm, true);
+    
             elm.appendChild(label1);
             elm.appendChild(input1);
             elm.appendChild(label2);
-            elm.appendChild(input2);
+            elm.appendChild(urlWrapper);
             elm.appendChild(label3);
             elm.appendChild(input3);
+            elm.appendChild(addItemBtn);
+            elm.appendChild(deleteBtn);
+            elm.appendChild(moveButtons);
             elmList.appendChild(elm);
         }
     }
@@ -188,17 +354,16 @@ function addNewElement(isDropdown = false) {
     if (!isDropdown) {
 
         const label1 = document.createElement("label");
-        label1.textContent = "Element";
+        label1.textContent = "Title";
         const input1 = document.createElement("input");
         input1.type = "text";
         input1.placeholder = "Enter your element name here e.g. Calendar";
 
         const label2 = document.createElement("label");
         label2.style = "color: #8f8f8f; font-style: italic;";
-        label2.textContent = "points to";
-        const input2 = document.createElement("input");
-        input2.type = "text";
-        input2.placeholder = "Enter directory here e.g. /calendar or enter URL";
+        label2.textContent = "URL";
+        const urlWrapper = createUrlComboBox();
+        const input2 = urlWrapper.querySelector('input');
 
         const deleteBtn = document.createElement("button");
         deleteBtn.classList.add("delete-btn");
@@ -210,11 +375,14 @@ function addNewElement(isDropdown = false) {
         deleteImg.classList.add("svg-white");
         deleteBtn.appendChild(deleteImg);
 
+        const moveButtons = createMoveButtons(elm);
+        
         elm.appendChild(label1);
         elm.appendChild(input1);
         elm.appendChild(label2);
-        elm.appendChild(input2);
+        elm.appendChild(urlWrapper);
         elm.appendChild(deleteBtn);
+        elm.appendChild(moveButtons);
         elm.scrollIntoView();
     } else {
         const label1 = document.createElement("label");
@@ -243,10 +411,13 @@ function addNewElement(isDropdown = false) {
         deleteImg.classList.add("svg-white");
         deleteBtn.appendChild(deleteImg);
 
+        const moveButtons = createMoveButtons(elm);
+        
         elm.appendChild(label1);
         elm.appendChild(input1);
         elm.appendChild(addItemBtn);
         elm.appendChild(deleteBtn);
+        elm.appendChild(moveButtons);
     }
 
     elementList.appendChild(elm);
@@ -263,10 +434,10 @@ function addDropdownItem(dropdownElm, dropdownName) {
     input1.placeholder = "Enter item name";
 
     const label2 = document.createElement("label");
-    label2.style = "color: #8f8f8f; font-style: italic;";
-    label2.textContent = "points to";
-    const input2 = document.createElement("input");
-    input2.type = "text";
+    label2.classList.add("grey-label");
+    label2.textContent = "URL";
+    const urlWrapper = createUrlComboBox();
+    const input2 = urlWrapper.querySelector('input');
     input2.placeholder = "Enter directory here e.g. /results_list";
 
     const hiddenInput = document.createElement("input");
@@ -281,14 +452,17 @@ function addDropdownItem(dropdownElm, dropdownName) {
     deleteImg.width = "12";
     deleteImg.height = "12";
     deleteImg.classList.add("svg-white");
-    deleteBtn.appendChild(deleteImg);
 
+    const moveButtons = createMoveButtons(itemElm, true);
+    
     itemElm.appendChild(label1);
     itemElm.appendChild(input1);
     itemElm.appendChild(label2);
-    itemElm.appendChild(input2);
+    itemElm.appendChild(urlWrapper);
     itemElm.appendChild(hiddenInput);
     itemElm.appendChild(deleteBtn);
+    itemElm.appendChild(moveButtons);
+    deleteBtn.appendChild(deleteImg);
 
     dropdownElm.appendChild(itemElm);
 }
@@ -366,7 +540,7 @@ function updateNavbar() {
         if (!item.dropdown) {
             const ahref = document.createElement("a");
             ahref.textContent = item.text;
-            ahref.href = item.href;
+            ahref.href = "#";
             navbar.appendChild(ahref);
         } else {
             const dropdown = document.createElement("div");
@@ -388,6 +562,7 @@ function updateNavbar() {
             for (const child of item.children) {
                 const link = document.createElement("a");
                 link.textContent = child.text;
+                link.href = "#";
                 dropdownContent.appendChild(link);
             }
             dropdown.appendChild(dropdownContent);
@@ -407,5 +582,56 @@ function resetToDefaults() {
         for (const item of defaultNavItems) {
             addElementToList(elementList, item);
         }
+        window.location.reload();
     });
+}
+
+function createMoveButtons(elm, isDropdownItem = false) {
+    const btnGroup = document.createElement('div');
+    btnGroup.className = 'move-btn-group';
+
+    const upBtn = document.createElement('button');
+    upBtn.className = 'move-btn';
+    upBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 19V5M5 12L12 5L19 12"/>
+    </svg>`;
+    
+    const downBtn = document.createElement('button');
+    downBtn.className = 'move-btn';
+    downBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5v14M5 12l7 7l7-7"/>
+    </svg>`;
+
+    function animateMove(element) {
+        element.classList.add('moving');
+        setTimeout(() => element.classList.remove('moving'), 200);
+    }
+
+    upBtn.onclick = (e) => {
+        e.stopPropagation();
+        const prev = elm.previousElementSibling;
+        if (prev && (!isDropdownItem || (isDropdownItem && prev.classList.contains('dropdown-item')))) {
+            animateMove(elm);
+            elm.parentNode.insertBefore(elm, prev);
+            if (document.getElementById('live_refresh').checked) {
+                saveNavbarConfig();
+            }
+        }
+    };
+
+    downBtn.onclick = (e) => {
+        e.stopPropagation();
+        const next = elm.nextElementSibling;
+        if (next && (!isDropdownItem || (isDropdownItem && next.classList.contains('dropdown-item')))) {
+            animateMove(elm);
+            elm.parentNode.insertBefore(next, elm);
+            if (document.getElementById('live_refresh').checked) {
+                saveNavbarConfig();
+            }
+        }
+    };
+
+    btnGroup.appendChild(upBtn);
+    btnGroup.appendChild(downBtn);
+    return btnGroup;
 }
