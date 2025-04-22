@@ -140,20 +140,20 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdown.className = 'url-dropdown';
     
     const commonUrls = [
-        { url: '/notices', label: 'View all school notices and announcements' },
-        { url: '/attendance', label: 'Check your attendance record' },
-        { url: '/calendar', label: 'View school calendar and events' },
-        { url: '/results_list', label: 'View your current year results' },
-        { url: '/results_all', label: 'View all your academic results' },
-        { url: '/results_summary', label: 'View your results summary' },
-        { url: '/results_recognitions', label: 'View your recognitions' },
-        { url: '/results_awards', label: 'View your awards' },
-        { url: '/reports', label: 'Access your school reports' },
-        { url: '/pastoral', label: 'View pastoral records' },
-        { url: '/notes', label: 'Access your notes' },
-        { url: '/surveys', label: 'Complete school surveys' },
-        { url: '/contact_us', label: 'Contact school staff' },
-        { url: '/groups', label: 'View your groups and classes' }
+        { url: '/notices', label: 'Notices' },
+        { url: '/attendance', label: 'Attendance' },
+        { url: '/calendar', label: 'Calendar' },
+        { url: '/results_list', label: 'Current Year Results' },
+        { url: '/results_all', label: 'All Results' },
+        { url: '/results_summary', label: 'Results Summary' },
+        { url: '/results_recognitions', label: 'Recognitions' },
+        { url: '/results_awards', label: 'Awards' },
+        { url: '/reports', label: 'Reports' },
+        { url: '/pastoral', label: 'Pastoral' },
+        { url: '/notes', label: 'Notes' },
+        { url: '/surveys', label: 'Surveys' },
+        { url: '/contact_us', label: 'Contact Us' },
+        { url: '/groups', label: 'Groups' }
     ];
     
     commonUrls.forEach(({url, label}) => {
@@ -237,7 +237,7 @@ function addElementToList(elmList, item) {
         input1.type = "text";
         input1.id = "a_page_" + item.text;
         input1.value = item.text;
-        input1.placeholder = "Enter your element name here e.g. Calendar";
+        input1.placeholder = "Enter a title, e.g. Calendar";
         const label2 = document.createElement("label");
         label2.for = "b_page_" + item.text;
         label2.style = "color: #8f8f8f; font-style: italic;";
