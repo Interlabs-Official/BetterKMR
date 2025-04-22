@@ -26,17 +26,17 @@
    However, the previous versions were actually made by me, you'd be able to tell.
 */
 
-chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]).then((result) => {
+chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages", "custom_navbar_layout"]).then((result) => {
     const useModifiedNavbar = result.dynamic_navbar == true || result.dynamic_navbar == undefined || result.dynamic_navbar == null;
-    
+
     if (useModifiedNavbar) {
         const hiddenPages = result.dynamic_navbar_hidden_navbar_pages ? result.dynamic_navbar_hidden_navbar_pages.split(',').map(page => page.trim().toLowerCase()) : [];
-        
+
         const navbar = document.getElementById("navigation");
         const mainNav = navbar.getElementsByClassName("main-nav")[0];
         let activeThing = null;
         let beforeItemTrim = null;
-        
+
         try {
             for (let i = 0; i < mainNav.children.length; i++) {
                 if (mainNav.children[i].classList.contains("active")) {
@@ -48,7 +48,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
         } catch (e) {
             holdfunc.notify("Attempt to modify main navigation failed. It's possible the user isn't logged in.");
         }
-        
+
         let isPrivateMode = false;
         let ds_1 = "";
         let ds_2 = "";
@@ -60,7 +60,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             ds_1 = document.getElementsByClassName("d-block")[0].textContent;
             ds_2 = document.getElementsByClassName("d-block")[1].textContent;
             ds_3 = "BetterKMR Account";
-            
+
             headerContent = `
                 <div class="dropdown-header sk_nav_text">
                     <strong class="d-block">${ds_1}</strong>
@@ -71,8 +71,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
         } catch (e) {
             holdfunc.notify("Attempt to modify navbar failed. The user may not be logged in.");
         }
-        
-        // Check for super private mode
+
         chrome.storage.sync.get(["superPrivateMode"], (result) => {
             if (result.superPrivateMode === true) {
                 shouldUseSuperPrivate = true;
@@ -82,7 +81,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             }
         });
 
-        const mainNavItems = [
+        var mainNavItems = [
             { text: "Home", href: "/", className: "nav-item" },
             { text: "Notices", href: "/notices", className: "nav-item nav-item-notices" },
             { text: "Attendance", href: "/attendance", className: "nav-item nav-item-attendance" },
@@ -126,8 +125,18 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
 
         ];
 
+        if (result.custom_navbar_layout) {
+            console.log("Custom navbar layout found:", result.custom_navbar_layout);
+            if (Array.isArray(result.custom_navbar_layout)) {
+                console.log("Custom navbar layout is an array.");
+                console.log(mainNavItems);
+                mainNavItems = result.custom_navbar_layout;
+                console.log(mainNavItems);
+            }
+        }
+
         const userMenuItems = [
-            { text: "BetterKMR Menu", href: /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html"), target: "_blank" },
+            { text: "BetterKMR Menu", href:  chrome.runtime.getURL("settings/index.html"), target: "_blank" },
             { isDivider: true },
             { text: "Student Details", href: "/student_details", className: "nav-link-student_details" },
             { text: "Caregiver Details", href: "/caregiver_details", className: "nav-link-caregiver_details" },
@@ -142,34 +151,55 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
         ];
 
         let hasUsedPrivate = false;
-        
+
+        function setActiveNavItem(navItem, pathname) {
+
+            const allNavItems = document.querySelectorAll('.nav-item');
+            allNavItems.forEach(item => item.classList.remove('active'));
+
+            if (navItem.dropdown) {
+                const activeChild = navItem.children.find(child => child.href === pathname);
+                if (activeChild) {
+                    navItem.classList.add('active');
+                    return true;
+                }
+            }
+
+            if (navItem.href === pathname) {
+                navItem.classList.add('active');
+                return true;
+            }
+
+            return false;
+        }
+
         function buildNavbar() {
             if (hasUsedPrivate && shouldUseSuperPrivate) return;
             if (shouldUseSuperPrivate) {
                 hasUsedPrivate = true;
                 headerContent = "";
             }
-            
+
             if (!holdfunc.isLoggedIn()) return;
-            
+
             const navContainer = document.createElement('div');
             navContainer.className = 'nav-main collapse navbar-collapse';
             navContainer.id = 'navigation';
-            
+
             const userNav = document.createElement('ul');
             userNav.className = 'nav user-nav';
-            
+
             const accountItem = document.createElement('li');
             accountItem.className = 'nav-item nav-item--account dropdown';
-            
+
             const accountContainer = document.createElement('div');
             accountContainer.className = 'account-container';
-            
+
             const accountItemDiv = document.createElement('div');
             accountItemDiv.className = 'account-item';
-            
+
             const betterKMRMenuLink = document.createElement('a');
-            betterKMRMenuLink.href = /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html");
+            betterKMRMenuLink.href =  chrome.runtime.getURL("settings/index.html");
             betterKMRMenuLink.target = '_blank';
             betterKMRMenuLink.className = 'avatar-container';
             betterKMRMenuLink.style.animation = "betterkmr-glow 2s ease-in-out infinite alternate";
@@ -185,7 +215,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                 }
             }`;
             document.head.appendChild(glowStyle);
-            
+
             const kmrMenuImage = document.createElement('img');
             kmrMenuImage.src = chrome.runtime.getURL("icon/icon_transparent_48.png");
 
@@ -194,9 +224,9 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             avatarLink.className = 'avatar-container';
             avatarLink.setAttribute('data-toggle', 'modal');
             avatarLink.setAttribute('data-target', '#profile-image');
-            
+
             const avatar = document.createElement('img');
-            // reusing local.get because it can't be used via sync at the top, has to be local atm
+
             chrome.storage.local.get('choose_profile_picture', function(result) {
                 if (result['choose_profile_picture']) {
                     if (avatar) {
@@ -211,10 +241,10 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                 }
             });
             avatar.className = 'avatar';
-            
+
             betterKMRMenuLink.appendChild(kmrMenuImage);
             avatarLink.appendChild(avatar);
-            
+
             const accountLink = document.createElement('a');
             accountLink.className = 'sk_nav_text nav-link nav-link--account dropdown-toggle';
             accountLink.href = '#user-menu';
@@ -222,29 +252,29 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
             accountLink.setAttribute('data-toggle', 'collapse');
             accountLink.setAttribute('aria-expanded', 'true');
             accountLink.setAttribute('aria-controls', 'user-menu');
-            
+
             const accountText = document.createElement('strong');
             accountText.textContent = 'My Account';
-            
+
             accountLink.appendChild(accountText);
             accountItemDiv.appendChild(betterKMRMenuLink);
             accountItemDiv.appendChild(avatarLink);
             accountItemDiv.appendChild(accountLink);
-            
+
             const userMenu = document.createElement('div');
             userMenu.className = 'nav-menu sk_nav collapse';
             userMenu.id = 'user-menu';
             userMenu.style = '';
-            
+
             if (headerContent) {
                 userMenu.insertAdjacentHTML('beforeend', headerContent);
             }
-            
+
             userMenuItems.forEach(item => {
                 if (item.text && hiddenPages.includes(item.text.toLowerCase())) {
                     return;
                 }
-                
+
                 if (item.isDivider) {
                     const divider = document.createElement('div');
                     divider.className = 'dropdown-divider';
@@ -258,32 +288,32 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                     userMenu.appendChild(link);
                 }
             });
-            
+
             accountContainer.appendChild(accountItemDiv);
             accountContainer.appendChild(userMenu);
             accountItem.appendChild(accountContainer);
             userNav.appendChild(accountItem);
-            
+
             const mainNavUl = document.createElement('ul');
             mainNavUl.className = 'nav main-nav';
-            
+
             mainNavItems.forEach(item => {
                 if (hiddenPages.includes(item.text.toLowerCase())) {
                     return;
                 }
-                
+
                 const navItem = document.createElement('li');
                 navItem.className = item.className;
-                
+
                 if (item.dropdown) {
                     const visibleChildren = item.children.filter(child => 
                         !hiddenPages.includes(child.text.toLowerCase())
                     );
-                    
+
                     if (visibleChildren.length === 0) {
                         return;
                     }
-                    
+
                     const dropdownToggle = document.createElement('a');
                     dropdownToggle.className = 'sk_nav_text nav-link dropdown-toggle collapsed';
                     dropdownToggle.href = `#${item.folderId}`;
@@ -292,12 +322,12 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                     dropdownToggle.setAttribute('aria-expanded', 'false');
                     dropdownToggle.setAttribute('aria-controls', item.folderId);
                     dropdownToggle.textContent = item.text;
-                    
+
                     const dropdownMenu = document.createElement('div');
                     dropdownMenu.className = 'nav-menu sk_nav collapse';
                     dropdownMenu.id = item.folderId;
                     dropdownMenu.style = '';
-                    
+
                     visibleChildren.forEach(child => {
                         const childLink = document.createElement('a');
                         childLink.className = `sk_nav_text nav-link ${child.className || ''}`;
@@ -305,53 +335,56 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages"]
                         childLink.textContent = child.text;
                         dropdownMenu.appendChild(childLink);
                     });
-                    
+
                     navItem.appendChild(dropdownToggle);
                     navItem.appendChild(dropdownMenu);
+
+                    if (visibleChildren.some(child => child.href === window.location.pathname)) {
+                        navItem.classList.add('active');
+                    }
                 } else {
                     const link = document.createElement('a');
                     link.className = 'sk_nav_text nav-link';
-                    if (item.text === 'Home' && window.location.pathname === '/') {
-                        link.classList.add('active');
-                    }
                     link.href = item.href;
                     link.textContent = item.text;
+
+                    if (item.href === window.location.pathname) {
+                        navItem.classList.add('active');
+                    }
+
                     navItem.appendChild(link);
                 }
-                
+
                 mainNavUl.appendChild(navItem);
             });
-            
+
             navContainer.appendChild(userNav);
             navContainer.appendChild(mainNavUl);
-            
+
             navbar.innerHTML = '';
             navbar.appendChild(navContainer);
-            
+
             if (window.location.href.includes("contact_us")) {
                 const contactBtn = document.querySelector(".nav-item-contact_us");
                 if (contactBtn) {
                     contactBtn.classList.add("active");
                 }
             }
-            
+
             if (beforeItemTrim) {
                 const newMainNav = navbar.querySelector(".main-nav");
                 if (newMainNav) {
-                    for (let i = 0; i < newMainNav.children.length; i++) {
-                        const navItem = newMainNav.children[i];
-                        const currentItemTrim = navItem.textContent.trim();
-                        
-                        if (beforeItemTrim === currentItemTrim) {
-                            navItem.classList.add("active");
-                            break;
+                    mainNavItems.forEach(item => {
+                        if (item.text === beforeItemTrim) {
+                            const navItem = newMainNav.querySelector(`.${item.className}`);
+                            if (navItem) navItem.classList.add('active');
                         }
-                    }
+                    });
                 }
             }
         }
     } else {
-        // if modified navbar is disabled, the only thing we'll do is add the BetterKMR Menu link
+
         var some_element = document.getElementsByClassName("dropdown-header sk_nav_text")[0];
         if (some_element) {
             some_element.insertAdjacentHTML('afterend', `<a href="${/* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html")}" target="_blank" class="sk_nav_text nav-link">BetterKMR Menu</a>`);

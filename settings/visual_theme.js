@@ -120,37 +120,8 @@ const availableElements = [
   }
 ];
 
-const backimgSettingIndex = availableElements.findIndex(el => el.id === "backimg-setting");
-if (backimgSettingIndex !== -1) {
-  // Add the new upload property after the background image URL property
-  const backgroundImagePropertyIndex = availableElements[backimgSettingIndex].properties.findIndex(
-    prop => prop.name === "Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"
-  );
-  
-  if (backgroundImagePropertyIndex !== -1) {
-    // Add the new upload image property after the URL property
-    availableElements[backimgSettingIndex].properties.splice(backgroundImagePropertyIndex + 1, 0, 
-      { 
-        name: "Or Upload Background Image", 
-        type: "image-upload", 
-        default: "", 
-        controlsVisibility: ["Delete Uploaded Image"] 
-      },
-      {
-        name: "Delete Uploaded Image",
-        type: "button",
-        default: "Delete Image",
-        visibleWhen: "Or Upload Background Image"
-      }
-    );
-  }
-}
-
-// Keep track of added elements
 let addedElements = [];
 
-
-// Add this near the top of your file, after any imports but before other code
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     const loadingScreen = document.getElementById('loading-screen');
@@ -161,7 +132,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Get theme ID from URL if it exists
   const urlParams = new URLSearchParams(window.location.search);
   const themeID = urlParams.get('themeID');
   
@@ -169,10 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
     loadThemeForEditing(themeID);
   }
   
-  // Set up save button
   document.getElementById('save-button').addEventListener('click', saveTheme);
   
-  // Hide loading screen after a brief delay
   setTimeout(() => {
     const loadingScreen = document.getElementById('loading-screen');
     if (loadingScreen) {
@@ -200,7 +168,6 @@ tabs.forEach(tab => {
   });
 });
 
-// Dialog functionality
 const addElementButton = document.getElementById('add-element-button');
 const elementDialog = document.getElementById('element-dialog');
 const dialogOverlay = document.getElementById('dialog-overlay');
@@ -208,7 +175,6 @@ const elementSearch = document.getElementById('element-search');
 const elementList = document.getElementById('element-list');
 const closeDialogButton = document.querySelector('.element-dialog-close');
 
-// Open dialog
 addElementButton.addEventListener('click', () => {
   populateElementList();
   elementDialog.style.display = 'block';
@@ -216,7 +182,6 @@ addElementButton.addEventListener('click', () => {
   elementSearch.focus();
 });
 
-// Close dialog
 closeDialogButton.addEventListener('click', closeDialog);
 dialogOverlay.addEventListener('click', closeDialog);
 
@@ -226,13 +191,11 @@ function closeDialog() {
   elementSearch.value = '';
 }
 
-// Search functionality
 elementSearch.addEventListener('input', () => {
   const searchTerm = elementSearch.value.toLowerCase();
   populateElementList(searchTerm);
 });
 
-// Populate element list
 function populateElementList(searchTerm = '') {
   elementList.innerHTML = '';
   
@@ -267,7 +230,6 @@ function populateElementList(searchTerm = '') {
           closeDialog();
         });
         
-        // Also allow clicking anywhere on the item to add it
         itemElement.addEventListener('click', () => {
           if (!isAdded) {
             addElement(element);
@@ -280,7 +242,6 @@ function populateElementList(searchTerm = '') {
     }
   });
   
-  // Show message if no elements found
   if (elementList.children.length === 0) {
     const noResults = document.createElement('div');
     noResults.style.padding = '15px 20px';
@@ -290,12 +251,9 @@ function populateElementList(searchTerm = '') {
   }
 }
 
-// Add element to appearance tab
 function addElement(element) {
-  // Add to our tracking array
   addedElements.push({...element});
   
-  // Create the element UI
   const addedElement = document.createElement('div');
   addedElement.className = 'added-element';
   addedElement.dataset.elementId = element.id;
@@ -309,7 +267,6 @@ function addElement(element) {
   `;
 
   
-  // Add properties
   element.properties.forEach(property => {
     const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
     let visibilityAttribute = '';
@@ -318,7 +275,6 @@ function addElement(element) {
       visibilityAttribute = `data-visible-when="${property.visibleWhen}" style="display: none;"`;
     }
     
-    // Add unique identifier as a data attribute if provided
     const uniqueIdAttr = property.uniqueId ? `data-unique-id="${property.uniqueId}"` : '';
     
     if (property.type === 'color') {
@@ -456,7 +412,7 @@ function addElement(element) {
       const alphaToggleBtn = document.getElementById(`${propId}-alpha-toggle`);
       
       if (colorInput && hexDisplay && alphaToggleBtn) {
-        setupColorWithAlpha(colorInput, hexDisplay, alphaToggleBtn);
+        setupColourWithAlpha(colorInput, hexDisplay, alphaToggleBtn);
       }
     } else if (property.type === 'gradient') {
       const startColor = document.getElementById(`${propId}-start`);
@@ -474,16 +430,12 @@ function addElement(element) {
       };
       
       if (startColor && endColor && direction && preview) {
-        // Set up alpha for start color
-        setupColorWithAlpha(startColor, startHex, startAlphaToggleBtn);
+        setupColourWithAlpha(startColor, startHex, startAlphaToggleBtn);
         
-        // Set up alpha for end color
-        setupColorWithAlpha(endColor, endHex, endAlphaToggleBtn);
+        setupColourWithAlpha(endColor, endHex, endAlphaToggleBtn);
         
-        // Initial preview
         updateGradientPreview();
         
-        // Replace DOMSubtreeModified with a MutationObserver
         const startObserver = new MutationObserver(() => updateGradientPreview());
         const endObserver = new MutationObserver(() => updateGradientPreview());
         
@@ -496,10 +448,8 @@ function addElement(element) {
       const toggleInput = document.getElementById(propId);
       
       if (toggleInput) {
-        // Set initial visibility
         toggleVisibilityBasedOnToggle(element.id, property.name, toggleInput.checked);
         
-        // Add event listener for changes
         toggleInput.addEventListener('change', (e) => {
           toggleVisibilityBasedOnToggle(element.id, property.name, e.target.checked);
         });
@@ -515,12 +465,10 @@ function addElement(element) {
       const dataInput = document.getElementById(`${propId}-data`);
       
       if (fileInput && uploadBtn && dropArea && preview && previewImg && infoDisplay) {
-        // Setup click handler for the upload button
         uploadBtn.addEventListener('click', () => {
           fileInput.click();
         });
         
-        // Show preview if there's already data
         if (dataInput.value) {
           previewImg.src = dataInput.value;
           console.log("set preview src to ", dataInput.value);
@@ -529,7 +477,6 @@ function addElement(element) {
           previewImg.style.display = 'block';
         }
         
-        // File select handler
         fileInput.addEventListener('change', (e) => {
           const file = e.target.files[0];
           if (file) {
@@ -537,7 +484,6 @@ function addElement(element) {
           }
         });
         
-        // Drag & Drop handlers
         ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
           dropArea.addEventListener(eventName, preventDefaults, false);
         });
@@ -566,11 +512,9 @@ function addElement(element) {
           }
         }, false);
         
-        // If this is a visible control, update visibility of controlled elements
         if (property.controlsVisibility) {
           toggleVisibilityBasedOnValue(element.id, property.name, dataInput.value !== '');
           
-          // Monitor for changes to update visibility
           const observer = new MutationObserver(() => {
             toggleVisibilityBasedOnValue(element.id, property.name, dataInput.value !== '');
           });
@@ -800,14 +744,12 @@ const imageUploadStyles = `
 }
 `;
 
-// Append the image upload styles to your existing styleElement
 document.addEventListener('DOMContentLoaded', function() {
 const styleElement = document.createElement('style');
 styleElement.textContent = imageUploadStyles;
 document.head.appendChild(styleElement);
 });
 
-// Add CSS for toggle switches
 const styleElement = document.createElement('style');
 styleElement.textContent = `
   /* Toggle Switch Styles */
@@ -887,19 +829,15 @@ styleElement.textContent = `
 `;
 document.head.appendChild(styleElement);
 
-// Remove element from appearance tab
 function removeElement(elementId) {
-  // Remove from the DOM
   const element = document.querySelector(`.added-element[data-element-id="${elementId}"]`);
   if (element) {
     element.remove();
   }
   
-  // Remove from our tracking array
   addedElements = addedElements.filter(el => el.id !== elementId);
 }
 
-// Helper function to format property names for display
 function formatPropertyName(name) {
   /* return name
     .split('-')
@@ -908,7 +846,6 @@ function formatPropertyName(name) {
     return name;
 }
 
-// Define a proper getAllCustomThemes function
 function getAllCustomThemes(callback) {
   chrome.storage.local.get('themes', function(data) {
     const themes = data.themes || {};
@@ -916,8 +853,6 @@ function getAllCustomThemes(callback) {
   });
 }
 
-// Update the loadThemeForEditing function to use this correctly
-// Update loadThemeForEditing to handle complex properties correctly
 function loadThemeForEditing(themeId) {
   getAllCustomThemes(function(themes) {
     const theme = themes[themeId];
@@ -931,70 +866,54 @@ function loadThemeForEditing(themeId) {
       document.getElementById("apply-theme-auto").checked = false;
     }
     
-    // Set theme name
     document.getElementById('theme-name').value = theme.name;
     
-    // Clear any existing elements
     const addedElementsContainer = document.getElementById('added-elements-container');
     if (addedElementsContainer) {
       addedElementsContainer.innerHTML = '';
     }
     
-    // Reset the addedElements array
     addedElements = [];
     
-    // Load saved elements if they exist
     if (theme.elements && Array.isArray(theme.elements)) {
       theme.elements.forEach(element => {
-        // Find the matching element template
         const elementTemplate = availableElements.find(temp => temp.id === element.id);
         if (elementTemplate) {
-          // Add the element to the UI
           addElement(elementTemplate);
           
-          // Now set all the property values from the saved theme
           if (element.properties) {
             Object.entries(element.properties).forEach(([propName, propValue]) => {
               const property = elementTemplate.properties.find(p => p.name === propName);
               if (property) {
                 const propId = `${element.id}-${propName.replace(/\s+/g, '-')}`;
                 
-                // Handle different property types
                 if (property.type === 'color') {
-                  // Handle colors with transparency
                   const input = document.getElementById(propId);
                   const hexDisplay = document.getElementById(`${propId}-hex`);
                   const alphaToggleBtn = document.getElementById(`${propId}-alpha-toggle`);
                   
                   if (input && hexDisplay) {
-                    // Handle new format (color object with hex and alpha)
                     if (propValue && typeof propValue === 'object' && propValue.hex) {
                       const hexColor = propValue.hex;
                       const alpha = propValue.alpha || 1.0;
                       
-                      // Set the original hex color
                       input.value = hexColor;
                       input.dataset.originalHex = hexColor;
                       input.dataset.alpha = alpha;
                       
                       if (alpha < 1.0) {
-                        // Calculate display color with alpha
                         const r = parseInt(hexColor.slice(1, 3), 16);
                         const g = parseInt(hexColor.slice(3, 5), 16);
                         const b = parseInt(hexColor.slice(5, 7), 16);
                         const hexWithAlpha = rgbaToHex(r, g, b, alpha);
                         hexDisplay.textContent = hexWithAlpha;
                         
-                        // Enable transparency UI
                         if (alphaToggleBtn) {
-                          // Check if transparency is already enabled
                           const alphaContainer = input.parentNode.parentNode.querySelector('.alpha-slider-container');
                           
                           if (!alphaContainer) {
-                            // If alpha slider doesn't exist but we have alpha value, trigger the toggle
-                            alphaToggleBtn.click(); // Enable transparency
+                            alphaToggleBtn.click();
                             
-                            // Now set the slider value
                             setTimeout(() => {
                               const alphaSlider = input.parentNode.parentNode.querySelector('.alpha-slider');
                               const alphaValue = input.parentNode.parentNode.querySelector('.alpha-value');
@@ -1004,9 +923,8 @@ function loadThemeForEditing(themeId) {
                                 alphaSlider.value = alphaPercent;
                                 alphaValue.textContent = `${alphaPercent}%`;
                               }
-                            }, 50); // Short delay to ensure toggle has completed
+                            }, 50);
                           } else if (alphaContainer) {
-                            // Alpha container already exists, just update values
                             const alphaSlider = alphaContainer.querySelector('.alpha-slider');
                             const alphaValue = alphaContainer.querySelector('.alpha-value');
                             
@@ -1018,13 +936,10 @@ function loadThemeForEditing(themeId) {
                           }
                         }
                       } else {
-                        // No transparency
                         hexDisplay.textContent = hexColor;
                       }
                     }
-                    // Backward compatibility for old format (string color)
                     else if (propValue && typeof propValue === 'string') {
-                      // Handle old format colors with transparency
                       if (propValue.length === 9) { // Full hex with alpha #RRGGBBAA
                         const alphaHex = propValue.substring(7, 9);
                         const alphaDecimal = parseInt(alphaHex, 16) / 255;
@@ -1036,15 +951,12 @@ function loadThemeForEditing(themeId) {
                         input.dataset.alpha = alphaDecimal;
                         hexDisplay.textContent = propValue;
                         
-                        // Check if transparency is already enabled
                         if (alphaToggleBtn) {
                           const alphaContainer = input.parentNode.parentNode.querySelector('.alpha-slider-container');
                           
                           if (!alphaContainer) {
-                            // If alpha slider doesn't exist but we have alpha value, trigger the toggle
-                            alphaToggleBtn.click(); // Enable transparency
+                            alphaToggleBtn.click();
                             
-                            // Now set the slider value
                             setTimeout(() => {
                               const alphaSlider = input.parentNode.parentNode.querySelector('.alpha-slider');
                               const alphaValue = input.parentNode.parentNode.querySelector('.alpha-value');
@@ -1053,11 +965,10 @@ function loadThemeForEditing(themeId) {
                                 alphaSlider.value = alphaPercent;
                                 alphaValue.textContent = `${alphaPercent}%`;
                               }
-                            }, 50); // Short delay to ensure toggle has completed
+                            }, 50);
                           }
                         }
                       } else {
-                        // Regular color without alpha
                         input.value = propValue;
                         input.dataset.originalHex = propValue;
                         input.dataset.alpha = "1.0";
@@ -1067,7 +978,6 @@ function loadThemeForEditing(themeId) {
                   }
                 }
                 else if (property.type === 'gradient') {
-                  // Handle gradient properties
                   const startInput = document.getElementById(`${propId}-start`);
                   const startHex = document.getElementById(`${propId}-start-hex`);
                   const endInput = document.getElementById(`${propId}-end`);
@@ -1077,12 +987,10 @@ function loadThemeForEditing(themeId) {
                   const endAlphaToggleBtn = document.getElementById(`${propId}-end-alpha-toggle`);
                   
                   if (propValue && typeof propValue === 'object') {
-                    // Handle direction
                     if (direction && propValue.direction) {
                       direction.value = propValue.direction;
                     }
                     
-                    // Handle start color (new format with hex and alpha)
                     if (startInput && startHex && propValue.start && typeof propValue.start === 'object' && propValue.start.hex) {
                       const hexColor = propValue.start.hex;
                       const alpha = propValue.start.alpha || 1.0;
@@ -1092,14 +1000,12 @@ function loadThemeForEditing(themeId) {
                       startInput.dataset.alpha = alpha;
                       
                       if (alpha < 1.0 && startAlphaToggleBtn) {
-                        // Calculate display color with alpha
                         const r = parseInt(hexColor.slice(1, 3), 16);
                         const g = parseInt(hexColor.slice(3, 5), 16);
                         const b = parseInt(hexColor.slice(5, 7), 16);
                         const hexWithAlpha = rgbaToHex(r, g, b, alpha);
                         startHex.textContent = hexWithAlpha;
                         
-                        // Handle transparency UI
                         const alphaContainer = startInput.parentNode.parentNode.querySelector('.alpha-slider-container');
                         if (!alphaContainer && startAlphaToggleBtn) {
                           startAlphaToggleBtn.click();
@@ -1119,14 +1025,12 @@ function loadThemeForEditing(themeId) {
                         startHex.textContent = hexColor;
                       }
                     }
-                    // Handle start color (old format string)
                     else if (startInput && startHex && propValue.start && typeof propValue.start === 'string') {
-                      startInput.value = propValue.start.substring(0, 7); // Remove alpha if present
+                      startInput.value = propValue.start.substring(0, 7);
                       startInput.dataset.originalHex = propValue.start.substring(0, 7);
                       startInput.dataset.alpha = "1.0";
                       startHex.textContent = propValue.start;
                       
-                      // Check for alpha in old format
                       if (propValue.start.length === 9) {
                         const alphaHex = propValue.start.substring(7, 9);
                         const alphaDecimal = parseInt(alphaHex, 16) / 255;
@@ -1152,7 +1056,6 @@ function loadThemeForEditing(themeId) {
                       }
                     }
                     
-                    // Handle end color (new format with hex and alpha)
                     if (endInput && endHex && propValue.end && typeof propValue.end === 'object' && propValue.end.hex) {
                       const hexColor = propValue.end.hex;
                       const alpha = propValue.end.alpha || 1.0;
@@ -1162,14 +1065,12 @@ function loadThemeForEditing(themeId) {
                       endInput.dataset.alpha = alpha;
                       
                       if (alpha < 1.0 && endAlphaToggleBtn) {
-                        // Calculate display color with alpha
                         const r = parseInt(hexColor.slice(1, 3), 16);
                         const g = parseInt(hexColor.slice(3, 5), 16);
                         const b = parseInt(hexColor.slice(5, 7), 16);
                         const hexWithAlpha = rgbaToHex(r, g, b, alpha);
                         endHex.textContent = hexWithAlpha;
                         
-                        // Handle transparency UI
                         const alphaContainer = endInput.parentNode.parentNode.querySelector('.alpha-slider-container');
                         if (!alphaContainer && endAlphaToggleBtn) {
                           endAlphaToggleBtn.click();
@@ -1189,14 +1090,12 @@ function loadThemeForEditing(themeId) {
                         endHex.textContent = hexColor;
                       }
                     }
-                    // Handle end color (old format string)
                     else if (endInput && endHex && propValue.end && typeof propValue.end === 'string') {
-                      endInput.value = propValue.end.substring(0, 7); // Remove alpha if present
+                      endInput.value = propValue.end.substring(0, 7);
                       endInput.dataset.originalHex = propValue.end.substring(0, 7);
                       endInput.dataset.alpha = "1.0";
                       endHex.textContent = propValue.end;
                       
-                      // Check for alpha in old format
                       if (propValue.end.length === 9) {
                         const alphaHex = propValue.end.substring(7, 9);
                         const alphaDecimal = parseInt(alphaHex, 16) / 255;
@@ -1938,7 +1837,6 @@ function hexToRgba(hex, alpha = 1) {
     return `rgba(${r}, ${g}, ${b}, ${a.toFixed(2)})`;
   }
   
-  // Normal hex without alpha
   const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
   hex = hex.replace(shorthandRegex, (m, r, g, b) => r + r + g + g + b + b);
 
@@ -1952,8 +1850,7 @@ function hexToRgba(hex, alpha = 1) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-// Update the color input with alpha
-function setupColorWithAlpha(colorInput, hexDisplay, alphaToggleBtn) {
+function setupColourWithAlpha(colorInput, hexDisplay, alphaToggleBtn) {
   if (!colorInput || !hexDisplay || !alphaToggleBtn) return;
   
   let hasAlpha = false;
@@ -1962,12 +1859,9 @@ function setupColorWithAlpha(colorInput, hexDisplay, alphaToggleBtn) {
     const hex = e.target.value;
     const alpha = parseFloat(colorInput.dataset.alpha) || 1.0;
     
-    // Always store the original hex in a data attribute
     colorInput.dataset.originalHex = hex;
     
     if (hasAlpha) {
-      // Display the hex with alpha for user feedback
-      // But store the original hex and alpha separately
       const r = parseInt(hex.slice(1, 3), 16);
       const g = parseInt(hex.slice(3, 5), 16);
       const b = parseInt(hex.slice(5, 7), 16);
@@ -1983,11 +1877,10 @@ function setupColorWithAlpha(colorInput, hexDisplay, alphaToggleBtn) {
     
     if (hasAlpha) {
       alphaToggleBtn.textContent = "Remove Transparency";
-      // Create alpha slider
       const alphaContainer = document.createElement('div');
       alphaContainer.className = 'alpha-slider-container';
       alphaContainer.innerHTML = `
-        <input type="range" class="alpha-slider" min="0" max="100" value="100" id="${colorInput.id}-alpha-slider">
+        <input type="range" class="alpha-slider" min="1" max="100" value="100" id="${colorInput.id}-alpha-slider">
         <span class="alpha-value">100%</span>
       `;
       hexDisplay.parentNode.insertBefore(alphaContainer, alphaToggleBtn);
@@ -1997,14 +1890,13 @@ function setupColorWithAlpha(colorInput, hexDisplay, alphaToggleBtn) {
       
       alphaSlider.addEventListener('input', (e) => {
         const alphaPercent = parseInt(e.target.value);
-        const alphaDecimal = alphaPercent / 100;
-        alphaValue.textContent = `${alphaPercent}%`;
+        const safeAlphaPercent = Math.max(1, alphaPercent);
+        const alphaDecimal = safeAlphaPercent / 100;
+        alphaValue.textContent = `${safeAlphaPercent}%`;
         colorInput.dataset.alpha = alphaDecimal;
         
-        // Store original hex and alpha separately
         const hex = colorInput.dataset.originalHex || colorInput.value;
         
-        // Display the hex with alpha for user feedback
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
         const b = parseInt(hex.slice(5, 7), 16);
@@ -2013,13 +1905,11 @@ function setupColorWithAlpha(colorInput, hexDisplay, alphaToggleBtn) {
       });
     } else {
       alphaToggleBtn.textContent = "Add Transparency";
-      // Remove alpha slider
       const alphaContainer = colorInput.parentNode.parentNode.querySelector('.alpha-slider-container');
       if (alphaContainer) {
         alphaContainer.remove();
       }
       
-      // Reset to hex without alpha
       const hex = colorInput.value;
       hexDisplay.textContent = hex;
       colorInput.dataset.alpha = "1.0";
@@ -2027,26 +1917,21 @@ function setupColorWithAlpha(colorInput, hexDisplay, alphaToggleBtn) {
   });
 }
 
-// Helper function to create gradient CSS from property
 function createGradientFromProperty(gradientProp) {
   if (typeof gradientProp === 'object') {
     return createGradient(gradientProp.start, gradientProp.end, gradientProp.direction);
   } else {
-    // For backward compatibility or if only a single color is provided
     return gradientProp;
   }
 }
 
-// Add this to create CSS gradients
 function createGradient(color1, color2, direction = 'to bottom') {
-  // Check if colors have alpha channel (#RRGGBBAA format)
   const color1WithAlpha = color1.length === 9 ? hexToRgba(color1) : color1;
   const color2WithAlpha = color2.length === 9 ? hexToRgba(color2) : color2;
   
   return `linear-gradient(${direction}, ${color1WithAlpha}, ${color2WithAlpha})`;
 }
 
-// Add CSS for new UI elements
 const additionalStyles = `
   .gradient-container {
     width: 100%;
@@ -2106,14 +1991,12 @@ const additionalStyles = `
   }
 `;
 
-// Append the additional styles to your existing styleElement
 document.addEventListener('DOMContentLoaded', function() {
   const styleElement = document.createElement('style');
   styleElement.textContent = additionalStyles;
   document.head.appendChild(styleElement);
 });
 
-// Convert rgb/rgba to hex with alpha
 function rgbaToHex(r, g, b, a = 1) {
   r = Math.round(r);
   g = Math.round(g);
@@ -2151,13 +2034,12 @@ function uuidv4() {
   );
 }
 
-// Add helper function to extract alpha value from hex color
 function getAlphaFromHex(hexColor) {
   if (hexColor && hexColor.length === 9) {
     const alphaHex = hexColor.substring(7, 9);
     return parseInt(alphaHex, 16) / 255;
   }
-  return 1; // Default to fully opaque
+  return 1;
 }
 
 document.addEventListener("keydown", function(e) {
@@ -2171,18 +2053,14 @@ document.addEventListener("keydown", function(e) {
 }, false);
 
 function postLoad(elements) {
-  // Refresh image previews after a brief delay to ensure DOM is ready
   setTimeout(updateImagePreviews, 100);
   
-  // Any other initialization needed after loading
   console.log('Theme loaded successfully with', elements.length, 'elements');
 }
 
 function postLoad(elements) {
-  // Refresh image previews after a brief delay to ensure DOM is ready
   setTimeout(updateImagePreviews, 100);
   
-  // Any other initialization needed after loading
   console.log('Theme loaded successfully with', elements.length, 'elements');
 }
 
@@ -2238,8 +2116,6 @@ function saveSetting(key, value) {
       document.body.appendChild(overlay);
     }
 
-// Replace the existing export button event listener with this:
-
 document.getElementById("export-button").addEventListener('click', () => {
   createDialog({
     title: 'Import/Export (Experimental)',
@@ -2248,7 +2124,6 @@ document.getElementById("export-button").addEventListener('click', () => {
       {
         text: 'Import from File',
         callback: () => {
-          // Create hidden file input
           const fileInput = document.createElement('input');
           fileInput.type = 'file';
           fileInput.accept = '.bkt';
@@ -2262,26 +2137,21 @@ document.getElementById("export-button").addEventListener('click', () => {
               try {
                 const themeData = JSON.parse(e.target.result);
                 
-                // Validate theme data
                 if (!themeData.name || !themeData.elements) {
                   throw new Error('Invalid theme file format');
                 }
                 
-                // Clear existing elements
                 const container = document.getElementById('added-elements-container');
                 container.innerHTML = '';
                 addedElements = [];
                 
-                // Set theme name
                 document.getElementById('theme-name').value = themeData.name;
                 
-                // Load elements
                 themeData.elements.forEach(element => {
                   const elementTemplate = availableElements.find(temp => temp.id === element.id);
                   if (elementTemplate) {
                     addElement(elementTemplate);
                     
-                    // Set properties
                     if (element.properties) {
                       Object.entries(element.properties).forEach(([propName, propValue]) => {
                         const property = elementTemplate.properties.find(p => p.name === propName);
@@ -2313,7 +2183,6 @@ document.getElementById("export-button").addEventListener('click', () => {
                   }
                 });
                 
-                // Trigger post-load updates
                 postLoad(themeData.elements);
                 createNotification("Theme imported successfully!", "#3c8443", "#ffffff");
                 
@@ -2373,7 +2242,6 @@ document.getElementById("export-button").addEventListener('click', () => {
               theme.elements.push(elementData);
             });
             
-            // Create and download file
             const blob = new Blob([JSON.stringify(theme, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
