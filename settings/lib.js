@@ -73,7 +73,8 @@ export class SettingsPage {
     if (setting.tooltip) {
       const infoIcon = document.createElement('span');
       infoIcon.className = 'info-icon';
-      infoIcon.textContent = 'ⓘ';
+      infoIcon.innerHTML = '<img src="../assets/images/font-awesome/info-circle-solid.svg" width="16px" height="16px" style="opacity: 50%" alt="Info" />'
+      //infoIcon.textContent = 'ⓘ';
       const tooltipSpan = document.createElement('span');
       tooltipSpan.className = 'tooltip';
       tooltipSpan.textContent = setting.tooltip;
@@ -157,7 +158,8 @@ addNestedSetting(nestedTabId, setting) {
   if (setting.tooltip) {
     const infoIcon = document.createElement('span');
     infoIcon.className = 'info-icon';
-    infoIcon.textContent = 'ⓘ';
+    infoIcon.innerHTML = '<img src="../assets/images/font-awesome/info-circle-solid.svg" width="16px" height="16px" style="opacity: 50%" alt="Info" />'
+    //infoIcon.textContent = 'ⓘ';
     const tooltipSpan = document.createElement('span');
     tooltipSpan.className = 'tooltip';
     tooltipSpan.textContent = setting.tooltip;
@@ -228,7 +230,8 @@ addNestedSetting(nestedTabId, setting) {
     if (setting.tooltip) {
       const infoIcon = document.createElement('span');
       infoIcon.className = 'info-icon';
-      infoIcon.textContent = 'ⓘ';
+      infoIcon.innerHTML = '<img src="../assets/images/font-awesome/info-circle-solid.svg" width="16px" height="16px" style="opacity: 50%" alt="Info" />'
+      //infoIcon.textContent = 'ⓘ';
       const tooltipSpan = document.createElement('span');
       tooltipSpan.className = 'tooltip';
       tooltipSpan.textContent = setting.tooltip;

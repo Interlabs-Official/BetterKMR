@@ -363,7 +363,29 @@ const addDeleteButton = () => {
 				});
 			}
 		});
-		document.getElementById("version-number").textContent = "Version " + chrome.runtime.getManifest().version;
+		settingsPage.addNestedSetting('general', {
+			name: 'redeem_code',
+			label: 'Redeem Code',
+			tooltip: 'Redeem a special code to unlock features or rewards',
+			type: 'button',
+			default: null,
+			callback: () => showRedemptionDialog()
+		});
+		try {
+			const response = await fetch(chrome.runtime.getURL('../src/config/general.yml'));
+			if (response.ok) {
+				const yamlText = await response.text();
+				const yamlContent = jsyaml.load(yamlText);
+				if (yamlContent) {
+					let version = yamlContent.version || chrome.runtime.getManifest().version;
+					document.getElementById("sidebar-version-id").textContent = "v" + version;
+					document.getElementById("sidebar-version-id").style.display = 'block';
+					document.getElementById("version-number").textContent = "Version " + version;
+				}
+			}
+		} catch (error) {
+			console.warn('Failed to load version from general.yml:', error);
+		}
 		document.body.style.visibility = 'visible';
 	};
 
@@ -381,6 +403,95 @@ const addDeleteButton = () => {
 		badge.className = `badge ${badgeClass}`;
 		badge.textContent = text;
 		badgeContainer.appendChild(badge);
+	}
+
+	function showRedemptionDialog() {
+		createDialog({
+			title: 'Redeem BetterKMR Code',
+			content: `
+			    <p>BetterKMR codes are usually given out by staff, and can give you certain perks or are for development purposes.</p>
+				<p>If you have a code (exciting!) feel free to enter your code below to redeem it:</p>
+				<input type="text" id="redemption-code" class="dialog-input" placeholder="Enter code..." style="
+					width: 100%;
+					padding: 8px;
+					margin: 10px 0;
+					border: 1px solid #444;
+					border-radius: 4px;
+					background: #2a2a2a;
+					color: #fff;
+				">
+				<div id="redemption-error" style="color: #ff5555; margin-top: 5px; display: none;"></div>
+				<p style="color: grey;">Note: Codes can only be redeemed once. All codes are case-sensitive.</p>
+			`,
+			buttons: [
+				{
+					text: 'Redeem',
+					callback: () => handleCodeRedemption(),
+				},
+				{
+					text: 'Cancel',
+					callback: () => console.log('Redemption cancelled'),
+					classname: 'dialog-button-not'
+				}
+			]
+		});
+	}
+
+	// Code definitions and their callbacks
+	const VALID_CODES = {
+	/*	'BETTERKMR2024': {
+			reward: 'Unlocked special theme',
+			callback: () => {
+				// Example callback for special theme unlock
+				createNotification('Special theme unlocked!', '#3c8443', '#ffffff');
+			}
+		},
+		'EARLYBIRD': {
+			reward: 'Early supporter badge',
+			callback: () => {
+				// Example callback for badge
+				createNotification('Early supporter badge unlocked!', '#3c8443', '#ffffff');
+			}
+		}
+    */
+	};
+
+	function handleCodeRedemption() {
+		const codeInput = document.getElementById('redemption-code');
+		const errorDiv = document.getElementById('redemption-error');
+		const code = codeInput.value.trim().toUpperCase();
+
+		// Check if code exists
+		if (!VALID_CODES[code]) {
+			errorDiv.textContent = 'Invalid code';
+			errorDiv.style.display = 'block';
+			return;
+		}
+
+		// Check if code was already redeemed
+		chrome.storage.sync.get('redeemedCodes', (data) => {
+			const redeemedCodes = data.redeemedCodes || [];
+			
+			if (redeemedCodes.includes(code)) {
+				errorDiv.textContent = 'This code has already been redeemed';
+				errorDiv.style.display = 'block';
+				return;
+			}
+
+			// Store the redeemed code
+			redeemedCodes.push(code);
+			chrome.storage.sync.set({ redeemedCodes }, () => {
+				// Close the dialog by removing it
+				const overlay = document.querySelector('.dialog-overlay');
+				if (overlay) {
+					document.body.removeChild(overlay);
+				}
+
+				// Execute the callback for this code
+				VALID_CODES[code].callback();
+				createNotification(`Successfully redeemed: ${VALID_CODES[code].reward}`, '#3c8443', '#ffffff');
+			});
+		});
 	}
 
 	function clearAllData() {
@@ -939,132 +1050,16 @@ const addDeleteButton = () => {
    	});
 
    	function triggerSecretAnimation() {
-   		const animContainer = document.createElement('div');
-   		animContainer.id = 'konami-animation-container';
-   		document.body.appendChild(animContainer);
+		const secretTab = document.getElementById('advanced-tab-header');
+
+		document.body.classList.add('gradient-fade-out')
    		
-   		const particleCanvas = document.createElement('canvas');
-   		particleCanvas.id = 'particle-canvas';
-   		particleCanvas.width = window.innerWidth;
-   		particleCanvas.height = window.innerHeight;
-   		particleCanvas.style.position = 'fixed';
-   		particleCanvas.style.top = '0';
-   		particleCanvas.style.left = '0';
-   		particleCanvas.style.pointerEvents = 'none';
-   		particleCanvas.style.zIndex = '9999';
-   		particleCanvas.style.opacity = '0';
-   		particleCanvas.style.transition = 'opacity 0.5s ease-in';
-   		animContainer.appendChild(particleCanvas);
-   		
-   		document.body.classList.add('konami-shake');
-   	
-   		setTimeout(() => {
-   			particleCanvas.style.opacity = '1';
-   			startParticleAnimation(particleCanvas);
-   		}, 100);
-   		
-   		const secretTab = document.getElementById('advanced-tab-header');
    		const tabRect = secretTab.getBoundingClientRect();
    		
-   		setTimeout(() => {
-   			secretTab.style.visibility = 'visible';
-   			secretTab.classList.add('konami-reveal');
-   			
-   			const glowElement = document.createElement('div');
-   			glowElement.className = 'tab-glow';
-   			glowElement.style.position = 'absolute';
-   			glowElement.style.left = `${tabRect.left - 10}px`;
-   			glowElement.style.top = `${tabRect.top - 5}px`;
-   			glowElement.style.width = `${tabRect.width + 20}px`;
-   			glowElement.style.height = `${tabRect.height + 10}px`;
-   			animContainer.appendChild(glowElement);
-   			
-   			createNotification("Secret unlocked!", "#3c8443", "#ffffff");
-   		}, 1000);
-   		
-   		setTimeout(() => {
-   			document.body.classList.add('konami-shake-fadeout');
-   			setTimeout(() => {
-   				document.body.classList.remove('konami-shake');
-   				document.body.classList.remove('konami-shake-fadeout');
-   			}, 1000);
-   		}, 2000);
-   		
-   		setTimeout(() => {
-   			if (animContainer.parentNode) {
-   				document.body.removeChild(animContainer);
-   			}
-   		}, 5000);
-   	}
-   	
-   	function startParticleAnimation(canvas) {
-   		const ctx = canvas.getContext('2d');
-   		const particles = [];
-   		const secretTab = document.getElementById('advanced-tab-header');
-   		const tabRect = secretTab.getBoundingClientRect();
-   		
-   		const originX = tabRect.left + tabRect.width / 2;
-   		const originY = tabRect.top + tabRect.height / 2;
-   		
-   		for (let i = 0; i < 150; i++) {
-   			particles.push({
-   				x: originX,
-   				y: originY,
-   				size: Math.random() * 8 + 2,
-   				color: getRandomColor(),
-   				speedX: (Math.random() - 0.5) * 15,
-   				speedY: (Math.random() - 0.5) * 15,
-   				life: Math.random() * 100 + 50,
-   				opacity: 1
-   			});
-   		}
-   		
-   		let animationFrame;
-   		let fadingOut = false;
-   		let fadeStart = 0;
-   		
-   		function animate(timestamp) {
-   			ctx.clearRect(0, 0, canvas.width, canvas.height);
-   			
-   			if (timestamp > 2000 && !fadingOut) {
-   				fadingOut = true;
-   				fadeStart = timestamp;
-   			}
-   			
-   			let globalOpacity = 1;
-   			if (fadingOut) {
-   				globalOpacity = Math.max(0, 1 - (timestamp - fadeStart) / 1000);
-   				canvas.style.opacity = globalOpacity;
-   			}
-   			
-   			let stillAlive = false;
-   			
-   			particles.forEach(p => {
-   				if (p.life > 0) {
-   					stillAlive = true;
-   					p.x += p.speedX;
-   					p.y += p.speedY;
-   					p.speedX *= 0.98;
-   					p.speedY *= 0.98;
-   					p.life--;
-   					p.opacity = Math.min(1, p.life / 30);
-   					
-   					ctx.globalAlpha = p.opacity * globalOpacity;
-   					ctx.fillStyle = p.color;
-   					ctx.beginPath();
-   					ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-   					ctx.fill();
-   				}
-   			});
-   			
-   			if (stillAlive && globalOpacity > 0) {
-   				animationFrame = requestAnimationFrame(animate);
-   			} else {
-   				cancelAnimationFrame(animationFrame);
-   			}
-   		}
-   		
-   		animationFrame = requestAnimationFrame(animate);
+   		secretTab.style.display = 'block';
+   		secretTab.classList.add('konami-reveal');
+
+   		createNotification("Secret unlocked!", "#3c8443", "#ffffff");
    	}
    	
    	function getRandomColor() {

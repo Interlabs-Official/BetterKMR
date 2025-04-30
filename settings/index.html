@@ -164,7 +164,19 @@
   100% {
     transform: rotate(360deg);
   }
-} 
+}
+.sidebar {
+    position: relative;
+    min-height: 100vh;
+}
+
+#second-tab-list {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    /* padding: 0 20px; */
+}
    
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
@@ -185,12 +197,27 @@
   <div class="settings-container">
     <!-- Sidebar with tabs -->
     <aside class="sidebar">
+      <img src="../icon/btrkmr_transparent_logo_crop.png" style="
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 10px;
+          margin-bottom: 10px;
+          width: 179px;
+          height: 68px;
+      "/>
+      <h1 style="text-align: center;">BetterKMR</h1>
+      <p id="sidebar-version-id" style="text-align: center; margin-bottom: 10px; display: none; font-size: 15px;">v1.1.0-dev</p>
       <ul id="tab-list">
         <li data-tab="general" class="tab-item active">General</li>
         <li data-tab="themes" class="tab-item">Themes</li>
         <li data-tab="about-and-contact" class="tab-item">About & Contact</li>
+        <!-- <li data-tab="go-back" class="tab-item">Experiments</span></li> -->
+      </ul>
+      <ul id="second-tab-list">
+        <li data-tab="advanced" class="tab-item" style="display: none;" id="advanced-tab-header">Developer Settings</li>
         <li data-tab="go-back" class="tab-item">Website & Docs <span style="font-size: 14px;">↗</span></li>
-        <li data-tab="advanced" class="tab-item" style="visibility: hidden;" id="advanced-tab-header">Developer Settings</li>
+        <li data-tab="go-back" class="tab-item">Discord Server <span style="font-size: 14px;">↗</span></li>
       </ul>
     </aside>
     
@@ -354,6 +381,7 @@
     </main>
   </div>
   <script src="lib.js"></script>
+  <script src="../frameworks/js-yaml.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

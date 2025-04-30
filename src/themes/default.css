@@ -7,7 +7,7 @@
     .settings-container { display: flex; min-height: 100vh; }
     .sidebar { width: 250px; background-color: #111111; border-right: 1px solid #444;}
     .sidebar ul { list-style: none; padding: 0; }
-    .tab-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
+    .tab-item { padding: 15px; cursor: pointer; border-bottom: 0px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
     .tab-item.active {
         box-shadow: inset 4px 0 #2979ff;
         color: #fff;
@@ -815,7 +815,7 @@
 
     .gradient-background {
   background: linear-gradient(200deg,#0000bb,#111111);
-  background-size: 120% 120%;
+  /* background-size: 120% 120%; */
   animation: gradient-animation 6s ease infinite;
 }
 
