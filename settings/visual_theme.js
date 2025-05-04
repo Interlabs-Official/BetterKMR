@@ -1368,7 +1368,7 @@ function saveTheme() {
       try {
         const themeName = document.getElementById('theme-name').value.trim();
         if (!themeName) {
-          createNotification("Please enter a theme name before continuing.", "#961a1a", "#ffffff");
+          createNotification("Please enter a theme name.", "#961a1a", "#ffffff");
           saveButton.disabled = false;
           saveButton.textContent = 'Save Theme';
           return;
@@ -2202,8 +2202,8 @@ function saveSetting(key, value) {
 
 document.getElementById("export-button").addEventListener('click', () => {
   createDialog({
-    title: 'Import/Export (Experimental)',
-    content: `What would you like to do?<br><br>Importing from File means you can upload a theme file to import settings.<br>Exporting to File will download a theme file with your current settings.<br>Exporting to CSS will download a CSS file with your current settings.<br><br>You may need to save your theme before continuing.<br>At the moment, themes are version dependent.`,
+    title: 'Import/Export',
+    content: `What would you like to do?<br><br>Importing from File means you can upload a theme file to import settings.<br>Exporting to File will download a theme file with your current settings.<br>Exporting to CSS will download a CSS file with your current settings.<br><br>You may need to save your theme before continuing.<br>If you import this theme on a newer version, it may convert it for you.`,
     buttons: [
       {
         text: 'Import from File',
@@ -2286,7 +2286,7 @@ document.getElementById("export-button").addEventListener('click', () => {
         callback: () => {
           const themeName = document.getElementById('theme-name').value.trim();
           if (!themeName) {
-            createNotification("Please enter a theme name before continuing.", "#961a1a", "#ffffff");
+            createNotification("Please enter a theme name.", "#961a1a", "#ffffff");
             return;
           }
           try {

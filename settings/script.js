@@ -924,7 +924,11 @@ const addDeleteButton = () => {
 	tabs.forEach(tab => {
 		tab.addEventListener('click', () => {
 			if (tab.textContent === 'Website & Docs ↗') {
-				window.open('https://interlabs-official.github.io/BetterKMR/', '_blank').focus();
+				window.open('https://interlabs-official.github.io', '_blank').focus();
+				return;
+			}
+			if (tab.textContent === 'Discord Server ↗') {
+				window.open('https://discord.gg/4MkRmFmHz2', '_blank').focus();
 				return;
 			}
 			if (tab.textContent === 'About & Contact') {
