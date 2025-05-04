@@ -118,22 +118,12 @@ const availableElements = [
       { id: "css-warning-tooltip", name: "If you don't know what this is, it's best to remove it.", type: "tooltip" },
       { id: "css-discord-tooltip", name: "If you want to add something that's not in the settings, but don't know how to code, feel free to ask in the Discord! https://discord.gg/HjJvakyAXe", type: "tooltip" },
     ]
-  },
-  {
-    id: "external-js-embed",
-    name: "External JavaScript Embed",
-    description: "Add your own custom JavaScript for more functionality.",
-    properties: [
-      { id: "js-tooltip", name: "Below, you can add your own JavaScript code that will be applied with the custom theme.", type: "tooltip" },
-      { id: "js-input", name: "External JavaScript", type: "text", default: "" },
-      { id: "js-warning-tooltip", name: "If you don't know what this is, it's best to remove it.", type: "tooltip" },
-      { id: "js-discord-tooltip", name: "If you want to add something that's not in the settings, but don't know how to code, feel free to ask in the Discord! https://discord.gg/HjJvakyAXe", type: "tooltip" },
-    ]
-  },
+  }
 ];
 
 chrome.storage.sync.get("redeemedCodes").then((result) => {
-  for (const code of result.redeemedCodes){
+  if (result.redeemedCodes) {
+    for (const code of result.redeemedCodes){
       if (code === "SILKSONGISREAL") {
         availableElements.push({
           id: "ext-promo-01",
@@ -145,6 +135,7 @@ chrome.storage.sync.get("redeemedCodes").then((result) => {
           ]
         });
       }
+    }
   }
 });
 
