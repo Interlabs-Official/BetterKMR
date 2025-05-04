@@ -86,17 +86,24 @@
   opacity: 0.9;
 }
 
-.edit-theme, .apply-custom-theme, .download-button {
+.edit-theme, .download-button {
   font-family: 'Inter', sans-serif;
   background: rgb(0,55,91);
   background: linear-gradient(360deg, rgba(0,55,91,1) 0%, rgba(0,185,255,1) 100%);
   color: white;
 }
 
-.add-js-theme {
+.clone-theme {
   font-family: 'Inter', sans-serif;
-  background: rgb(91,84,0);
-  background: linear-gradient(360deg, rgba(91,84,0,1) 0%, rgba(241,255,0,1) 100%);
+  background: rgb(58, 53, 0);
+  background: linear-gradient(360deg, rgb(75, 68, 0) 0%, rgb(176, 185, 0) 100%);
+  color: white;
+}
+
+.apply-custom-theme {
+  font-family: 'Inter', sans-serif;
+  background: rgb(0, 58, 0);
+  background: linear-gradient(360deg, rgb(0, 75, 19) 0%, rgb(6, 185, 0) 100%);
   color: white;
 }
 
@@ -106,7 +113,45 @@
   background: linear-gradient(360deg, rgba(91,0,0,1) 0%, rgba(255,0,0,1) 100%);
   color: white;
 }
-.edit-theme:hover, .apply-custom-theme:hover, .download-button:hover, .add-js-theme:hover, .delete-theme:hover {
+
+#delete-all-themes-button {
+  background: linear-gradient(360deg, #4e0e0e, #dc2626);
+  color: white;
+  float: right;
+  margin: 1rem;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#delete-all-themes-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-button-danger {
+    background: rgb(91,0,0);
+    background: linear-gradient(360deg, rgba(91,0,0,1) 0%, rgba(255,0,0,1) 100%);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.dialog-button-danger:hover {
+    background: rgb(255, 0, 0);
+    background: linear-gradient(360deg, rgb(187, 0, 0) 0%, rgb(255, 53, 53) 100%);
+}
+
+.edit-theme:hover, .apply-custom-theme:hover, .download-button:hover, .clone-theme:hover, .delete-theme:hover{
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
 }
@@ -400,7 +445,8 @@
             <br>
           </div>
           <div id="nested-tab-custom-themes" class="nested-tab-content">
-            <button id="new-custom-theme-button">New</button>
+          <button id="new-custom-theme-button">New</button>
+          <button id="delete-all-themes-button">Delete All</button>
             <br><h1>Your Themes<span
               style="
                 background-color: rgb(68, 189, 230);

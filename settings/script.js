@@ -1128,6 +1128,7 @@ function createCustomThemeItem(themeName, customID) {
 
 	const applyButton = createButton("apply-custom-theme", "#3498db", "Apply");
 	const editButton = createButton("edit-theme", "#3498db", "Edit");
+	const cloneButton = createButton("clone-theme", "#3498db", "Clone");
 	const deleteButton = createButton("delete-theme", "#e74c3c", "Delete");
 
 	editButton.addEventListener('click', () => {
@@ -1137,11 +1138,12 @@ function createCustomThemeItem(themeName, customID) {
 	deleteButton.addEventListener('click', () => {
 			createDialog({
 				title: `Delete Theme`,
-				content: `Delete theme "${themeName}"?`,
+				content: `Delete theme "${themeName}"?<br><br>This action cannot be undone.<br>We cannot provide support for deleted themes.`,
 				buttons: [
 					{
 						text: 'Yes',
 						callback: () => deleteTheme(customID),
+						classname: 'dialog-button-danger',
 					},
 					{
 						text: 'No',
@@ -1151,6 +1153,24 @@ function createCustomThemeItem(themeName, customID) {
 				],
 			});
 	});
+
+	cloneButton.addEventListener('click', () => {
+		createDialog({
+			title: `Clone Theme`,
+			content: `Create a copy of theme "${themeName}"?`,
+			buttons: [
+				{
+					text: 'Yes',
+					callback: () => cloneTheme(customID),
+				},
+				{
+					text: 'No',
+					callback: () => console.log("Cancelled deletion of theme \"${themeName}\""),
+					classname: 'dialog-button-not',
+				},
+			],
+		});
+});
 
 	applyButton.addEventListener('click', () => {
 		const previousButton = document.getElementById("greyed-out-applied");
@@ -1168,7 +1188,7 @@ function createCustomThemeItem(themeName, customID) {
 		createNotification(`Custom theme "${themeName}" has been successfully applied.`, "#3c8443", "#ffffff");
 	});
 
-	actionsDiv.append(applyButton, editButton, deleteButton);
+	actionsDiv.append(applyButton, editButton, cloneButton, deleteButton);
 	li.append(span, actionsDiv);
 
 	return li;
@@ -1186,8 +1206,10 @@ function setUpCustomThemesList() {
 		const currentThemeId = result["theme-id-text"] || "0";
 		
 		getAllCustomThemes(themes => {
+			var total = 0;
 			Object.entries(themes).forEach(([id, theme]) => {
 				const themeItem = createCustomThemeItem(theme.name, id);
+				total += 1;
 				
 				if (id === currentThemeId) {
 					const applyButton = themeItem.querySelector('.apply-custom-theme');
@@ -1200,6 +1222,11 @@ function setUpCustomThemesList() {
 				
 				customThemesList.appendChild(themeItem);
 			});
+			if (total > 1) {
+				document.getElementById("delete-all-themes-button").style.display = "block";
+			} else {
+				document.getElementById("delete-all-themes-button").style.display = "none";
+			}
 		});
 	});
 }
@@ -1208,6 +1235,62 @@ setUpCustomThemesList();
 
 document.getElementById("new-custom-theme-button").addEventListener('click', () => {
 	showEditorSelectionDialog('new_theme', true);
+});
+
+document.getElementById("delete-all-themes-button").addEventListener('click', () => {
+    chrome.storage.local.get('themes', data => {
+        const themes = data.themes || {};
+        const themeCount = Object.keys(themes).length;
+        
+        if (themeCount === 0) {
+            createNotification("No custom themes to delete.", "#e74c3c", "#ffffff");
+            return;
+        }
+
+        createDialog({
+            title: 'Delete All Themes',
+            content: `Are you sure you want to delete all ${themeCount} custom theme${themeCount === 1 ? '' : 's'}? This action cannot be undone.`,
+            buttons: [
+                {
+                    text: 'Delete All',
+                    callback: () => {
+						createDialog({
+							title: 'Delete All Themes - Final Warning',
+							content: `Final warning!<br>Are you sure you want to delete all ${themeCount} custom theme${themeCount === 1 ? '' : 's'}?<br>This action cannot be undone, and we cannot provide support for deleted themes.`,
+							buttons: [
+								{
+									text: 'Confirm & Delete All',
+									callback: () => {
+										chrome.storage.local.set({themes: {}}, () => {
+											if (chrome.runtime.lastError) {
+												console.error("Error deleting themes:", chrome.runtime.lastError);
+												createNotification("Error deleting themes. Please try again.", "#e74c3c", "#ffffff");
+											} else {
+												createNotification(`Successfully deleted all custom themes.`, "#3c8443", "#ffffff");
+												setUpCustomThemesList();
+											}
+										});
+									},
+									classname: 'dialog-button-danger'
+								},
+								{
+									text: 'Cancel',
+									callback: () => console.log("Cancelled deletion of all themes"),
+									classname: 'dialog-button-not'
+								}
+							]
+						});
+                    },
+                    classname: 'dialog-button-danger'
+                },
+                {
+                    text: 'Cancel',
+                    callback: () => console.log("Cancelled deletion of all themes"),
+                    classname: 'dialog-button-not'
+                }
+            ]
+        });
+    });
 });
 
 function deleteTheme(themeId) {
@@ -1221,6 +1304,31 @@ function deleteTheme(themeId) {
 					alert("Error deleting theme. Please try again.");
 				} else {
 					createNotification("The custom theme you have chosen has been successfully deleted.", "#3c8443", "#ffffff");
+					setUpCustomThemesList();
+				}
+			});
+		} else {
+			console.log("Theme not found.");
+			alert("Theme not found.");
+		}
+	});
+}
+
+function cloneTheme(themeId) {
+	chrome.storage.local.get('themes', data => {
+		const themes = data.themes || {};
+		if (themes[themeId]) {
+			const clonedTheme = { ...themes[themeId] };
+			const newThemeId = `${themeId}_copy_${Date.now()}`;
+			clonedTheme.name = `${clonedTheme.name} (Copy)`;
+			themes[newThemeId] = clonedTheme;
+
+			chrome.storage.local.set({ themes }, () => {
+				if (chrome.runtime.lastError) {
+					console.error("Error cloning theme:", chrome.runtime.lastError);
+					alert("Error cloning theme. Please try again.");
+				} else {
+					createNotification(`Successfully cloned theme.`, "#3c8443", "#ffffff");
 					setUpCustomThemesList();
 				}
 			});
