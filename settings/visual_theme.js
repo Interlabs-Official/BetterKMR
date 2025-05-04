@@ -169,7 +169,7 @@ function convertThemeToNewVersion(themeData) {
 
 let addedElements = [];
 let css = '';
-let jsToExecute = [];
+let extras = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
@@ -1501,7 +1501,7 @@ function saveTheme() {
                 id: themeId,
                 name: themeName,
                 code: cssEditor.getValue(),
-                js: jsToExecute,
+                js: extras,
                 elements: theme.elements,
                 lastModified: new Date().toISOString(),
                 autoApplySave: document.getElementById("apply-theme-auto").checked,
@@ -1834,7 +1834,7 @@ ${element.properties["css-input"]}
       // JS
       if (element.id == "ext-promo-01") {
         if (element.properties["ext-promo-01-enabled"] == true) {
-          jsToExecute.push("days-until-silksong");
+          extras.push("promo_01");
       }
     }
   }

@@ -147,7 +147,18 @@
     
     /* Button */
     .blue-button {
+      font-family: 'Inter', sans-serif;
       background-color: #3498db;
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .dynamic-navbar-customise-button {
+      font-family: 'Inter', sans-serif;
+      background-color: #346edb52;
       color: white;
       padding: 5px 10px;
       border: none;
@@ -652,9 +663,9 @@
           }
           
           @keyframes glow-pulse {
-            0% { box-shadow: 0 0 5px 2px rgba(255, 215, 0, 0.5); }
-            50% { box-shadow: 0 0 20px 10px rgba(255, 215, 0, 0.8); }
-            100% { box-shadow: 0 0 5px 2px rgba(255, 215, 0, 0.5); }
+            0% { box-shadow: 0 0 5px 2px rgba(0, 132, 255, 0.5); }
+            50% { box-shadow: 0 0 20px 10px rgba(0, 132, 255, 0.8); }
+            100% { box-shadow: 0 0 5px 2px rgba(0, 132, 255, 0.5); }
           }
           
           .tab-glow {

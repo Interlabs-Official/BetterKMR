@@ -23,6 +23,23 @@ if (window.location.href.includes("notices")) {
         if (obj.better_notices_enabled == true || obj.better_notices_enabled == undefined || obj.better_notices_enabled == null) {
             document.addEventListener('DOMContentLoaded', setupNoticeCards, false);
 
+                var total = 0;
+                for (const item of document.querySelector('.row').children) {
+                    console.log(item);
+                    if (item.classList.contains("col-12") && item.classList.contains("mb-3")) {
+                        total += 1;
+                    }
+                }
+                if (total > 0) {
+                    const totalAmount = document.createElement('p');
+                    totalAmount.style = "margin-top: 10px;text-align: center; color: #fff; text-shadow: 1px 1px rgb(0, 0, 0);";
+                    totalAmount.textContent = `Total amount of notices: ${total}`;
+                    const rowElement = document.querySelector('.row');
+                    if (rowElement) {
+                        rowElement.parentElement.appendChild(totalAmount);
+                    }
+                }
+
             function getTodayDateString() {
                 const today = new Date();
                 return today.toISOString().split('T')[0]; 
