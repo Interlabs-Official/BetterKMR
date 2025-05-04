@@ -20,6 +20,8 @@
 import jsyaml from 'js-yaml';
 // webpack needs this context for some reason to stop it from showing a warning
 const themesJsContext = require.context('../themes/js/', false, /\.js$/);
+// also this too
+const themesJsContextVTT = require.context('../modules/vtt', false, /\.js$/);
 let themeLoaded = false;
 // thank you stack overflow - copied from content.js
 
@@ -73,6 +75,22 @@ function addStyle(styleString) {
     const style = document.createElement('style');
     style.appendChild(document.createTextNode(styleString));
     document.head.appendChild(style);
+}
+
+function addJS(theme) {
+    if (theme && theme.js) {
+        (async () => {
+            console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for custom theme: ` + theme["name"], 'color: #0091EA', 'color: #fff');
+            try {
+                const module = await themesJsContextVTT(`./${theme.js}.js`);
+                if (module.default) {
+                    module.default();
+                }
+            } catch (error) {
+                console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${theme["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+            }
+        })();
+    }
 }
 
 // code to hide the school logo until all has loaded. works really well on pure dark theme.
@@ -142,6 +160,7 @@ getThemesConfig()
                     if (theme) {
                         holdfunc.notify("The custom theme you have chosen \"" + theme.name + "\" will now load.");
                         addStyle(theme.code);
+                        addJS(theme);
                     }
                 });
             }

@@ -92,10 +92,34 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.type === "getThemesConfig") {
-      chrome.storage.local.get("themesConfig", (data) => {
-          sendResponse(data.themesConfig);
-      });
-      return true; // indicate that the response will be sent asynchronously
-  }
+    if (message.type === "getThemesConfig") {
+        chrome.storage.local.get("themesConfig", (data) => {
+            sendResponse(data.themesConfig);
+        });
+        return true;
+    }
 });
+let API_URL = 'https://api.solarcosmic.net/betterkmr-v1-global.php';
+let CHECK_INTERVAL = 60 * 60 * 1000; // check every hour
+
+async function checkForUpdates() {
+    try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        
+        const currentVersion = chrome.runtime.getManifest().version;
+        
+        chrome.storage.local.set({
+            updateAvailable: data.latest_version !== currentVersion,
+            latestVersion: data.latest_version,
+            changelog: data.latest_version_changelog,
+            versionHighlight: data.version_highlight,
+            announcement: data.announcement || ''
+        });
+    } catch (error) {
+        console.error('Failed to check for updates:', error);
+    }
+}
+
+checkForUpdates();
+setInterval(checkForUpdates, CHECK_INTERVAL);

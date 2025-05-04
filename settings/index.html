@@ -36,9 +36,8 @@
 #new-custom-theme-button {
   background: linear-gradient(45deg, #6366f1, #8b5cf6);
   color: white;
-  position: absolute;
-  top: 170px;
-  right: 30px;
+  float: right;
+  margin: 1rem 0;
   border: none;
   padding: 12px 24px;
   border-radius: 8px;
@@ -166,23 +165,98 @@
   }
 }
 .sidebar {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    overflow-y: auto;
+}
+
+.content {
+    margin-left: 250px;
+    padding: 20px;
     min-height: 100vh;
+    position: relative;
 }
 
 #second-tab-list {
-    position: absolute;
+    position: fixed;
     bottom: 20px;
     left: 0;
-    right: 0;
-    /* padding: 0 20px; */
+    width: 250px;
+}
+
+#tab-list {
+    padding-bottom: 120px;
+}
+.announcement-banner, .update-notification {
+    background-color: #2196F340;
+    color: white;
+    padding: 12px 20px;
+    position: relative;
+    text-align: center;
+    animation: slideDown 0.3s ease-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 2px;
+}
+
+.update-notification {
+    background-color: #af4c4c40;
+}
+
+.announcement-text, .update-text {
+    flex-grow: 1;
+    font-size: 16px;
+}
+
+.announcement-close, .update-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    padding: 0 5px;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.announcement-close:hover, .update-close:hover {
+    opacity: 1;
+}
+
+.banner-container {
+    margin-bottom: 20px;
+}
+.update-alert {
+    text-align: center;
+}
+
+.update-alert h3 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.update-alert a {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.update-alert a:hover {
+    text-decoration: underline;
 }
    
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body>
+<body style="visibility: hidden;">
   <div id="loading-screen">
     <div class="loading-content">
       <div class="loading-logo">BetterKMR</div>

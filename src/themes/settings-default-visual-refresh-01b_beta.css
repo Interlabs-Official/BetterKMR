@@ -19,7 +19,9 @@
 
     /* Modernized sidebar */
     .sidebar {
-      width: 280px;
+      position: fixed;
+      width: 255px;
+      height: 100vh;
       background: rgba(17, 17, 17, 0.8);
       border-right: 1px solid rgba(255, 255, 255, 0.1);
       box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
@@ -809,11 +811,11 @@
       z-index: 500;
     }
     
-    .update-text {
+    /* .update-text {
       color: rgba(70, 252, 242, 1);
       font-weight: 400;
       text-shadow: 0 0 5px rgba(70, 252, 242, 0.7);
-    }
+    } */
     
     .close-notice {
       background: transparent;

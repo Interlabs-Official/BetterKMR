@@ -5,14 +5,14 @@
     <title>Visual Editor - BetterKMR</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background-color: #0f0f0f; color: #ccc; font-weight: 400; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif;  }
+        body { background-color: #0f0f0f; color: #ccc; font-weight: 400; }
         
         /* Container & Layout */
         .settings-container { display: flex; min-height: 100vh; }
         .sidebar { width: 250px; background-color: #111111; border-right: 1px solid #444;}
         .sidebar ul { list-style: none; padding: 0; }
-        .tab-item { padding: 15px; cursor: pointer; border-bottom: 1px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
+        .tab-item { padding: 15px; cursor: pointer; border-bottom: 0px solid #444; transition: all 0.3s ease; height: 48px; font-size: 18px; }
         .tab-item.active {
             box-shadow: inset 4px 0 #29ff54;
             color: #fff;
@@ -48,8 +48,16 @@
             margin-bottom: 20px;
             border-bottom: 1px solid #333;
             padding-bottom: 15px;
+            border-radius: 12px;
+            padding: 20px;
+            background-color: #0e0e0e;
         }
         
+        .setting-item:hover {
+            border-color: #2979ff;
+            box-shadow: 0 0 0 1px #1c68e0;
+        }
+
         .setting-label {
             display: block;
             margin-bottom: 8px;
@@ -61,7 +69,7 @@
         .text-input {
             width: 100%;
             max-width: 400px;
-            background-color: #222;
+            background-color: #1a1a1a;
             border: 1px solid #444;
             color: #fff;
             padding: 10px 12px;
@@ -106,7 +114,7 @@
         .select-dropdown {
             width: 100%;
             max-width: 400px;
-            background-color: #222;
+            background-color: #1a1a1a;
             border: 1px solid #444;
             color: #fff;
             padding: 10px 12px;
@@ -435,9 +443,14 @@
             border: 1px solid #444;
             overflow: hidden;
         }
+
+        .added-element:hover {
+            border-color: #2979ff;
+            box-shadow: 0 0 0 1px #1c68e0;
+        }
         
         .added-element-header {
-            background-color: #2a2a2a;
+            background-color: #161616;
             padding: 10px 15px;
             display: flex;
             justify-content: space-between;
@@ -453,13 +466,14 @@
         .added-element-remove {
             background: none;
             border: none;
-            color: #ff5252;
+            color: #FFA1A3;
             cursor: pointer;
             font-size: 14px;
         }
         
         .added-element-content {
             padding: 15px;
+            background-color: #0e0e0e;
         }
         
         .added-element-property {
@@ -736,6 +750,14 @@
 
     .dialog-button-not:hover {
         background-color: #4242423a;
+    }
+
+    .svg-white {
+        filter: invert(98%) sepia(7%) saturate(67%) hue-rotate(202deg) brightness(117%) contrast(100%);
+    }
+
+    .svg-white:hover {
+        filter: invert(66%) sepia(62%) saturate(414%) hue-rotate(309deg) brightness(100%) contrast(112%);
     }
     </style>
       <link rel="stylesheet" href="../frameworks/codemirror/codemirror.min.css"></link>

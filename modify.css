@@ -50,6 +50,32 @@
     background-position: center center;
     animation: bg-spin 3s linear infinite;
 }
+.box-bcd-big-no-grid {
+  background-image: url("https://img.uhdpaper.com/image-4/a/thumbnail/hollow-knight-silksong-hornet-4k--27.4_a.jpg");
+  color: white;
+  text-shadow: 0 1px 0 #000;
+  height: 150px;
+  --border-angle: 0turn;
+  /* --main-bg: conic-gradient(from var(--border-angle), #213, #112 5%, #112 60%, #213 95%); */
+  border: solid 5px transparent;
+  border-radius: 5px;
+  --gradient-border: conic-gradient(from var(--border-angle), transparent 25%, var(--gradient-color1), var(--gradient-color2) 99%, transparent);
+  /* background: var(--main-bg) padding-box, var(--gradient-border) border-box, var(--main-bg) border-box; */
+  background-position: center center;
+  animation: bg-spin 3s linear infinite;
+  position: relative;
+  z-index: 1;
+}
+.box-bcd-big-no-grid:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, transparent 0%, black 100%);
+  z-index: -1;
+}
 
 .box-bcd .h4-upc-pub-hld-left {
     position: absolute;

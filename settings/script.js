@@ -439,6 +439,13 @@ const addDeleteButton = () => {
 
 	// Code definitions and their callbacks
 	const VALID_CODES = {
+		'SILKSONGISREAL': {
+			reward: 'Unlocked Silksong Counter (Limited Time Exclusive)',
+			callback: () => {
+				// Example callback for special theme unlock
+				createNotification('Successfully redeemed! (check the Visual Theme Editor to see a surprise)', '#3c8443', '#ffffff');
+			}
+		},
 	/*	'BETTERKMR2024': {
 			reward: 'Unlocked special theme',
 			callback: () => {
@@ -1254,7 +1261,7 @@ if (document.getElementById("tab-general")) {
 		if (ran > 0.85) {
 			document.getElementById("tab-general").insertAdjacentHTML("beforebegin", `
 				<div id="update-notice" class="update-notice">
-				  <span class="update-text">BetterKMR needs your help! If you find any bugs or glitches, please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
+				  <span class="update-ex-text">BetterKMR needs your help! If you find any bugs or glitches, please report them in the <a href="https://github.com/Interlabs-Official/BetterKMR/issues" target="_blank" style="color: #fff;">GitHub repository</a> or on our <a href="https://discord.gg/HjJvakyAXe" target="_blank" style="color: #fff;">Discord server</a>.</span>
 				  <span class="smaller-text">&nbsp;Click this notification to close.</span>
 			  </div>
 					`);
@@ -1266,7 +1273,6 @@ if (document.getElementById("tab-general")) {
 }
 
 function handleSettingsTheme(theme, doUpdate) {
-	console.log(theme);
 	if (theme === 'default' && doUpdate != true) return;
     const existingThemeLink = document.getElementById('settings-theme-stylesheet');
     if (existingThemeLink) {
@@ -1284,11 +1290,13 @@ function handleSettingsTheme(theme, doUpdate) {
     chrome.storage.sync.set({ settingsTheme: theme });
     
 	if (doUpdate == true) {
+		if (theme === 'settings-default-visual-refresh-01b_beta') {
+			createNotification("This theme is not actively maintained and is known to have issues. Proceed at your own expense.", "#961a1a", "#ffffff");
+		}
 		createNotification(`Settings theme updated! Some changes may require a refresh.`, "#3c8443", "#ffffff");
 	}
 }
 
-// Update the initSettingsTheme function
 function initSettingsTheme() {
     const themeSelector = document.getElementById('settings-theme-selector');
     
@@ -1301,4 +1309,103 @@ function initSettingsTheme() {
     themeSelector.addEventListener('change', function() {
         handleSettingsTheme(themeSelector.value, true);
     });
+}
+
+function checkUpdateNotification() {
+    chrome.storage.local.get([
+        'updateAvailable',
+        'latestVersion',
+        'changelog',
+        'versionHighlight'
+    ], (result) => {
+        if (result.updateAvailable) {
+            const existingUpdate = document.querySelector('.update-notification');
+            if (!existingUpdate) {
+                const banner = document.createElement('div');
+                banner.className = 'update-notification';
+                banner.innerHTML = `
+                    <span class="update-text">
+                        Your version (v${chrome.runtime.getManifest().version}) is out of date - v${result.latestVersion} is available: ${result.versionHighlight || ''}
+                    </span>
+                    <a href="${result.changelog}" target="_blank" style="color: white; text-decoration: underline;">View changelog</a>
+                    <button class="update-close" title="Dismiss">&times;</button>
+                `;
+                
+                insertIntoBannerContainer(banner);
+
+                banner.querySelector('.update-close').addEventListener('click', () => {
+                    banner.remove();
+                    chrome.storage.local.set({ 'update_notice_closed': true });
+                });
+            }
+        }
+    });
+}
+
+function checkAnnouncement() {
+	chrome.storage.local.get(['announcement', 'announcement_dismissed', 'last_announcement'], (result) => {
+		if (result.announcement && result.announcement.trim() !== '') {
+			if (result.announcement !== result.last_announcement) {
+				chrome.storage.local.set({
+					'announcement_dismissed': false,
+					'last_announcement': result.announcement
+				});
+			}
+
+			if (!result.announcement_dismissed) {
+				const existingAnnouncement = document.querySelector('.announcement-banner');
+				if (!existingAnnouncement) {
+					const banner = document.createElement('div');
+					banner.className = 'announcement-banner';
+					banner.innerHTML = `
+						<span class="announcement-text">${result.announcement}</span>
+						<button class="announcement-close" title="Dismiss">&times;</button>
+					`;
+					
+					insertIntoBannerContainer(banner);
+
+					banner.querySelector('.announcement-close').addEventListener('click', () => {
+						banner.remove();
+						chrome.storage.local.set({ 'announcement_dismissed': true });
+					});
+				}
+			}
+		}
+	});
+}
+
+function insertIntoBannerContainer(banner) {
+	let container = document.querySelector('.banner-container');
+	if (!container) {
+		container = document.createElement('div');
+		container.className = 'banner-container';
+		const content = document.querySelector('.content');
+		content.insertBefore(container, content.firstChild);
+	}
+	container.appendChild(banner);
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+	//const delay = ms => new Promise(res => setTimeout(res, ms));
+	//await delay(500);
+	checkAnnouncement();
+	checkUpdateNotification();
+});
+
+function convertThemeToNewVersion(themeData) {
+  themeData.elements.forEach(element => {
+    const elementTemplate = availableElements.find(temp => temp.id === element.id);
+    if (elementTemplate && element.properties) {
+      const newProperties = {};
+      Object.entries(element.properties).forEach(([propName, propValue]) => {
+        const property = elementTemplate.properties.find(p => p.name === propName);
+        if (property) {
+          newProperties[property.id] = propValue;
+        }
+      });
+      element.properties = newProperties;
+    }
+  });
+  themeData.vtt_version = "1.2.0";
+  return themeData;
 }

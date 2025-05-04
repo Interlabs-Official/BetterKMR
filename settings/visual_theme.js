@@ -1,16 +1,17 @@
+const VTT_VERSION = "1.2.0";
 const availableElements = [
-  { // moved from below navbar colours
+  {
     id: "font-family",
     name: "Font Family",
     description: "Change the font family of the Kamar website",
     properties: [
-      { name: "Preset Font Family", type: "dropdown", default: "Inter", options: ["Inter", "Arial", "Times New Roman", "Courier New"] },
-      { name: "Include School Name & Motto", type: "toggle", default: false },
-      { name: "Use custom font from Google Fonts", type: "toggle", default: false, controlsVisibility: ["Custom Google Font Name", "Fonts are case sensitive, so for example 'inter' should be 'Inter'. View the list of Google Fonts at https://fonts.google.com.", "Font Weight (100-900) (thin-black)", "<br><br>Also, some fonts don't have many font weights, sometimes even only the standard 400."] },
-      { name: "Fonts are case sensitive, so for example 'inter' should be 'Inter'. View the list of Google Fonts at https://fonts.google.com.", type: "tooltip", visibleWhen: "Use custom font from Google Fonts" },
-      { name: "Custom Google Font Name", type: "text", default: "Delius Swash Caps", visibleWhen: "Use custom font from Google Fonts" },
-      { name: "Font Weight (100-900) (thin-black)", type: "number", default: 400, unit: "px", visibleWhen: "Use custom font from Google Fonts" },
-      { name: "<br><br>Also, some fonts don't have many font weights, sometimes even only the standard 400.", type: "tooltip", visibleWhen: "Use custom font from Google Fonts" },
+      { id: "font-family-preset", name: "Preset Font Family", type: "dropdown", default: "Inter", options: ["Inter", "Arial", "Times New Roman", "Courier New"] },
+      { id: "font-family-include-name-motto", name: "Include School Name & Motto", type: "toggle", default: false },
+      { id: "font-family-use-custom-google-font", name: "Use custom font from Google Fonts", type: "toggle", default: false, controlsVisibility: ["font-family-custom-tooltip", "font-family-custom-name", "font-family-weight", "font-family-note-tooltip"] },
+      { id: "font-family-custom-tooltip", name: "Fonts are case sensitive, so for example 'inter' should be 'Inter'. View the list of Google Fonts at https://fonts.google.com.", type: "tooltip", visibleWhen: "Use custom font from Google Fonts" },
+      { id: "font-family-custom-name", name: "Custom Google Font Name", type: "text", default: "Delius Swash Caps", visibleWhen: "Use custom font from Google Fonts" },
+      { id: "font-family-weight", name: "Font Weight (100-900) (thin-black)", type: "number", default: 400, unit: "px", visibleWhen: "Use custom font from Google Fonts" },
+      { id: "font-family-note-tooltip", name: "<br><br>Also, some fonts don't have many font weights, sometimes even only the standard 400.", type: "tooltip", visibleWhen: "Use custom font from Google Fonts" },
     ]
   },
   {
@@ -18,17 +19,17 @@ const availableElements = [
     name: "Change Background",
     description: "Changes the background of Kamar (solid colour, image)",
     properties: [
-      { name: "By providing a background image, you agree that you have permission to use it and you agree the developers aren't held responsible.", type: "tooltip" },
-      { name: "Background Colour", type: "color", default: "#000000" },
-      { name: "Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg", type: "text", default: "" },
-      { name: "Or Upload Background Image", type: "image-upload", default: "", controlsVisibility: ["Delete Uploaded Image"] },
-      { name: "Delete Uploaded Image", type: "button", default: "Delete Image", visibleWhen: "Or Upload Background Image" },
-      { name: "Show Advanced Options", type: "toggle", default: false, controlsVisibility: ["Background Size", "Background Repeat", "Background Position", "Background Attachment"] },
-      { name: "If you don't know what the below dropdowns do, it's best to leave them.", type: "tooltip", visibleWhen: "Show Advanced Options" },
-      { name: "Background Size", type: "dropdown", default: "cover", options: ["cover", "contain", "auto", "100%", "100% 100%"], visibleWhen: "Show Advanced Options" },
-      { name: "Background Repeat", type: "dropdown", default: "no-repeat", options: ["no-repeat", "repeat", "repeat-x", "repeat-y"], visibleWhen: "Show Advanced Options" },
-      { name: "Background Position", type: "dropdown", default: "center center", options: ["center center", "top left", "top center", "top right", "center left", "center right", "bottom left", "bottom center", "bottom right"], visibleWhen: "Show Advanced Options" },
-      { name: "Background Attachment", type: "dropdown", default: "fixed", options: ["fixed", "scroll", "local"], visibleWhen: "Show Advanced Options" },
+      { id: "background-tooltip", name: "By providing a background image, you agree that you have permission to use it and you agree the developers aren't held responsible.", type: "tooltip" },
+      { id: "background-colour", name: "Background Colour", type: "color", default: "#000000" },
+      { id: "background-image-url", name: "Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg", type: "text", default: "" },
+      { id: "background-upload-image", name: "Or Upload Background Image", type: "image-upload", default: "", controlsVisibility: ["background-delete-upload"] },
+      { id: "background-delete-upload", name: "Delete Uploaded Image", type: "button", default: "Delete Image", visibleWhen: "Or Upload Background Image" },
+      { id: "background-advanced-toggle", name: "Show Advanced Options", type: "toggle", default: false, controlsVisibility: ["background-size", "background-repeat", "background-position", "background-attachment"] },
+      { id: "background-advanced-tooltip", name: "If you don't know what the below dropdowns do, it's best to leave them.", type: "tooltip", visibleWhen: "Show Advanced Options" },
+      { id: "background-size", name: "Background Size", type: "dropdown", default: "cover", options: ["cover", "contain", "auto", "100%", "100% 100%"], visibleWhen: "Show Advanced Options" },
+      { id: "background-repeat", name: "Background Repeat", type: "dropdown", default: "no-repeat", options: ["no-repeat", "repeat", "repeat-x", "repeat-y"], visibleWhen: "Show Advanced Options" },
+      { id: "background-position", name: "Background Position", type: "dropdown", default: "center center", options: ["center center", "top left", "top center", "top right", "center left", "center right", "bottom left", "bottom center", "bottom right"], visibleWhen: "Show Advanced Options" },
+      { id: "background-attachment", name: "Background Attachment", type: "dropdown", default: "fixed", options: ["fixed", "scroll", "local"], visibleWhen: "Show Advanced Options" },
     ]
   },
   {
@@ -36,7 +37,7 @@ const availableElements = [
     name: "Today's Attendance Highlight",
     description: "Highlights today's date on the attendance page",
     properties: [
-      { name: "Highlight (Background) Colour", type: "color", default: "#4CAF50", allowTransparency: true },
+      { id: "attendance-highlight-colour", name: "Highlight (Background) Colour", type: "color", default: "#4CAF50", allowTransparency: true },
     ]
   },
   {
@@ -44,13 +45,13 @@ const availableElements = [
     name: "School Name & Motto Colours",
     description: "Change the colours of the school name and motto, as well as text shadows.",
     properties: [
-      { name: "Name Colour", type: "color", default: "#f7f7f7" },
-      { name: "Motto Colour", type: "color", default: "#f7f7f7" },
-      { name: "Text Shadow", type: "toggle", default: false, controlsVisibility: ["Text Shadow Colour", "Motto Shadow Colour", "Text Shadow Offset X", "Text Shadow Offset Y"]},
-      { name: "Name Shadow Colour", type: "color", default: "#003f87", visibleWhen: "Text Shadow" },
-      { name: "Motto Shadow Colour", type: "color", default: "#003f87", visibleWhen: "Text Shadow" },
-      { name: "Text Shadow Offset X", type: "number", default: 2, unit: "px", visibleWhen: "Text Shadow" },
-      { name: "Text Shadow Offset Y", type: "number", default: 2, unit: "px", visibleWhen: "Text Shadow" },
+      { id: "school-name-colour", name: "Name Colour", type: "color", default: "#f7f7f7" },
+      { id: "school-motto-colour", name: "Motto Colour", type: "color", default: "#f7f7f7" },
+      { id: "school-text-shadow", name: "Text Shadow", type: "toggle", default: false, controlsVisibility: ["school-name-shadow-colour", "school-motto-shadow-colour", "school-shadow-offset-x", "school-shadow-offset-y"] },
+      { id: "school-name-shadow-colour", name: "Name Shadow Colour", type: "color", default: "#003f87", visibleWhen: "Text Shadow" },
+      { id: "school-motto-shadow-colour", name: "Motto Shadow Colour", type: "color", default: "#003f87", visibleWhen: "Text Shadow" },
+      { id: "school-shadow-offset-x", name: "Text Shadow Offset X", type: "number", default: 2, unit: "px", visibleWhen: "Text Shadow" },
+      { id: "school-shadow-offset-y", name: "Text Shadow Offset Y", type: "number", default: 2, unit: "px", visibleWhen: "Text Shadow" },
     ]
   },
   {
@@ -58,15 +59,15 @@ const availableElements = [
     name: "Present, Late, Unjustified & Justified Colours",
     description: "Change the colours of the present, late, unjustified and justified colours.",
     properties: [
-      { name: "If you want a solid colour, you can fill both gradient colours the same.", type: "tooltip"},
-      { name: "Text Colour (Present)", type: "color", default: "#ffffff"},
-      { name: "Present Colour", type: "gradient", defaultStart: "#49cea2", defaultEnd: "#00849b" },
-      { name: "Text Colour (Late)", type: "color", default: "#ffffff"},
-      { name: "Late Colour", type: "gradient", defaultStart: "#28a3a1", defaultEnd: "#003363" },
-      { name: "Text Colour (Unjustified)", type: "color", default: "#ffffff"},
-      { name: "Unjustified Colour", type: "gradient", defaultStart: "#d80000", defaultEnd: "#640000" },
-      { name: "Text Colour (Justified)", type: "color", default: "#ffffff"},
-      { name: "Justified Colour", type: "gradient", defaultStart: "#edff4c", defaultEnd: "#849b00" },
+      { id: "attendance-gradient-tooltip", name: "If you want a solid colour, you can fill both gradient colours the same.", type: "tooltip"},
+      { id: "present-text-colour", name: "Text Colour (Present)", type: "color", default: "#ffffff"},
+      { id: "present-gradient", name: "Present Colour", type: "gradient", defaultStart: "#49cea2", defaultEnd: "#00849b" },
+      { id: "late-text-colour", name: "Text Colour (Late)", type: "color", default: "#ffffff"},
+      { id: "late-gradient", name: "Late Colour", type: "gradient", defaultStart: "#28a3a1", defaultEnd: "#003363" },
+      { id: "unjustified-text-colour", name: "Text Colour (Unjustified)", type: "color", default: "#ffffff"},
+      { id: "unjustified-gradient", name: "Unjustified Colour", type: "gradient", defaultStart: "#d80000", defaultEnd: "#640000" },
+      { id: "justified-text-colour", name: "Text Colour (Justified)", type: "color", default: "#ffffff"},
+      { id: "justified-gradient", name: "Justified Colour", type: "gradient", defaultStart: "#edff4c", defaultEnd: "#849b00" },
     ]
   },
   {
@@ -74,14 +75,14 @@ const availableElements = [
     name: "Navbar Colours",
     description: "Change the colours of the Kamar navbar",
     properties: [
-      { name: "Background Colour", type: "color", default: "#000000" },
-      { name: "Text Colour", type: "color", default: "#ffffff" },
-      { name: "Active Text Colour", type: "color", default: "#63c9ff" },
-      { name: "Active Hover Text Colour", type: "color", default: "#8fd8ff" },
-      { name: "Box Shadow", type: "toggle", default: false, controlsVisibility: ["Text Shadow Colour", "Motto Shadow Colour", "Text Shadow Offset X", "Text Shadow Offset Y"]},
-      { name: "Box Shadow Colour", type: "color", default: "#003f87", visibleWhen: "Box Shadow" },
-      { name: "Box Shadow Offset X", type: "number", default: 2, unit: "px", visibleWhen: "Box Shadow" },
-      { name: "Box Shadow Offset Y", type: "number", default: 2, unit: "px", visibleWhen: "Box Shadow" },
+      { id: "navbar-background-colour", name: "Background Colour", type: "color", default: "#000000" },
+      { id: "navbar-text-colour", name: "Text Colour", type: "color", default: "#ffffff" },
+      { id: "navbar-active-text-colour", name: "Active Text Colour", type: "color", default: "#63c9ff" },
+      { id: "navbar-hover-text-colour", name: "Active Hover Text Colour", type: "color", default: "#8fd8ff" },
+      { id: "navbar-box-shadow", name: "Box Shadow", type: "toggle", default: false, controlsVisibility: ["navbar-box-shadow-colour", "navbar-box-shadow-offset-x", "navbar-box-shadow-offset-y"] },
+      { id: "navbar-box-shadow-colour", name: "Box Shadow Colour", type: "color", default: "#003f87", visibleWhen: "Box Shadow" },
+      { id: "navbar-box-shadow-offset-x", name: "Box Shadow Offset X", type: "number", default: 2, unit: "px", visibleWhen: "Box Shadow" },
+      { id: "navbar-box-shadow-offset-y", name: "Box Shadow Offset Y", type: "number", default: 2, unit: "px", visibleWhen: "Box Shadow" },
     ]
   },
   {
@@ -89,22 +90,22 @@ const availableElements = [
     name: "Main Colour Schemes",
     description: "Change the properties of the main content box, where most things are displayed",
     properties: [
-      { name: "Main Content Box", type: "toggle", default: false, controlsVisibility: ["Main Content Box Background Colour (sk_main_content)", "Main Content Box Text Colour (sk_main_content)"]},
-      { name: "By default in Kamar, the background colour is completely transparent.", type: "tooltip", visibleWhen: "Main Content Box" },
-      { name: "Main Content Box Background Colour (sk_main_content)", type: "color", default: "#000000", visibleWhen: "Main Content Box" },
-      { name: "Main Content Box Text Colour (sk_main_content)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
-      { name: "Navbar/Card Background Colour (card-body)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
-      { name: "Table Colour Scheming", type: "toggle", default: false, controlsVisibility: ["Table Header Colour (sk_thead_cell)", "Table Border Colour (sk_border)" ]},
-      { name: "Table Header Colour (sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
-      { name: "Table Border Colour (sk_border, sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
-      { name: "Generic", type: "toggle", default: false, controlsVisibility: ["Button Colour (sk_btn)", "Button Text Colour (sk_btn)"]},
-      { name: "Button Colour (sk_btn)", type: "color", default: "#000000", visibleWhen: "Generic" },
-      { name: "Button Text Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
-      { name: "Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#000000", visibleWhen: "Generic" },
-      { name: "Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
-      { name: "Button Border Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_border_colour" },
-      { name: "Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_hover_colour" },
-      { name: "Link Text Colour (a)", type: "color", default: "#0066ff", visibleWhen: "Generic", uniqueId: "a_link_text_colour" },
+      { id: "main-toggle", name: "Main Content Box", type: "toggle", default: false, controlsVisibility: ["main-bg", "main-text", "card-body"]},
+      { id: "main-tooltip", name: "By default in Kamar, the background colour is completely transparent.", type: "tooltip", visibleWhen: "Main Content Box" },
+      { id: "main-bg", name: "Main Content Box Background Colour (sk_main_content)", type: "color", default: "#000000", visibleWhen: "Main Content Box" },
+      { id: "main-text", name: "Main Content Box Text Colour (sk_main_content)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
+      { id: "card-body", name: "Navbar/Card Background Colour (card-body)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
+      { id: "table-toggle", name: "Table Colour Scheming", type: "toggle", default: false, controlsVisibility: ["table-header", "table-border"] },
+      { id: "table-header", name: "Table Header Colour (sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
+      { id: "table-border", name: "Table Border Colour (sk_border, sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
+      { id: "generic-toggle", name: "Generic", type: "toggle", default: false, controlsVisibility: ["btn-bg", "btn-text", "btn-hover-bg", "btn-hover-text", "sk_button_border_colour", "sk_button_hover_colour", "a_link_text_colour"] },
+      { id: "btn-bg", name: "Button Colour (sk_btn)", type: "color", default: "#000000", visibleWhen: "Generic" },
+      { id: "btn-text", name: "Button Text Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
+      { id: "btn-hover-bg", name: "Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#000000", visibleWhen: "Generic" },
+      { id: "btn-hover-text", name: "Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic" },
+      { id: "sk_button_border_colour", name: "Button Border Colour (sk_btn)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_border_colour" },
+      { id: "sk_button_hover_colour", name: "Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)", type: "color", default: "#ffffff", visibleWhen: "Generic", uniqueId: "sk_button_hover_colour" },
+      { id: "a_link_text_colour", name: "Link Text Colour (a)", type: "color", default: "#0066ff", visibleWhen: "Generic", uniqueId: "a_link_text_colour" },
     ]
   },
   {
@@ -112,15 +113,63 @@ const availableElements = [
     name: "Additional CSS Properties",
     description: "Something missing from the above settings? Add it here!",
     properties: [
-      { name: "Below, you can add your own CSS styles that will trail on after the settings from the Visual Theme Editor.", type: "tooltip" },
-      { name: "CSS Properties", type: "text", default: "" },
-      { name: "If you don't know what this is, it's best to remove it.", type: "tooltip" },
-      { name: "If you want to add something that's not in the settings, but don't know how to code, feel free to ask in the Discord! https://discord.gg/HjJvakyAXe", type: "tooltip" },
+      { id: "css-tooltip", name: "Below, you can add your own CSS styles that will trail on after the settings from the Visual Theme Editor.", type: "tooltip" },
+      { id: "css-input", name: "CSS Properties", type: "text", default: "" },
+      { id: "css-warning-tooltip", name: "If you don't know what this is, it's best to remove it.", type: "tooltip" },
+      { id: "css-discord-tooltip", name: "If you want to add something that's not in the settings, but don't know how to code, feel free to ask in the Discord! https://discord.gg/HjJvakyAXe", type: "tooltip" },
     ]
-  }
+  },
+  {
+    id: "external-js-embed",
+    name: "External JavaScript Embed",
+    description: "Add your own custom JavaScript for more functionality.",
+    properties: [
+      { id: "js-tooltip", name: "Below, you can add your own JavaScript code that will be applied with the custom theme.", type: "tooltip" },
+      { id: "js-input", name: "External JavaScript", type: "text", default: "" },
+      { id: "js-warning-tooltip", name: "If you don't know what this is, it's best to remove it.", type: "tooltip" },
+      { id: "js-discord-tooltip", name: "If you want to add something that's not in the settings, but don't know how to code, feel free to ask in the Discord! https://discord.gg/HjJvakyAXe", type: "tooltip" },
+    ]
+  },
 ];
 
+chrome.storage.sync.get("redeemedCodes").then((result) => {
+  for (const code of result.redeemedCodes){
+      if (code === "SILKSONGISREAL") {
+        availableElements.push({
+          id: "ext-promo-01",
+          name: "Days Since Silksong Announced (Exclusive)",
+          description: "Redeemed via exclusive code. Appears on attendance/week page.",
+          properties: [
+            { id: "ext-promo-01-tc-tooltip", name: "BetterKMR and the InterLabs team are not affiliated with Team Cherry.", type: "tooltip" },
+            { id: "ext-promo-01-enabled", name: "Enabled", type: "toggle", default: true },
+          ]
+        });
+      }
+  }
+});
+
+function convertThemeToNewVersion(themeData) {
+  // Convert old name-based properties to ID-based
+  themeData.elements.forEach(element => {
+    const elementTemplate = availableElements.find(temp => temp.id === element.id);
+    if (elementTemplate && element.properties) {
+      const newProperties = {};
+      Object.entries(element.properties).forEach(([propName, propValue]) => {
+        const property = elementTemplate.properties.find(p => p.name === propName);
+        if (property) {
+          newProperties[property.id] = propValue;
+        }
+      });
+      element.properties = newProperties;
+    }
+  });
+  themeData.vtt_version = VTT_VERSION;
+  return themeData;
+}
+
 let addedElements = [];
+let css = '';
+let jsToExecute = [];
 
 document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
@@ -261,7 +310,9 @@ function addElement(element) {
   let elementContent = `
     <div class="added-element-header">
       <div class="added-element-title">${element.name}</div>
-      <button class="added-element-remove" data-element-id="${element.id}">Remove</button>
+      <button class="added-element-remove" data-element-id="${element.id}">
+        <img src="../assets/images/font-awesome/trash-solid.svg" width="12px" height="12px" class="svg-white"></img>
+      </button>
     </div>
     <div class="added-element-content">
   `;
@@ -862,183 +913,153 @@ function loadThemeForEditing(themeId) {
       return;
     }
 
-    if (!theme.autoApplySave) {
-      document.getElementById("apply-theme-auto").checked = false;
-    }
-    
-    document.getElementById('theme-name').value = theme.name;
-    
-    const addedElementsContainer = document.getElementById('added-elements-container');
-    if (addedElementsContainer) {
-      addedElementsContainer.innerHTML = '';
-    }
-    
-    addedElements = [];
-    
-    if (theme.elements && Array.isArray(theme.elements)) {
-      theme.elements.forEach(element => {
-        const elementTemplate = availableElements.find(temp => temp.id === element.id);
-        if (elementTemplate) {
-          addElement(elementTemplate);
-          
-          if (element.properties) {
-            Object.entries(element.properties).forEach(([propName, propValue]) => {
-              const property = elementTemplate.properties.find(p => p.name === propName);
-              if (property) {
-                const propId = `${element.id}-${propName.replace(/\s+/g, '-')}`;
-                
-                if (property.type === 'color') {
-                  const input = document.getElementById(propId);
-                  const hexDisplay = document.getElementById(`${propId}-hex`);
-                  const alphaToggleBtn = document.getElementById(`${propId}-alpha-toggle`);
+    const loadTheme = (themeToLoad) => {
+      if (!themeToLoad.autoApplySave) {
+        document.getElementById("apply-theme-auto").checked = false;
+      }
+      
+      document.getElementById('theme-name').value = themeToLoad.name;
+      
+      const addedElementsContainer = document.getElementById('added-elements-container');
+      if (addedElementsContainer) {
+        addedElementsContainer.innerHTML = '';
+      }
+      
+      addedElements = [];
+      
+      if (themeToLoad.elements && Array.isArray(themeToLoad.elements)) {
+        themeToLoad.elements.forEach(element => {
+          const elementTemplate = availableElements.find(temp => temp.id === element.id);
+          if (elementTemplate) {
+            addElement(elementTemplate);
+            
+            if (element.properties) {
+              Object.entries(element.properties).forEach(([propName, propValue]) => {
+                const property = elementTemplate.properties.find(p => p.id === propName);
+                if (property) {
+                  const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
                   
-                  if (input && hexDisplay) {
-                    if (propValue && typeof propValue === 'object' && propValue.hex) {
-                      const hexColor = propValue.hex;
-                      const alpha = propValue.alpha || 1.0;
-                      
-                      input.value = hexColor;
-                      input.dataset.originalHex = hexColor;
-                      input.dataset.alpha = alpha;
-                      
-                      if (alpha < 1.0) {
-                        const r = parseInt(hexColor.slice(1, 3), 16);
-                        const g = parseInt(hexColor.slice(3, 5), 16);
-                        const b = parseInt(hexColor.slice(5, 7), 16);
-                        const hexWithAlpha = rgbaToHex(r, g, b, alpha);
-                        hexDisplay.textContent = hexWithAlpha;
+                  if (property.type === 'color') {
+                    const input = document.getElementById(propId);
+                    const hexDisplay = document.getElementById(`${propId}-hex`);
+                    const alphaToggleBtn = document.getElementById(`${propId}-alpha-toggle`);
+                    
+                    if (input && hexDisplay) {
+                      if (propValue && typeof propValue === 'object' && propValue.hex) {
+                        const hexColor = propValue.hex;
+                        const alpha = propValue.alpha || 1.0;
                         
-                        if (alphaToggleBtn) {
-                          const alphaContainer = input.parentNode.parentNode.querySelector('.alpha-slider-container');
+                        input.value = hexColor;
+                        input.dataset.originalHex = hexColor;
+                        input.dataset.alpha = alpha;
+                        
+                        if (alpha < 1.0) {
+                          const r = parseInt(hexColor.slice(1, 3), 16);
+                          const g = parseInt(hexColor.slice(3, 5), 16);
+                          const b = parseInt(hexColor.slice(5, 7), 16);
+                          const hexWithAlpha = rgbaToHex(r, g, b, alpha);
+                          hexDisplay.textContent = hexWithAlpha;
                           
-                          if (!alphaContainer) {
-                            alphaToggleBtn.click();
+                          if (alphaToggleBtn) {
+                            const alphaContainer = input.parentNode.parentNode.querySelector('.alpha-slider-container');
                             
-                            setTimeout(() => {
-                              const alphaSlider = input.parentNode.parentNode.querySelector('.alpha-slider');
-                              const alphaValue = input.parentNode.parentNode.querySelector('.alpha-value');
+                            if (!alphaContainer) {
+                              alphaToggleBtn.click();
+                              
+                              setTimeout(() => {
+                                const alphaSlider = input.parentNode.parentNode.querySelector('.alpha-slider');
+                                const alphaValue = input.parentNode.parentNode.querySelector('.alpha-value');
+                                
+                                if (alphaSlider && alphaValue) {
+                                  const alphaPercent = Math.round(alpha * 100);
+                                  alphaSlider.value = alphaPercent;
+                                  alphaValue.textContent = `${alphaPercent}%`;
+                                }
+                              }, 50);
+                            } else if (alphaContainer) {
+                              const alphaSlider = alphaContainer.querySelector('.alpha-slider');
+                              const alphaValue = alphaContainer.querySelector('.alpha-value');
                               
                               if (alphaSlider && alphaValue) {
                                 const alphaPercent = Math.round(alpha * 100);
                                 alphaSlider.value = alphaPercent;
                                 alphaValue.textContent = `${alphaPercent}%`;
                               }
-                            }, 50);
-                          } else if (alphaContainer) {
-                            const alphaSlider = alphaContainer.querySelector('.alpha-slider');
-                            const alphaValue = alphaContainer.querySelector('.alpha-value');
-                            
-                            if (alphaSlider && alphaValue) {
-                              const alphaPercent = Math.round(alpha * 100);
-                              alphaSlider.value = alphaPercent;
-                              alphaValue.textContent = `${alphaPercent}%`;
                             }
                           }
+                        } else {
+                          hexDisplay.textContent = hexColor;
                         }
-                      } else {
-                        hexDisplay.textContent = hexColor;
                       }
-                    }
-                    else if (propValue && typeof propValue === 'string') {
-                      if (propValue.length === 9) { // Full hex with alpha #RRGGBBAA
-                        const alphaHex = propValue.substring(7, 9);
-                        const alphaDecimal = parseInt(alphaHex, 16) / 255;
-                        const alphaPercent = Math.round(alphaDecimal * 100);
-                        const colorWithoutAlpha = propValue.substring(0, 7);
-                        
-                        input.value = colorWithoutAlpha;
-                        input.dataset.originalHex = colorWithoutAlpha;
-                        input.dataset.alpha = alphaDecimal;
-                        hexDisplay.textContent = propValue;
-                        
-                        if (alphaToggleBtn) {
-                          const alphaContainer = input.parentNode.parentNode.querySelector('.alpha-slider-container');
+                      else if (propValue && typeof propValue === 'string') {
+                        if (propValue.length === 9) { // Full hex with alpha #RRGGBBAA
+                          const alphaHex = propValue.substring(7, 9);
+                          const alphaDecimal = parseInt(alphaHex, 16) / 255;
+                          const alphaPercent = Math.round(alphaDecimal * 100);
+                          const colorWithoutAlpha = propValue.substring(0, 7);
                           
-                          if (!alphaContainer) {
-                            alphaToggleBtn.click();
+                          input.value = colorWithoutAlpha;
+                          input.dataset.originalHex = colorWithoutAlpha;
+                          input.dataset.alpha = alphaDecimal;
+                          hexDisplay.textContent = propValue;
+                          
+                          if (alphaToggleBtn) {
+                            const alphaContainer = input.parentNode.parentNode.querySelector('.alpha-slider-container');
                             
-                            setTimeout(() => {
-                              const alphaSlider = input.parentNode.parentNode.querySelector('.alpha-slider');
-                              const alphaValue = input.parentNode.parentNode.querySelector('.alpha-value');
+                            if (!alphaContainer) {
+                              alphaToggleBtn.click();
                               
-                              if (alphaSlider && alphaValue) {
-                                alphaSlider.value = alphaPercent;
-                                alphaValue.textContent = `${alphaPercent}%`;
-                              }
-                            }, 50);
+                              setTimeout(() => {
+                                const alphaSlider = input.parentNode.parentNode.querySelector('.alpha-slider');
+                                const alphaValue = input.parentNode.parentNode.querySelector('.alpha-value');
+                                
+                                if (alphaSlider && alphaValue) {
+                                  alphaSlider.value = alphaPercent;
+                                  alphaValue.textContent = `${alphaPercent}%`;
+                                }
+                              }, 50);
+                            }
                           }
+                        } else {
+                          input.value = propValue;
+                          input.dataset.originalHex = propValue;
+                          input.dataset.alpha = "1.0";
+                          hexDisplay.textContent = propValue;
                         }
-                      } else {
-                        input.value = propValue;
-                        input.dataset.originalHex = propValue;
-                        input.dataset.alpha = "1.0";
-                        hexDisplay.textContent = propValue;
                       }
                     }
                   }
-                }
-                else if (property.type === 'gradient') {
-                  const startInput = document.getElementById(`${propId}-start`);
-                  const startHex = document.getElementById(`${propId}-start-hex`);
-                  const endInput = document.getElementById(`${propId}-end`);
-                  const endHex = document.getElementById(`${propId}-end-hex`);
-                  const direction = document.getElementById(`${propId}-direction`);
-                  const startAlphaToggleBtn = document.getElementById(`${propId}-start-alpha-toggle`);
-                  const endAlphaToggleBtn = document.getElementById(`${propId}-end-alpha-toggle`);
-                  
-                  if (propValue && typeof propValue === 'object') {
-                    if (direction && propValue.direction) {
-                      direction.value = propValue.direction;
-                    }
+                  else if (property.type === 'gradient') {
+                    const startInput = document.getElementById(`${propId}-start`);
+                    const startHex = document.getElementById(`${propId}-start-hex`);
+                    const endInput = document.getElementById(`${propId}-end`);
+                    const endHex = document.getElementById(`${propId}-end-hex`);
+                    const direction = document.getElementById(`${propId}-direction`);
+                    const startAlphaToggleBtn = document.getElementById(`${propId}-start-alpha-toggle`);
+                    const endAlphaToggleBtn = document.getElementById(`${propId}-end-alpha-toggle`);
                     
-                    if (startInput && startHex && propValue.start && typeof propValue.start === 'object' && propValue.start.hex) {
-                      const hexColor = propValue.start.hex;
-                      const alpha = propValue.start.alpha || 1.0;
-                      
-                      startInput.value = hexColor;
-                      startInput.dataset.originalHex = hexColor;
-                      startInput.dataset.alpha = alpha;
-                      
-                      if (alpha < 1.0 && startAlphaToggleBtn) {
-                        const r = parseInt(hexColor.slice(1, 3), 16);
-                        const g = parseInt(hexColor.slice(3, 5), 16);
-                        const b = parseInt(hexColor.slice(5, 7), 16);
-                        const hexWithAlpha = rgbaToHex(r, g, b, alpha);
-                        startHex.textContent = hexWithAlpha;
-                        
-                        const alphaContainer = startInput.parentNode.parentNode.querySelector('.alpha-slider-container');
-                        if (!alphaContainer && startAlphaToggleBtn) {
-                          startAlphaToggleBtn.click();
-                          
-                          setTimeout(() => {
-                            const alphaSlider = startInput.parentNode.parentNode.querySelector('.alpha-slider');
-                            const alphaValue = startInput.parentNode.parentNode.querySelector('.alpha-value');
-                            
-                            if (alphaSlider && alphaValue) {
-                              const alphaPercent = Math.round(alpha * 100);
-                              alphaSlider.value = alphaPercent;
-                              alphaValue.textContent = `${alphaPercent}%`;
-                            }
-                          }, 50);
-                        }
-                      } else {
-                        startHex.textContent = hexColor;
+                    if (propValue && typeof propValue === 'object') {
+                      if (direction && propValue.direction) {
+                        direction.value = propValue.direction;
                       }
-                    }
-                    else if (startInput && startHex && propValue.start && typeof propValue.start === 'string') {
-                      startInput.value = propValue.start.substring(0, 7);
-                      startInput.dataset.originalHex = propValue.start.substring(0, 7);
-                      startInput.dataset.alpha = "1.0";
-                      startHex.textContent = propValue.start;
                       
-                      if (propValue.start.length === 9) {
-                        const alphaHex = propValue.start.substring(7, 9);
-                        const alphaDecimal = parseInt(alphaHex, 16) / 255;
-                        startInput.dataset.alpha = alphaDecimal;
+                      if (startInput && startHex && propValue.start && typeof propValue.start === 'object' && propValue.start.hex) {
+                        const hexColor = propValue.start.hex;
+                        const alpha = propValue.start.alpha || 1.0;
                         
-                        if (alphaDecimal < 1.0 && startAlphaToggleBtn) {
+                        startInput.value = hexColor;
+                        startInput.dataset.originalHex = hexColor;
+                        startInput.dataset.alpha = alpha;
+                        
+                        if (alpha < 1.0 && startAlphaToggleBtn) {
+                          const r = parseInt(hexColor.slice(1, 3), 16);
+                          const g = parseInt(hexColor.slice(3, 5), 16);
+                          const b = parseInt(hexColor.slice(5, 7), 16);
+                          const hexWithAlpha = rgbaToHex(r, g, b, alpha);
+                          startHex.textContent = hexWithAlpha;
+                          
                           const alphaContainer = startInput.parentNode.parentNode.querySelector('.alpha-slider-container');
-                          if (!alphaContainer) {
+                          if (!alphaContainer && startAlphaToggleBtn) {
                             startAlphaToggleBtn.click();
                             
                             setTimeout(() => {
@@ -1046,64 +1067,64 @@ function loadThemeForEditing(themeId) {
                               const alphaValue = startInput.parentNode.parentNode.querySelector('.alpha-value');
                               
                               if (alphaSlider && alphaValue) {
-                                const alphaPercent = Math.round(alphaDecimal * 100);
+                                const alphaPercent = Math.round(alpha * 100);
                                 alphaSlider.value = alphaPercent;
                                 alphaValue.textContent = `${alphaPercent}%`;
                               }
                             }, 50);
                           }
+                        } else {
+                          startHex.textContent = hexColor;
                         }
                       }
-                    }
-                    
-                    if (endInput && endHex && propValue.end && typeof propValue.end === 'object' && propValue.end.hex) {
-                      const hexColor = propValue.end.hex;
-                      const alpha = propValue.end.alpha || 1.0;
-                      
-                      endInput.value = hexColor;
-                      endInput.dataset.originalHex = hexColor;
-                      endInput.dataset.alpha = alpha;
-                      
-                      if (alpha < 1.0 && endAlphaToggleBtn) {
-                        const r = parseInt(hexColor.slice(1, 3), 16);
-                        const g = parseInt(hexColor.slice(3, 5), 16);
-                        const b = parseInt(hexColor.slice(5, 7), 16);
-                        const hexWithAlpha = rgbaToHex(r, g, b, alpha);
-                        endHex.textContent = hexWithAlpha;
+                      else if (startInput && startHex && propValue.start && typeof propValue.start === 'string') {
+                        startInput.value = propValue.start.substring(0, 7);
+                        startInput.dataset.originalHex = propValue.start.substring(0, 7);
+                        startInput.dataset.alpha = "1.0";
+                        startHex.textContent = propValue.start;
                         
-                        const alphaContainer = endInput.parentNode.parentNode.querySelector('.alpha-slider-container');
-                        if (!alphaContainer && endAlphaToggleBtn) {
-                          endAlphaToggleBtn.click();
+                        if (propValue.start.length === 9) {
+                          const alphaHex = propValue.start.substring(7, 9);
+                          const alphaDecimal = parseInt(alphaHex, 16) / 255;
+                          startInput.dataset.alpha = alphaDecimal;
                           
-                          setTimeout(() => {
-                            const alphaSlider = endInput.parentNode.parentNode.querySelector('.alpha-slider');
-                            const alphaValue = endInput.parentNode.parentNode.querySelector('.alpha-value');
-                            
-                            if (alphaSlider && alphaValue) {
-                              const alphaPercent = Math.round(alpha * 100);
-                              alphaSlider.value = alphaPercent;
-                              alphaValue.textContent = `${alphaPercent}%`;
+                          if (alphaDecimal < 1.0 && startAlphaToggleBtn) {
+                            const alphaContainer = startInput.parentNode.parentNode.querySelector('.alpha-slider-container');
+                            if (!alphaContainer) {
+                              startAlphaToggleBtn.click();
+                              
+                              setTimeout(() => {
+                                const alphaSlider = startInput.parentNode.parentNode.querySelector('.alpha-slider');
+                                const alphaValue = startInput.parentNode.parentNode.querySelector('.alpha-value');
+                                
+                                if (alphaSlider && alphaValue) {
+                                  const alphaPercent = Math.round(alphaDecimal * 100);
+                                  alphaSlider.value = alphaPercent;
+                                  alphaValue.textContent = `${alphaPercent}%`;
+                                }
+                              }, 50);
                             }
-                          }, 50);
+                          }
                         }
-                      } else {
-                        endHex.textContent = hexColor;
                       }
-                    }
-                    else if (endInput && endHex && propValue.end && typeof propValue.end === 'string') {
-                      endInput.value = propValue.end.substring(0, 7);
-                      endInput.dataset.originalHex = propValue.end.substring(0, 7);
-                      endInput.dataset.alpha = "1.0";
-                      endHex.textContent = propValue.end;
                       
-                      if (propValue.end.length === 9) {
-                        const alphaHex = propValue.end.substring(7, 9);
-                        const alphaDecimal = parseInt(alphaHex, 16) / 255;
-                        endInput.dataset.alpha = alphaDecimal;
+                      if (endInput && endHex && propValue.end && typeof propValue.end === 'object' && propValue.end.hex) {
+                        const hexColor = propValue.end.hex;
+                        const alpha = propValue.end.alpha || 1.0;
                         
-                        if (alphaDecimal < 1.0 && endAlphaToggleBtn) {
+                        endInput.value = hexColor;
+                        endInput.dataset.originalHex = hexColor;
+                        endInput.dataset.alpha = alpha;
+                        
+                        if (alpha < 1.0 && endAlphaToggleBtn) {
+                          const r = parseInt(hexColor.slice(1, 3), 16);
+                          const g = parseInt(hexColor.slice(3, 5), 16);
+                          const b = parseInt(hexColor.slice(5, 7), 16);
+                          const hexWithAlpha = rgbaToHex(r, g, b, alpha);
+                          endHex.textContent = hexWithAlpha;
+                          
                           const alphaContainer = endInput.parentNode.parentNode.querySelector('.alpha-slider-container');
-                          if (!alphaContainer) {
+                          if (!alphaContainer && endAlphaToggleBtn) {
                             endAlphaToggleBtn.click();
                             
                             setTimeout(() => {
@@ -1111,110 +1132,193 @@ function loadThemeForEditing(themeId) {
                               const alphaValue = endInput.parentNode.parentNode.querySelector('.alpha-value');
                               
                               if (alphaSlider && alphaValue) {
-                                const alphaPercent = Math.round(alphaDecimal * 100);
+                                const alphaPercent = Math.round(alpha * 100);
                                 alphaSlider.value = alphaPercent;
                                 alphaValue.textContent = `${alphaPercent}%`;
                               }
                             }, 50);
                           }
+                        } else {
+                          endHex.textContent = hexColor;
+                        }
+                      }
+                      else if (endInput && endHex && propValue.end && typeof propValue.end === 'string') {
+                        endInput.value = propValue.end.substring(0, 7);
+                        endInput.dataset.originalHex = propValue.end.substring(0, 7);
+                        endInput.dataset.alpha = "1.0";
+                        endHex.textContent = propValue.end;
+                        
+                        if (propValue.end.length === 9) {
+                          const alphaHex = propValue.end.substring(7, 9);
+                          const alphaDecimal = parseInt(alphaHex, 16) / 255;
+                          endInput.dataset.alpha = alphaDecimal;
+                          
+                          if (alphaDecimal < 1.0 && endAlphaToggleBtn) {
+                            const alphaContainer = endInput.parentNode.parentNode.querySelector('.alpha-slider-container');
+                            if (!alphaContainer) {
+                              endAlphaToggleBtn.click();
+                              
+                              setTimeout(() => {
+                                const alphaSlider = endInput.parentNode.parentNode.querySelector('.alpha-slider');
+                                const alphaValue = endInput.parentNode.parentNode.querySelector('.alpha-value');
+                                
+                                if (alphaSlider && alphaValue) {
+                                  const alphaPercent = Math.round(alphaDecimal * 100);
+                                  alphaSlider.value = alphaPercent;
+                                  alphaValue.textContent = `${alphaPercent}%`;
+                                }
+                              }, 50);
+                            }
+                          }
                         }
                       }
                     }
                   }
-                }
-                else if (property.type === 'checkbox' || property.type === 'toggle') {
-                  const checkbox = document.getElementById(propId);
-                  if (checkbox) {
-                    checkbox.checked = propValue;
-                    
-                    // Trigger change event to show/hide dependent content
-                    const event = new Event('change', { bubbles: true });
-                    checkbox.dispatchEvent(event);
-                  }
-                } 
-                else if (property.type === 'select') {
-                  const select = document.getElementById(propId);
-                  if (select) {
-                    select.value = propValue;
-                    
-                    // Trigger change event in case select has dependent fields
-                    const event = new Event('change', { bubbles: true });
-                    select.dispatchEvent(event);
-                  }
-                } 
-                else if (property.type === 'text' || property.type === 'url' || property.type === 'number') {
-                  const input = document.getElementById(propId);
-                  if (input) {
-                    input.value = propValue;
-                  }
-                }
-                else if (property.type === 'image-upload') {
-                  // For image upload, we need to handle the base64 data and update the UI
-                  const dataInput = document.getElementById(`${propId}-data`);
-                  const preview = document.getElementById(`${propId}-preview`);
-                  const dropArea = document.getElementById(`${propId}-drop-area`);
-                  const imageContainer = document.getElementById(`${propId}-preview-container`);
-                  const infoDisplay = document.getElementById(`${propId}-info`);
-                  
-                  if (dataInput && propValue) {
-                    // Set the image data
-                    dataInput.value = propValue;
-                    
-                    // Show the preview if we have an image
-                    if (preview && propValue.startsWith('data:image')) {
-                      // Show the image container and hide the drop area
-                      if (imageContainer) imageContainer.style.display = 'block';
-                      if (dropArea) dropArea.style.display = 'none';
+                  else if (property.type === 'checkbox' || property.type === 'toggle') {
+                    const checkbox = document.getElementById(propId);
+                    if (checkbox) {
+                      checkbox.checked = propValue;
                       
-                      // Update the preview image
-                      preview.src = propValue;
-                      preview.style.display = 'block';
-                      
-                      // Update image info
-                      if (infoDisplay) {
-                        updateImageInfo(propValue, infoDisplay);
-                      }
-                      
-                      // If there's a clear button, make sure it's visible
-                      const clearBtn = document.getElementById(`${propId}-clear`);
-                      if (clearBtn) clearBtn.style.display = 'block';
+                      // Trigger change event to show/hide dependent content
+                      const event = new Event('change', { bubbles: true });
+                      checkbox.dispatchEvent(event);
                     }
-                  }
-                }
-                else if (property.type) {
-                  console.log(`Loading property of type ${property.type}: ${propName}`);
-                  const input = document.getElementById(propId);
-                  if (input) {
-                    try {
+                  } 
+                  else if (property.type === 'select') {
+                    const select = document.getElementById(propId);
+                    if (select) {
+                      select.value = propValue;
+                      
+                      // Trigger change event in case select has dependent fields
+                      const event = new Event('change', { bubbles: true });
+                      select.dispatchEvent(event);
+                    }
+                  } 
+                  else if (property.type === 'text' || property.type === 'url' || property.type === 'number') {
+                    const input = document.getElementById(propId);
+                    if (input) {
                       input.value = propValue;
-                    } catch (e) {
-                      console.warn(`Could not set value directly for "${property.type}" property "${propName}"`);
-                      createNotification(`⚠️ Could not set value directly for "${property.type}" property "${propName}"`, "#7d7300", "#ffffff");
-                      createNotification(`The above warning may mean some elements won't be loaded properly. Please remake the theme if you experience any issues.`, "#7d7300", "#ffffff");
-                      input.setAttribute('data-value', JSON.stringify(propValue));
+                    }
+                  }
+                  else if (property.type === 'image-upload') {
+                    // For image upload, we need to handle the base64 data and update the UI
+                    const dataInput = document.getElementById(`${propId}-data`);
+                    const preview = document.getElementById(`${propId}-preview`);
+                    const dropArea = document.getElementById(`${propId}-drop-area`);
+                    const imageContainer = document.getElementById(`${propId}-preview-container`);
+                    const infoDisplay = document.getElementById(`${propId}-info`);
+                    
+                    if (dataInput && propValue) {
+                      // Set the image data
+                      dataInput.value = propValue;
+                      
+                      // Show the preview if we have an image
+                      if (preview && propValue.startsWith('data:image')) {
+                        // Show the image container and hide the drop area
+                        if (imageContainer) imageContainer.style.display = 'block';
+                        if (dropArea) dropArea.style.display = 'none';
+                        
+                        // Update the preview image
+                        preview.src = propValue;
+                        preview.style.display = 'block';
+                        
+                        // Update image info
+                        if (infoDisplay) {
+                          updateImageInfo(propValue, infoDisplay);
+                        }
+                        
+                        // If there's a clear button, make sure it's visible
+                        const clearBtn = document.getElementById(`${propId}-clear`);
+                        if (clearBtn) clearBtn.style.display = 'block';
+                      }
+                    }
+                  }
+                  else if (property.type) {
+                    console.log(`Loading property of type ${property.type}: ${propName}`);
+                    const input = document.getElementById(propId);
+                    if (input) {
+                      try {
+                        input.value = propValue;
+                      } catch (e) {
+                        console.warn(`Could not set value directly for "${property.type}" property "${propName}"`);
+                        createNotification(`⚠️ Could not set value directly for "${property.type}" property "${propName}"`, "#7d7300", "#ffffff");
+                        createNotification(`The above warning may mean some elements won't be loaded properly. Please remake the theme if you experience any issues.`, "#7d7300", "#ffffff");
+                        input.setAttribute('data-value', JSON.stringify(propValue));
+                      }
                     }
                   }
                 }
-              }
-            });
+              });
+            }
           }
-        }
-      });
-    }
-    
-    // Load CSS if present
-    if (theme.code) {
-      cssEditor.setValue(theme.code);
-    }
-    
-    // Trigger any post-load initialization that might be needed
-    if (typeof postLoad === 'function') {
-      try {
-        postLoad(theme.elements);
-      } catch (e) {
-        console.error('Error in postLoad function:', e);
-        createNotification("Error loading the compiling function. Please check console for", "#961a1a", "#ffffff");
+        });
       }
+      
+      // Load CSS if present
+      if (themeToLoad.code) {
+        cssEditor.setValue(themeToLoad.code);
+      }
+      
+      // Trigger any post-load initialization that might be needed
+      if (typeof postLoad === 'function') {
+        try {
+          postLoad(themeToLoad.elements);
+        } catch (e) {
+          console.error('Error in postLoad function:', e);
+          createNotification("Error loading the compiling function. Please check console for", "#961a1a", "#ffffff");
+        }
+      }
+    };
+
+    // Check version and handle conversion if needed
+    if (!theme.vtt_version) {
+      createDialog({
+        title: 'Theme Version Update Required',
+        content: 'This theme requires updating to a new version.<br>Would you like to get it converted?',
+        buttons: [
+          {
+            text: 'Yes',
+            callback: () => {
+                const dialog = createDialog({
+                title: 'Converting Theme', 
+                content: `
+                  <p>The Visual Theme Editor is now converting your theme to a newer version.</p>
+                  <p>Please do not forget to save your theme after conversion.</p><br>
+                  <p>This tab may freeze during this process.</p>
+                  <p>This may take a while. Thanks for your patience.</p>`,
+                });
+              setTimeout(() => {
+                console.log("Beginning conversion in 1 second");
+                const convertedTheme = convertThemeToNewVersion(theme);
+                createDialog({
+                  title: 'Conversion Completed!',
+                  content: `
+                      Conversion successfully completed!<br>
+                      If you're experiencing issues, please contact us via our support forum (Discord).
+                  `,
+                  buttons: [
+                    {
+                      text: 'Ok',
+                    }
+                  ]
+                });
+                loadTheme(convertedTheme);
+                dialog.close();
+              }, "1000");
+              
+            }
+          },
+          {
+            text: 'No',
+            classname: 'dialog-button-not',
+            callback: () => {
+              window.location.href = "index.html?nested-tab-selected=custom-themes";
+            }
+          }
+        ]
+      });
+    } else {
+      loadTheme(theme);
     }
   });
 }
@@ -1256,14 +1360,12 @@ function saveTheme() {
       createNotification("Failed saving theme: Total theme limit exceeds 100MB. Please delete some custom themes to make space.", "#961a1a", "#ffffff");
       return;
     } else {
-      // Disable save button to prevent multiple clicks
       const saveButton = document.getElementById('save-button');
       saveButton.disabled = true;
       saveButton.textContent = 'Saving...';
       console.log("Saving theme...");
       
       try {
-        // Get theme name and validate
         const themeName = document.getElementById('theme-name').value.trim();
         if (!themeName) {
           createNotification("Please enter a theme name before continuing.", "#961a1a", "#ffffff");
@@ -1273,13 +1375,11 @@ function saveTheme() {
         }
         
         try {
-          // Collect theme data
           const theme = {
             name: themeName,
             elements: []
           };
           
-          // Collect all custom elements
           addedElements.forEach(element => {
             const elementData = {
               id: element.id,
@@ -1287,7 +1387,6 @@ function saveTheme() {
               properties: {}
             };
             
-            // Collect property values
             element.properties.forEach(property => {
               const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
               
@@ -1295,11 +1394,10 @@ function saveTheme() {
                 const hexDisplay = document.getElementById(`${propId}-hex`);
                 const colorInput = document.getElementById(propId);
                 if (hexDisplay && colorInput) {
-                  // Save original hex color and transparency separately
                   const originalHex = colorInput.dataset.originalHex || colorInput.value;
                   const alpha = parseFloat(colorInput.dataset.alpha) || 1.0;
                   
-                  elementData.properties[property.name] = {
+                  elementData.properties[property.id] = {
                     hex: originalHex,
                     alpha: alpha
                   };
@@ -1311,7 +1409,7 @@ function saveTheme() {
                 const endHex = document.getElementById(`${propId}-end-hex`);
                 const direction = document.getElementById(`${propId}-direction`);
                 
-                elementData.properties[property.name] = {
+                elementData.properties[property.id] = {
                   start: startInput ? {
                     hex: startInput.dataset.originalHex || startInput.value,
                     alpha: parseFloat(startInput.dataset.alpha) || 1.0
@@ -1325,46 +1423,39 @@ function saveTheme() {
               } else if (property.type === 'image-upload') {
                 const dataInput = document.getElementById(`${propId}-data`);
                 if (dataInput) {
-                  elementData.properties[property.name] = dataInput.value;
+                  elementData.properties[property.id] = dataInput.value;
                 }
               } else if (property.type === 'checkbox' || property.type === 'toggle') {
                 const checkbox = document.getElementById(propId);
                 if (checkbox) {
-                  elementData.properties[property.name] = checkbox.checked;
+                  elementData.properties[property.id] = checkbox.checked;
                   
-                  // Trigger change event to show/hide dependent content
                   const event = new Event('change', { bubbles: true });
                   checkbox.dispatchEvent(event);
                 }
               } else if (property.type === 'select' || property.type === 'dropdown') {
                 const select = document.getElementById(propId);
                 if (select) {
-                  elementData.properties[property.name] = select.value;
+                  elementData.properties[property.id] = select.value;
                   
-                  // Trigger change event in case select has dependent fields
                   const event = new Event('change', { bubbles: true });
                   select.dispatchEvent(event);
                 }
               } else if (property.type === 'text' || property.type === 'url' || property.type === 'number') {
                 const input = document.getElementById(propId);
                 if (input) {
-                  elementData.properties[property.name] = input.value;
+                  elementData.properties[property.id] = input.value;
                 }
               }
-              // Handle any future property types here - making it extensible
               else if (property.type) {
-                // Generic handler for any other property types
-                // This catches any property types we haven't explicitly handled
                 console.log(`Saving property of type ${property.type}: ${property.name}`);
                 const input = document.getElementById(propId);
                 if (input) {
-                  // Get the value from the element based on its type
                   let value;
                   
                   if (input.tagName === 'INPUT' || input.tagName === 'SELECT' || input.tagName === 'TEXTAREA') {
                     value = input.value;
                   } else if (input.tagName === 'DIV' || input.tagName === 'SPAN') {
-                    // For containers, check for data attributes first
                     if (input.hasAttribute('data-value')) {
                       try {
                         value = JSON.parse(input.getAttribute('data-value'));
@@ -1375,12 +1466,10 @@ function saveTheme() {
                       value = input.textContent;
                     }
                   } else {
-                    // Last resort - get any available property
                     value = input.value || input.textContent || '';
                   }
                   
-                  // Save the value to the element data
-                  elementData.properties[property.name] = value;
+                  elementData.properties[property.id] = value;
                 }
               }
             });
@@ -1390,7 +1479,6 @@ function saveTheme() {
           
           console.log("Elements collected:", theme.elements);
           
-          // Generate CSS for the theme
           try {
             postSave(theme.elements);
             cssEditor.save();
@@ -1399,7 +1487,6 @@ function saveTheme() {
             createNotification("Error generating CSS. Default CSS will be used.", "#e74c3c", "#ffffff");
           }
           
-          // Get the theme ID from URL or generate a new one
           const urlParams = new URLSearchParams(window.location.search);
           let themeId = urlParams.get('themeID');
           
@@ -1409,21 +1496,20 @@ function saveTheme() {
           
           getAllCustomThemes(function(themes) {
             try {
-              // Create the theme data object
               console.log("Get all custom themes:", themes);
               const themeData = {
                 id: themeId,
                 name: themeName,
                 code: cssEditor.getValue(),
+                js: jsToExecute,
                 elements: theme.elements,
                 lastModified: new Date().toISOString(),
-                autoApplySave: document.getElementById("apply-theme-auto").checked
+                autoApplySave: document.getElementById("apply-theme-auto").checked,
+                vtt_version: VTT_VERSION
               };
               
-              // Add to themes collection
               themes[themeId] = themeData;
               
-              // Save to Chrome storage
               chrome.storage.local.set({ themes: themes }, function() {
                 if (chrome.runtime.lastError) {
                   console.error("Error saving theme:", chrome.runtime.lastError);
@@ -1471,13 +1557,10 @@ function saveTheme() {
 
 // Compiles CSS from theme data which is probably my most favourite function in this file
 function postSave(elements) {
-let css = '';
 
-// Helper function to apply alpha to hex color
 function applyAlphaToColour(colorObj) {
 if (!colorObj) return '#000000';
 
-// If the color is a string (for backward compatibility)
 if (typeof colorObj === 'string') return colorObj;
 
 // If we have the new format with separate hex and alpha
@@ -1494,16 +1577,13 @@ return colorObj.hex;
 return '#000000'; // Default fallback
 }
 
-// Update gradient function to handle new format
 function processGradient(gradientObj) {
 if (!gradientObj) return 'linear-gradient(to bottom, #ffffff, #000000)';
 
-// Handle old format (backwards compatibility)
 if (typeof gradientObj.start === 'string') {
 return createGradient(gradientObj.start, gradientObj.end, gradientObj.direction);
 }
 
-// Handle new format with separate hex and alpha
 const startColor = applyAlphaToColour(gradientObj.start);
 const endColor = applyAlphaToColour(gradientObj.end);
 return createGradient(startColor, endColor, gradientObj.direction);
@@ -1512,52 +1592,46 @@ return createGradient(startColor, endColor, gradientObj.direction);
 for (let i in elements) {
 const element = elements[i];
 
-// Handle elements based on their ID
 if (element.id == "backimg-setting") {
 cssEditor.setValue("");
-console.log(element);
-console.log(element.properties);
 css += `
 .sk_page {
-  background-color: ${applyAlphaToColour(element.properties["Background Colour"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColour(element.properties["background-colour"]) ?? "#000000"}!important;
 `
-// Check if we have an uploaded image first
-const uploadedImage = element.properties["Or Upload Background Image"];
+const uploadedImage = element.properties["background-upload-image"];
 if (uploadedImage) {
   css += `  background-image: url("${uploadedImage}") !important;\n`;
-  css += `  background-color: ${applyAlphaToColour(element.properties["Background Colour"]) ?? "#000000"} !important;\n`;
+  css += `  background-color: ${applyAlphaToColour(element.properties["background-colour"]) ?? "#000000"} !important;\n`;
 }
-// If no uploaded image, use the URL if provided
-else if (element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]) {
-  css += `  background-image: url("${element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]}") !important;\n`;
-  css += `  background-color: ${applyAlphaToColour(element.properties["Background Colour"]) ?? "#000000"} !important;\n`;
+else if (element.properties["background-image-url"]) {
+  css += `  background-image: url("${element.properties["background-image-url"]}") !important;\n`;
+  css += `  background-color: ${applyAlphaToColour(element.properties["background-colour"]) ?? "#000000"} !important;\n`;
 }
 
 css += `
-  background-size: ${element.properties["Background Size"] ?? "cover"} !important;
-  background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
-  background-position: ${element.properties["Background Position"] ?? "center center"} !important;
-  background-attachment: ${element.properties["Background Attachment"] ?? "fixed"} !important;
+  background-size: ${element.properties["background-size"] ?? "cover"} !important;
+  background-repeat: ${element.properties["background-repeat"] ?? "no-repeat"} !important;
+  background-position: ${element.properties["background-position"] ?? "center center"} !important;
+  background-attachment: ${element.properties["background-attachment"] ?? "fixed"} !important;
 }
 .sk_header {
-  background-color: ${applyAlphaToColour(element.properties["Background Colour"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColour(element.properties["background-colour"]) ?? "#000000"}!important;
 `
-// Check if we have an uploaded image first
+
 if (uploadedImage) {
   css += `  background-image: url("${uploadedImage}") !important;\n`;
-  css += `  background-color: ${applyAlphaToColour(element.properties["Background Colour"]) ?? "#000000"} !important;\n`;
+  css += `  background-color: ${applyAlphaToColour(element.properties["background-colour"]) ?? "#000000"} !important;\n`;
 }
-// If no uploaded image, use the URL if provided
-else if (element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]) {
-  css += `  background-image: url("${element.properties["Background Image URL (empty if none, replaces Background Colour if set) e.g. https://placehold.co/1920x1080.jpg"]}") !important;\n`;
-  css += `  background-color: ${applyAlphaToColour(element.properties["Background Colour"]) ?? "#000000"} !important;\n`;
+else if (element.properties["background-image-url"]) {
+  css += `  background-image: url("${element.properties["background-image-url"]}") !important;\n`;
+  css += `  background-color: ${applyAlphaToColour(element.properties["background-colour"]) ?? "#000000"} !important;\n`;
 }
 
 css += `
-  background-size: ${element.properties["Background Size"] ?? "cover"} !important;
-  background-repeat: ${element.properties["Background Repeat"] ?? "no-repeat"} !important;
-  background-position: ${element.properties["Background Position"] ?? "center center"} !important;
-  background-attachment: ${element.properties["Background Attachment"] ?? "fixed"} !important;
+  background-size: ${element.properties["background-size"] ?? "cover"} !important;
+  background-repeat: ${element.properties["background-repeat"] ?? "no-repeat"} !important;
+  background-position: ${element.properties["background-position"] ?? "center center"} !important;
+  background-attachment: ${element.properties["background-attachment"] ?? "fixed"} !important;
 }
 `
 } //end backimg-setting
@@ -1565,17 +1639,17 @@ css += `
           css += `
 /* BetterKMR Compiled: School Name & Motto */
 .sk_school_name {
-  color: ${applyAlphaToColour(element.properties["Name Colour"]) ?? "#f7f7f7"}!important;
-  ${element.properties["Text Shadow"] === true ?? element.properties["Name Shadow Colour"] ? `text-shadow: ${applyAlphaToColour(element.properties["Name Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
+  color: ${applyAlphaToColour(element.properties["school-name-colour"]) ?? "#f7f7f7"}!important;
+  ${element.properties["school-text-shadow"] === true ?? element.properties["school-name-shadow-colour"] ? `text-shadow: ${applyAlphaToColour(element.properties["school-name-shadow-colour"])} ${element.properties["school-shadow-offset-x"]}px ${element.properties["school-shadow-offset-y"]}px;` : ""}
 }
 .sk_school_subheading {
-  color: ${applyAlphaToColour(element.properties["Motto Colour"]) ?? "#f7f7f7"}!important;
-  ${element.properties["Text Shadow"] === true ?? element.properties["Motto Shadow Colour"] ? `text-shadow: ${applyAlphaToColour(element.properties["Motto Shadow Colour"])} ${element.properties["Text Shadow Offset X"]}px ${element.properties["Text Shadow Offset Y"]}px;` : ""}
+  color: ${applyAlphaToColour(element.properties["school-motto-colour"]) ?? "#f7f7f7"}!important;
+  ${element.properties["school-text-shadow"] === true ?? element.properties["school-motto-shadow-colour"] ? `text-shadow: ${applyAlphaToColour(element.properties["school-motto-shadow-colour"])} ${element.properties["school-shadow-offset-x"]}px ${element.properties["school-shadow-offset-y"]}px;` : ""}
 }
     `
       }
       if (element.id == "today-attendance-highlight") {
-          const highlightColorObj = element.properties["Highlight (Background) Colour"];
+          const highlightColorObj = element.properties["attendance-highlight-colour"];
           const highlightColor = applyAlphaToColour(highlightColorObj);
 
           css += `
@@ -1586,30 +1660,28 @@ css += `
     `
       }
       if (element.id == "justified-gradients") {
-          // Get each gradient property and create the CSS
-          const presentGradient = element.properties["Present Colour"];
-          const lateGradient = element.properties["Late Colour"];
-          const unjustifiedGradient = element.properties["Unjustified Colour"];
-          const justifiedGradient = element.properties["Justified Colour"];
+          const presentGradient = element.properties["present-gradient"];
+          const lateGradient = element.properties["late-gradient"];
+          const unjustifiedGradient = element.properties["unjustified-gradient"];
+          const justifiedGradient = element.properties["justified-gradient"];
 
-          // Create CSS for each gradient
           css += `
 /* BetterKMR Compiled: Attendance Gradients */
 .btn-success {
   background: ${processGradient(presentGradient)}!important;
-  color: ${applyAlphaToColour(element.properties["Text Colour (Present)"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["present-text-colour"]) ?? "#ffffff"}!important;
 }
 .btn-info {
   background: ${processGradient(lateGradient)}!important;
-  color: ${applyAlphaToColour(element.properties["Text Colour (Late)"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["late-text-colour"]) ?? "#ffffff"}!important;
 }
 .btn-danger {
   background: ${processGradient(unjustifiedGradient)}!important;
-  color: ${applyAlphaToColour(element.properties["Text Colour (Unjustified)"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["unjustified-text-colour"]) ?? "#ffffff"}!important;
 }
 .btn-warning {
   background: ${processGradient(justifiedGradient)}!important;
-  color: ${applyAlphaToColour(element.properties["Text Colour (Justified)"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["justified-text-colour"]) ?? "#ffffff"}!important;
 }
     `
       }
@@ -1617,148 +1689,154 @@ css += `
           css += `
 /* BetterKMR Compiled: Navbar Colours */
 body .sk_nav {
-  background: ${applyAlphaToColour(element.properties["Background Colour"]) ?? "#000000"}!important;
-  color: ${applyAlphaToColour(element.properties["Text Colour"]) ?? "#ffffff"}!important;
-  ${element.properties["Box Shadow"] === true ? `box-shadow: ${applyAlphaToColour(element.properties["Box Shadow Colour"])} ${element.properties["Box Shadow Offset X"]}px ${element.properties["Box Shadow Offset Y"]}px;` : ""}
+  background: ${applyAlphaToColour(element.properties["navbar-background-colour"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColour(element.properties["navbar-text-colour"]) ?? "#ffffff"}!important;
+  ${element.properties["navbar-box-shadow"] === true ? `box-shadow: ${applyAlphaToColour(element.properties["navbar-box-shadow-colour"])} ${element.properties["navbar-box-shadow-offset-x"]}px ${element.properties["navbar-box-shadow-offset-y"]}px;` : ""}
 }
 body .sk_nav_text {
-  color: ${applyAlphaToColour(element.properties["Text Colour"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["navbar-text-colour"]) ?? "#ffffff"}!important;
 }
 `
-          if (element.properties["Active Text Colour"] != "") {
+          if (element.properties["navbar-active-text-colour"] != "") {
               css += `
 body .nav-item.active .sk_nav_text {
-  color: ${applyAlphaToColour(element.properties["Active Text Colour"]) ?? "#63c9ff"}!important;
+  color: ${applyAlphaToColour(element.properties["navbar-active-text-colour"]) ?? "#63c9ff"}!important;
 }`
           }
-          if (element.properties["Active Hover Text Colour"] != "") {
+          if (element.properties["navbar-hover-text-colour"] != "") {
               css += `
 body .sk_nav_text.nav-link.nav-link:hover {
-  color: ${applyAlphaToColour(element.properties["Active Hover Text Colour"]) ?? "#8fd8ff"}!important;
+  color: ${applyAlphaToColour(element.properties["navbar-hover-text-colour"]) ?? "#8fd8ff"}!important;
 }
 `
           }
       }
       if (element.id == "font-family") {
           var fontName = "Inter";
-          if (element.properties["Use custom font from Google Fonts"] == true) {
-              fontName = element.properties["Custom Google Font Name"].trim();
+          if (element.properties["font-family-use-custom-google-font"] == true) {
+              fontName = element.properties["font-family-custom-name"].trim();
 css = `/* BetterKMR Compiled: Font Family (set to top) */
 @import url('https://fonts.googleapis.com/css2?family=${fontName}&display=swap');
 body {
   font-family: "${fontName}", sans-serif !important;
-  font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
+  font-weight: ${element.properties["font-family-weight"] ?? "400"} !important;
 }
 ` + css;
           } else {
               css = `
 body {
-  font-family: "${element.properties["Preset Font Family"]}", sans-serif !important;
+  font-family: "${element.properties["font-family-preset"]}", sans-serif !important;
 }
 ` + css;
           }
-          if (element.properties["Include School Name & Motto"] == true) {
+          if (element.properties["font-family-include-name-motto"] == true) {
             css += `
 body .sk_school_name {
   font-family: "${fontName}", sans-serif !important;
-  font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
+  font-weight: ${element.properties["font-family-weight"] ?? "400"} !important;
 }
 
 body .sk_school_subheading {
   font-family: "${fontName}", sans-serif !important;
-  font-weight: ${element.properties["Font Weight (100-900) (thin-black)"] ?? "400"} !important;
+  font-weight: ${element.properties["font-family-weight"] ?? "400"} !important;
 }
 `;
           }
       }
       if (element.id == "main-colour-schemes") {
-        if (element.properties["Main Content Box"] == true) {
+        if (element.properties["main-toggle"] == true) {
           css += `
 /* BetterKMR Compiled: Main Colour Schemes */
 body .sk_text.sk_page.sk-main-content {
-  background: ${applyAlphaToColour(element.properties["Main Content Box Background Colour (sk_main_content)"]) ?? "#000000"}!important;
-  color: ${applyAlphaToColour(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
+  background: ${applyAlphaToColour(element.properties["main-bg"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColour(element.properties["main-text"]) ?? "#ffffff"}!important;
 }
 body .d-flex {
-  color: ${applyAlphaToColour(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["main-text"]) ?? "#ffffff"}!important;
 }
 body .sk_table {
-  color: ${applyAlphaToColour(element.properties["Main Content Box Text Colour (sk_main_content)"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["main-text"]) ?? "#ffffff"}!important;
 }
 `
 
-          if (element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"]) {
+          if (element.properties["btn-hover-bg"]) {
             css += `
 /* BetterKMR Compiled: Button Hover & Active Background Colour */
 body .sk_btn.active, body .sk_btn:hover {
-  background-color: ${applyAlphaToColour(element.properties["Button Hover & Active Background Colour (sk_btn.active, sk_btn:hover)"]) ?? "#000000"}!important;
-  color: ${applyAlphaToColour(element.properties["Button Hover & Active Text Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
+  background-color: ${applyAlphaToColour(element.properties["btn-hover-bg"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColour(element.properties["btn-hover-text"]) ?? "#ffffff"}!important;
 }
 `
           }
           
-          if (element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"]) {
+          if (element.properties["sk_button_hover_colour"]) {
             css += `
 /* BetterKMR Compiled: Button Hover & Active Border Colour */
 body .sk_btn:hover, body .sk_btn.active {
-  border-color: ${applyAlphaToColour(element.properties["Button Hover & Active Border Colour (sk_btn.active, sk_btn:hover)"]) ?? "#ffffff"}!important;
+  border-color: ${applyAlphaToColour(element.properties["sk_button_hover_colour"]) ?? "#ffffff"}!important;
 }
 `
           }
 
-          if (element.properties["Navbar/Card Background Colour (card-body)"]) {
+          if (element.properties["card-body"]) {
             css += `
 /* BetterKMR Compiled: Navbar/Card Background Colour */
 body .card-body {
-  background-color: ${applyAlphaToColour(element.properties["Navbar/Card Background Colour (card-body)"]) ?? "#ffffff"}!important;
+  background-color: ${applyAlphaToColour(element.properties["card-body"]) ?? "#ffffff"}!important;
 }
 `
           }
 
-          if (element.properties["Button Border Colour (sk_btn)"]) {
+          if (element.properties["sk_button_border_colour"]) {
             css += `
 /* BetterKMR Compiled: Button Border Colour (sk_btn) */
 body .sk_btn {
-  border-color: ${applyAlphaToColour(element.properties["Button Border Colour (sk_btn)"]) ?? "#ffffff"}!important;
+  border-color: ${applyAlphaToColour(element.properties["sk_button_border_colour"]) ?? "#ffffff"}!important;
 }
 `
           }
 
-          if (element.properties["Link Text Colour (a)"]) {
+          if (element.properties["a_link_text_colour"]) {
             css += `
 /* BetterKMR Compiled: Link Text Colour (a) */
 a {
-  color: ${applyAlphaToColour(element.properties["Link Text Colour (a)"]) ?? "#ffffff"}!important;
+  color: ${applyAlphaToColour(element.properties["a_link_text_colour"]) ?? "#ffffff"}!important;
 }
 `
           }
         }
-        if (element.properties["Table Colour Scheming"] == true) {
+        if (element.properties["table-toggle"] == true) {
           css += `
 /* BetterKMR Compiled: Table Colour Scheming */
 body .sk_thead_cell, body .sk_thead th {
-  background-color: ${applyAlphaToColour(element.properties["Table Border Colour (sk_border, sk_thead_cell)"]) ?? "#000000"}!important;
+  background-color: ${applyAlphaToColour(element.properties["table-border"]) ?? "#000000"}!important;
 }
 body .sk_border, body .sk_thead_cell, body .table td, body .table th {
-  border-color: ${applyAlphaToColour(element.properties["Table Border Colour (sk_border, sk_thead_cell)"]) ?? "#000000"}!important;
+  border-color: ${applyAlphaToColour(element.properties["table-border"]) ?? "#000000"}!important;
 }
 `
         }
-        if (element.properties["Generic"] == true) {
+        if (element.properties["generic-toggle"] == true) {
           css += `
 /* BetterKMR Compiled: Generic */
 .sk_btn {
-  background-color: ${applyAlphaToColour(element.properties["Button Colour (sk_btn)"]) ?? "#000000"}!important;
-  color: ${applyAlphaToColour(element.properties["Button Text Colour (sk_btn)"]) ?? "#ffffff"}!important;
+  background-color: ${applyAlphaToColour(element.properties["btn-bg"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColour(element.properties["btn-text"]) ?? "#ffffff"}!important;
 }
 `
         }
       }
       if (element.id == "additional-css-properties") {
         css += `
-${element.properties["CSS Properties"]}
+${element.properties["css-input"]}
 `
       }
+      // JS
+      if (element.id == "ext-promo-01") {
+        if (element.properties["ext-promo-01-enabled"] == true) {
+          jsToExecute.push("days-until-silksong");
+      }
+    }
   }
 
   // Update the CSS editor
@@ -1970,7 +2048,7 @@ const additionalStyles = `
   }
   
   .alpha-toggle-btn {
-    background: #333;
+    background-color: #1a1a1a;
     border: 1px solid #555;
     color: #ccc;
     border-radius: 4px;
@@ -2081,40 +2159,46 @@ function saveSetting(key, value) {
     });
     //chrome.storage.sync.set({ 'update_notice_closed': true });
 
-    window.createDialog = function({title, content, buttons = []}) {
+    window.createDialog = function({ title, content, buttons = [] }) {
       console.log("Creating dialog with title:", title);
       const overlay = document.createElement('div');
       overlay.className = 'dialog-overlay-fixed';
-
+    
       const dialog = document.createElement('div');
       dialog.className = 'dialog-box';
-
+    
       const titleElement = document.createElement('h2');
       titleElement.className = 'dialog-title';
       titleElement.textContent = title;
-
+    
       const contentElement = document.createElement('p');
       contentElement.className = 'dialog-content';
       contentElement.innerHTML = content;
-
+    
       const buttonContainer = document.createElement('div');
       buttonContainer.className = 'dialog-buttons';
-
-      buttons.forEach(({text, callback, classname}) => {
+    
+      buttons.forEach(({ text, callback, classname }) => {
         const button = document.createElement('button');
         button.className = classname || 'dialog-button';
         button.textContent = text;
         button.onclick = () => {
           callback?.();
-          document.body.removeChild(overlay);
+          dialog.close();
         };
         buttonContainer.appendChild(button);
       });
-
+    
       dialog.append(titleElement, contentElement, buttonContainer);
       overlay.appendChild(dialog);
       document.body.appendChild(overlay);
-    }
+    
+      dialog.close = () => {
+        document.body.removeChild(overlay);
+      };
+    
+      return dialog;
+    };
 
 document.getElementById("export-button").addEventListener('click', () => {
   createDialog({
@@ -2154,9 +2238,9 @@ document.getElementById("export-button").addEventListener('click', () => {
                     
                     if (element.properties) {
                       Object.entries(element.properties).forEach(([propName, propValue]) => {
-                        const property = elementTemplate.properties.find(p => p.name === propName);
+                        const property = elementTemplate.properties.find(p => p.id === propName);
                         if (property) {
-                          const propId = `${element.id}-${propName.replace(/\s+/g, '-')}`;
+                          const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
                           const input = document.getElementById(propId);
                           
                           if (input) {
@@ -2224,17 +2308,17 @@ document.getElementById("export-button").addEventListener('click', () => {
                 if (property.type === 'image-upload') {
                   const dataInput = document.getElementById(`${propId}-data`);
                   if (dataInput) {
-                    elementData.properties[property.name] = dataInput.value;
+                    elementData.properties[property.id] = dataInput.value;
                   }
                 } else if (property.type === 'toggle' || property.type === 'checkbox') {
                   const input = document.getElementById(propId);
                   if (input) {
-                    elementData.properties[property.name] = input.checked;
+                    elementData.properties[property.id] = input.checked;
                   }
                 } else {
                   const input = document.getElementById(propId);
                   if (input) {
-                    elementData.properties[property.name] = input.value;
+                    elementData.properties[property.id] = input.value;
                   }
                 }
               });
