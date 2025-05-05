@@ -79,17 +79,21 @@ function addStyle(styleString) {
 
 function addJS(theme) {
     if (theme && theme.js) {
-        (async () => {
-            console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for custom theme: ` + theme["name"], 'color: #0091EA', 'color: #fff');
-            try {
-                const module = await themesJsContextVTT(`./${theme.js}.js`);
-                if (module.default) {
-                    module.default();
+        const modules = Array.isArray(theme.js) ? theme.js : [theme.js];
+        
+        modules.forEach(jsModule => {
+            (async () => {
+                console.log(`%c[BetterKMR 📘] ` + `%cLoading external JS for custom theme: ` + theme["name"], 'color: #0091EA', 'color: #fff');
+                try {
+                    const module = await themesJsContextVTT(`./${jsModule}.js`);
+                    if (module.default) {
+                        module.default();
+                    }
+                } catch (error) {
+                    console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${theme["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
                 }
-            } catch (error) {
-                console.log(`%c[BetterKMR 📕] ` + `%cFailed loading external JS for "${theme["name"]}":\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
-            }
-        })();
+            })();
+        });
     }
 }
 
