@@ -421,7 +421,7 @@ const addDeleteButton = () => {
 					color: #fff;
 				">
 				<div id="redemption-error" style="color: #ff5555; margin-top: 5px; display: none;"></div>
-				<p style="color: grey;">Note: Codes can only be redeemed once. All codes are case-sensitive.</p>
+				<p style="color: grey;">Note: Codes can only be redeemed once. All codes are non case-sensitive.</p>
 			`,
 			buttons: [
 				{

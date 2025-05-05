@@ -50,22 +50,16 @@ chrome.runtime.onInstalled.addListener((details) => {
               notificationId: "betterkmr-install",
               iconUrl: "icon/icon128.png",
               title: "BetterKMR Installed",
-              message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`,
-              onclick: function () {
-                chrome.tabs.create({
-                    url: /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html")
-                });
-              }
-            },
-            function () {}
+              message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`
+            }
           );
-          
           break;
        case 'update':
         var message = `BetterKMR has been updated/reloaded to v${currentVersion}.`
         if (previousVersion !== currentVersion) {
             message = `BetterKMR has been updated to v${currentVersion} from v${previousVersion}.`
         }
+
         chrome.notifications.create(
             "betterkmr-update",
             {
@@ -82,6 +76,25 @@ chrome.runtime.onInstalled.addListener((details) => {
        default: // other install events
           break;
     }
+
+    chrome.notifications.onClicked.addListener(function(notificationId) {
+        if (notificationId === "betterkmr-install") {
+          chrome.tabs.create({
+            url: chrome.runtime.getURL("settings/index.html")
+          });
+        } else if (notificationId === "betterkmr-update") {
+            chrome.storage.local.get(["latestVersion", "changelog"], function(data) {
+                /*console.log("Latest Version (Update Helicon Check):", data.latestVersion);
+                console.log("Current Version (Update Helicon Check):", currentVersion);
+                console.log("Changelog (Update Helicon Check):", data.changelog);*/
+                if (data.latestVersion && data.latestVersion === currentVersion && data.changelog) {
+                    chrome.tabs.create({
+                        url: data.changelog
+                    });
+                }
+            });
+        }
+    });
  })
  chrome.notifications.onClicked.addListener(function(notifId){
     if (notifId == "betterkmr-install") {
