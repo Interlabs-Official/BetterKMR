@@ -47,6 +47,7 @@ chrome.runtime.onInstalled.addListener((details) => {
             "betterkmr-install",
             {
               type: "basic",
+              notificationId: "betterkmr-install",
               iconUrl: "icon/icon128.png",
               title: "BetterKMR Installed",
               message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`,
@@ -72,8 +73,7 @@ chrome.runtime.onInstalled.addListener((details) => {
               iconUrl: "icon/icon128.png",
               title: "BetterKMR Update",
               message: message,
-            },
-            function () {}
+            }
           );
           chrome.storage.sync.set({'update_notice_closed': false});
           break;
@@ -83,6 +83,13 @@ chrome.runtime.onInstalled.addListener((details) => {
           break;
     }
  })
+ chrome.notifications.onClicked.addListener(function(notifId){
+    if (notifId == "betterkmr-install") {
+        chrome.tabs.create({
+            url: /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html")
+        });
+    }
+});
 chrome.runtime.onInstalled.addListener(() => {
   fetch(chrome.runtime.getURL("src/config/themes.yml"))
       .then(response => response.text())
