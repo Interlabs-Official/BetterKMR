@@ -50,6 +50,11 @@ chrome.runtime.onInstalled.addListener((details) => {
               iconUrl: "icon/icon128.png",
               title: "BetterKMR Installed",
               message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`,
+              onclick: function () {
+                chrome.tabs.create({
+                    url: /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html")
+                });
+              }
             },
             function () {}
           );
