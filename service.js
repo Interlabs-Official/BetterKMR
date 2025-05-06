@@ -47,7 +47,6 @@ chrome.runtime.onInstalled.addListener((details) => {
             "betterkmr-install",
             {
               type: "basic",
-              notificationId: "betterkmr-install",
               iconUrl: "icon/icon128.png",
               title: "BetterKMR Installed",
               message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`
