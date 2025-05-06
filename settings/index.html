@@ -225,13 +225,6 @@
     position: relative;
 }
 
-#second-tab-list {
-    position: fixed;
-    bottom: 20px;
-    left: 0;
-    width: 250px;
-}
-
 #tab-list {
     padding-bottom: 120px;
 }
@@ -296,6 +289,77 @@
 .update-alert a:hover {
     text-decoration: underline;
 }
+
+#second-tab-list {
+    position: fixed;
+    bottom: 74px;
+    width: 250px;
+}
+
+#second-tab-list .tab-item:last-child {
+  border-bottom: 0px solid;
+}
+
+.icon-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 15px;
+    border-top: 1px solid #222;
+    border-right: 1px solid #444;
+}
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 8px;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+    position: relative;
+}
+
+.icon-button:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.icon-button::after {
+    font-family: 'Inter', sans-serif;
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 10px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    margin-bottom: 5px;
+}
+
+.icon-button:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.icon-button img {
+    width: 28px;
+    height: 28px;
+    filter: invert(1);
+}
+
+.sidebar {
+    padding-bottom: 140px;
+}
    
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
@@ -334,10 +398,20 @@
         <!-- <li data-tab="go-back" class="tab-item">Experiments</span></li> -->
       </ul>
       <ul id="second-tab-list">
-        <li data-tab="advanced" class="tab-item" style="display: none;" id="advanced-tab-header">Developer Settings</li>
-        <li data-tab="go-back" class="tab-item">Website & Docs <span style="font-size: 14px;">↗</span></li>
-        <li data-tab="go-back" class="tab-item">Discord Server <span style="font-size: 14px;">↗</span></li>
+        <li data-tab="advanced" class="tab-item" id="advanced-tab-header" style="display: none;">Developer Settings</li>
+        <!-- <li data-tab="go-back" class="tab-item">Experiments</span></li> -->
       </ul>
+      <div id="bottom-tab-list" class="icon-nav">
+        <button class="icon-button" data-tab="redeem-code" id="redeem-code" data-tooltip="Redeem Code">
+            <img src="../assets/images/font-awesome/credit-card-solid.svg" alt="Redeem Code">
+        </button>
+        <button class="icon-button" data-tab="website-docs" data-url="https://interlabs-official.github.io" data-tooltip="Website & Docs">
+            <img src="../assets/images/font-awesome/globe-solid.svg" alt="Website & Docs">
+        </button>
+        <button class="icon-button" data-tab="discord-server" data-url="https://discord.gg/4MkRmFmHz2" data-tooltip="Discord Server">
+            <img src="../assets/images/font-awesome/discord-brands-solid.svg" alt="Discord Server">
+        </button>
+    </div>
     </aside>
     
     <!-- Main content area -->

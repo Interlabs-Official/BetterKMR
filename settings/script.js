@@ -363,14 +363,6 @@ const addDeleteButton = () => {
 				});
 			}
 		});
-		settingsPage.addNestedSetting('general', {
-			name: 'redeem_code',
-			label: 'Redeem Code',
-			tooltip: 'Redeem a special code to unlock features or rewards',
-			type: 'button',
-			default: null,
-			callback: () => showRedemptionDialog()
-		});
 		try {
 			const response = await fetch(chrome.runtime.getURL('../src/config/general.yml'));
 			if (response.ok) {
@@ -436,6 +428,22 @@ const addDeleteButton = () => {
 			]
 		});
 	}
+
+	
+	document.querySelectorAll('.icon-button').forEach(button => {
+		button.addEventListener('click', () => {
+			const url = button.getAttribute('data-url');
+			if (url) {
+				window.open(url, '_blank').focus();
+				return;
+			}
+
+			const tabId = button.getAttribute('data-tab');
+			if (tabId === 'redeem-code') {
+				showRedemptionDialog();
+			}
+		});
+	});
 
 	// Code definitions and their callbacks
 	const VALID_CODES = {
