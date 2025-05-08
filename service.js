@@ -95,13 +95,6 @@ chrome.runtime.onInstalled.addListener((details) => {
         }
     });
  })
- chrome.notifications.onClicked.addListener(function(notifId){
-    if (notifId == "betterkmr-install") {
-        chrome.tabs.create({
-            url: /* webpackIgnore: true */ chrome.runtime.getURL("settings/index.html")
-        });
-    }
-});
 chrome.runtime.onInstalled.addListener(() => {
   fetch(chrome.runtime.getURL("src/config/themes.yml"))
       .then(response => response.text())
