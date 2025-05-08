@@ -140,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dropdown.className = 'url-dropdown';
     
     const commonUrls = [
+        { url: '/', label: 'Home' },
         { url: '/notices', label: 'Notices' },
         { url: '/attendance', label: 'Attendance' },
         { url: '/calendar', label: 'Calendar' },
