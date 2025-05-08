@@ -119,8 +119,11 @@ export class SettingsPage {
       settingDiv.appendChild(childContainer);
 
       header.addEventListener('click', (e) => {
-        if (['input','select','button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
-          childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
+        const isToggleClick = e.target.closest('.toggle-switch');
+        if (!isToggleClick) {
+          if (['input', 'select', 'button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
+            childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
+          }
         }
       });
     }
@@ -196,8 +199,11 @@ addNestedSetting(nestedTabId, setting) {
     settingDiv.appendChild(childContainer);
 
     header.addEventListener('click', (e) => {
-      if (['input', 'select', 'button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
-        childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
+      const isToggleClick = e.target.closest('.toggle-switch');
+      if (!isToggleClick) {
+        if (['input', 'select', 'button'].indexOf(e.target.tagName.toLowerCase()) === -1) {
+          childContainer.style.display = (childContainer.style.display === 'block') ? 'none' : 'block';
+        }
       }
     });
   }
