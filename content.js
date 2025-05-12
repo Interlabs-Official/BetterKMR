@@ -106,16 +106,23 @@ function loader() {
               console.log(`%c[BetterKMR 📕] %cError: ${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
             }
           })();
-        const startTime = Date.now();
-        const minDelay = 500;
+          chrome.storage.sync.get('snap-load', function(data) {
+            const startTime = Date.now();
+            const minDelay = 500;
 
-        const remainingTime = minDelay - (Date.now() - startTime);
-
-        if (remainingTime > 0) {
-            setTimeout(showContent, remainingTime);
-        } else {
-            showContent();
-        }
+            if (data['snap-load'] == true) {
+              showContent();
+              return;
+            }
+    
+            const remainingTime = minDelay - (Date.now() - startTime);
+    
+            if (remainingTime > 0) {
+                setTimeout(showContent, remainingTime);
+            } else {
+                showContent();
+            }
+          });
     });
 }
 loader();

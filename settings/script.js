@@ -276,6 +276,16 @@ const addDeleteButton = () => {
 			callback: (val) => saveSetting("theme-id-text", val)
 		});
 
+		const [snap_load] = await Promise.all([loadSettingPromise("snap-load")]);
+		settingsPage.addSetting('advanced', {
+			name: 'snap-load',
+			label: 'Snap Load',
+			tooltip: 'Attempts to make Kamar load faster by removing the loading screen. Note that this may cause some pages to not load properly.',
+			type: 'toggle',
+			default: snap_load ?? false,
+			callback: (val) => saveSetting("snap_load", val)
+		});
+
 		/* Doesn't work: may have a look at later */
 		/* const [hide_external_js_warning] = await Promise.all([loadSettingPromise("hide_external_js_warning")]);
 		settingsPage.addSetting('advanced', {
