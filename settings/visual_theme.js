@@ -1548,6 +1548,7 @@ function saveTheme() {
 
 // Compiles CSS from theme data which is probably my most favourite function in this file
 function postSave(elements) {
+css = '';
 
 function applyAlphaToColour(colorObj) {
 if (!colorObj) return '#000000';
@@ -1584,7 +1585,6 @@ for (let i in elements) {
 const element = elements[i];
 
 if (element.id == "backimg-setting") {
-cssEditor.setValue("");
 css += `
 .sk_page {
   background-color: ${applyAlphaToColour(element.properties["background-colour"]) ?? "#000000"}!important;
