@@ -298,9 +298,10 @@ const addDeleteButton = () => {
 		});
 
 		// Modified Navbar Settings
-		const [dynamic_navbar, dynamic_navbar_hidden_navbar_pages] = await Promise.all([
+		const [dynamic_navbar, dynamic_navbar_hidden_navbar_pages, dynamic_navbar_show_betterkmr_lightbulb] = await Promise.all([
 			loadSettingPromise("dynamic_navbar"),
-			loadSettingPromise("dynamic_navbar_hidden_navbar_pages")
+			loadSettingPromise("dynamic_navbar_hidden_navbar_pages"),
+			loadSettingPromise("dynamic_navbar_show_betterkmr_lightbulb"),
 		]);
 		settingsPage.addNestedSetting('general', {
 			name: 'dynamic_navbar',
@@ -316,7 +317,16 @@ const addDeleteButton = () => {
 				type: 'text',
 				default: dynamic_navbar_hidden_navbar_pages ?? '',
 				callback: (val) => saveSetting("dynamic_navbar_hidden_navbar_pages", val)
-			}]
+			},
+			{
+				name: 'dynamic_navbar_show_betterkmr_lightbulb',
+				label: 'Show BetterKMR Lightbulb',
+				tooltip: 'Shows the lightbulb next to "My Account", which links to the BetterKMR settings page.',
+				type: 'toggle',
+				default: dynamic_navbar_show_betterkmr_lightbulb ?? true,
+				callback: (val) => saveSetting("dynamic_navbar_show_betterkmr_lightbulb", val)
+			},
+		]
 		});
 		const [better_notices_enabled, hide_rss_link_better_notices] = await Promise.all([
 			loadSettingPromise("better_notices_enabled"),

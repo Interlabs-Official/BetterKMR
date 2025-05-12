@@ -26,7 +26,7 @@
    However, the previous versions were actually made by me, you'd be able to tell.
 */
 
-chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages", "custom_navbar_layout"]).then((result) => {
+chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages", "custom_navbar_layout", "dynamic_navbar_show_betterkmr_lightbulb"]).then((result) => {
     const useModifiedNavbar = result.dynamic_navbar == true || result.dynamic_navbar == undefined || result.dynamic_navbar == null;
 
     if (useModifiedNavbar) {
@@ -216,9 +216,6 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages",
             }`;
             document.head.appendChild(glowStyle);
 
-            const kmrMenuImage = document.createElement('img');
-            kmrMenuImage.src = chrome.runtime.getURL("icon/icon_transparent_48.png");
-
             const avatarLink = document.createElement('a');
             avatarLink.href = '#';
             avatarLink.className = 'avatar-container';
@@ -242,7 +239,11 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages",
             });
             avatar.className = 'avatar';
 
-            betterKMRMenuLink.appendChild(kmrMenuImage);
+            if (result.dynamic_navbar_show_betterkmr_lightbulb == true || result.dynamic_navbar_show_betterkmr_lightbulb == null) {
+                const kmrMenuImage = document.createElement('img');
+                kmrMenuImage.src = chrome.runtime.getURL("icon/icon_transparent_48.png");
+                betterKMRMenuLink.appendChild(kmrMenuImage);
+            }
             avatarLink.appendChild(avatar);
 
             const accountLink = document.createElement('a');
