@@ -18,7 +18,6 @@ if (window.location.href.includes("attendance/week") || window.location.href.inc
     <div class="box-bcd-big-no-grid" style="
         --gradient-color1: ${'#000000'};
         --gradient-color2: ${'#ffffff'};
-        background-color: #004d40; 
         color: white; 
         padding: 10px; 
         position: relative;

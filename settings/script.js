@@ -411,29 +411,31 @@ const addDeleteButton = () => {
 		createDialog({
 			title: 'Redeem BetterKMR Code',
 			content: `
-			    <p>BetterKMR codes are usually given out by staff, and can give you certain perks or are for development purposes.</p>
-				<p>If you have a code (exciting!) feel free to enter your code below to redeem it:</p>
+			    <p>Enter a BetterKMR code to redeem it:</p>
 				<input type="text" id="redemption-code" class="dialog-input" placeholder="Enter code..." style="
-					width: 100%;
+					font-family: 'Inter', sans-serif;
+					width: 50%;
 					padding: 8px;
 					margin: 10px 0;
 					border: 1px solid #444;
 					border-radius: 4px;
 					background: #2a2a2a;
 					color: #fff;
+					text-align: center;
 				">
 				<div id="redemption-error" style="color: #ff5555; margin-top: 5px; display: none;"></div>
 				<p style="color: grey;">Note: Codes can only be redeemed once. All codes are non case-sensitive.</p>
+				<p style="color: grey; font-size: 10px;">BetterKMR codes are usually given out by staff, and can give you certain perks or are for development purposes.</p>
 			`,
 			buttons: [
-				{
-					text: 'Redeem',
-					callback: () => handleCodeRedemption(),
-				},
 				{
 					text: 'Cancel',
 					callback: () => console.log('Redemption cancelled'),
 					classname: 'dialog-button-not'
+				},
+				{
+					text: 'Redeem',
+					callback: () => handleCodeRedemption(),
 				}
 			]
 		});
@@ -488,8 +490,7 @@ const addDeleteButton = () => {
 
 		// Check if code exists
 		if (!VALID_CODES[code]) {
-			errorDiv.textContent = 'Invalid code';
-			errorDiv.style.display = 'block';
+			createNotification("Code is invalid or has expired.", "#b71c1c", "#ffffff");
 			return;
 		}
 
@@ -498,8 +499,7 @@ const addDeleteButton = () => {
 			const redeemedCodes = data.redeemedCodes || [];
 			
 			if (redeemedCodes.includes(code)) {
-				errorDiv.textContent = 'This code has already been redeemed';
-				errorDiv.style.display = 'block';
+				createNotification("This code has been previously redeemed.", "#b71c1c", "#ffffff");
 				return;
 			}
 
