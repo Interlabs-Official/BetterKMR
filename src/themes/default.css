@@ -138,6 +138,7 @@
     
     /* Dropdown & Text Box */
     .dropdown, .text-box {
+      font-family: 'Inter', sans-serif;
       padding: 5px;
       background-color: #444;
       color: #fff;

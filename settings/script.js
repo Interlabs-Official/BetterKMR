@@ -1154,14 +1154,10 @@ function createCustomThemeItem(themeName, customID) {
 		return button;
 	}
 
-	const applyButton = createButton("apply-custom-theme", "#3498db", "Apply");
-	const editButton = createButton("edit-theme", "#3498db", "Edit");
-	const cloneButton = createButton("clone-theme", "#3498db", "Clone");
-	const deleteButton = createButton("delete-theme", "#e74c3c", "Delete");
-
-	editButton.addEventListener('click', () => {
-		showEditorSelectionDialog(customID, false);
-	});
+	const applyButton = createButton("apply-custom-theme", "#3498db", "");
+	const editButton = createButton("edit-theme", "#3498db", "");
+	const cloneButton = createButton("clone-theme", "#3498db", "");
+	const deleteButton = createButton("delete-theme", "#e74c3c", "");
 
 	deleteButton.addEventListener('click', () => {
 			createDialog({
@@ -1182,6 +1178,13 @@ function createCustomThemeItem(themeName, customID) {
 			});
 	});
 
+	const deleteImg = document.createElement("img");
+	deleteImg.src = "../assets/images/font-awesome/trash-solid.svg";
+	deleteImg.width = "12";
+	deleteImg.height = "12";
+	deleteImg.classList.add("svg-white");
+	deleteButton.appendChild(deleteImg);
+
 	cloneButton.addEventListener('click', () => {
 		createDialog({
 			title: `Clone Theme`,
@@ -1198,23 +1201,52 @@ function createCustomThemeItem(themeName, customID) {
 				},
 			],
 		});
-});
+	});
+
+	const cloneImg = document.createElement("img");
+	cloneImg.src = "../assets/images/font-awesome/clone-solid.svg";
+	cloneImg.width = "12";
+	cloneImg.height = "12";
+	cloneImg.classList.add("svg-white");
+	cloneButton.appendChild(cloneImg);
+
+	editButton.addEventListener('click', () => {
+		showEditorSelectionDialog(customID, false);
+	});
+
+	const editImg = document.createElement("img");
+	editImg.src = "../assets/images/font-awesome/edit-solid.svg";
+	editImg.width = "12";
+	editImg.height = "12";
+	editImg.classList.add("svg-white");
+	editButton.appendChild(editImg);
 
 	applyButton.addEventListener('click', () => {
 		const previousButton = document.getElementById("greyed-out-applied");
 		if (previousButton) {
-			previousButton.textContent = "Apply";
+			const previousCheckImg = previousButton.getElementsByTagName("img")[0];
+			previousCheckImg.src = "../assets/images/font-awesome/plus-solid.svg";
 			previousButton.disabled = false;
 			previousButton.removeAttribute("id");
 		}
 
-		applyButton.setAttribute("id", "greyed-out-applied");
-		applyButton.disabled = true;
-		applyButton.textContent = "In Use";
-
+		if (applyButton) {
+			applyButton.setAttribute("id", "greyed-out-applied");
+			applyButton.disabled = true;
+			const currentCheckImg = applyButton.getElementsByTagName("img")[0];
+			currentCheckImg.src = "../assets/images/font-awesome/check-solid.svg";
+		}
+		
 		saveSetting('theme-id-text', customID);
 		createNotification(`Custom theme "${themeName}" has been successfully applied.`, "#3c8443", "#ffffff");
 	});
+
+	const applyImg = document.createElement("img");
+	applyImg.src = "../assets/images/font-awesome/plus-solid.svg";
+	applyImg.width = "12";
+	applyImg.height = "12";
+	applyImg.classList.add("svg-white");
+	applyButton.appendChild(applyImg);
 
 	actionsDiv.append(applyButton, editButton, cloneButton, deleteButton);
 	li.append(span, actionsDiv);
@@ -1244,7 +1276,8 @@ function setUpCustomThemesList() {
 					if (applyButton) {
 						applyButton.setAttribute("id", "greyed-out-applied");
 						applyButton.disabled = true;
-						applyButton.textContent = "In Use";
+						const checkImg = applyButton.getElementsByTagName("img")[0];
+						checkImg.src = "../assets/images/font-awesome/check-solid.svg";
 					}
 				}
 				

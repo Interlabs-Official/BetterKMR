@@ -172,6 +172,7 @@
     
     /* Dropdown & Text Box */
     .dropdown, .text-box {
+      font-family: 'Lexend Deca', sans-serif;
       padding: 5px;
       background-color: #444;
       color: #fff;
@@ -452,26 +453,6 @@
     .dialog-button-not:hover {
       background: rgb(0,0,0);
       background: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(91,91,91,1) 100%);
-    }
-
-    #new-custom-theme-button {
-      position: absolute;
-      top: 210px;
-      right: 40px;
-      background-color: #4c91af;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #new-custom-theme-button:hover {
-      background-color: #1a7da7;
     }
 
     .tag-container {
