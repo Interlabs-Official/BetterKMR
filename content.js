@@ -57,11 +57,19 @@ function loader() {
 
         loader.style.visibility = "visible";
 
-        function showContent() {
+        function showContent(shouldFade) {
             loader.classList.add('hidden');
-            document.getElementsByClassName("nav-and-main")[0].style.visibility = 'visible';
-            if (document.getElementsByClassName("sk_header_content")[0]) {
-                document.getElementsByClassName("sk_header_content")[0].style.visibility = "visible";
+            const navAndMain = document.getElementsByClassName("nav-and-main")[0];
+            if (shouldFade != false) {
+              navAndMain.style.animation = 'fadeInAnimation ease 3s';
+            }
+            navAndMain.style.visibility = 'visible';
+            const headerContent = document.getElementsByClassName("sk_header_content")[0];
+            if (headerContent) {
+              if (shouldFade != false) {
+                headerContent.style.animation = 'fadeInAnimation ease 3s';
+              }
+              headerContent.style.visibility = "visible";
             }
         }
         (async () => {
@@ -111,7 +119,7 @@ function loader() {
             const minDelay = 500;
 
             if (data['snap-load'] == true) {
-              showContent();
+              showContent(false);
               return;
             }
     
