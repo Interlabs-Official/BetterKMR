@@ -2215,52 +2215,59 @@ document.getElementById("export-button").addEventListener('click', () => {
                 if (!themeData.name || !themeData.elements) {
                   throw new Error('Invalid theme file format');
                 }
-                
-                const container = document.getElementById('added-elements-container');
-                container.innerHTML = '';
-                addedElements = [];
-                
-                document.getElementById('theme-name').value = themeData.name;
-                
-                themeData.elements.forEach(element => {
-                  const elementTemplate = availableElements.find(temp => temp.id === element.id);
-                  if (elementTemplate) {
-                    addElement(elementTemplate);
-                    
-                    if (element.properties) {
-                      Object.entries(element.properties).forEach(([propName, propValue]) => {
-                        const property = elementTemplate.properties.find(p => p.id === propName);
-                        if (property) {
-                          const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
-                          const input = document.getElementById(propId);
-                          
-                          if (input) {
-                            if (property.type === 'image-upload') {
-                              const dataInput = document.getElementById(`${propId}-data`);
-                              if (dataInput && propValue) {
-                                dataInput.value = propValue;
-                                const event = new Event('change');
-                                dataInput.dispatchEvent(event);
-                              }
-                            } else if (property.type === 'toggle' || property.type === 'checkbox') {
-                              input.checked = propValue;
-                              const event = new Event('change');
-                              input.dispatchEvent(event);
-                            } else {
-                              input.value = propValue;
-                              const event = new Event('change');
-                              input.dispatchEvent(event);
+
+                // Check if theme needs conversion
+                if (!themeData.vtt_version) {
+                  createDialog({
+                    title: 'Theme Version Update Required',
+                    content: 'This theme file requires updating to a new version.<br>Would you like to convert it?',
+                    buttons: [
+                      {
+                        text: 'Yes',
+                        callback: () => {
+                          const dialog = createDialog({
+                            title: 'Converting Theme',
+                            content: `
+                              <p>Converting your theme to version ${VTT_VERSION}...</p>
+                              <p>Please do not close this window during conversion.</p>
+                              <p>This may take a moment.</p>
+                            `
+                          });
+
+                          setTimeout(() => {
+                            try {
+                              const convertedTheme = convertThemeToNewVersion(themeData);
+                              importTheme(convertedTheme);
+                              dialog.close();
+                              createDialog({
+                                title: 'Conversion Complete',
+                                content: `
+                                  Theme successfully converted and imported!<br>
+                                  Please save your theme to keep the converted version.
+                                `,
+                                buttons: [{ text: 'OK' }]
+                              });
+                            } catch (error) {
+                              console.error('Conversion error:', error);
+                              dialog.close();
+                              createNotification("Failed to convert theme", "#961a1a", "#ffffff");
                             }
-                          }
+                          }, 500);
                         }
-                      });
-                    }
-                  }
-                });
-                
-                postLoad(themeData.elements);
-                createNotification("Theme imported successfully!", "#3c8443", "#ffffff");
-                
+                      },
+                      {
+                        text: 'Cancel',
+                        classname: 'dialog-button-not',
+                        callback: () => {}
+                      }
+                    ]
+                  });
+                  return;
+                }
+
+                // If theme is current version or already converted, import it
+                importTheme(themeData);
+
               } catch (error) {
                 console.error('Import error:', error);
                 createNotification("Failed to import theme: Invalid file format", "#961a1a", "#ffffff");
@@ -2283,6 +2290,7 @@ document.getElementById("export-button").addEventListener('click', () => {
           try {
             const theme = {
               name: themeName,
+              vtt_version: VTT_VERSION,
               elements: []
             };
             
@@ -2362,3 +2370,50 @@ document.getElementById("export-button").addEventListener('click', () => {
     ]
   });
 });
+
+function importTheme(themeData) {
+  const container = document.getElementById('added-elements-container');
+  container.innerHTML = '';
+  addedElements = [];
+  
+  document.getElementById('theme-name').value = themeData.name;
+  
+  themeData.elements.forEach(element => {
+    const elementTemplate = availableElements.find(temp => temp.id === element.id);
+    if (elementTemplate) {
+      addElement(elementTemplate);
+      
+      if (element.properties) {
+        Object.entries(element.properties).forEach(([propName, propValue]) => {
+          const property = elementTemplate.properties.find(p => p.id === propName);
+          if (property) {
+            const propId = `${element.id}-${property.name.replace(/\s+/g, '-')}`;
+            const input = document.getElementById(propId);
+            
+            if (input) {
+              if (property.type === 'image-upload') {
+                const dataInput = document.getElementById(`${propId}-data`);
+                if (dataInput && propValue) {
+                  dataInput.value = propValue;
+                  const event = new Event('change');
+                  dataInput.dispatchEvent(event);
+                }
+              } else if (property.type === 'toggle' || property.type === 'checkbox') {
+                input.checked = propValue;
+                const event = new Event('change');
+                input.dispatchEvent(event);
+              } else {
+                input.value = propValue;
+                const event = new Event('change');
+                input.dispatchEvent(event);
+              }
+            }
+          }
+        });
+      }
+    }
+  });
+  
+  postLoad(themeData.elements);
+  createNotification("Theme imported successfully!", "#3c8443", "#ffffff");
+}
