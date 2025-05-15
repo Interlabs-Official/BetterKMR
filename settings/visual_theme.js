@@ -1750,48 +1750,11 @@ body .sk_table {
 }
 `
 
-          if (element.properties["btn-hover-bg"]) {
-            css += `
-/* BetterKMR Compiled: Button Hover & Active Background Colour */
-body .sk_btn.active, body .sk_btn:hover {
-  background-color: ${applyAlphaToColour(element.properties["btn-hover-bg"]) ?? "#000000"}!important;
-  color: ${applyAlphaToColour(element.properties["btn-hover-text"]) ?? "#ffffff"}!important;
-}
-`
-          }
-          
-          if (element.properties["sk_button_hover_colour"]) {
-            css += `
-/* BetterKMR Compiled: Button Hover & Active Border Colour */
-body .sk_btn:hover, body .sk_btn.active {
-  border-color: ${applyAlphaToColour(element.properties["sk_button_hover_colour"]) ?? "#ffffff"}!important;
-}
-`
-          }
-
           if (element.properties["card-body"]) {
             css += `
 /* BetterKMR Compiled: Navbar/Card Background Colour */
 body .card-body {
   background-color: ${applyAlphaToColour(element.properties["card-body"]) ?? "#ffffff"}!important;
-}
-`
-          }
-
-          if (element.properties["sk_button_border_colour"]) {
-            css += `
-/* BetterKMR Compiled: Button Border Colour (sk_btn) */
-body .sk_btn {
-  border-color: ${applyAlphaToColour(element.properties["sk_button_border_colour"]) ?? "#ffffff"}!important;
-}
-`
-          }
-
-          if (element.properties["a_link_text_colour"]) {
-            css += `
-/* BetterKMR Compiled: Link Text Colour (a) */
-a {
-  color: ${applyAlphaToColour(element.properties["a_link_text_colour"]) ?? "#ffffff"}!important;
 }
 `
           }
@@ -1813,6 +1776,17 @@ body .sk_border, body .sk_thead_cell, body .table td, body .table th {
 .sk_btn {
   background-color: ${applyAlphaToColour(element.properties["btn-bg"]) ?? "#000000"}!important;
   color: ${applyAlphaToColour(element.properties["btn-text"]) ?? "#ffffff"}!important;
+  border-color: ${applyAlphaToColour(element.properties["sk_button_border_colour"]) ?? "#ffffff"}!important;
+}
+
+.sk_btn:hover, .sk_btn.active {
+  background-color: ${applyAlphaToColour(element.properties["btn-hover-bg"]) ?? "#000000"}!important;
+  color: ${applyAlphaToColour(element.properties["btn-hover-text"]) ?? "#ffffff"}!important;
+  border-color: ${applyAlphaToColour(element.properties["sk_button_hover_colour"]) ?? "#ffffff"}!important;
+}
+
+a {
+  color: ${applyAlphaToColour(element.properties["a_link_text_colour"]) ?? "#0066ff"}!important;
 }
 `
         }
