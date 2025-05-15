@@ -52,6 +52,7 @@ const availableElements = [
       { id: "school-motto-shadow-colour", name: "Motto Shadow Colour", type: "color", default: "#003f87", visibleWhen: "Text Shadow" },
       { id: "school-shadow-offset-x", name: "Text Shadow Offset X", type: "number", default: 2, unit: "px", visibleWhen: "Text Shadow" },
       { id: "school-shadow-offset-y", name: "Text Shadow Offset Y", type: "number", default: 2, unit: "px", visibleWhen: "Text Shadow" },
+      { id: "school-name-and-motto-visibility", name: "Show School Name & Motto", type: "toggle", default: true },
     ]
   },
   {
@@ -1638,6 +1639,14 @@ css += `
   ${element.properties["school-text-shadow"] === true ?? element.properties["school-motto-shadow-colour"] ? `text-shadow: ${applyAlphaToColour(element.properties["school-motto-shadow-colour"])} ${element.properties["school-shadow-offset-x"]}px ${element.properties["school-shadow-offset-y"]}px;` : ""}
 }
     `
+      if (element.properties["school-name-and-motto-visibility"] == false) {
+          css += `
+/* BetterKMR Compiled: School Name & Motto Visibility */
+.sk_header_content {
+  visibility: hidden !important;
+}
+`
+      }
       }
       if (element.id == "today-attendance-highlight") {
           const highlightColorObj = element.properties["attendance-highlight-colour"];
