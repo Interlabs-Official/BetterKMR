@@ -426,6 +426,7 @@
     }
 
     .dialog-button {
+      font-family: 'Lexend Deca', sans-serif;
       background: rgb(0,55,91);
       background: linear-gradient(360deg, rgba(0,55,91,1) 0%, rgba(0,185,255,1) 100%);
       color: #fff;
@@ -443,6 +444,7 @@
     }
 
     .dialog-button-not {
+      font-family: 'Lexend Deca', sans-serif;
       background: rgb(0,0,0);
       background: linear-gradient(360deg, rgba(0,0,0,1) 0%, rgba(56,56,56,1) 100%);
       color: #fff;
