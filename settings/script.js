@@ -787,23 +787,138 @@ const addDeleteButton = () => {
 		console.log(`%c[BetterKMR 📕] ` + `%cAn error occurred while attempting to load a theme preview:\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
 	}
 
-	window.createNotification = function(message, color, frontcol) {
-		const notificationContainer = document.getElementById('notification-container');
-		const notification = document.createElement('div');
-		notification.className = 'notification';
-		notification.style.backgroundColor = color;
-		notification.style.color = frontcol;
-		notification.innerText = message;
+	// i did not write this lol, something updated it
+window.createNotification = function(message, color, frontcol) {
+    const notificationContainer = document.getElementById('notification-container');
+    if (!notificationContainer) return;
 
-		const removeNotification = () => {
-			notification.classList.add('hidden');
-			setTimeout(() => notification.remove(), 500);
-		};
+    const notification = document.createElement('div');
+    const content = document.createElement('div');
+    const messageText = document.createElement('span');
+    const progressBar = document.createElement('div');
+    const closeButton = document.createElement('button');
 
-		notification.addEventListener('click', removeNotification);
-		notificationContainer.appendChild(notification);
-		setTimeout(removeNotification, 5000);
-	}
+    notification.className = 'enhanced-notification';
+    content.className = 'notification-content';
+    messageText.className = 'notification-message';
+    progressBar.className = 'notification-progress';
+    closeButton.className = 'notification-close';
+
+    messageText.textContent = message;
+    closeButton.innerHTML = '&times;';
+
+    notification.style.backgroundColor = color;
+    notification.style.color = frontcol;
+    progressBar.style.backgroundColor = frontcol;
+    progressBar.style.opacity = '0.3';
+
+    content.appendChild(messageText);
+    content.appendChild(closeButton);
+    notification.appendChild(content);
+    notification.appendChild(progressBar);
+    notificationContainer.appendChild(notification);
+
+    closeButton.addEventListener('click', () => {
+        notification.classList.add('notification-hiding');
+        setTimeout(() => notification.remove(), 300);
+    });
+
+    setTimeout(() => {
+        if (notification.isConnected) {
+            notification.classList.add('notification-hiding');
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 5000);
+
+    if (!document.getElementById('notification-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'notification-styles';
+        styles.textContent = `
+            .enhanced-notification {
+                position: relative;
+                padding: 12px 20px;
+                margin-bottom: 10px;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                transform-origin: top right;
+                animation: notification-slide-in 0.3s ease-out;
+                overflow: hidden;
+            }
+
+            .notification-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 12px;
+            }
+
+            .notification-message {
+                font-size: 14px;
+                font-weight: 500;
+            }
+
+            .notification-close {
+                background: none;
+                border: none;
+                color: inherit;
+                font-size: 20px;
+                cursor: pointer;
+                padding: 0 4px;
+                opacity: 0.7;
+                transition: opacity 0.2s;
+            }
+
+            .notification-close:hover {
+                opacity: 1;
+            }
+
+            .notification-progress {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 3px;
+                animation: notification-progress 5s linear;
+            }
+
+            .notification-hiding {
+                animation: notification-slide-out 0.3s ease-in forwards;
+            }
+
+            @keyframes notification-slide-in {
+                from {
+                    transform: translateX(100%) scale(0.5);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0) scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes notification-slide-out {
+                from {
+                    transform: translateX(0) scale(1);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%) scale(0.5);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes notification-progress {
+                from {
+                    width: 100%;
+                }
+                to {
+                    width: 0%;
+                }
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+};
 
 	        function setupThemeSearch() {
             console.log("Setting up theme search...");
