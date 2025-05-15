@@ -104,7 +104,7 @@
   css: "minecraft.css"
   thumbnail: "images/backgrounds/minecraft-landscape.jpg"
   author: "Solar"
-  highlight: "Build. Explore. Create."
+  highlight: "A theme for Minecraft fans, with a nice landscape. Not affiliated with Mojang AB."
   order_id: 2
   tags:
     "Minecraft": "rgba(79, 132, 102, 0.5)"
