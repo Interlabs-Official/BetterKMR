@@ -34,7 +34,7 @@
 }
 
 #new-custom-theme-button {
-  background: linear-gradient(45deg, #6366f1, #8b5cf6);
+  background: linear-gradient(135deg, rgb(41, 121, 255) 0%, rgb(30, 136, 229) 100%);
   color: white;
   float: right;
   margin: 1rem 0;
@@ -309,8 +309,8 @@
     justify-content: center;
     gap: 20px;
     padding: 15px;
-    border-top: 1px solid #222;
-    border-right: 1px solid #444;
+    border-top: 1px solid #ffffff0d;
+    /** border-right: 1px solid #aeaeae80; **/
 }
 .icon-button {
     background: none;
@@ -369,7 +369,7 @@
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
-<body style="visibility: hidden;">
+<body style="visibility: hidden;" class="gradient-background">
   <div id="loading-screen">
     <div class="loading-content">
       <div class="loading-logo">BetterKMR</div>
@@ -383,7 +383,7 @@
   <div id="notification-container"></div>
   <div class="settings-container">
     <!-- Sidebar with tabs -->
-    <aside class="sidebar">
+    <aside class="sidebar sidebar-transparency">
       <img src="../icon/btrkmr_transparent_logo_crop.png" style="
           display: block;
           margin-left: auto;
@@ -396,7 +396,7 @@
       <h1 style="text-align: center;">BetterKMR</h1>
       <p id="sidebar-version-id" style="text-align: center; margin-bottom: 10px; display: none; font-size: 15px;">v1.1.0-dev</p>
       <ul id="tab-list">
-        <li data-tab="general" class="tab-item active">General</li>
+        <li data-tab="general" class="tab-item active tab-item-top">General</li>
         <li data-tab="themes" class="tab-item">Themes</li>
         <li data-tab="about-and-contact" class="tab-item">About & Contact</li>
         <!-- <li data-tab="go-back" class="tab-item">Experiments</span></li> -->
@@ -409,7 +409,7 @@
         <button class="icon-button" data-tab="redeem-code" id="redeem-code" data-tooltip="Redeem Code">
             <img src="../assets/images/font-awesome/gift-solid.svg" alt="Redeem Code">
         </button>
-        <button class="icon-button" data-tab="website-docs" data-url="https://interlabs-official.github.io" data-tooltip="Website & Docs">
+        <button class="icon-button" data-tab="website-docs" data-url="https://interlabs-official.github.io/BetterKMR/" data-tooltip="Website & Docs">
             <img src="../assets/images/font-awesome/globe-solid.svg" alt="Website & Docs">
         </button>
         <button class="icon-button" data-tab="discord-server" data-url="https://discord.gg/4MkRmFmHz2" data-tooltip="Discord Server">
@@ -539,7 +539,7 @@
             ><br></h1><h3 style="font-weight: 300;">NOTE: Due to quota issues, custom themes are stored locally instead of synced. Support may change in the future.</h3>
             <ul id="custom-themes-list" style="list-style: none; padding: 0; margin-top: 20px;">
               <!-- Example Theme Item -->
-              <!-- <li class="custom-theme-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
+              <!-- <li class="custom-theme-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #cccccc;">
                 <span class="theme-name" style="font-size: 18px;">Example Theme</span>
                 <div class="theme-actions">
                   <button class="edit-theme" style="background: #3498db; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 5px;">Edit</button>
@@ -569,7 +569,7 @@
           <div class="control">
             <select id="settings-theme-selector" class="dropdown">
               <option value="default">Default</option>
-              <option value="settings-default-visual-refresh-01b_beta">Visual Refresh (Beta): settings-default-visual-refresh-01b_beta</option>
+              <option value="settings-old">Old Theme: Settings-Old</option>
             </select>
           </div>
         </div>

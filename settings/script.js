@@ -959,13 +959,13 @@ const addDeleteButton = () => {
 				window.open('https://discord.gg/4MkRmFmHz2', '_blank').focus();
 				return;
 			}
-			if (tab.textContent === 'About & Contact') {
-				document.body.classList.add('gradient-background');
-				document.querySelector('.sidebar').classList.add('sidebar-transparency');
-			} else {
-				document.body.classList.remove('gradient-background');
-				document.querySelector('.sidebar').classList.remove('sidebar-transparency');
-			}
+		//	if (tab.textContent === 'About & Contact') {
+		//		document.body.classList.add('gradient-background');
+		//		document.querySelector('.sidebar').classList.add('sidebar-transparency');
+	//		} else {
+		//		document.body.classList.remove('gradient-background');
+		//		document.querySelector('.sidebar').classList.remove('sidebar-transparency');
+	//		}
 			let previousTabId = null;
 			tabs.forEach((t) => {
 				if (t.classList.contains('active')) {
@@ -1125,7 +1125,7 @@ function createCustomThemeItem(themeName, customID) {
 		justifyContent: "space-between",
 		alignItems: "center",
 		padding: "10px",
-		borderBottom: "1px solid #444"
+		borderBottom: "1px solid #aeaeae80"
 	});
 
 	const span = document.createElement("span");
