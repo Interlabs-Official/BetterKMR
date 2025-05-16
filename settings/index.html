@@ -368,7 +368,93 @@
 .svg-white {
     filter: invert(98%) sepia(7%) saturate(67%) hue-rotate(202deg) brightness(117%) contrast(100%);
 }
-   
+
+.wizard-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0f0f0f;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .wizard-overlay.fade-out {
+      opacity: 0;
+    }
+
+    .wizard-content {
+      max-width: 600px;
+      margin: 100px auto;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+
+    .wizard-step {
+      display: none;
+    }
+
+    .wizard-step.active {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .wizard-buttons {
+      margin-top: 30px;
+    }
+
+    .wizard-button {
+      background: #2979FF;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 0 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-family: 'Lexend Deca', sans-serif;
+    }
+
+    .wizard-button:disabled {
+      background: #424242;
+      cursor: not-allowed;
+    }
+
+    .wizard-button:hover {
+      background: #2962FF;
+    }
+
+    .wizard-button.back {
+      background: #424242;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .theme-preview {
+      display: inline-block;
+      margin: 10px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      padding: 10px;
+      border-radius: 8px;
+    }
+
+    .theme-preview.selected {
+      border-color: #2979FF;
+    }
+
+    .theme-preview img {
+      width: 100px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -581,6 +667,65 @@
     </div>
     </main>
   </div>
+  <div class="wizard-overlay">
+     <div class="wizard-content">
+       <div class="wizard-step active" data-step="welcome">
+         <h1>Welcome to BetterKMR! 👋</h1>
+         <p>Thank you for installing our extension! It means a lot to us.</p>
+         <p>Let's get you set up with a few quick steps.</p>
+         <div class="wizard-buttons">
+           <button class="wizard-button next">Get Started</button>
+         </div>
+       </div>
+
+       <div class="wizard-step" data-step="theme">
+         <h1>Choose A Theme</h1>
+         <p>What sort of theme do you like best?</p>
+         <div class="theme-previews">
+          <div class="theme-preview" data-theme="4">
+            <img src="../assets/images/thumbnails/pure-dark.png" alt="Dark Theme">
+            <h3>Pure Dark</h3>
+            <p style="font-size: 11px;">For those who like<br>simplicity and focus.</p>
+          </div>
+           <div class="theme-preview" data-theme="0">
+             <img src="../assets/images/backgrounds/space.jpg" alt="Dark Theme">
+             <h3>Space Theme</h3>
+             <p style="font-size: 11px;">The default theme. For those<br>diving into the galactic.</p>
+           </div>
+           <div class="theme-preview" data-theme="2">
+            <img src="../assets/images/backgrounds/vivid-rain-thumbnail.png" alt="Dark Theme">
+            <h3>Vivid Winter</h3>
+            <p style="font-size: 11px;">An animated theme for those<br>with a sense of winter.</p>
+          </div>
+         </div>
+         <a href="#" style="text-decoration: none; font-weight: 600;" id="wizard_href_choose_own_theme">I don't like any of them / I already have a theme in mind</a>
+         <div class="wizard-buttons">
+           <button class="wizard-button back">Back</button>
+           <button class="wizard-button next" id="theme-select-button-wizard">Next</button>
+         </div>
+       </div>
+
+       <div class="wizard-step" data-step="telemetry">
+         <h1>Extra Settings</h1>
+         <p>These settings can be changed later.</p>
+         <label style="display: block; margin: 20px 0;">
+           <input type="checkbox" id="telemetry-checkbox" checked> 
+           Help us improve BetterKMR by allowing anonymous usage data collection
+         </label>
+         <label style="display: block; margin: 20px 0;">
+          <input type="checkbox" id="telemetry-checkbox" checked> 
+          Enable Helicon (for semi-live announcements & update checking support)
+        </label>
+         <p style="color: grey; font-style: italic; margin-bottom: 20px;">We collect telemetry data in order to make this extension better and easier to use.<br>If you would like to opt out later, you can enable Offline Mode.</p>
+
+         <p style="color: grey;">By using BetterKMR you agree to the <a target="_blank" href="https://interlabs-official.github.io/BetterKMR/terms.html">Terms of Use</a> & <a target="_blank" href="https://interlabs-official.github.io/BetterKMR/privacy.html">Privacy Policy</a>.</p>
+         <div class="wizard-buttons">
+           <button class="wizard-button back">Back</button>
+           <button class="wizard-button done">Done</button>
+         </div>
+       </div>
+     </div>
+   </div>
   <script src="lib.js"></script>
   <script src="../frameworks/js-yaml.min.js"></script>
   <script src="script.js"></script>
