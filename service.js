@@ -52,6 +52,9 @@ chrome.runtime.onInstalled.addListener((details) => {
               message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`
             }
           );
+        chrome.tabs.create({
+            url: chrome.runtime.getURL("settings/index.html?iswizard=true")
+        });
           break;
        case 'update':
         var message = `BetterKMR has been updated/reloaded to v${currentVersion}.`
@@ -79,7 +82,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     chrome.notifications.onClicked.addListener(function(notificationId) {
         if (notificationId === "betterkmr-install") {
           chrome.tabs.create({
-            url: chrome.runtime.getURL("settings/index.html")
+            url: chrome.runtime.getURL("settings/index.html?iswizard=true")
           });
         } else if (notificationId === "betterkmr-update") {
             chrome.storage.local.get(["latestVersion", "changelog"], function(data) {

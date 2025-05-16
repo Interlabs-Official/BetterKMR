@@ -1727,7 +1727,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initWizard() {
-  chrome.storage.sync.get(['theme-id-text', 'telemetry_enabled'], (result) => {
+  chrome.storage.sync.get(['theme-id-text', 'telemetry_enabled', 'has_done_wizard'], (result) => {
+	if (result['has_done_wizard'] == true) return;
 	const wizardThemeID = result['theme-id-text'] || '0';
 	const wizard = document.querySelector('.wizard-overlay');
 	wizard.style.display = 'block';
@@ -1806,6 +1807,7 @@ function initWizard() {
 
 	document.querySelector('.wizard-button.done').addEventListener('click', () => {
 		const telemetryEnabled = document.getElementById('telemetry-checkbox').checked;
+		saveSetting('has_done_wizard', true);
 		saveSetting('telemetry_enabled', telemetryEnabled);
 		finishWizard();
 	});
