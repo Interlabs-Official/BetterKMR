@@ -358,8 +358,8 @@ const addDeleteButton = () => {
 				callback: (val) => saveSetting("hide_rss_link_better_notices", val)
 			}]
 		});
-		// Danger Zone
-		settingsPage.addNestedSetting('danger-zone', {
+		// Danger Zone / Advanced
+		settingsPage.addNestedSetting('advanced', {
 			name: 'reset_all_data',
 			label: 'Reset Chrome Extension (All Data)',
 			tooltip: 'Removes all data stored by the extension, including settings and themes. Cannot be undone.',
@@ -382,6 +382,37 @@ const addDeleteButton = () => {
 					],
 				});
 			}
+		});
+		const [offline_mode, offline_mode_send_regular_telemetry, offline_mode_helicon] = await Promise.all([
+			loadSettingPromise("offline_mode"),
+			loadSettingPromise("offline_mode_send_regular_telemetry"),
+			loadSettingPromise("offline_mode_helicon")
+		]);
+		settingsPage.addNestedSetting('advanced', {
+			name: 'offline_mode',
+			label: 'Offline Mode (Send Telemetry, Helicon)',
+			tooltip: 'When toggled on, disables all communication to our servers.',
+			type: 'toggle',
+			default: offline_mode ?? false,
+			callback: (val) => saveSetting("offline_mode", val),
+			children: [
+				{
+					name: 'offline_mode_send_regular_telemetry',
+					label: 'Send Regular Telemetry',
+					tooltip: 'Sends regular telemetry to our servers. If offline mode is on, no telemetry is sent regardless.',
+					type: 'toggle',
+					default: offline_mode_send_regular_telemetry ?? true,
+					callback: (val) => saveSetting("offline_mode_send_regular_telemetry", val)
+				},
+				{
+					name: 'offline_mode_helicon',
+					label: 'Enable Helicon Service',
+					tooltip: 'Checks for announcements and future updates. If offline mode on, Helicon services will not activate.',
+					type: 'toggle',
+					default: offline_mode_helicon ?? true,
+					callback: (val) => saveSetting("offline_mode_helicon", val)
+				},
+			]
 		});
 		try {
 			const response = await fetch(chrome.runtime.getURL('../src/config/general.yml'));
@@ -1741,7 +1772,6 @@ function initWizard() {
 		steps.forEach(step => step.classList.remove('active'));
 		steps[index].classList.add('active');
 		if (theme_selected == null) {
-			console.log("disabling");
 			document.getElementById("theme-select-button-wizard").disabled = true;
 		} else {
 			document.getElementById("theme-select-button-wizard").disabled = false;
@@ -1765,15 +1795,17 @@ function initWizard() {
 	}
 
 	function finishWizard() {
-		wizard.classList.add('fade-out');
+		/* wizard.classList.add('fade-out');
 		setTimeout(() => {
 		wizard.style.display = 'none';
 		const url = new URL(window.location);
 		url.searchParams.delete('iswizard');
 		window.history.replaceState({}, '', url);
-		}, 500);
-
-		chrome.storage.sync.set({ 'wizard_completed': true });
+		}, 500); */
+		const url = new URL(window.location);
+		url.searchParams.delete('iswizard');
+		window.history.replaceState({}, '', url);
+		location.reload();
 	}
 
 	document.querySelectorAll('.theme-preview').forEach(preview => {
@@ -1807,8 +1839,10 @@ function initWizard() {
 
 	document.querySelector('.wizard-button.done').addEventListener('click', () => {
 		const telemetryEnabled = document.getElementById('telemetry-checkbox').checked;
+		const heliconEnabled = document.getElementById('helicon-checkbox').checked;
 		saveSetting('has_done_wizard', true);
 		saveSetting('telemetry_enabled', telemetryEnabled);
+		saveSetting('offline_mode_helicon', heliconEnabled);
 		finishWizard();
 	});
 });

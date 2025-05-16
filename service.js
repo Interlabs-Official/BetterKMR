@@ -123,22 +123,25 @@ let API_URL = 'https://api.solarcosmic.net/betterkmr-v1-global.php';
 let CHECK_INTERVAL = 60 * 60 * 1000; // check every hour
 
 async function checkForUpdates() {
-    try {
-        const response = await fetch(API_URL);
-        const data = await response.json();
-        
-        const currentVersion = chrome.runtime.getManifest().version;
-        
-        chrome.storage.local.set({
-            updateAvailable: data.latest_version !== currentVersion,
-            latestVersion: data.latest_version,
-            changelog: data.latest_version_changelog,
-            versionHighlight: data.version_highlight,
-            announcement: data.announcement || ''
-        });
-    } catch (error) {
-        console.error('Failed to check for updates:', error);
-    }
+    chrome.storage.sync.get('offline_mode_helicon', async function(data) {
+        if (data.offline_mode_helicon == false) return;
+        try {
+            const response = await fetch(API_URL);
+            const data = await response.json();
+            
+            const currentVersion = chrome.runtime.getManifest().version;
+            
+            chrome.storage.local.set({
+                updateAvailable: data.latest_version !== currentVersion,
+                latestVersion: data.latest_version,
+                changelog: data.latest_version_changelog,
+                versionHighlight: data.version_highlight,
+                announcement: data.announcement || ''
+            });
+        } catch (error) {
+            console.error('Failed to check for updates:', error);
+        }
+    });
 }
 
 checkForUpdates();
