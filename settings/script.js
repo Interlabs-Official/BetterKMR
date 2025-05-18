@@ -1970,4 +1970,20 @@ document.addEventListener('DOMContentLoaded', () => {
 			]
 		});
 	}
+
+	chrome.storage.local.get('tos_dialog_ok', (data) => {
+		if (data['tos_dialog_ok']) return;
+		createDialog({
+			title: 'BetterKMR Terms of Service & Privacy Policy',
+			content: 'Welcome to BetterKMR v1.2.0!<br>By using BetterKMR, you now agree to the:<br>- <a href="https://interlabs-official.github.io/BetterKMR/terms.html" target="_blank">Terms of Service</a><br>- <a href="https://interlabs-official.github.io/BetterKMR/privacy.html" target="_blank">Privacy Policy</a><br>Please note that these may change at any time.<br>You can always view these again on the About & Contact tab.',
+			buttons: [
+				{
+					text: 'Ok',
+					callback: () => {
+						chrome.storage.local.set({'tos_dialog_ok': true})
+					}
+				}
+			]
+		});
+	})
 })
