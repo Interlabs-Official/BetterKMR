@@ -52,15 +52,22 @@ chrome.runtime.onInstalled.addListener((details) => {
               message: `Thank you for installing BetterKMR v${currentVersion}! Please visit the settings page to get started.`
             }
           );
-        chrome.tabs.create({
+        /* chrome.tabs.create({
             url: chrome.runtime.getURL("settings/index.html?iswizard=true")
-        });
+        }); */
           break;
        case 'update':
         var message = `BetterKMR has been updated/reloaded to v${currentVersion}.`
         if (previousVersion !== currentVersion) {
             message = `BetterKMR has been updated to v${currentVersion} from v${previousVersion}.`
         }
+        /* Extra backups in case anything goes wrong converting the new themes */
+        chrome.storage.local.get(['themes', 'previous_theme_backup_v1_1'], function(data) {
+            if (!data['previous_theme_backup_v1_1'] && data['themes']) {
+                chrome.storage.local.set({'previous_theme_backup_v1_1': data['themes']});
+            }
+        });
+        
 
         chrome.notifications.create(
             "betterkmr-update",
@@ -81,9 +88,10 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     chrome.notifications.onClicked.addListener(function(notificationId) {
         if (notificationId === "betterkmr-install") {
+          /* uncomment when ready
           chrome.tabs.create({
             url: chrome.runtime.getURL("settings/index.html?iswizard=true")
-          });
+          }); */
         } else if (notificationId === "betterkmr-update") {
             chrome.storage.local.get(["latestVersion", "changelog"], function(data) {
                 /*console.log("Latest Version (Update Helicon Check):", data.latestVersion);

@@ -37,9 +37,9 @@
   background: linear-gradient(135deg, rgb(41, 121, 255) 0%, rgb(30, 136, 229) 100%);
   color: white;
   float: right;
-  margin: 1rem 0;
+  margin: 1rem -10px;
   border: none;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
@@ -118,9 +118,9 @@
   background: linear-gradient(360deg, #4e0e0e, #dc2626);
   color: white;
   float: right;
-  margin: 1rem;
+  margin: 1rem -10px;
   border: none;
-  padding: 12px 24px;
+  padding: 10px 20px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 500;
@@ -130,6 +130,26 @@
 }
 
 #delete-all-themes-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+#create-backup-button {
+    background: linear-gradient(360deg, rgb(0, 75, 19), rgb(6, 185, 0));
+    color: white;
+    float: right;
+    margin: 1rem;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#create-backup-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
 }
@@ -614,6 +634,7 @@
           </div>
           <div id="nested-tab-custom-themes" class="nested-tab-content">
           <button id="new-custom-theme-button">New</button>
+          <button id="create-backup-button">Backups</button>
           <button id="delete-all-themes-button">Delete All</button>
             <br><h1>Your Themes<span
               style="

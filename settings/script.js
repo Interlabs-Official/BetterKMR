@@ -1744,9 +1744,9 @@ function convertThemeToNewVersion(themeData) {
 
 document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('iswizard') === 'true') {
-    initWizard();
-  }
+  //if (urlParams.get('iswizard') === 'true') {
+  //  initWizard();
+  //}
   
   setTimeout(() => {
 		const loadingScreen = document.getElementById('loading-screen');
@@ -1847,3 +1847,127 @@ function initWizard() {
 	});
 });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+	function createThemeBackup(themes) {
+		const backupData = {
+			version: '1.0',
+			timestamp: new Date().toISOString(),
+			themes: themes
+		};
+		
+		const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
+		const url = URL.createObjectURL(blob);
+		
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = `betterkmr-themes-backup-${new Date().toISOString().slice(0,10)}.bktbackup`;
+		
+		document.body.appendChild(a);
+		a.click();
+		
+		setTimeout(() => {
+			document.body.removeChild(a);
+			URL.revokeObjectURL(url);
+		}, 0);
+		
+		return backupData;
+	}
+
+	document.getElementById('create-backup-button').addEventListener('click', () => {
+	chrome.storage.local.get('themes', data => {
+		createDialog({
+			title: 'Theme Backups',
+			content: 'What would you like to do?',
+			buttons: [
+				{
+					text: 'Create Backup File',
+					callback: () => {
+						if (data.themes) {
+							createThemeBackup(data.themes);
+						} else {
+							createNotification('No themes to backup!', "#b71c1c", "#ffffff");
+						}
+					}
+				},
+				{
+					text: 'Restore from Backup',
+					callback: () => {
+						restoreFromBackup();
+					}
+				},
+				{
+					text: 'Cancel',
+					callback: () => {},
+					classname: 'dialog-button-not'
+				}
+			]
+		});
+		// Also store as previous backup
+		/*chrome.storage.local.set({
+		'previous_theme_backup_v1_1': backup
+		}, () => {
+		createNotification('Theme backup created successfully!', "#3c8443", "#ffffff");
+		*/});
+	});
+
+	function restoreFromBackup() {
+		createDialog({
+			title: 'Restore Themes',
+			content: 'How would you like to restore your themes?',
+			buttons: [
+			{
+				text: 'From Backup File',
+				callback: () => {
+				const input = document.createElement('input');
+				input.type = 'file';
+				input.accept = '.bktbackup';
+				
+				input.onchange = (e) => {
+					const file = e.target.files[0];
+					const reader = new FileReader();
+					
+					reader.onload = (event) => {
+					try {
+						const backup = JSON.parse(event.target.result);
+						if (backup.themes) {
+						chrome.storage.local.set({themes: backup.themes}, () => {
+							createNotification('Themes restored successfully from backup file!', "#3c8443", "#ffffff");
+							setUpCustomThemesList();
+						});
+						}
+					} catch (error) {
+						createNotification('Error reading backup file!', "#b71c1c", "#ffffff");
+					}
+					};
+					
+					reader.readAsText(file);
+				};
+				
+				input.click();
+				}
+			},
+			{
+				text: 'From Previous Version',
+				callback: () => {
+				chrome.storage.local.get('previous_theme_backup_v1_1', data => {
+					if (data.previous_theme_backup_v1_1?.themes) {
+					chrome.storage.local.set({themes: data.previous_theme_backup_v1_1.themes}, () => {
+						createNotification('Themes restored from previous version!', "#3c8443", "#ffffff");
+						setUpCustomThemesList();
+					});
+					} else {
+					createNotification('No previous backup found!', "#b71c1c", "#ffffff");
+					}
+				});
+				}
+			},
+			{
+				text: 'Cancel',
+				callback: () => console.log('Cancelled restore'),
+				classname: 'dialog-button-not'
+			}
+			]
+		});
+	}
+})

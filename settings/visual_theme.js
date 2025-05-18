@@ -1262,17 +1262,83 @@ function loadThemeForEditing(themeId) {
       }
     };
 
+  function createThemeBackup(themes, callback) {
+    const backupData = {
+      version: '1.0',
+      timestamp: new Date().toISOString(),
+      themes: themes
+    };
+    
+    const blob = new Blob([JSON.stringify(backupData, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `betterkmr-themes-backup-${new Date().toISOString().slice(0,10)}.bktbackup`;
+    
+    document.body.appendChild(a);
+    a.click();
+    
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      if (typeof callback === "function") callback(backupData);
+    }, 0);
+    
+    return backupData;
+  }
+
     // Check version and handle conversion if needed
     if (!theme.vtt_version) {
-      createDialog({
+      chrome.storage.local.get("themes", (data) => {
+        if (!data.themes) return;
+        createDialog({
         title: 'Theme Version Update Required',
         content: 'This theme requires updating to a new version.<br>Would you like to get it converted?',
         buttons: [
           {
             text: 'Yes',
             callback: () => {
-                const dialog = createDialog({
-                title: 'Converting Theme', 
+            createDialog({
+              title: 'Back Up Themes',
+              content: 'Would you like to back up your themes before conversion?<br>It\'s possible some things can break during conversion.<br><br>We cannot provide support if you do not back up.',
+              buttons: [
+                {
+                  text: 'Yes',
+                  callback: () => {
+                    createThemeBackup(data, function(backupData) {
+                      createNotification(`Backup created. Continuing with conversion.`, "#3c8443", "#ffffff");
+                      preConvertTheme(theme);
+                    });
+                  }
+                },
+                {
+                  text: 'No',
+                  classname: 'dialog-button-not',
+                  callback: () => {
+                    window.location.href = "index.html?nested-tab-selected=custom-themes";
+                  }
+                }
+              ]
+            });
+            }
+          },
+          {
+            text: 'No',
+            classname: 'dialog-button-not',
+            callback: () => {
+              window.location.href = "index.html?nested-tab-selected=custom-themes";
+            }
+          }
+        ]
+      });
+      });
+    } else {
+      loadTheme(theme);
+    }
+    function preConvertTheme(theme) {
+  const dialog = createDialog({
+  title: 'Converting Theme', 
                 content: `
                   <p>The Visual Theme Editor is now converting your theme to a newer version.</p>
                   <p>Please do not forget to save your theme after conversion.</p><br>
@@ -1297,21 +1363,7 @@ function loadThemeForEditing(themeId) {
                 loadTheme(convertedTheme);
                 dialog.close();
               }, "1000");
-              
-            }
-          },
-          {
-            text: 'No',
-            classname: 'dialog-button-not',
-            callback: () => {
-              window.location.href = "index.html?nested-tab-selected=custom-themes";
-            }
-          }
-        ]
-      });
-    } else {
-      loadTheme(theme);
-    }
+}
   });
 }
 
