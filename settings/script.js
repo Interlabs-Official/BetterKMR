@@ -396,14 +396,14 @@ const addDeleteButton = () => {
 			default: offline_mode ?? false,
 			callback: (val) => saveSetting("offline_mode", val),
 			children: [
-				{
+				/*{
 					name: 'offline_mode_send_regular_telemetry',
 					label: 'Send Regular Telemetry',
 					tooltip: 'Sends regular telemetry to our servers. If offline mode is on, no telemetry is sent regardless.',
 					type: 'toggle',
 					default: offline_mode_send_regular_telemetry ?? true,
 					callback: (val) => saveSetting("offline_mode_send_regular_telemetry", val)
-				},
+				}, */
 				{
 					name: 'offline_mode_helicon',
 					label: 'Enable Helicon Service',
