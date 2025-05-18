@@ -127,7 +127,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true;
     }
 });
-let API_URL = 'https://api.solarcosmic.net/betterkmr-v1-global.php';
+let API_URL = 'https://api.solarcosmic.net/api/v1/btrkmr/main';
 let CHECK_INTERVAL = 60 * 60 * 1000; // check every hour
 
 async function checkForUpdates() {
