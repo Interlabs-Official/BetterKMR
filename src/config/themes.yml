@@ -103,7 +103,7 @@
   name: "Minecraft Theme"
   css: "minecraft.css"
   thumbnail: "images/backgrounds/minecraft-landscape.jpg"
-  author: "Solar"
+  author: "Convy32, Solar"
   highlight: "A theme for Minecraft fans, with a nice landscape. Not affiliated with Mojang AB."
   order_id: 2
   tags:

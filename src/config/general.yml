@@ -27,5 +27,6 @@ trusted-authors:
   - Solar
   - Convy32
   - Samuel H
+  - Convy32, Solar
 # Appears on "BetterKMR has updated to <version> - <changelog-highlight> Click here to read the change log."
 changelog-highlight: Dynamic Navbar Editor and More!
