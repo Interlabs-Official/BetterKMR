@@ -1,3 +1,4 @@
+// CWS Note: This will, and is currently somewhat useful for configuring BetterKMR, for example, if the settings page breaks.
     (function() {
       const outputEl = document.getElementById('output');
       const inputEl = document.getElementById('cmdline');
