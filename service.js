@@ -88,10 +88,9 @@ chrome.runtime.onInstalled.addListener((details) => {
 
     chrome.notifications.onClicked.addListener(function(notificationId) {
         if (notificationId === "betterkmr-install") {
-          /* uncomment when ready
           chrome.tabs.create({
-            url: chrome.runtime.getURL("settings/index.html?iswizard=true")
-          }); */
+            url: chrome.runtime.getURL("settings/index.html")
+          });
         } else if (notificationId === "betterkmr-update") {
             chrome.storage.local.get(["latestVersion", "changelog"], function(data) {
                 /*console.log("Latest Version (Update Helicon Check):", data.latestVersion);
