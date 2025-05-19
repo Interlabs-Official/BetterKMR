@@ -478,6 +478,20 @@
       object-fit: cover;
       border-radius: 4px;
     }
+
+    .lightbulb {
+        transition: transform 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .lightbulb.expand {
+        transform: scale(1.2);
+    }
+
+    .lightbulb-wrapper {
+        width: 100px;
+        height: 100px;
+        display: inline-block;
+    }
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -666,7 +680,9 @@
         </div>
       </div>
      <div id="tab-about-and-contact" class="tab-content">
-      <img src="../icon/icon_transparent_128.png" alt="BetterKMR Logo" style="width: 100px; height: 100px;">
+      <div class="lightbulb-wrapper">
+          <img src="../icon/icon_transparent_128.png" alt="BetterKMR Logo" style="width: 100px; height: 100px;" id="lightbulb" class="lightbulb">
+      </div>
         <h1>BetterKMR</h1>
         <h3 style="font-weight: 300;" id="version-number">Version (unknown)</h3>
         <h3 style="font-weight: 300;">Created by <a href="https://github.com/Interlabs-Official" target="_blank" style="color: #fff;">InterLabs</a></h3>

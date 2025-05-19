@@ -124,7 +124,7 @@ const availableElements = [
 
 chrome.storage.sync.get("redeemedCodes").then((result) => {
   if (result.redeemedCodes) {
-    for (const code of result.redeemedCodes){
+    for (const code of result.redeemedCodes) {
       if (code === "SILKSONGISREAL") {
         availableElements.push({
           id: "ext-promo-01",
@@ -135,6 +135,24 @@ chrome.storage.sync.get("redeemedCodes").then((result) => {
             { id: "ext-promo-01-enabled", name: "Enabled", type: "toggle", default: true },
           ]
         });
+      }
+      if (code === "EXTRAFONTPACK") {
+        const extraFonts = ["-- Experiments: Extra Font Pack --", "Monocraft"]; // Add as many fonts as you like
+
+        const fontFamilyElement = availableElements.find(e => e.id === "font-family");
+        if (fontFamilyElement) {
+          const presetProp = fontFamilyElement.properties.find(p => p.id === "font-family-preset");
+          if (presetProp && Array.isArray(presetProp.options)) {
+            extraFonts.forEach(font => {
+              if (!presetProp.options.includes(font)) {
+                /* if (font == "-- Extra Font Pack --") {
+                  presetProp.options.push(font);
+                } */
+                presetProp.options.push(font);
+              }
+            });
+          }
+        }
       }
     }
   }
@@ -338,45 +356,45 @@ function addElement(element) {
         <div class="added-element-property" ${visibilityAttribute} ${uniqueIdAttr}>
           <label class="setting-label" for="${propId}">${formatPropertyName(property.name)}:</label>
           <div class="gradient-container">
-            <div class="gradient-preview" id="${propId}-preview"></div>
-            <div class="gradient-controls">
-              <div class="color-picker-container">
-                <label>Start:</label>
-                <div class="color-picker">
-                  <input type="color" id="${propId}-start" value="${property.defaultStart || '#ffffff'}" data-alpha="1.0" class="color-with-alpha">
-                </div>
-                <span id="${propId}-start-hex" class="color-hex-value">${property.defaultStart || '#ffffff'}</span>
-                <button class="alpha-toggle-btn" id="${propId}-start-alpha-toggle">Add Transparency</button>
-              </div>
-              <div class="color-picker-container">
-                <label>End:</label>
-                <div class="color-picker">
-                  <input type="color" id="${propId}-end" value="${property.defaultEnd || '#000000'}" data-alpha="1.0" class="color-with-alpha">
-                </div>
-                <span id="${propId}-end-hex" class="color-hex-value">${property.defaultEnd || '#000000'}</span>
-                <button class="alpha-toggle-btn" id="${propId}-end-alpha-toggle">Add Transparency</button>
-              </div>
-              <div class="gradient-direction">
-                <label>Direction:</label>
-                <select id="${propId}-direction" class="dropdown-input select-dropdown">
-                  <option value="to bottom" ${property.defaultDirection === 'to bottom' ? 'selected' : ''}>Top to Bottom</option>
-                  <option value="to right" ${property.defaultDirection === 'to right' ? 'selected' : ''}>Left to Right</option>
-                  <option value="to bottom right" ${property.defaultDirection === 'to bottom right' ? 'selected' : ''}>Diagonal ↘</option>
-                  <option value="to bottom left" ${property.defaultDirection === 'to bottom left' ? 'selected' : ''}>Diagonal ↙</option>
-                </select>
-              </div>
+        <div class="gradient-preview" id="${propId}-preview"></div>
+        <div class="gradient-controls">
+          <div class="color-picker-container">
+            <label>Start:</label>
+            <div class="color-picker">
+          <input type="color" id="${propId}-start" value="${property.defaultStart || '#ffffff'}" data-alpha="1.0" class="color-with-alpha">
             </div>
+            <span id="${propId}-start-hex" class="color-hex-value">${property.defaultStart || '#ffffff'}</span>
+            <button class="alpha-toggle-btn" id="${propId}-start-alpha-toggle">Add Transparency</button>
+          </div>
+          <div class="color-picker-container">
+            <label>End:</label>
+            <div class="color-picker">
+          <input type="color" id="${propId}-end" value="${property.defaultEnd || '#000000'}" data-alpha="1.0" class="color-with-alpha">
+            </div>
+            <span id="${propId}-end-hex" class="color-hex-value">${property.defaultEnd || '#000000'}</span>
+            <button class="alpha-toggle-btn" id="${propId}-end-alpha-toggle">Add Transparency</button>
+          </div>
+          <div class="gradient-direction">
+            <label>Direction:</label>
+            <select id="${propId}-direction" class="dropdown-input select-dropdown">
+          <option value="to bottom" ${property.defaultDirection === 'to bottom' ? 'selected' : ''}>Top to Bottom</option>
+          <option value="to right" ${property.defaultDirection === 'to right' ? 'selected' : ''}>Left to Right</option>
+          <option value="to bottom right" ${property.defaultDirection === 'to bottom right' ? 'selected' : ''}>Diagonal ↘</option>
+          <option value="to bottom left" ${property.defaultDirection === 'to bottom left' ? 'selected' : ''}>Diagonal ↙</option>
+            </select>
+          </div>
+        </div>
           </div>
         </div>
       `;
-    } else if (property.type === 'dropdown') {
+        } else if (property.type === 'dropdown') {
       elementContent += `
         <div class="added-element-property" ${visibilityAttribute}>
           <label class="setting-label" for="${propId}">${formatPropertyName(property.name)}:</label>
           <select id="${propId}" class="dropdown-input select-dropdown">
-            ${property.options.map(option => 
-              `<option value="${option}" ${option === property.default ? 'selected' : ''}>${option}</option>`
-            ).join('')}
+        ${property.options.map(option => 
+          `<option value="${option}" ${option === property.default ? 'selected' : ''} ${option === '-- Experiments: Extra Font Pack --' ? 'disabled' : ''}>${option}</option>`
+        ).join('')}
           </select>
         </div>
       `;
@@ -1775,11 +1793,20 @@ body {
 }
 ` + css;
           } else {
-              css = `
+          if (element.properties["font-family-preset"] == "Monocraft") {
+            const fontPath = chrome.runtime.getURL("src/fonts/" + element.properties["font-family-preset"] + ".ttf")
+            css = `
+@font-face {
+  font-family: "${element.properties["font-family-preset"]}";
+  src: url("${fontPath}") format("truetype");
+}
+            `
+          }
+              css += `
 body {
   font-family: "${element.properties["font-family-preset"]}", sans-serif !important;
 }
-` + css;
+`
           }
           if (element.properties["font-family-include-name-motto"] == true) {
             css += `

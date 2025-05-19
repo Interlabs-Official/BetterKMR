@@ -507,6 +507,13 @@ const addDeleteButton = () => {
 				createNotification('Successfully redeemed! (check the Visual Theme Editor to see a surprise)', '#3c8443', '#ffffff');
 			}
 		},
+		'EXTRAFONTPACK': {
+			reward: 'Unlocked Extra Font Packs in Visual Theme Editor',
+			callback: () => {
+				// Example callback for special theme unlock
+				createNotification('Successfully redeemed! (check the Visual Theme Editor to see a surprise)', '#3c8443', '#ffffff');
+			}
+		},
 	/*	'BETTERKMR2024': {
 			reward: 'Unlocked special theme',
 			callback: () => {
@@ -1987,3 +1994,30 @@ document.addEventListener('DOMContentLoaded', () => {
 		});
 	})
 })
+
+document.addEventListener('DOMContentLoaded', () => {
+    const lightbulb = document.getElementById('lightbulb');
+    let clickCount = 0;
+    let lastClickTime = 0;
+
+    lightbulb.addEventListener('click', (e) => {
+        const currentTime = new Date().getTime();
+        
+        if (currentTime - lastClickTime > 3000) {
+            clickCount = 0;
+        }
+        
+        lastClickTime = currentTime;
+        clickCount++;
+
+        lightbulb.classList.add('expand');
+        setTimeout(() => {
+            lightbulb.classList.remove('expand');
+        }, 500);
+
+        if (clickCount === 8) {
+            clickCount = 0;
+            window.location.href = chrome.runtime.getURL('settings/debug.html');
+        }
+    });
+});
