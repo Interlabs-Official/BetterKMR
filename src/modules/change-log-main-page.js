@@ -44,7 +44,7 @@ function doStuff() {
                             `)
                         document.getElementById("update-notice").addEventListener("click", () => {
                             window.open(
-                                "https://interlabs-official.github.io/betterkmr-docs/changelog/1_2_0",
+                                "https://interlabs-official.github.io/betterkmr-docs/changelog/1_2_1",
                                 '_blank'
                             );
                         });

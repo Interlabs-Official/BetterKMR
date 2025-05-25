@@ -273,16 +273,16 @@ because of Period 5. This can be overridden in any theme by using the !important
       padding: 12px 16px;
       margin-bottom: 20px;
       background-color: rgba(0, 0, 0, 0.507);
-      border: 1px solid rgba(70, 252, 100, 0.4);
-      box-shadow: 0 0 10px rgba(70, 252, 70, 0.3), 0 0 20px rgba(70, 252, 70, 0.1);
+      border: 1px solid rgba(252, 70, 70, 0.4);
+      box-shadow: 0 0 10px rgba(252, 70, 70, 0.3), 0 0 20px rgba(252, 70, 70, 0.1);
       animation: fade-in 0.3s ease, glow 1.5s ease-in-out infinite alternate;
       cursor: pointer;
     }
     
     .update-text {
-      color: rgb(180, 255, 170);
+      color: rgb(255, 170, 170);
       font-weight: 400;
-      text-shadow: 0 0 5px rgba(76, 252, 70, 0.7);
+      text-shadow: 0 0 5px rgba(252, 70, 70, 0.7);
     }
     
     .close-notice {
@@ -301,10 +301,10 @@ because of Period 5. This can be overridden in any theme by using the !important
     
     @keyframes glow {
       from {
-        box-shadow: 0 0 5px rgba(70, 252, 70, 0.3), 0 0 10px rgba(70, 252, 70, 0.1);
+        box-shadow: 0 0 5px rgba(252, 70, 70, 0.3), 0 0 10px rgba(252, 70, 70, 0.1);
       }
       to {
-        box-shadow: 0 0 10px rgba(50, 252, 70, 0.5), 0 0 20px rgba(50, 252, 70, 0.3);
+        box-shadow: 0 0 10px rgba(252, 50, 50, 0.5), 0 0 20px rgba(252, 50, 50, 0.3);
       }
     }
     .smaller-text {

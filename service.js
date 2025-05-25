@@ -79,6 +79,7 @@ chrome.runtime.onInstalled.addListener((details) => {
             }
           );
           chrome.storage.sync.set({'update_notice_closed': false});
+          chrome.storage.sync.set({'settingsTheme': 'default'});
           break;
        case 'chrome_update':
        case 'shared_module_update':
