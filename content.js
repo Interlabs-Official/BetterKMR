@@ -114,11 +114,11 @@ function loader() {
               console.log(`%c[BetterKMR 📕] %cError: ${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
             }
           })();
-          chrome.storage.sync.get('snap-load', function(data) {
+          chrome.storage.sync.get('exp_snap_load', function(data) {
             const startTime = Date.now();
             const minDelay = 500;
 
-            if (data['snap-load'] == true) {
+            if (data['exp_snap_load'] == true) {
               showContent(false);
               return;
             }

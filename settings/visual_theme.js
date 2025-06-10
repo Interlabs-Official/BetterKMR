@@ -95,7 +95,8 @@ const availableElements = [
       { id: "main-tooltip", name: "By default in Kamar, the background colour is completely transparent.", type: "tooltip", visibleWhen: "Main Content Box" },
       { id: "main-bg", name: "Main Content Box Background Colour (sk_main_content)", type: "color", default: "#000000", visibleWhen: "Main Content Box" },
       { id: "main-text", name: "Main Content Box Text Colour (sk_main_content)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
-      { id: "card-body", name: "Navbar/Card Background Colour (card-body)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
+      { id: "card-body", name: "Navbar/Card Background Colour (card-body)", type: "color", default: "#000000", visibleWhen: "Main Content Box" },
+      { id: "card-body-border", name: "Navbar/Card Border Colour (card-body)", type: "color", default: "#ffffff", visibleWhen: "Main Content Box" },
       { id: "table-toggle", name: "Table Colour Scheming", type: "toggle", default: false, controlsVisibility: ["table-header", "table-border"] },
       { id: "table-header", name: "Table Header Colour (sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
       { id: "table-border", name: "Table Border Colour (sk_border, sk_thead_cell)", type: "color", default: "#000000", visibleWhen: "Table Colour Scheming" },
@@ -137,7 +138,7 @@ chrome.storage.sync.get("redeemedCodes").then((result) => {
         });
       }
       if (code === "EXTRAFONTPACK") {
-        const extraFonts = ["-- Experiments: Extra Font Pack --", "Monocraft"]; // Add as many fonts as you like
+        const extraFonts = ["-- Experiments: Extra Font Pack --", "Monocraft"];
 
         const fontFamilyElement = availableElements.find(e => e.id === "font-family");
         if (fontFamilyElement) {
@@ -1842,7 +1843,15 @@ body .sk_table {
             css += `
 /* BetterKMR Compiled: Navbar/Card Background Colour */
 body .card-body {
-  background-color: ${applyAlphaToColour(element.properties["card-body"]) ?? "#ffffff"}!important;
+  background-color: ${applyAlphaToColour(element.properties["card-body"]) ?? "#000000"}!important;
+}
+`
+          }
+          if (element.properties["card-body-border"]) {
+            css += `
+/* BetterKMR Compiled: Navbar/Card Border Colour */
+body .card {
+  border-color: ${applyAlphaToColour(element.properties["card-body-border"]) ?? "#ffffff"}!important;
 }
 `
           }

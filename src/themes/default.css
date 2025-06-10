@@ -29,7 +29,7 @@
 
     .sidebar ul { list-style: none; padding: 0; }
     .tab-item {
-      padding: 12px 24px;
+      padding: 14px 24px;
       font-size: 16px;
       color: #9e9e9e;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -178,7 +178,7 @@
     .dropdown, .text-box {
       font-family: 'Lexend Deca', sans-serif;
       padding: 5px;
-      background-color: #444;
+      background-color: #243c5879;
       color: #fff;
       border: none;
       border-radius: 4px;
@@ -886,4 +886,15 @@
 
     ::-webkit-scrollbar-thumb:hover {
       background: rgba(41, 121, 255, 0.7);
+    }
+
+    .sidebar-icon {
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      margin-right: 12px;
+      margin-bottom: 2px;
+      filter: invert(1);
+      display: inline-block;
+      opacity: 0.8;
     }

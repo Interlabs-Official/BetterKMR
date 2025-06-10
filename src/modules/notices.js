@@ -25,7 +25,6 @@ if (window.location.href.includes("notices")) {
 
                 var total = 0;
                 for (const item of document.querySelector('.row').children) {
-                    console.log(item);
                     if (item.classList.contains("col-12") && item.classList.contains("mb-3")) {
                         total += 1;
                     }

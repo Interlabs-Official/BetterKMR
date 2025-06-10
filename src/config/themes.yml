@@ -60,7 +60,7 @@
   thumbnail: "images/backgrounds/star_destroyers_updated.png"
   author: "Samuel H"
   highlight: "Rule through the fear of force rather than force itself. -Wilhuff Tarkin (📸 Star Wars | EAW)"
-  order_id: 5
+  order_id: 6
   tags:
     "Star Wars": "rgba(255, 191, 0, 0.5)"
     "Dark Side": "rgba(213, 0, 0, 0.5)"
@@ -83,7 +83,7 @@
   thumbnail: "images/thumbnails/mountain-slideshow.jpg"
   author: "Solar"
   highlight: "External JavaScript theme example, with six mountain images. (📸 Various @ Unsplash)"
-  order_id: 4
+  order_id: 10
   tags:
     "Mountain": "rgba(79, 132, 102, 0.5)"
     "Slideshow": "rgba(156, 163, 175, 0.5)"
@@ -105,7 +105,7 @@
   thumbnail: "images/backgrounds/minecraft-landscape.jpg"
   author: "Convy32, Solar"
   highlight: "A theme for Minecraft fans, with a nice landscape. Not affiliated with Mojang AB."
-  order_id: 2
+  order_id: 9
   tags:
     "Minecraft": "rgba(79, 132, 102, 0.5)"
     "Video Game": "rgba(156, 163, 175, 0.5)"
@@ -116,9 +116,34 @@
   thumbnail: "images/backgrounds/ocean.png"
   author: "Solar"
   highlight: "Probably the most chill theme yet. (Dark Mode) (📸 Attribution to calimasterx on Pixabay)"
-  order_id: 3
+  order_id: 8
   tags:
     "Water": "rgba(168,254,255,0.5)"
     "Chill": "rgba(255,255,255,0.5)"
     "Animated": "rgba(0,21,85,0.5)"
     "Simple": "rgba(64, 64, 64, 0.5)"
+50ad4682-9970-42df-9d47-761a4c04bf86:
+  name: "Cafe Theme"
+  css: "cafe.css"
+  thumbnail: "images/thumbnails/cafe-theme.png"
+  author: "Solar"
+  highlight: "A thank-you to the contributors of Crave. (Upscaled 📸 sahabreezies @ Wallpapers.com)"
+  order_id: 2
+  tags:
+    "Cafe": "rgba(139, 69, 19, 0.5)"
+    "Warm": "rgba(210, 105, 30, 0.5)"
+    "Cozy": "rgba(244, 164, 96, 0.5)"
+    "Relaxed": "rgba(205, 133, 63, 0.5)"
+    "Simple": "rgba(222, 184, 135, 0.5)"
+63b17b98-f652-4cd2-b0d5-afc49164b5b5:
+  name: "Sylvester"
+  css: "sylvester.css"
+  thumbnail: "url:https://solarcosmic.net/content/betterkmr/sylvester_theme_background.png"
+  author: "Java3652"
+  highlight: "Thank you for your contribution to Crave. f(javahn) = 5javahn + javahn ** javahn + javahnpi f(20)"
+  order_id: 3
+  tags:
+    "Mysterious": "rgba(48, 25, 52, 0.5)"
+    "Sleek": "rgba(105, 105, 105, 0.5)"
+    "Nocturnal": "rgba(25, 25, 112, 0.5)"
+    "Meme": "rgba(211, 211, 211, 0.5)"

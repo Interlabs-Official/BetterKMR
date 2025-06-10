@@ -65,7 +65,13 @@
             const yamlToJson = jsyaml.load(data);
             const theme = yamlToJson[themeID];
             
-            document.getElementById('theme-image').src = "../assets/" + theme.thumbnail;
+            var thumbnail_set = "../assets/" + theme.thumbnail
+
+            if (theme.thumbnail.startsWith("url:")) {
+                thumbnail_set = theme.thumbnail.slice(4);
+            }
+
+            document.getElementById('theme-image').src = thumbnail_set;
             document.getElementById('theme-title').textContent = theme.name;
             document.getElementById('theme-author').textContent = 'by ' + theme.author;
 

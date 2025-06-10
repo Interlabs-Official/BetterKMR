@@ -1,0 +1,281 @@
+/* BetterKMR Compiled: Font Family (set to top) */
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+body {
+  font-family: "Dosis", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+body .sk_school_name {
+  font-family: "Dosis", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+body .sk_school_subheading {
+  font-family: "Dosis", sans-serif !important;
+  font-weight: 400 !important;
+}
+
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #000000!important;
+}
+
+.sk_page {
+  background-color: #000000!important;
+  background-image: url("https://solarcosmic.net/content/betterkmr/sylvester_theme_background.png") !important;
+  background-color: #000000 !important;
+
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+}
+.sk_header {
+  background-color: #000000!important;
+  background-image: url("https://solarcosmic.net/content/betterkmr/sylvester_theme_background.png") !important;
+  background-color: #000000 !important;
+
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-attachment: fixed !important;
+}
+
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #000000!important;
+}
+
+/* BetterKMR Compiled: Today's Attendance Highlight */
+.is-today {
+  background-color: rgba(25, 114, 230, 0.2)!important;
+}
+    
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #000000!important;
+}
+
+/* BetterKMR Compiled: School Name & Motto */
+.sk_school_name {
+  color: #510a6b!important;
+  text-shadow: #000000 2px 2px;
+}
+.sk_school_subheading {
+  color: #d400ff!important;
+  text-shadow: #000000 2px 2px;
+}
+    
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #000000!important;
+}
+
+/* BetterKMR Compiled: Attendance Gradients */
+.btn-success {
+  background: linear-gradient(to bottom, #9c02d4, #3a044e)!important;
+  color: #ffffff!important;
+}
+.btn-info {
+  background: linear-gradient(to bottom, #0062ff, #070e46)!important;
+  color: #ffffff!important;
+}
+.btn-danger {
+  background: linear-gradient(to bottom, #d80000, #640000)!important;
+  color: #ffffff!important;
+}
+.btn-warning {
+  background: linear-gradient(to bottom, #d8ff4d, #ffa047)!important;
+  color: #ffffff!important;
+}
+    
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar Colours */
+body .sk_nav {
+  background: #681212!important;
+  color: #ffffff!important;
+  box-shadow: #003f87 2px 2px;
+}
+body .sk_nav_text {
+  color: #ffffff!important;
+}
+
+body .nav-item.active .sk_nav_text {
+  color: #63c9ff!important;
+}
+body .sk_nav_text.nav-link.nav-link:hover {
+  color: #8fd8ff!important;
+}
+
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #000000!important;
+}
+
+/* BetterKMR Compiled: Main Colour Schemes */
+body .sk_text.sk_page.sk-main-content {
+  background: rgba(48, 5, 72, 0.49)!important;
+  color: #ffffff!important;
+}
+body .d-flex {
+  color: #ffffff!important;
+}
+body .sk_table {
+  color: #ffffff!important;
+}
+
+/* BetterKMR Compiled: Button Hover & Active Background Colour */
+body .sk_btn.active, body .sk_btn:hover {
+  background-color: #000000!important;
+  color: #ffffff!important;
+}
+
+/* BetterKMR Compiled: Table Colour Scheming */
+body .sk_thead_cell, body .sk_thead th {
+  background-color: #000000!important;
+}
+body .sk_border, body .sk_thead_cell, body .table td, body .table th {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Generic */
+.sk_btn {
+  background-color: #000000!important;
+  color: #ffffff!important;
+}
+
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #ffffff!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #ffffff!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #ffffff!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #0066ff!important;
+}
+
+/* BetterKMR Compiled: Button Hover & Active Border Colour */
+body .sk_btn:hover, body .sk_btn.active {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Navbar/Card Background Colour */
+body .card-body {
+  background-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Button Border Colour (sk_btn) */
+body .sk_btn {
+  border-color: #000000!important;
+}
+
+/* BetterKMR Compiled: Link Text Colour (a) */
+a {
+  color: #000000!important;
+}
+
+.sk_header_content { visibility: hidden !important; }

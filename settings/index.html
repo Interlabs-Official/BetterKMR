@@ -492,6 +492,133 @@
         height: 100px;
         display: inline-block;
     }
+
+    .experiments-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      margin-top: 20px;
+      padding: 8px;
+    }
+
+    .experiment-item {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .experiment-item:hover {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .experiment-info {
+      flex-grow: 1;
+    }
+
+    .experiment-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .experiment-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .experiment-tooltip {
+      color: #999;
+      cursor: help;
+      font-size: 14px;
+    }
+
+    .experiment-subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-top: 4px;
+    }
+
+    .experiment-control {
+      margin-left: 16px;
+    }
+
+    .experiment-toggle {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .experiment-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .experiment-toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #2f3136;
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .experiment-toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: #fff;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    .experiment-toggle input:checked + .experiment-toggle-slider {
+      background-color: #7289da;
+    }
+
+    .experiment-toggle input:checked + .experiment-toggle-slider:before {
+      transform: translateX(20px);
+    }
+
+    .experiment-select {
+      background: #2f3136;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+      font-size: 14px;
+      min-width: 150px;
+    }
+
+    .experiment-select option {
+      background: #2f3136;
+      color: #fff;
+    }
+
+    .sidebar-icon {
+      width: 18px;
+      height: 18px;
+      vertical-align: middle;
+      margin-right: 12px;
+      margin-bottom: 2px;
+      filter: invert(1); /* makes icon white for dark backgrounds */
+      display: inline-block;
+    }
+
+    .tab-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
    </style>
    <link rel="stylesheet" id="settings-theme-stylesheet" href="../src/themes/default.css">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -523,14 +650,28 @@
       <h1 style="text-align: center;">BetterKMR</h1>
       <p id="sidebar-version-id" style="text-align: center; margin-bottom: 15px; display: none; font-size: 15px;">v1.1.0-dev</p>
       <ul id="tab-list">
-        <li data-tab="general" class="tab-item active tab-item-top">General</li>
-        <li data-tab="themes" class="tab-item">Themes</li>
-        <li data-tab="about-and-contact" class="tab-item">About & Contact</li>
-        <!-- <li data-tab="go-back" class="tab-item">Experiments</span></li> -->
+        <li data-tab="general" class="tab-item active tab-item-top">
+          <img src="../assets/images/font-awesome/sliders-solid.svg" class="sidebar-icon" alt="General">
+          General
+        </li>
+        <li data-tab="themes" class="tab-item">
+          <img src="../assets/images/font-awesome/palette-solid.svg" class="sidebar-icon" alt="Themes">
+          Themes
+        </li>
+        <li data-tab="about-and-contact" class="tab-item">
+          <img src="../assets/images/font-awesome/circle-info-solid.svg" class="sidebar-icon" alt="About & Contact">
+          About & Contact
+        </li>
       </ul>
       <ul id="second-tab-list">
-        <li data-tab="advanced" class="tab-item" id="advanced-tab-header" style="display: none;">Developer Settings</li>
-        <!-- <li data-tab="go-back" class="tab-item">Experiments</span></li> -->
+        <li data-tab="advanced" class="tab-item" id="advanced-tab-header" style="display: none;">
+          <img src="../assets/images/font-awesome/gear-solid.svg" class="sidebar-icon" alt="Developer Settings">
+          Developer Settings
+        </li>
+        <li data-tab="experiments" class="tab-item">
+          <img src="../assets/images/font-awesome/flask-solid.svg" class="sidebar-icon" alt="Experiments">
+          Experiments
+        </li>
       </ul>
       <div id="bottom-tab-list" class="icon-nav">
         <button class="icon-button" data-tab="redeem-code" id="redeem-code" data-tooltip="Redeem Code">
@@ -706,6 +847,14 @@
         </div>
       </div>
     </div>
+    <div id="tab-experiments" class="tab-content">
+      <h1>Experiments</h1>
+      <h3 style="font-weight: 300;">These features are experimental and may break or change at any time.</h3>
+      
+      <div class="experiments-container">
+        <div class="experiments-list"></div>
+      </div>
+    </div>
     </main>
   </div>
   <div class="wizard-overlay">
@@ -767,6 +916,7 @@
        </div>
      </div>
    </div>
+  <script src="experiments.js"></script>
   <script src="lib.js"></script>
   <script src="../frameworks/js-yaml.min.js"></script>
   <script src="script.js"></script>

@@ -1,0 +1,132 @@
+
+body {
+    font-family: "Inter", sans-serif !important;
+  }
+  
+  body .sk_school_name {
+    font-family: "Inter", sans-serif !important;
+    font-weight: 400 !important;
+  }
+  
+  body .sk_school_subheading {
+    font-family: "Inter", sans-serif !important;
+    font-weight: 400 !important;
+  }
+  
+  .sk_page {
+    background-color: #000000!important;
+    background-image: url("/assets/images/backgrounds/cafe-theme.png") !important;
+    background-color: #000000 !important;
+  
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-attachment: fixed !important;
+  }
+  .sk_header {
+    background-color: #000000!important;
+    background-image: url("/assets/images/backgrounds/cafe-theme.png") !important;
+    background-color: #000000 !important;
+  
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-attachment: fixed !important;
+  }
+  
+  /* BetterKMR Compiled: Today's Attendance Highlight */
+  .is-today {
+    background-color: rgba(54, 48, 33, 0.5)!important;
+  }
+      
+  /* BetterKMR Compiled: School Name & Motto */
+  .sk_school_name {
+    color: #f7f7f7!important;
+    text-shadow: #856800 2px 2px;
+  }
+  .sk_school_subheading {
+    color: #f7f7f7!important;
+    text-shadow: #856800 2px 2px;
+  }
+      
+  /* BetterKMR Compiled: Attendance Gradients */
+  .btn-success {
+    background: linear-gradient(to bottom, #007bff, #000000)!important;
+    color: #ffffff!important;
+  }
+  .btn-info {
+    background: linear-gradient(to bottom, #28a3a1, #000000)!important;
+    color: #ffffff!important;
+  }
+  .btn-danger {
+    background: linear-gradient(to bottom, #d80000, #000000)!important;
+    color: #ffffff!important;
+  }
+  .btn-warning {
+    background: linear-gradient(to bottom, #edff4c, #000000)!important;
+    color: #ffffff!important;
+  }
+      
+  /* BetterKMR Compiled: Navbar Colours */
+  body .sk_nav {
+    background: rgba(0, 0, 0, 0.8)!important;
+    color: #ffffff!important;
+    box-shadow: rgba(133, 97, 0, 0.5) 2px 2px;
+  }
+  body .sk_nav_text {
+    color: #ffffff!important;
+  }
+  
+  body .nav-item.active .sk_nav_text {
+    color: #ffb561!important;
+  }
+  body .sk_nav_text.nav-link.nav-link:hover {
+    color: #946c00!important;
+  }
+  
+  /* BetterKMR Compiled: Main Colour Schemes */
+  body .sk_text.sk_page.sk-main-content {
+    background: rgba(0, 0, 0, 0.5)!important;
+    color: #ffffff!important;
+  }
+  body .d-flex {
+    color: #ffffff!important;
+  }
+  body .sk_table {
+    color: #ffffff!important;
+  }
+  
+  /* BetterKMR Compiled: Navbar/Card Background Colour */
+  body .card-body {
+    background-color: rgba(56, 34, 0, 0.52)!important;
+  }
+  
+  /* BetterKMR Compiled: Navbar/Card Border Colour */
+  body .card {
+    border-color: #1d1307!important;
+  }
+  
+  /* BetterKMR Compiled: Table Colour Scheming */
+  body .sk_thead_cell, body .sk_thead th {
+    background-color: #241800!important;
+  }
+  body .sk_border, body .sk_thead_cell, body .table td, body .table th {
+    border-color: #241800!important;
+  }
+  
+  /* BetterKMR Compiled: Generic */
+  .sk_btn {
+    background-color: rgba(0, 0, 0, 0.75)!important;
+    color: #ffffff!important;
+    border-color: #423400!important;
+  }
+  
+  .sk_btn:hover, .sk_btn.active {
+    background-color: rgba(56, 38, 0, 0.7)!important;
+    color: #ffffff!important;
+    border-color: #423400!important;
+  }
+  
+  a {
+    color: #0066ff!important;
+  }

@@ -26,8 +26,44 @@
    However, the previous versions were actually made by me, you'd be able to tell.
 */
 
-chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages", "custom_navbar_layout", "dynamic_navbar_show_betterkmr_lightbulb"]).then((result) => {
+chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages", "custom_navbar_layout", "dynamic_navbar_show_betterkmr_lightbulb", "exp_padded-navbar"]).then((result) => {
     const useModifiedNavbar = result.dynamic_navbar == true || result.dynamic_navbar == undefined || result.dynamic_navbar == null;
+
+    if (result["exp_padded-navbar"]) {
+        const padded = `
+        body .sk_nav {
+            padding: 0.5rem 1rem !important;
+        }
+
+        body .sk_nav_text {
+            /* Add your color here */
+            transition-property: color, background-color !important;
+            transition-duration: 0.2s ease-in-out !important;
+            padding: 0.6em 0.9em !important;
+            border-radius: 5px !important; /* Can be a separate nav-item-radius */
+            font-weight: 500 !important;
+        }
+
+        a,
+        a:link,
+        a:visited {
+            /* Add your color here */
+            /* color: #0066ff !important; */
+            text-decoration: none !important;
+            transition-property: color, text-decoration !important;
+            transition-duration: 0.2 ease-in-out !important;
+        }
+
+        a:hover,
+        a:focus {
+            /* Add your hover color here */
+            text-decoration: underline !important;
+        }
+        `
+        const style = document.createElement('style');
+        style.appendChild(document.createTextNode(padded));
+        document.head.appendChild(style);
+    }
 
     if (useModifiedNavbar) {
         const hiddenPages = result.dynamic_navbar_hidden_navbar_pages ? result.dynamic_navbar_hidden_navbar_pages.split(',').map(page => page.trim().toLowerCase()) : [];

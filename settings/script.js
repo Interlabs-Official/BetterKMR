@@ -276,16 +276,6 @@ const addDeleteButton = () => {
 			callback: (val) => saveSetting("theme-id-text", val)
 		});
 
-		const [snap_load] = await Promise.all([loadSettingPromise("snap-load")]);
-		settingsPage.addSetting('advanced', {
-			name: 'snap-load',
-			label: 'Snap Load',
-			tooltip: 'Attempts to make Kamar load faster by removing the loading screen. Note that this may cause some pages to not load properly.',
-			type: 'toggle',
-			default: snap_load ?? false,
-			callback: (val) => saveSetting("snap_load", val)
-		});
-
 		/* Doesn't work: may have a look at later */
 		/* const [hide_external_js_warning] = await Promise.all([loadSettingPromise("hide_external_js_warning")]);
 		settingsPage.addSetting('advanced', {
@@ -414,6 +404,76 @@ const addDeleteButton = () => {
 				},
 			]
 		});
+		const experimentsManager = new ExperimentsManager();
+
+		experimentsManager.addExperiment({
+			id: 'exp_snap_load',
+			title: 'Snap Load (exp_snap-load)',
+			subtitle: 'Attempts to make Kamar load faster by removing the loading screen.',
+			tooltip: 'Attempts to make Kamar load faster by removing the loading screen. Note that this may cause some pages to not load properly.',
+			type: 'toggle',
+			default: false,
+			onChange: (value) => {
+				console.log('Snap load enabled:', value);
+			}
+		});
+
+		experimentsManager.addExperiment({
+			id: 'exp_results-summary',
+			title: 'Result Summary (exp_results-summary)',
+			subtitle: 'Enables a result summary on related webpages.',
+			tooltip: 'This feature is still in development and may contain bugs',
+			type: 'toggle',
+			default: false,
+			onChange: (value) => {
+				console.log('New navbar experiment:', value);
+			}
+		});
+
+		experimentsManager.addExperiment({
+			id: 'exp_padded-navbar',
+			title: 'Padded Navigation Bar (exp_padded-navbar)',
+			subtitle: 'Padded navigation bar',
+			tooltip: 'Padded navigation bar',
+			type: 'toggle',
+			default: false,
+			onChange: (value) => {
+				console.log('New navbar experiment:', value);
+			}
+		});
+
+		experimentsManager.addExperiment({
+			id: 'exp_fix_credits_tooltip',
+			title: 'Fix Credits Tooltip (exp_fix-credits-tooltip)',
+			subtitle: 'Makes the credits tooltip text colour black.',
+			tooltip: 'Makes the credits tooltip text colour black.',
+			type: 'toggle',
+			default: true,
+			onChange: (value) => {}
+		});
+
+		/* experimentsManager.addExperiment({
+			id: 'exp_fix-attendance-icons',
+			title: 'Fix Attendance Icons (exp_fix-attendance-icons)',
+			subtitle: 'Attempts to fix attendance icons.',
+			tooltip: 'Attempts to fix attendance icons.',
+			type: 'toggle',
+			default: false,
+			onChange: (value) => {}
+		}); */
+
+		experimentsManager.addExperiment({
+			id: 'exp_settings-logos',
+			title: 'Sidebar Settings Logos (exp_settings-logos)',
+			subtitle: 'Adds logos to the sidebar in Settings.',
+			tooltip: 'Adds logos to the sidebar in Settings.',
+			type: 'toggle',
+			default: true,
+			onChange: (value) => {
+				toggleSettingsLogos(value);
+			}
+		});
+
 		try {
 			const response = await fetch(chrome.runtime.getURL('../src/config/general.yml'));
 			if (response.ok) {
@@ -433,6 +493,27 @@ const addDeleteButton = () => {
 	};
 
 	initialiseSettings();
+
+	function toggleSettingsLogos(value) {
+		const icons = document.querySelectorAll(".sidebar-icon");
+		console.log("Icons: " + icons);
+		for (const icon of icons) {
+			console.log(icon);
+			if (value == true) {
+				icon.style.display = "block";
+			} else if (value == false) {
+				icon.style.display = "none";
+			}
+		}
+	}
+
+    chrome.storage.sync.get('exp_settings-logos', function(data) {
+		if (data["exp_settings-logos"] != null) {
+			toggleSettingsLogos(data["exp_settings-logos"]);
+		} else {
+			toggleSettingsLogos(true);
+		}
+    });
 
 	function addBadge(imgWrapper, text, badgeClass) {
 		let badgeContainer = imgWrapper.querySelector('.badge-container');
@@ -514,6 +595,20 @@ const addDeleteButton = () => {
 				createNotification('Successfully redeemed! (check the Visual Theme Editor to see a surprise)', '#3c8443', '#ffffff');
 			}
 		},
+		'SYLVESTERISREAL': {
+			reward: 'Unlocked Sylvester Theme (Crave Exclusive)',
+			callback: () => {
+				// Example callback for special theme unlock
+				createNotification('Thank you for your contribution to Crave (assuming you\'re Java). Please refresh the page.', '#3c8443', '#ffffff');
+			}
+		},
+		'CAFE2025': {
+			reward: 'Unlocked Cafe Theme (Crave Exclusive)',
+			callback: () => {
+				// Example callback for special theme unlock
+				createNotification('Thank you for your contribution to Crave. Please refresh the page.', '#3c8443', '#ffffff');
+			}
+		}
 	/*	'BETTERKMR2024': {
 			reward: 'Unlocked special theme',
 			callback: () => {
@@ -530,6 +625,13 @@ const addDeleteButton = () => {
 		}
     */
 	};
+
+	function hasRedeemedCode(code, callback) {
+		chrome.storage.sync.get('redeemedCodes', (data) => {
+			const redeemedCodes = data.redeemedCodes || [];
+			callback(redeemedCodes.includes(code));
+		});
+	}
 
 	function handleCodeRedemption() {
 		const codeInput = document.getElementById('redemption-code');
@@ -616,6 +718,8 @@ const addDeleteButton = () => {
 			addBadge(imgWrapper, '⚠️ Experimental', 'experimental-badge');
 		} else if (title === 'Vivid Winter') {
 			addBadge(imgWrapper, '🎬 Animated', 'animated-badge');
+		} else if (title === 'Cafe Theme') {
+			addBadge(imgWrapper, '🏅 Limited', 'animated-badge');
 		}
 		if (externalJS) {
 			addBadge(imgWrapper, 'External JS', 'external-js-badge');
@@ -771,9 +875,7 @@ const addDeleteButton = () => {
 			const response = await fetch(/* webpackIgnore: true */ chrome.runtime.getURL("src/config/themes.yml"));
 			const data = await response.text();
 			const yamlToJson = jsyaml.load(data);
-			const themeCount = Object.keys(yamlToJson).length;
-			let loadedThemes = 0;
-
+	
 			const themesArray = Object.entries(yamlToJson)
 				.filter(([key]) => key !== "1")
 				.map(([key, theme]) => ({
@@ -781,39 +883,79 @@ const addDeleteButton = () => {
 					...theme,
 					order_id: theme.order_id ?? Number.MAX_SAFE_INTEGER
 				}));
-
+	
 			themesArray.sort((a, b) => a.order_id - b.order_id);
-
-			themesArray.forEach(theme => {
-				if (!theme.css) {
-					assert(`Theme with key "${theme.key}" does not have a CSS stylesheet attached!`);
-					return;
+	
+			await Promise.all(themesArray.map(theme => {
+				if (theme.key === "63b17b98-f652-4cd2-b0d5-afc49164b5b5") {
+					return new Promise(resolve => {
+						hasRedeemedCode("SYLVESTERISREAL", (redeemed) => {
+							if (!redeemed) return resolve();
+							var thumbnail_set = "../../assets/" + theme.thumbnail;
+							if (theme.thumbnail.startsWith("url:")) {
+								thumbnail_set = theme.thumbnail.slice(4);
+							}
+							createThemeCard(
+								theme.key,
+								theme.name,
+								thumbnail_set,
+								theme.author,
+								theme.highlight,
+								theme.description || null,
+								theme.js,
+								onApply,
+								theme.tags
+							);
+							resolve();
+						});
+					});
+				} if (theme.key === "50ad4682-9970-42df-9d47-761a4c04bf86") {
+					return new Promise(resolve => {
+						hasRedeemedCode("CAFE2025", (redeemed) => {
+							if (!redeemed) return resolve();
+							var thumbnail_set = "../../assets/" + theme.thumbnail;
+							if (theme.thumbnail.startsWith("url:")) {
+								thumbnail_set = theme.thumbnail.slice(4);
+							}
+							createThemeCard(
+								theme.key,
+								theme.name,
+								thumbnail_set,
+								theme.author,
+								theme.highlight,
+								theme.description || null,
+								theme.js,
+								onApply,
+								theme.tags
+							);
+							resolve();
+						});
+					});
+				} else {
+					var thumbnail_set = "../../assets/" + theme.thumbnail;
+					if (theme.thumbnail.startsWith("url:")) {
+						thumbnail_set = theme.thumbnail.slice(4);
+					}
+					createThemeCard(
+						theme.key,
+						theme.name,
+						thumbnail_set,
+						theme.author,
+						theme.highlight,
+						theme.description || null,
+						theme.js,
+						onApply,
+						theme.tags
+					);
+					return Promise.resolve();
 				}
-				if (!theme.author) {
-					assert(`Theme with key "${theme.key}" does not have an author!`);
-					return;
-				}
-
-				createThemeCard(
-					theme.key,
-					theme.name,
-					"../../assets/" + theme.thumbnail,
-					theme.author,
-					theme.highlight,
-					theme.description || null,
-					theme.js,
-					onApply,
-					theme.tags
-				);
-				loadedThemes++;
-			});
-
-			if (loadedThemes === themesArray.length) {
-				setTimeout(() => {
-					document.getElementById("loader").style.display = "none";
-					document.getElementById("theme-grid").style.display = "grid";
-				}, 1250);
-			}
+			}));
+	
+			setTimeout(() => {
+				document.getElementById("loader").style.display = "none";
+				document.getElementById("theme-grid").style.display = "grid";
+			}, 1250);
+	
 		} catch (error) {
 			console.error("Failed to load themes:", error);
 		}
@@ -1226,13 +1368,14 @@ window.createNotification = function(message, color, frontcol) {
    	
    	document.addEventListener('keydown', event => {
    		const isOnAboutTab = Array.from(tabs).find(tab => 
-   			tab.classList.contains('active') && tab.textContent == "About & Contact"
+   			tab.classList.contains('active') && tab.textContent.includes("About & Contact")
    		) != null;
 
    		if (event.key === konamiCode[inputIndex] && isOnAboutTab && !window.isSecretCodeActivated) {
    			inputIndex++;
    			if (inputIndex === konamiCode.length) {
 				window.isSecretCodeActivated = true;
+				
    				triggerSecretAnimation();
    				inputIndex = 0;
    			}
@@ -1982,7 +2125,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		if (data['tos_dialog_ok']) return;
 		createDialog({
 			title: 'BetterKMR Terms of Service & Privacy Policy',
-			content: 'Welcome to BetterKMR v1.2.0!<br>By using BetterKMR, you now agree to the:<br>- <a href="https://interlabs-official.github.io/BetterKMR/terms.html" target="_blank">Terms of Service</a><br>- <a href="https://interlabs-official.github.io/BetterKMR/privacy.html" target="_blank">Privacy Policy</a><br>Please note that these may change at any time.<br>You can always view these again on the About & Contact tab.',
+			content: `Welcome to BetterKMR v${chrome.runtime.getManifest().version}!<br>By using BetterKMR, you now agree to the:<br>- <a href="https://interlabs-official.github.io/BetterKMR/terms.html" target="_blank">Terms of Service</a><br>- <a href="https://interlabs-official.github.io/BetterKMR/privacy.html" target="_blank">Privacy Policy</a><br>Please note that these may change at any time.<br>You can always view these again on the About & Contact tab.`,
 			buttons: [
 				{
 					text: 'Ok',

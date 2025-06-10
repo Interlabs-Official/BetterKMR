@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "BetterKMR",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "The ultimate revamp of Kamar (school.kiwi) for the web",
   "permissions": [
     "storage",
@@ -31,6 +31,9 @@
     "16": "icon/icon16.png",
     "48": "icon/icon48.png",
     "128": "icon/icon128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'; media-src 'self' https://solarcosmic.net/content/betterkmr;"
   },
   "web_accessible_resources": [
     {
