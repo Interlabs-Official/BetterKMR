@@ -231,6 +231,48 @@ if (window.location.href.includes("notices")) {
                 });
             }
 
+            function getCardId(card, date) {
+                return [
+                    card.querySelector('.card-title')?.textContent?.trim() || '',
+                    card.querySelector('.card-text')?.textContent?.trim() || '',
+                    card.querySelector('.card-subtitle.text-muted')?.textContent?.trim() || '',
+                    card.querySelector('.badge')?.textContent?.trim() || '',
+                    date || getTodayDateString()
+                ].join('|');
+            }
+
+            function isCardDismissed(card, dismissedCards) {
+                if (!dismissedCards || !dismissedCards.length) return false;
+                const cardId = getCardId(card);
+                return dismissedCards.includes(cardId);
+            }
+
+            function dismissCard(cardContainer, card) {
+                chrome.storage.sync.get(['pinned-notices'], function(result) {
+                    const pinnedCards = result['pinned-notices'] || [];
+
+                    if (isCardPinned(card, pinnedCards)) {
+                        card.style.transform = 'translateX(0)';
+                        return;
+                    }
+
+                    const cardId = getCardId(card);
+
+                    chrome.storage.sync.get(['deleted-today-notices'], function(result) {
+                        let dismissedCards = result['deleted-today-notices'] || [];
+                        dismissedCards.push(cardId);
+                        chrome.storage.sync.set({'deleted-today-notices': dismissedCards});
+                    });
+
+                    cardContainer.style.overflow = 'hidden';
+                    card.classList.add('card-swipe-out');
+
+                    setTimeout(() => {
+                        cardContainer.style.display = "none";
+                    }, 225);
+                });
+            }
+
             function isCardPinned(card, pinnedCards) {
                 if (!pinnedCards || !pinnedCards.length) return false;
 
@@ -247,63 +289,19 @@ if (window.location.href.includes("notices")) {
                 );
             }
 
-            function dismissCard(cardContainer, card) {
-                chrome.storage.sync.get(['pinned-notices'], function(result) {
-                    const pinnedCards = result['pinned-notices'] || [];
-
-                    if (isCardPinned(card, pinnedCards)) {
-                        card.style.transform = 'translateX(0)';
-                        return;
-                    }
-
-                    const cardInfo = {
-                        title: card.querySelector('.card-title')?.textContent?.trim() || '',
-                        text: card.querySelector('.card-text')?.textContent?.trim() || '',
-                        teacher: card.querySelector('.card-subtitle.text-muted')?.textContent?.trim() || '',
-                        badge: card.querySelector('.badge')?.textContent?.trim() || '',
-                        date: getTodayDateString()
-                    };
-
-                    chrome.storage.sync.get(['deleted-today-notices'], function(result) {
-                        let dismissedCards = result['deleted-today-notices'] || [];
-                        dismissedCards.push(cardInfo);
-                        chrome.storage.sync.set({'deleted-today-notices': dismissedCards});
-                    });
-
-                    cardContainer.style.overflow = 'hidden';
-                    card.classList.add('card-swipe-out');
-
-                    setTimeout(() => {
-                        cardContainer.style.display = "none";
-                    }, 225);
+            function fetchDismissedNoticesForToday(callback) {
+                const today = getTodayDateString();
+                chrome.storage.sync.get(['deleted-today-notices'], function(result) {
+                    const dismissedIds = (result['deleted-today-notices'] || []).filter(id => id.endsWith('|' + today));
+                    callback(dismissedIds);
                 });
-            }
-
-            function isCardDismissed(card, dismissedCards) {
-                if (!dismissedCards || !dismissedCards.length) return false;
-
-                const cardInfo = {
-                    title: card.querySelector('.card-title')?.textContent?.trim() || '',
-                    text: card.querySelector('.card-text')?.textContent?.trim() || '',
-                    teacher: card.querySelector('.card-subtitle.text-muted')?.textContent?.trim() || '',
-                    badge: card.querySelector('.badge')?.textContent?.trim() || ''
-                };
-
-                return dismissedCards.some(dismissed => 
-                    dismissed.title === cardInfo.title && 
-                    dismissed.text === cardInfo.text &&
-                    dismissed.teacher === cardInfo.teacher
-                );
             }
 
             function cleanupExpiredNotices(callback) {
                 const today = getTodayDateString();
-
                 chrome.storage.sync.get(['deleted-today-notices'], function(result) {
                     let dismissedCards = result['deleted-today-notices'] || [];
-
-                    const currentCards = dismissedCards.filter(card => card.date === today);
-
+                    const currentCards = dismissedCards.filter(id => id.endsWith('|' + today));
                     if (currentCards.length !== dismissedCards.length) {
                         chrome.storage.sync.set({'deleted-today-notices': currentCards}, callback);
                     } else if (callback) {
@@ -314,43 +312,43 @@ if (window.location.href.includes("notices")) {
 
             function setupNoticeCards() {
                 cleanupExpiredNotices(function() {
-                    chrome.storage.sync.get(['deleted-today-notices', 'pinned-notices'], function(result) {
-                        const dismissedCards = result['deleted-today-notices'] || [];
+                    chrome.storage.sync.get(['pinned-notices'], function(result) {
                         const pinnedCards = result['pinned-notices'] || [];
-                        const noticeCards = document.querySelectorAll('.col-12.mb-3');
+                        fetchDismissedNoticesForToday(function(dismissedCards) {
+                            const noticeCards = document.querySelectorAll('.col-12.mb-3');
+                            const page_title_notices = document.querySelector(".page-title-buttons");
+                            let isViewingPastNotices = false;
 
-                        const page_title_notices = document.querySelector(".page-title-buttons");
-                        let isViewingPastNotices = false;
-
-                        if (page_title_notices) {
-                            for (const element of page_title_notices.querySelectorAll("a")) {
-                                if (element.textContent.includes("View Today")) {
-                                    isViewingPastNotices = true;
-                                    break;
+                            if (page_title_notices) {
+                                for (const element of page_title_notices.querySelectorAll("a")) {
+                                    if (element.textContent.includes("View Today")) {
+                                        isViewingPastNotices = true;
+                                        break;
+                                    }
                                 }
                             }
-                        }
 
-                        noticeCards.forEach(cardContainer => {
-                            const card = cardContainer.querySelector('.card');
-                            if (!card || card.querySelector('.card-close-btn')) return; 
+                            noticeCards.forEach(cardContainer => {
+                                const card = cardContainer.querySelector('.card');
+                                if (!card || card.querySelector('.card-close-btn')) return; 
 
-                            const isPinned = isCardPinned(card, pinnedCards);
+                                const isPinned = isCardPinned(card, pinnedCards);
+                                const cardId = getCardId(card);
 
-                            if (isViewingPastNotices && !isPinned) {
-                                return;
-                            }
+                                if (isViewingPastNotices && !isPinned) {
+                                    return;
+                                }
 
-                            if (!isPinned && isCardDismissed(card, dismissedCards)) {
-                                cardContainer.style.display = "none";
-                                return;
-                            }
+                                if (!isPinned && dismissedCards.includes(cardId)) {
+                                    cardContainer.style.display = "none";
+                                    return;
+                                }
 
-                            card.style.position = 'relative';
+                                card.style.position = 'relative';
 
-                            const pinBtn = document.createElement('button');
-                            pinBtn.className = 'card-pin-btn';
-                            pinBtn.innerHTML = isPinned ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>';
+                                const pinBtn = document.createElement('button');
+                                pinBtn.className = 'card-pin-btn';
+                                pinBtn.innerHTML = isPinned ? '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>' : '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.--><path d="M32 32C32 14.3 46.3 0 64 0L320 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-29.5 0 11.4 148.2c36.7 19.9 65.7 53.2 79.5 94.7l1 3c3.3 9.8 1.6 20.5-4.4 28.8s-15.7 13.3-26 13.3L32 352c-10.3 0-19.9-4.9-26-13.3s-7.7-19.1-4.4-28.8l1-3c13.8-41.5 42.8-74.8 79.5-94.7L93.5 64 64 64C46.3 64 32 49.7 32 32zM160 384l64 0 0 96c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-96z"/></svg>';
                             pinBtn.title = isPinned ? 'Unpin notice' : 'Pin notice';
                             if (isPinned) pinBtn.classList.add('pinned');
 
@@ -501,6 +499,7 @@ if (window.location.href.includes("notices")) {
                         setTimeout(() => sortNoticesByPinned(), 100);
                     });
                 });
+                });
             }
 
             function addNoticeTip() {
@@ -630,14 +629,14 @@ if (window.location.href.includes("notices")) {
                                             return;
                                         }
 
-                                        const cardInfo = {
-                                            title: card.querySelector('.card-title')?.textContent?.trim() || '',
-                                            text: card.querySelector('.card-text')?.textContent?.trim() || '',
-                                            teacher: card.querySelector('.card-subtitle.text-muted')?.textContent?.trim() || '',
-                                            badge: card.querySelector('.badge')?.textContent?.trim() || '',
-                                            date: today
-                                        };
-                                        cardsToSave.push(cardInfo);
+                                        const cardId = [
+                                            card.querySelector('.card-title')?.textContent?.trim() || '',
+                                            card.querySelector('.card-text')?.textContent?.trim() || '',
+                                            card.querySelector('.card-subtitle.text-muted')?.textContent?.trim() || '',
+                                            card.querySelector('.badge')?.textContent?.trim() || '',
+                                            today
+                                        ].join('|');
+                                        cardsToSave.push(cardId);
 
                                         cardContainer.style.overflow = 'hidden';
                                         card.classList.add('card-swipe-out');
