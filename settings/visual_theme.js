@@ -1738,19 +1738,19 @@ css += `
 
           css += `
 /* BetterKMR Compiled: Attendance Gradients */
-.btn-success {
+.btn-success, .bg-success {
   background: ${processGradient(presentGradient)}!important;
   color: ${applyAlphaToColour(element.properties["present-text-colour"]) ?? "#ffffff"}!important;
 }
-.btn-info {
+.btn-info, .bg-info {
   background: ${processGradient(lateGradient)}!important;
   color: ${applyAlphaToColour(element.properties["late-text-colour"]) ?? "#ffffff"}!important;
 }
-.btn-danger {
+.btn-danger, .bg-danger {
   background: ${processGradient(unjustifiedGradient)}!important;
   color: ${applyAlphaToColour(element.properties["unjustified-text-colour"]) ?? "#ffffff"}!important;
 }
-.btn-warning {
+.btn-warning, .bg-warning {
   background: ${processGradient(justifiedGradient)}!important;
   color: ${applyAlphaToColour(element.properties["justified-text-colour"]) ?? "#ffffff"}!important;
 }

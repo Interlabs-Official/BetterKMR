@@ -68,7 +68,7 @@ body .page-attendance .calendar-day.sk_border {
     border-bottom-width: 0;
     border-color: #ffffff60 !important;
 }
-.btn-warning {
+.btn-warning, .bg-warning {
     color: #fff !important;
     background-color: #28a745 !important;
     border-color: #28a745 !important;
@@ -108,13 +108,13 @@ body .table th {
 body .sk_thead_cell {
     background-color: #004970 !important;
 }
-.btn-success {
+.btn-success, .bg-success {
     color: #fff !important;
 }
-.btn-info {
+.btn-info, .bg-info {
     color: #fff !important;
 }
-.btn-danger {
+.btn-danger, .bg-danger {
     color: #fff !important;
 }
 .btn-secondary {

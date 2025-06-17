@@ -81,15 +81,15 @@ body .card-body, .table td, tr {
 /* body .google-visualization-tooltip {
     color: #000000 !important;
 } */
-.btn-success {
+.btn-success, .bg-success {
     background: -webkit-linear-gradient(#49cea2, #00849b); /*(#49CECB, #00509b);*/
     color: #fff !important;
 }
-.btn-info {
+.btn-info, .bg-info {
     background: -webkit-linear-gradient(#28a3a1, #003363);
     color: #fff !important;
 }
-.btn-danger {
+.btn-danger, .bg-danger {
     background: -webkit-linear-gradient(#d80000, #640000);
     color: #fff !important;
 }
@@ -97,7 +97,7 @@ body .card-body, .table td, tr {
     background: -webkit-linear-gradient(#e0e0e0, #313131);
     color: #fff !important;
 }
-.btn-warning {
+.btn-warning, .bg-warning {
     background: -webkit-linear-gradient(#edff4c, #849b00);
     color: #fff !important;
 }

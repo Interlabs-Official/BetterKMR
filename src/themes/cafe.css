@@ -50,19 +50,19 @@ body {
   }
       
   /* BetterKMR Compiled: Attendance Gradients */
-  .btn-success {
+  .btn-success, .bg-success {
     background: linear-gradient(to bottom, #007bff, #000000)!important;
     color: #ffffff!important;
   }
-  .btn-info {
+  .btn-info, .bg-info {
     background: linear-gradient(to bottom, #28a3a1, #000000)!important;
     color: #ffffff!important;
   }
-  .btn-danger {
+  .btn-danger, .bg-danger {
     background: linear-gradient(to bottom, #d80000, #000000)!important;
     color: #ffffff!important;
   }
-  .btn-warning {
+  .btn-warning, .bg-warning {
     background: linear-gradient(to bottom, #edff4c, #000000)!important;
     color: #ffffff!important;
   }

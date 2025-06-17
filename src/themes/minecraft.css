@@ -51,19 +51,19 @@ body .sk_school_subheading {
   text-shadow: #008509 2px 2px;
 }
     
-.btn-success {
+.btn-success, .bg-success {
   background: linear-gradient(to bottom, #49cea2, #00849b)!important;
   color: #ffffff!important;
 }
-.btn-info {
+.btn-info, .bg-info {
   background: linear-gradient(to bottom, #28a3a1, #003363)!important;
   color: #ffffff!important;
 }
-.btn-danger {
+.btn-danger, .bg-danger {
   background: linear-gradient(to bottom, #d80000, #640000)!important;
   color: #ffffff!important;
 }
-.btn-warning {
+.btn-warning, .bg-warning {
   background: linear-gradient(to bottom, #edff4c, #849b00)!important;
   color: #ffffff!important;
 }
