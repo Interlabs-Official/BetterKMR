@@ -29,6 +29,7 @@
   author: "Convy32"
   highlight: "The default Space theme, the BetterKMR default. (📸 Wallpapers.com)"
   order_id: 0
+  featured: true
   tags:
     "Default": "rgba(153,153,153,0.5)"
     "Recommended": "rgba(119,52,235,0.5)"
@@ -49,6 +50,7 @@
   highlight: "A chill winter theme with a cozy background. (📸 Attribution to @LofiPlace on Pixabay)"
   description: "vivid.md"
   order_id: 1
+  featured: true
   tags:
     "Winter": "rgba(168,254,255,0.5)"
     "Christmas": "rgba(255,38,71,0.5)"
@@ -117,6 +119,7 @@
   author: "Solar"
   highlight: "Probably the most chill theme yet. (Dark Mode) (📸 Attribution to calimasterx on Pixabay)"
   order_id: 8
+  featured: true
   tags:
     "Water": "rgba(168,254,255,0.5)"
     "Chill": "rgba(255,255,255,0.5)"

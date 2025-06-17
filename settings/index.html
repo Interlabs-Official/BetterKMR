@@ -711,7 +711,8 @@
         <h3 style="font-weight: 300;">Once changes are made, refresh your Kamar page(s).</h3>
         <div class="nested-tabs">
           <ul class="nested-tab-list">
-            <li data-nested-tab="default-themes" class="nested-tab-item active">Default Themes</li>
+            <li data-nested-tab="featured-themes" class="nested-tab-item active">Featured</li>
+            <li data-nested-tab="default-themes" class="nested-tab-item">All Themes</li>
             <li data-nested-tab="market-themes" class="nested-tab-item">Marketplace</li>
             <li data-nested-tab="custom-themes" class="nested-tab-item rainbow_text_animated">Custom</li>
             <li data-nested-tab="submit-your-themes" id="submit-theme-tab" class="nested-tab-item">Submit Theme ↓</li>
@@ -731,6 +732,22 @@
             <div class="theme-grid" id="theme-grid" style="display: none;"></div>
             <p style="text-align: center; font-size: 12px; color: #777;">If you own some content in these themes and want them removed, please contact us via email at <a href="mailto:interlabsofficial@gmail.com" style="color: #777;">interlabsofficial@gmail.com</a>.</p>
           </div>
+
+          <div id="nested-tab-featured-themes" class="nested-tab-content active">
+            <div class="theme-card school-colours" id="1"><div class="theme-content"><div class="title-row"><h2 class="theme-title">School Colours</h2><button class="download-button" id="school-default-theme">Apply</button></div><p class="theme-description">Use your school's default colours</p></div></div>
+            <div class="search-container">
+              <div class="search-wrapper">
+                <i class="search-icon">🔍</i>
+                <input type="text" id="theme-search-input" placeholder="Search themes or tags...">
+                <button id="clear-search-button">✕</button>
+              </div>
+              <p id="no-theme-results" style="display: none;">No themes found matching your search.</p>
+            </div>
+            <center><div class="loader" id="featured-loader"></div></center>
+            <div class="theme-grid" id="featured-theme-grid" style="display: none;"></div>
+            <p style="text-align: center; font-size: 12px; color: #777;">If you own some content in these themes and want them removed, please contact us via email at <a href="mailto:interlabsofficial@gmail.com" style="color: #777;">interlabsofficial@gmail.com</a>.</p>
+          </div>
+
           <div id="nested-tab-market-themes" class="nested-tab-content">
             <br><h1 style="text-align: center; font-weight: 300; font-size: 60px;">Marketplace</h1>
             <h2 style="text-align: center;">Coming soon! This will be a place where you can distribute your custom themes.</h2>
@@ -745,7 +762,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between; margin: 0 20px;">
               <div style="flex: 1;">
                 <p style="text-align: left; font-weight: 300; font-size: 18px;">
-                  Last updated 30/03/2025<br><br>
+                  Last updated 17/06/2025<br><br>
                   When/if you submit your theme and its .bkt file, our team will review your submission and if approved, your theme will be featured in the Default Themes section for all BetterKMR users to enjoy!<br><br>
                   Make sure your theme has been thoroughly tested for optimal compatibility and user experience. High-quality submissions have a better chance of being approved. You also must agree to the conditions at the bottom of the page.<br><br>
                   <h1>Main Questions</h1><br>
@@ -757,7 +774,7 @@
                   </p><br>
                   <p style="font-size: 23px;">How can I submit my theme?</p><br>
                   <p style="text-align: left; font-weight: 300; font-size: 18px;">
-                    There's now only one way you can get your theme on the "Default Themes" page as of currently:<br><br>
+                    There's one main way you can get your theme on the themes page as of currently:<br><br>
                     Read the guidelines below and <a href="https://docs.google.com/forms/d/e/1FAIpQLSe3vJEGhCO8UhHTNtoQ9BaIRYspHAVyVagzs5J_sGaFNVx3fA/viewform" target="_blank">fill out the form here</a>. If you don't know how to get your theme's .bkt file, refer above "How do I get my custom theme file?"<br>
                     <br>When you submit a theme, you must include your theme name, description (max 50 characters), author (your name), tags w/ colours, and the complete .bkt file. Note that there is a maximum of 2 tags (16 characters per tag max).
                   </p>

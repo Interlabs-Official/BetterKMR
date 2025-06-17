@@ -697,9 +697,10 @@ const addDeleteButton = () => {
 		fullDescription,
 		externalJS,
 		applyCallback,
-		tags
+		tags,
+		gridId = 'theme-grid'
 	) {
-		const themeGrid = document.getElementById('theme-grid');
+		const themeGrid = document.getElementById(gridId);
 		const card = document.createElement('div');
 		card.className = 'theme-card';
 		card.id = customID;
@@ -961,7 +962,60 @@ const addDeleteButton = () => {
 		}
 	}
 
+	async function doFeaturedThemes() {
+		try {
+			const featuredGrid = document.getElementById("featured-theme-grid");
+			if (featuredGrid) {
+				featuredGrid.innerHTML = "";
+			}
+			const response = await fetch(chrome.runtime.getURL("src/config/themes.yml"));
+			const data = await response.text();
+			const yamlToJson = jsyaml.load(data);
+
+			const themesArray = Object.entries(yamlToJson)
+				.filter(([key, theme]) => {
+					return theme.featured === true;
+				})
+				.map(([key, theme]) => ({
+					key,
+					...theme,
+					order_id: theme.order_id ?? Number.MAX_SAFE_INTEGER
+				}));
+
+			themesArray.sort((a, b) => a.order_id - b.order_id);
+
+			await Promise.all(themesArray.map(theme => {
+				var thumbnail_set = "../../assets/" + theme.thumbnail;
+				if (theme.thumbnail.startsWith("url:")) {
+					thumbnail_set = theme.thumbnail.slice(4);
+				}
+				createThemeCard(
+					theme.key,
+					theme.name,
+					thumbnail_set,
+					theme.author,
+					theme.highlight,
+					theme.description || null,
+					theme.js,
+					onApply,
+					theme.tags,
+					'featured-theme-grid'
+				);
+				return Promise.resolve();
+			}));
+
+			setTimeout(() => {
+				document.getElementById("featured-loader").style.display = "none";
+				document.getElementById("featured-theme-grid").style.display = "grid";
+			}, 1250);
+
+		} catch (error) {
+			console.error("Failed to load featured themes:", error);
+		}
+	}
+
 	doYAMLThemes();
+	doFeaturedThemes();
 
 	function assert(error) {
 		console.log(`%c[BetterKMR 📕] ` + `%cAn error occurred while attempting to load a theme preview:\n      ` + `%c${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
@@ -1354,11 +1408,15 @@ window.createNotification = function(message, color, frontcol) {
 		}
 	}
 
-   	document.querySelectorAll('.nested-tab-item').forEach(nTab => {
-   		nTab.addEventListener('click', () => {
-   			selectNestedTab(nTab);
-   		});
-   	});
+	document.querySelectorAll('.nested-tab-item').forEach(nTab => {
+		nTab.addEventListener('click', () => {
+			selectNestedTab(nTab);
+			const tabId = nTab.getAttribute('data-nested-tab');
+			if (tabId === 'featured-themes') {
+				doFeaturedThemes();
+			}
+		});
+	});
 
    	window.settingsPage = settingsPage;
    	window.isItemToggled = settingsPage.isItemToggled.bind(settingsPage);
