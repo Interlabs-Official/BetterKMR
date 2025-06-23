@@ -25,7 +25,7 @@ as extra missing features from the old Kamar portal.
 [Discord](https://discord.gg/4MkRmFmHz2)
 
 Note:<br>
-**Firefox builds are experimental and not supported, which may change at a later date. Please do not make bug reports for them.**
+**Firefox builds are experimental and not officially supported, which may change at a later date. Please do not make bug reports for them.**
 
 ## Why use BetterKMR?
 BetterKMR is an overhaul of the new school.kiwi student portal. It's designed to fix and modify some of the changes that the new portal made, as well as extra missing features from the old Kamar portal. ***If you want customisation, BetterKMR is for you!***
