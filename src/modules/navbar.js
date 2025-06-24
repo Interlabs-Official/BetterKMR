@@ -376,7 +376,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages",
                     navItem.appendChild(dropdownToggle);
                     navItem.appendChild(dropdownMenu);
 
-                    if (visibleChildren.some(child => child.href === window.location.pathname)) {
+                    if (visibleChildren.some(child => window.location.pathname.includes(child.href) && child.href !== "/")) {
                         navItem.classList.add('active');
                     }
                 } else {
@@ -385,7 +385,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages",
                     link.href = item.href;
                     link.textContent = item.text;
 
-                    if (item.href === window.location.pathname) {
+                    if (window.location.pathname.includes(item.href) && item.href !== "/") {
                         navItem.classList.add('active');
                     }
 
