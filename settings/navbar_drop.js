@@ -1,48 +1,48 @@
 console.log("navbar_drop.js loaded");
 const STORAGE_KEY = 'custom_navbar_layout';
-var defaultNavItems = [
-    { text: "Home", href: "/", className: "nav-item" },
-    { text: "Notices", href: "/notices", className: "nav-item nav-item-notices" },
-    { text: "Attendance", href: "/attendance", className: "nav-item nav-item-attendance" },
-    { text: "Calendar", href: "/calendar", className: "nav-item nav-item-calendar" },
-    { 
-        text: "Results", 
-        className: "nav-item dropdown",
-        dropdown: true,
-        folderId: "menu-folder20240123023233",
-        children: [
-            { text: "Current Year", href: "/results_list", className: "nav-link-results_list" },
-            { text: "All Results", href: "/results_all", className: "nav-link-results_all" },
-            { text: "Recognitions", href: "/results_recognitions", className: "nav-link-results_recognitions" },
-            { text: "Awards", href: "/results_awards", className: "nav-link-results_awards" },
-            { text: "Groups", href: "/groups", className: "nav-link-groups" }
-        ]
-    },
-    { 
-        text: "NCEA", 
-        className: "nav-item dropdown",
-        dropdown: true,
-        folderId: "menu-folder20240123024154",
-        children: [
-            { text: "Summary", href: "/results_summary", className: "nav-link-results_summary" },
-            { text: "Pathways", href: "/careers_pathways", className: "nav-link-careers_pathways" }
-        ]
-    },
-    { 
-        text: "Reports", 
-        className: "nav-item dropdown",
-        dropdown: true,
-        folderId: "menu-folder20240123022746",
-        children: [
-            { text: "Reports", href: "/reports", className: "nav-link-reports" },
-            { text: "Pastoral", href: "/pastoral", className: "nav-link-pastoral" },
-            { text: "Notes", href: "/notes", className: "nav-link-notes" }
-        ]
-    },
-    { text: "Surveys", href: "/surveys", className: "nav-item nav-item-surveys" },
-    { text: "Contact", href: "/contact_us", className: "nav-item nav-item-contact_us" }
-
-];
+        var defaultNavItems = [
+            { text: "Home", href: "/", className: "nav-item" },
+            { text: "Notices", href: "/notices", className: "nav-item nav-item-notices" },
+            { text: "Attendance", href: "/attendance", className: "nav-item nav-item-attendance" },
+            { text: "Calendar", href: "/calendar", className: "nav-item nav-item-calendar" },
+            { 
+                text: "Results", 
+                className: "nav-item dropdown",
+                dropdown: true,
+                folderId: "menu-folder20240123023233",
+                children: [
+                    { text: "Current Year", href: "/results_list", className: "nav-link-results_list" },
+                    { text: "All Results", href: "/results_all", className: "nav-link-results_all" },
+                    { text: "Recognitions", href: "/results_recognitions", className: "nav-link-results_recognitions" },
+                    { text: "Awards", href: "/results_awards", className: "nav-link-results_awards" },
+                    { text: "Groups", href: "/groups", className: "nav-link-groups" }
+                ]
+            },
+            { 
+                text: "NCEA & Courses", 
+                className: "nav-item dropdown",
+                dropdown: true,
+                folderId: "menu-folder20240123024154",
+                children: [
+                    { text: "Summary", href: "/results_summary", className: "nav-link-results_summary" },
+                    { text: "Pathways", href: "/careers_pathways", className: "nav-link-careers_pathways" },
+                    { text: "Course Selection", href: "/course_selection", className: "nav-item nav-item-course_selection" }
+                ]
+            },
+            { 
+                text: "Reports", 
+                className: "nav-item dropdown",
+                dropdown: true,
+                folderId: "menu-folder20240123022746",
+                children: [
+                    { text: "Reports", href: "/reports", className: "nav-link-reports" },
+                    { text: "Pastoral", href: "/pastoral", className: "nav-link-pastoral" },
+                    { text: "Notes", href: "/notes", className: "nav-link-notes" }
+                ]
+            },
+            { text: "Surveys", href: "/surveys", className: "nav-item nav-item-surveys" },
+            { text: "Contact", href: "/contact_us", className: "nav-item nav-item-contact_us" }
+        ];
 
 let liveRefreshTimeout;
 const TYPING_TIMEOUT = 500; // ms to wait after typing stops before saving

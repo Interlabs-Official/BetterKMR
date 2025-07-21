@@ -129,7 +129,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 // CWS Note: We do not collect personal data. This option can be switched off by toggling Offline Mode in settings.
 // This is for announcements and update announcements, which appear on the settings page if present.
-let API_URL = 'https://api.solarcosmic.net/api/v1/btrkmr/main';
+let API_URL = 'https://api.solarcosmic.net/betterkmr/api/v1/'; // previous: https://api.solarcosmic.net/api/v1/btrkmr/main
 let CHECK_INTERVAL = 60 * 60 * 1000; // check every hour
 
 async function checkForUpdates() {

@@ -21,7 +21,7 @@
 
 #  General configuration for BetterKMR extension.
 
-version: 1.2.2
+version: 1.2.3
 # Below is a whitelist for authors, which disables the external JavaScript warning dialog for trusted authors.
 trusted-authors:
   - Solar
@@ -29,4 +29,4 @@ trusted-authors:
   - Samuel H
   - Convy32, Solar
 # Appears on "BetterKMR has updated to <version> - <changelog-highlight> Click here to read the change log."
-changelog-highlight: Experiments & More!
+changelog-highlight: Experiments & More (Patch Fix)!

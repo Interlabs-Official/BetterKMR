@@ -136,13 +136,14 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages",
                 ]
             },
             { 
-                text: "NCEA", 
+                text: "NCEA & Courses", 
                 className: "nav-item dropdown",
                 dropdown: true,
                 folderId: "menu-folder20240123024154",
                 children: [
                     { text: "Summary", href: "/results_summary", className: "nav-link-results_summary" },
-                    { text: "Pathways", href: "/careers_pathways", className: "nav-link-careers_pathways" }
+                    { text: "Pathways", href: "/careers_pathways", className: "nav-link-careers_pathways" },
+                    { text: "Course Selection", href: "/course_selection", className: "nav-item nav-item-course_selection" }
                 ]
             },
             { 
@@ -158,7 +159,6 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages",
             },
             { text: "Surveys", href: "/surveys", className: "nav-item nav-item-surveys" },
             { text: "Contact", href: "/contact_us", className: "nav-item nav-item-contact_us" }
-
         ];
 
         if (result.custom_navbar_layout) {
