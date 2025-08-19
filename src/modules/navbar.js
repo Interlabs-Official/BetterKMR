@@ -70,6 +70,7 @@ chrome.storage.sync.get(["dynamic_navbar", "dynamic_navbar_hidden_navbar_pages",
 
         const navbar = document.getElementById("navigation");
         const mainNav = navbar.getElementsByClassName("main-nav")[0];
+        if (!mainNav) return;
         let activeThing = null;
         let beforeItemTrim = null;
 

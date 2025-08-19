@@ -127,6 +127,17 @@ getThemesConfig()
     .catch(error => console.error("Failed to load themes:", error));
 
     function injectTheme(yamlToJson) {
+        if (window.location.pathname === "/course_selection") {
+            const alertWin = document.createElement("div");
+            alertWin.classList.add("alert");
+            alertWin.classList.add("alert-warning");
+            alertWin.textContent = "Themes have been disabled on this page.";
+            setTimeout(() => {
+                const thing = document.getElementsByClassName("page-title")[0];
+                if (thing) thing.appendChild(alertWin);
+            }, 1000);
+            return;
+        }
         if (window.location.pathname === "/rss") {
             console.log(`%c[BetterKMR 📕] %cSkipping the theme loader because this is not a direct Kamar page.`, 'color:rgb(105, 58, 138)', 'color: #fff');
             return;
