@@ -1,6 +1,6 @@
 {
     "name": "betterkmr",
-    "version": "1.2.3",
+    "version": "1.2.4",
     "description": "An awesome overhaul for the new school.kiwi student portal",
     "main": "content.js",
     "scripts": {
