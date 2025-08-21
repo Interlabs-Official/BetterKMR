@@ -7,8 +7,14 @@ chrome.storage.sync.get('exp_results-summary', function(data) {
       window.location.href.includes("results_all") ||
       window.location.href.includes("results_summary")
     ) {
+      for (const item of getElementsByText("credits earned", "th")) {
+        const credits_amount = parseInt(item.textContent);
+        const total = window.location.href.includes("results_summary") ? 80 : 60;
+        const calc_amount = ((credits_amount/total)*100).toFixed(2) + "%";
+        if (credits_amount >= total) calc_amount = "Complete";
+        item.textContent = credits_amount + "/" + total + " credits earned (" + calc_amount + ")";
+      };
       const targetBox = document.querySelector(".page-title");
-
       if (targetBox) {
 
         targetBox.innerHTML = ""; 
@@ -331,3 +337,8 @@ chrome.storage.sync.get('exp_results-summary', function(data) {
     }
   }
 });
+
+function getElementsByText(text, tagName = '*') {
+  const elements = document.querySelectorAll(tagName); 
+  return Array.from(elements).filter(element => element.textContent.includes(text));
+}
