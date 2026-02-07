@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Plugin</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap');
+        body {
+            background-color: #0e0e0e;
+            color: white;
+            font-family: 'Lexend Deca', sans-serif;
+        }
+        input, textarea {
+            background-color: #121212;
+            color: white;
+            border: none;
+        }
+    </style>
+    <script src="../frameworks/brython.js"></script>
+    <script src="create_scr.js"></script>
+</head>
+<body>
+    <label for="name">Plugin Name</label>
+    <input type="text" id="name"></input>
+    <label for="codebox">Code</label>
+    <textarea id="codebox"></textarea>
+    <button>Submit</button>
+</body>
+</html>
