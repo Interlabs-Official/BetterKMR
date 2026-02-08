@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="../../frameworks/brython.min.js"></script>
+    <script src="../../frameworks/brython_stdlib.js"></script>
+</head>
+<body onload="brython()">
+    <script>
+        window.addEventListener("message", async (evt) => {
+            const pyCode = evt.data.python;
+            try {
+                const jsCode = __BRYTHON__.pythonToJS(pyCode);
+                evt.source.postMessage({type: 'RESULT', js: jsCode}, event.origin);
+            } catch (err) {
+                evt.source.postMessage({type: 'ERROR', error: err.toString()}, event.origin);
+            }
+        })
+    </script>
+</body>
+</html>

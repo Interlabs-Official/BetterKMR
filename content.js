@@ -125,6 +125,31 @@ function loader() {
             }
           })();
           (async () => {
+            const ifr = document.createElement("iframe");
+            ifr.style.display = "none";
+            ifr.src = chrome.runtime.getURL("settings/sandbox/sandbox.html");
+            document.body.appendChild(ifr);
+
+            window.addEventListener("message", (event) => {
+                if (event.data.type === "RESULT") {
+                    const jsCode = event.data.js;
+                    console.warn("JS CODE received from sandbox");
+                    // Send transpiled code to service worker to register as userScript
+                    chrome.runtime.sendMessage({
+                        action: "registerBrythonScript",
+                        code: jsCode
+                    });
+                } else if (event.data.type === "ERROR") {
+                    console.error("Sandbox error:", event.data.error);
+                }
+            });
+
+            ifr.onload = () => {
+              // Send Python code to sandbox for transpilation
+              ifr.contentWindow.postMessage({python: "from browser import alert; alert('Hello from Brython!')"}, "*");
+            };
+
+            // Tell service worker to set up Brython runtime
             chrome.runtime.sendMessage({
               action: "attachPlugins"
             });

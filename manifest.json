@@ -25,6 +25,9 @@
       "run_at": "document_start"
     }
   ],
+  "sandbox": {
+    "pages": ["settings/sandbox/sandbox.html"]
+  },
   "action": {},
   "background": {
     "service_worker": "service.js"
@@ -35,7 +38,8 @@
     "128": "icon/icon128.png"
   },
   "content_security_policy": {
-    "extension_pages": "script-src 'self'; object-src 'self'; media-src 'self' https://solarcosmic.net/content/betterkmr;"
+    "extension_pages": "script-src 'self'; object-src 'self'; media-src 'self' https://solarcosmic.net/content/betterkmr;",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; child-src 'self';"
   },
   "web_accessible_resources": [
     {

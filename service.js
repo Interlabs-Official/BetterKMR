@@ -132,6 +132,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             csp: "script-src 'self' 'unsafe-inline'"
         });
 
+        // 1. Inject Brython runtime
+chrome.userScripts.register([{
+    id: "brython-runtime",
+    matches: ["<all_urls>"],
+    js: [{ file: "frameworks/brython.js" }],
+    runAt: "document_start"
+}]);
+
+// 2. Inject transpiled code
+chrome.userScripts.register([{
+    id: "brython-script",
+    matches: ["<all_urls>"],
+    js: [{ code: jsCodeFromSandbox }],
+    runAt: "document_idle"
+}]);
+
         chrome.storage.local.get("plugins", (data) => {
             const plugins = data.plugins || {};
             chrome.userScripts.unregister().then(() => {

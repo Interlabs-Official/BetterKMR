@@ -17,10 +17,11 @@
             border: none;
         }
     </style>
-    <script src="../frameworks/brython.js"></script>
+    <script src="../frameworks/skulpt-stdlib.js"></script>
+    <script src="../frameworks/skulpt.min.js"></script>
     <script src="create_scr.js"></script>
 </head>
-<body>
+<body onload="brython({debug: 0, pythonpath: ['.']});">
     <label for="name">Plugin Name</label>
     <input type="text" id="name"></input>
     <label for="codebox">Code</label>

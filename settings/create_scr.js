@@ -1,6 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("submit").addEventListener("click", () => {
-        chrome.storage.local.get("plugins", (data) => {
+        Sk.configure({ output: console.log});
+var mypre = document.getElementById("output");
+Sk.canvas = "mycanvas";
+var prog = "print('Hello from Python!')";
+Sk.misceval.asyncToPromise(function() {
+    return Sk.importMainWithBody("<stdin>",false,prog,true);
+});
+
+        //brython({debug: 0, pythonpath: ['.']});
+        //const pyCode = document.getElementById("codebox").value;
+        //const jsCode = brython.$py2js(pyCode, "mymodule");
+        //console.log(jsCode);
+        /*chrome.storage.local.get("plugins", (data) => {
             var data = data.plugins || [];
             console.log("Data: " + JSON.stringify(data));
             data.push({
@@ -12,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log(data);
                 window.location.href = "/settings/index.html";
             });
-        });
+        });*/
         /*chrome.storage.local.set({ plugins: plugins }, function() {
         if (chrome.runtime.lastError) {
             console.error("Error saving plugin:", chrome.runtime.lastError);
