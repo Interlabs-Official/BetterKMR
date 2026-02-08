@@ -125,8 +125,34 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse(data.themesConfig);
         });
         return true;
+    } else if (message.action == "attachPlugins") {
+        console.log("Initialising Plugins");
+        console.log(chrome.userScripts);
+        chrome.userScripts.configureWorld({
+            csp: "script-src 'self' 'unsafe-inline'"
+        });
+
+        chrome.userScripts.register([{
+            id: 'test',
+            matches: ['https://*.school.kiwi/*'],
+            js: [{code: 'alert("yes")'}],
+            runAt: 'document_idle'
+        }]).then(() => {
+            console.log("User script has been registered successfully!");
+        }).catch((error) => {
+            console.error("Failed to register: " + error);
+        });
     }
 });
+
+function doScript(args) {
+    document.head.innerHTML += `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'">`;
+    const script = document.createElement("script");
+    script.textContent = args;
+    (document.head || document.documentElement).appendChild(script);
+    //script.remove();
+}
+
 // CWS Note: We do not collect personal data. This option can be switched off by toggling Offline Mode in settings.
 // This is for announcements and update announcements, which appear on the settings page if present.
 let API_URL = 'https://api.solarcosmic.net/betterkmr/api/v1/'; // previous: https://api.solarcosmic.net/api/v1/btrkmr/main

@@ -125,7 +125,10 @@ function loader() {
             }
           })();
           (async () => {
-            try {
+            chrome.runtime.sendMessage({
+              action: "attachPlugins"
+            });
+            /*try {
               chrome.storage.sync.get(["plugin-id-text"], (result) => {
                 const currentPluginId = result["plugin-id-text"] || "0";
                 console.log("Plugin ID active: " + currentPluginId);
@@ -134,7 +137,9 @@ function loader() {
                   if (plugins[currentPluginId]) {
                     const plugin = plugins[currentPluginId];
                     try {
-                      addUserScript(plugin.code);
+                      chrome.runtime.sendMessage({
+                        action: "attachPlugins"
+                      });
                     } catch (error) {
                       console.warn(error);
                     }
@@ -143,7 +148,7 @@ function loader() {
               });
             } catch (error) {
               console.warn(error);
-            }
+            }*/
           })();
           chrome.storage.sync.get('exp_snap_load', function(data) {
             const startTime = Date.now();
