@@ -2222,3 +2222,187 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+//-- Plugins
+function getAllCustomPlugins(callback) {
+	chrome.storage.local.get('plugins', data => callback(data.plugins || {}));
+}
+
+function setUpCustomPluginsList() {
+	const customPluginsList = document.getElementById("custom-plugins-list");
+	customPluginsList.innerHTML = '';
+	
+	chrome.storage.sync.get(["plugin-id-text"], (result) => {
+		const currentPluginId = result["plugin-id-text"] || "0";
+		console.log("Plugin ID active: " + currentPluginId);
+		
+		getAllCustomPlugins(plugins => {
+			console.log(plugins);
+			var total = 0;
+			Object.entries(plugins).forEach(([id, plugin]) => {
+				const pluginItem = createCustomPluginItem(plugin.name, id);
+				total += 1;
+				
+				if (id === currentPluginId) {
+					const applyButton = pluginItem.querySelector('.apply-custom-plugin');
+					if (applyButton) {
+						applyButton.setAttribute("id", "greyed-out-applied");
+						applyButton.disabled = true;
+						const checkImg = applyButton.getElementsByTagName("img")[0];
+						checkImg.src = "../assets/images/font-awesome/check-solid.svg";
+					}
+				}
+				
+				customPluginsList.appendChild(pluginItem);
+			});
+			if (total > 1) {
+				document.getElementById("delete-all-plugins-button").style.display = "block";
+			} else {
+				document.getElementById("delete-all-plugins-button").style.display = "none";
+			}
+		});
+	});
+}
+
+setUpCustomPluginsList();
+
+function createCustomPluginItem(pluginName, customID) {
+	const li = document.createElement("li");
+	li.classList.add("custom-theme-item");
+	Object.assign(li.style, {
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
+		padding: "10px",
+		borderBottom: "1px solid #aeaeae80"
+	});
+
+	const span = document.createElement("span");
+	span.classList.add("theme-name");
+	span.style.fontSize = "18px";
+	span.textContent = pluginName;
+
+	const actionsDiv = document.createElement("div");
+	actionsDiv.classList.add("theme-actions");
+
+	function createButton(className, backgroundColor, text) {
+		const button = document.createElement("button");
+		Object.assign(button, {
+			className,
+			style: `
+				background-color: ${backgroundColor};
+				color: white;
+				border: none;
+				padding: 5px 10px;
+				border-radius: 4px;
+				cursor: pointer;
+				margin-left: 5px;
+			`,
+			textContent: text
+		});
+		return button;
+	}
+
+	const applyButton = createButton("apply-custom-plugin", "#3498db", "");
+	const editButton = createButton("edit-plugin", "#3498db", "");
+	const cloneButton = createButton("clone-plugin", "#3498db", "");
+	const deleteButton = createButton("delete-plugin", "#e74c3c", "");
+
+	deleteButton.addEventListener('click', () => {
+			createDialog({
+				title: `Delete Theme`,
+				content: `Delete theme "${themeName}"?<br><br>This action cannot be undone.<br>We cannot provide support for deleted themes.`,
+				buttons: [
+					{
+						text: 'Yes',
+						callback: () => deleteTheme(customID),
+						classname: 'dialog-button-danger',
+					},
+					{
+						text: 'No',
+						callback: () => console.log("Cancelled deletion of theme \"${themeName}\""),
+						classname: 'dialog-button-not',
+					},
+				],
+			});
+	});
+
+	const deleteImg = document.createElement("img");
+	deleteImg.src = "../assets/images/font-awesome/trash-solid.svg";
+	deleteImg.width = "12";
+	deleteImg.height = "12";
+	deleteImg.classList.add("svg-white");
+	deleteButton.appendChild(deleteImg);
+
+	cloneButton.addEventListener('click', () => {
+		createDialog({
+			title: `Clone Theme`,
+			content: `Create a copy of theme "${themeName}"?`,
+			buttons: [
+				{
+					text: 'Yes',
+					callback: () => cloneTheme(customID),
+				},
+				{
+					text: 'No',
+					callback: () => console.log("Cancelled deletion of theme \"${themeName}\""),
+					classname: 'dialog-button-not',
+				},
+			],
+		});
+	});
+
+	const cloneImg = document.createElement("img");
+	cloneImg.src = "../assets/images/font-awesome/clone-solid.svg";
+	cloneImg.width = "12";
+	cloneImg.height = "12";
+	cloneImg.classList.add("svg-white");
+	cloneButton.appendChild(cloneImg);
+
+	editButton.addEventListener('click', () => {
+		showEditorSelectionDialog(customID, false);
+	});
+
+	const editImg = document.createElement("img");
+	editImg.src = "../assets/images/font-awesome/edit-solid.svg";
+	editImg.width = "12";
+	editImg.height = "12";
+	editImg.classList.add("svg-white");
+	editButton.appendChild(editImg);
+
+	applyButton.addEventListener('click', () => {
+		const previousButton = document.getElementById("greyed-out-applied");
+		if (previousButton) {
+			const previousCheckImg = previousButton.getElementsByTagName("img")[0];
+			previousCheckImg.src = "../assets/images/font-awesome/plus-solid.svg";
+			previousButton.disabled = false;
+			previousButton.removeAttribute("id");
+		}
+
+		if (applyButton) {
+			applyButton.setAttribute("id", "greyed-out-applied");
+			applyButton.disabled = true;
+			const currentCheckImg = applyButton.getElementsByTagName("img")[0];
+			currentCheckImg.src = "../assets/images/font-awesome/check-solid.svg";
+		}
+		
+		saveSetting('plugin-id-text', customID);
+		createNotification(`Custom plugin "${pluginName}" has been successfully applied.`, "#3c8443", "#ffffff");
+	});
+
+	const applyImg = document.createElement("img");
+	applyImg.src = "../assets/images/font-awesome/plus-solid.svg";
+	applyImg.width = "12";
+	applyImg.height = "12";
+	applyImg.classList.add("svg-white");
+	applyButton.appendChild(applyImg);
+
+	actionsDiv.append(applyButton, editButton, cloneButton, deleteButton);
+	li.append(span, actionsDiv);
+
+	return li;
+}
+
+document.getElementById("new-custom-plugin-button").addEventListener("click", () => {
+	window.location.href = "/settings/create_scr.html";
+});

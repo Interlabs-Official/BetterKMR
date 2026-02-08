@@ -44,6 +44,16 @@ const ignoreList = [
     "src/modules/themes.js"
 ]
 
+function getAllCustomPlugins(callback) {
+	chrome.storage.local.get('plugins', data => callback(data.plugins || {}));
+};
+
+function addUserScript(code) {
+  const script = document.createElement("script");
+  script.textContent = code;
+  document.head.appendChild(script);
+}
+
 function loader() {
   if (window.location.pathname === "/rss") {
     console.log(`%c[BetterKMR 📕] %cSkipping loading dynamic modules because this is not a direct Kamar page.`, 'color:rgb(105, 58, 138)', 'color: #fff');
@@ -112,6 +122,27 @@ function loader() {
                 });
             } catch (error) {
               console.log(`%c[BetterKMR 📕] %cError: ${error}`, 'color: #F44336', 'color: #fff', 'color:rgb(255, 179, 173)');
+            }
+          })();
+          (async () => {
+            try {
+              chrome.storage.sync.get(["plugin-id-text"], (result) => {
+                const currentPluginId = result["plugin-id-text"] || "0";
+                console.log("Plugin ID active: " + currentPluginId);
+                getAllCustomPlugins(plugins => {
+                  console.log(plugins);
+                  if (plugins[currentPluginId]) {
+                    const plugin = plugins[currentPluginId];
+                    try {
+                      addUserScript(plugin.code);
+                    } catch (error) {
+                      console.warn(error);
+                    }
+                  }
+                });
+              });
+            } catch (error) {
+              console.warn(error);
             }
           })();
           chrome.storage.sync.get('exp_snap_load', function(data) {
