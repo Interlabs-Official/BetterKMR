@@ -132,16 +132,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             csp: "script-src 'self' 'unsafe-inline'"
         });
 
-        chrome.userScripts.register([{
-            id: 'test',
-            matches: ['https://*.school.kiwi/*'],
-            js: [{code: 'alert("yes")'}],
-            runAt: 'document_idle'
-        }]).then(() => {
-            console.log("User script has been registered successfully!");
-        }).catch((error) => {
-            console.error("Failed to register: " + error);
-        });
+        chrome.storage.local.get("plugins", (data) => {
+            const plugins = data.plugins || {};
+            chrome.userScripts.unregister().then(() => {
+                for (const [key, val] of Object.entries(plugins)) {
+                    const scriptId = val?.name || "generic";
+                    /*chrome.userScripts.getScripts().then((existingScripts) => {
+                        if (existingScripts.length > 0) {
+                            chrome.userScripts.unregister({ids: scriptId}).then(() => {
+                                registerUserScript();
+                            });
+                        } else {
+                            registerUserScript();
+                        }
+                    });*/
+                        try {
+                            chrome.userScripts.register([{
+                                id: scriptId,
+                                matches: ['https://*.school.kiwi/*'],
+                                js: [{code: val?.code || ""}],
+                                runAt: 'document_idle'
+                            }]).then(() => {
+                                console.log("User script has been registered successfully!");
+                            }).catch((error) => {
+                                console.error("Failed to register: " + error);
+                            });
+                        } catch (error) {
+                            console.error("Error occurred during plugin registration: " + error);
+                        }
+                }
+            })
+        })
     }
 });
 
