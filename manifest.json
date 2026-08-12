@@ -6,9 +6,7 @@
   "permissions": [
     "storage",
     "notifications",
-    "unlimitedStorage",
-    "scripting",
-    "userScripts"
+    "unlimitedStorage"
   ],
   "host_permissions": [
     "https://*.school.kiwi/*"
