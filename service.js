@@ -127,10 +127,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         return true;
     } else if (message.action == "attachPlugins") {
         console.log("Initialising Plugins");
-        console.log(chrome.userScripts);
+        /*console.log(chrome.userScripts);
         chrome.userScripts.configureWorld({
             csp: "script-src 'self' 'unsafe-inline'"
-        });
+        });*/
 
         /*chrome.userScripts.register([{
             id: 'test',
