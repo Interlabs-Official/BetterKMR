@@ -127,7 +127,7 @@ getThemesConfig()
     .catch(error => console.error("Failed to load themes:", error));
 
     function injectTheme(yamlToJson) {
-        if (window.location.pathname === "/course_selection") {
+        if (window.location.pathname.contains("/courseselection")) {
             const alertWin = document.createElement("div");
             alertWin.classList.add("alert");
             alertWin.classList.add("alert-warning");

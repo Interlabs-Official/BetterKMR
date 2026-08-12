@@ -132,7 +132,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             csp: "script-src 'self' 'unsafe-inline'"
         });
 
-        chrome.userScripts.register([{
+        /*chrome.userScripts.register([{
             id: 'test',
             matches: ['https://*.school.kiwi/*'],
             js: [{code: 'alert("yes")'}],
@@ -141,7 +141,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             console.log("User script has been registered successfully!");
         }).catch((error) => {
             console.error("Failed to register: " + error);
-        });
+        });*/
     }
 });
 

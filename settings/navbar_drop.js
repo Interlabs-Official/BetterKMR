@@ -26,7 +26,7 @@ const STORAGE_KEY = 'custom_navbar_layout';
                 children: [
                     { text: "Summary", href: "/results_summary", className: "nav-link-results_summary" },
                     { text: "Pathways", href: "/careers_pathways", className: "nav-link-careers_pathways" },
-                    { text: "Course Selection", href: "/course_selection", className: "nav-item nav-item-course_selection" }
+                    { text: "Course Selection", href: "/courseselection", className: "nav-item nav-item-course_selection" }
                 ]
             },
             { 
